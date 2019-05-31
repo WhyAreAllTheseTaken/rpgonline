@@ -12,6 +12,7 @@ import paulscode.sound.Library;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import paulscode.sound.codecs.CodecIBXM;
 import paulscode.sound.codecs.CodecJOgg;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
@@ -60,6 +61,11 @@ public final class AudioManager {
 			SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
 		} catch (SoundSystemException e) {
 			Log.error("Error linking with the CodecJOgg plug-in.", e);
+		}
+		try {
+			SoundSystemConfig.setCodec("xm", CodecIBXM.class);
+		} catch (SoundSystemException e) {
+			Log.error("Error linking with the CodecIBXM plug-in.", e);
 		}
 		
 		rf = SoundSystemConfig.getDefaultRolloff();

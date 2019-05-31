@@ -1,4 +1,4 @@
-package rpgonline;
+package rpgonline.texture;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
+
+import rpgonline.RPGConfig;
 
 public class TextureMap {
 	private static List<Image> texturesFast = new ArrayList<Image>();
@@ -129,6 +131,9 @@ public class TextureMap {
 	}
 	
 	public static Image getTexture(int i) {
+		if(i < 0) {
+			return null;
+		}
 		return texturesFast.get(i);
 	}
 	

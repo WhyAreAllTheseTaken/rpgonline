@@ -9,5 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGLOpenALSoundAPI"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OggCodec"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WavCodec"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IBXMCodec"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SlickShader"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
