@@ -1,12 +1,15 @@
 package rpgonline.abt;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.newdawn.slick.util.Log;
 
 public class TagDoc {
+	public static final short LATEST_VERSION = 0;
 	public TagDoc(short version, String app, TagGroup tags) {
 		super();
 		this.version = version;
@@ -81,11 +84,197 @@ public class TagDoc {
 		}
 	}
 	
+	public void write(OutputStream out) throws IOException {
+		ABTDataOutputStream dos = new ABTDataOutputStream(new BufferedOutputStream(out));
+		
+		dos.write(new byte[] {'A', 'B', 'T', '1'});
+		
+		dos.writeShort(LATEST_VERSION);
+		
+		dos.writeUTFByte(app);
+		
+		writeTag(dos, tags);
+		
+		dos.flush();
+		dos.close();
+	}
+	
+	public void writeTag(ABTDataOutputStream out, Tag t) throws IOException {
+		out.writeByte(0x0);
+		
+		if(t.getType() != 0x0) {
+			out.writeUTF(t.getName());
+		}
+		
+		switch(t.getType()) {
+		case 0x0:
+			break;
+		case 0x1:
+			out.writeLong(((TagGroup) t).size());
+			
+			for(Tag t2 : ((TagGroup) t).getTags()) {
+				writeTag(out, t2);
+			}
+			
+			writeTag(out, new Tag("", 0x0) {}); // End tag
+			break;
+		case 0x2:
+			out.writeByte(((TagByte) t).getData());
+			break;
+		case 0x3:
+			out.writeShort(((TagShort) t).getData());
+			break;
+		case 0x4:
+			out.writeInt(((TagInt) t).getData());
+			break;
+		case 0x5:
+			out.writeLong(((TagLong) t).getData());
+			break;
+		case 0x6:
+			out.write(((Tag128) t).getData());
+			break;
+		case 0x7:
+			out.writeInt(((TagBigInt) t).getData().length);
+			out.write(((TagBigInt) t).getData());
+			break;
+		case 0x8:
+			out.writeFloat(((TagFloat) t).getData());
+			break;
+		case 0x9:
+			out.writeDouble(((TagDouble) t).getData());
+			break;
+		case 0xA:
+			out.writeUTFInt(((TagBigFloat) t).getData());
+			break;
+		case 0xB:
+			out.writeUTF(((TagStringShort) t).getData());
+			break;
+		case 0xC:
+			out.writeUTFLong(((TagString) t).getData());
+			break;
+		case 0xD:
+			out.writeInt(((TagByteArray) t).getData().length);
+			out.write(((TagByteArray) t).getData());
+			break;
+		case 0xE:
+			out.writeInt(((TagShortArray) t).getData().length);
+			out.write(((TagShortArray) t).getData());
+			break;
+		case 0xF:
+			out.writeInt(((TagIntArray) t).getData().length);
+			out.write(((TagIntArray) t).getData());
+			break;
+		case 0x10:
+			out.writeInt(((TagLongArray) t).getData().length);
+			out.write(((TagLongArray) t).getData());
+			break;
+		case 0x11:
+			out.writeInt(((Tag128Array) t).getData().length);
+			
+			byte[][] buffer128 = (((Tag128Array) t).getData());
+			
+			for (int x = 0; x < buffer128.length; x++) {
+				for (int y = 0; y < buffer128[x].length; y++) {
+					out.writeByte(buffer128[x][y]);
+				}
+			}
+			
+			break;
+		case 0x12:
+			out.writeInt(((TagBigIntArray) t).getData().length);
+			
+			byte[][] bufferBigInt = (((TagBigIntArray) t).getData());
+			
+			for (int x = 0; x < bufferBigInt.length; x++) {
+				out.writeInt(bufferBigInt[x].length);
+				for (int y = 0; y < bufferBigInt[x].length; y++) {
+					out.writeByte(bufferBigInt[x][y]);
+				}
+			}
+			
+			break;
+		case 0x13:
+			out.writeInt(((TagFloatArray) t).getData().length);
+			out.write(((TagFloatArray) t).getData());
+			break;
+		case 0x14:
+			out.writeInt(((TagDoubleArray) t).getData().length);
+			out.write(((TagDoubleArray) t).getData());
+			break;
+		case 0x15:
+			out.writeInt(((TagBigFloatArray) t).getData().length);
+			out.write(((TagBigFloatArray) t).getData());
+			break;
+		case 0x16:
+			out.writeInt(((TagStringShortArray) t).getData().length);
+			out.writeShort(((TagStringShortArray) t).getData());
+			break;
+		case 0x17:
+			out.writeInt(((TagStringArray) t).getData().length);
+			out.write(((TagStringArray) t).getData());
+			break;
+		case 0x18:
+			out.writeChar(((TagChar) t).getData());
+			break;
+		case 0x19:
+			out.writeInt(((TagCharArray) t).getData().length);
+			out.write(((TagCharArray) t).getData());
+			break;
+		case 0x1A:
+			out.writeDouble(((TagVector2) t).get(0));
+			out.writeDouble(((TagVector2) t).get(1));
+			break;
+		case 0x1B:
+			out.writeDouble(((TagVector3) t).get(0));
+			out.writeDouble(((TagVector3) t).get(1));
+			out.writeDouble(((TagVector3) t).get(2));
+			break;
+		case 0x1C:
+			out.writeDouble(((TagVector4) t).get(0));
+			out.writeDouble(((TagVector4) t).get(1));
+			out.writeDouble(((TagVector4) t).get(2));
+			out.writeDouble(((TagVector4) t).get(3));
+			break;
+		case 0x1D:
+			double[][] buffer_m2 = ((TagMatrix2) t).getData();
+			
+			for (int x = 0; x < buffer_m2.length; x++) {
+				for (int y = 0; y < buffer_m2[x].length; y++) {
+					out.writeDouble(buffer_m2[x][y]);
+				}
+			}
+			break;
+		case 0x1E:
+			double[][] buffer_m3 = ((TagMatrix3) t).getData();
+			
+			for (int x = 0; x < buffer_m3.length; x++) {
+				for (int y = 0; y < buffer_m3[x].length; y++) {
+					out.writeDouble(buffer_m3[x][y]);
+				}
+			}
+			break;
+		case 0x1F:
+			double[][] buffer_m4 = ((TagMatrix3) t).getData();
+			
+			for (int x = 0; x < buffer_m4.length; x++) {
+				for (int y = 0; y < buffer_m4[x].length; y++) {
+					out.writeDouble(buffer_m4[x][y]);
+				}
+			}
+			break;
+		case 0x20:
+			out.writeBoolean(((TagBoolean) t).getData());
+			break;
+		case 0x21:
+			out.write(((TagBooleanArray) t).getData());
+			break;
+		default:
+			throw new IOException("Unknown tag type: " + t.getType());
+		}
+	}
+	
 	public static TagGroup readTagGroup(ABTDataInputStream in) throws IOException {
 		String name = in.readUTF();
-		
-		// Binary length. This is ignored when parsing the whole tree.
-		in.readLong();
 		
 		// Item count. Not needed by this parser.
 		in.readLong();
@@ -95,7 +284,7 @@ public class TagDoc {
 		while (true) {
 			byte id = in.readByte();
 			
-			if(id == 0x0) {
+			if (id == 0x0) {
 				break;
 			}
 			
@@ -107,6 +296,12 @@ public class TagDoc {
 	public static Tag readTag(byte id, ABTDataInputStream in) throws IOException {
 		byte[] buffer;
 		
+		String name = "";
+		
+		if(id != 0x0) {
+			name = in.readUTF();
+		}
+		
 		switch(id) {
 		case 0x00:
 			Log.warn("Unhandled case of end tag.");
@@ -114,47 +309,47 @@ public class TagDoc {
 		case 0x01:
 			return readTagGroup(in);
 		case 0x02:
-			return new TagByte(in.readUTF(), in.readByte());
+			return new TagByte(name, in.readByte());
 		case 0x03:
-			return new TagShort(in.readUTF(), in.readShort());
+			return new TagShort(name, in.readShort());
 		case 0x04:
-			return new TagInt(in.readUTF(), in.readInt());
+			return new TagInt(name, in.readInt());
 		case 0x05:
-			return new TagLong(in.readUTF(), in.readLong());
+			return new TagLong(name, in.readLong());
 		case 0x06:
 			buffer = new byte[16];
 			in.readFully(buffer);
-			return new Tag128(in.readUTF(), buffer);
+			return new Tag128(name, buffer);
 		case 0x07:
 			buffer = new byte[in.readInt()];
 			in.readFully(buffer);
-			return new TagBigInt(in.readUTF(), buffer);
+			return new TagBigInt(name, buffer);
 		case 0x08:
-			return new TagFloat(in.readUTF(), in.readFloat());
+			return new TagFloat(name, in.readFloat());
 		case 0x09:
-			return new TagDouble(in.readUTF(), in.readDouble());
+			return new TagDouble(name, in.readDouble());
 		case 0x0A:
-			return new TagBigFloat(in.readUTF(), in.readUTFInt());
+			return new TagBigFloat(name, in.readUTFInt());
 		case 0x0B:
-			return new TagStringShort(in.readUTF(), in.readUTF());
+			return new TagStringShort(name, in.readUTF());
 		case 0x0C:
-			return new TagString(in.readUTF(), in.readUTFLong());
+			return new TagString(name, in.readUTFLong());
 		case 0x0D:
 			buffer = new byte[in.readInt()];
 			in.readFully(buffer);
-			return new TagByteArray(in.readUTF(), buffer);
+			return new TagByteArray(name, buffer);
 		case 0x0E:
 			short[] buffer_s = new short[in.readInt()];
 			in.readFully(buffer_s);
-			return new TagShortArray(in.readUTF(), buffer_s);
+			return new TagShortArray(name, buffer_s);
 		case 0x0F:
 			int[] buffer_i = new int[in.readInt()];
 			in.readFully(buffer_i);
-			return new TagIntArray(in.readUTF(), buffer_i);
+			return new TagIntArray(name, buffer_i);
 		case 0x10:
 			long[] buffer_l = new long[in.readInt()];
 			in.readFully(buffer_l);
-			return new TagLongArray(in.readUTF(), buffer_l);
+			return new TagLongArray(name, buffer_l);
 		case 0x11:
 			byte[][] buffer128 = new byte[in.readInt()][16];
 			
@@ -164,7 +359,7 @@ public class TagDoc {
 				}
 			}
 			
-			return new Tag128Array(in.readUTF(), buffer128);
+			return new Tag128Array(name, buffer128);
 		case 0x12:
 			byte[][] buffer_big = new byte[in.readInt()][];
 			
@@ -175,39 +370,75 @@ public class TagDoc {
 				}
 			}
 			
-			return new TagBigIntArray(in.readUTF(), buffer_big);
+			return new TagBigIntArray(name, buffer_big);
 		case 0x13:
 			float[] buffer_f = new float[in.readInt()];
 			in.readFully(buffer_f);
-			return new TagFloatArray(in.readUTF(), buffer_f);
+			return new TagFloatArray(name, buffer_f);
 		case 0x14:
 			double[] buffer_d = new double[in.readInt()];
 			in.readFully(buffer_d);
-			return new TagDoubleArray(in.readUTF(), buffer_d);
+			return new TagDoubleArray(name, buffer_d);
 		case 0x15:
 			String[] buffer_bf = new String[in.readInt()];
 			in.readFully(buffer_bf);
-			return new TagBigFloatArray(in.readUTF(), buffer_bf);
+			return new TagBigFloatArray(name, buffer_bf);
 		case 0x16:
 			String[] buffer_str = new String[in.readInt()];
 			in.readFullyShort(buffer_str);
-			return new TagStringShortArray(in.readUTF(), buffer_str);
+			return new TagStringShortArray(name, buffer_str);
 		case 0x17:
 			String[] buffer_str2 = new String[in.readInt()];
 			in.readFully(buffer_str2);
-			return new TagStringArray(in.readUTF(), buffer_str2);
+			return new TagStringArray(name, buffer_str2);
 		case 0x18:
-			return new TagChar(in.readUTF(), in.readChar());
+			return new TagChar(name, in.readChar());
 		case 0x19:
 			char[] buffer_char = new char[in.readInt()];
 			in.readFully(buffer_char);
-			return new TagCharArray(in.readUTF(), buffer_char);
+			return new TagCharArray(name, buffer_char);
 		case 0x20:
-			return new TagBoolean(in.readUTF(), in.readBoolean());
+			return new TagBoolean(name, in.readBoolean());
 		case 0x21:
 			boolean[] buffer_bool = new boolean[in.readInt()];
 			in.readFully(buffer_bool);
-			return new TagBooleanArray(in.readUTF(), buffer_bool);
+			return new TagBooleanArray(name, buffer_bool);
+		case 0x1A:
+			return new TagVector2(name, in.readDouble(), in.readDouble());
+		case 0x1B:
+			return new TagVector3(name, in.readDouble(), in.readDouble(), in.readDouble());
+		case 0x1C:
+			return new TagVector4(name, in.readDouble(), in.readDouble(), in.readDouble(), in.readDouble());
+		case 0x1D:
+			double[][] buffer_m2 = new double[4][4];
+			
+			for (int x = 0; x < buffer_m2.length; x++) {
+				for (int y = 0; y < buffer_m2[x].length; y++) {
+					buffer_m2[x][y] = in.readDouble();
+				}
+			}
+			
+			return new TagMatrix2(name, buffer_m2);
+		case 0x1E:
+			double[][] buffer_m3 = new double[3][3];
+			
+			for (int x = 0; x < buffer_m3.length; x++) {
+				for (int y = 0; y < buffer_m3[x].length; y++) {
+					buffer_m3[x][y] = in.readDouble();
+				}
+			}
+			
+			return new TagMatrix3(name, buffer_m3);
+		case 0x1F:
+			double[][] buffer_m4 = new double[3][3];
+			
+			for (int x = 0; x < buffer_m4.length; x++) {
+				for (int y = 0; y < buffer_m4[x].length; y++) {
+					buffer_m4[x][y] = in.readDouble();
+				}
+			}
+			
+			return new TagMatrix4(name, buffer_m4);
 		default:
 			throw new IOException("Invalid tag ID: " + id);
 		}
