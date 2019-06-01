@@ -10,4 +10,9 @@ public class ServerManager {
 	public static void setClient(Client client) {
 		ServerManager.client = client;
 	}
+
+	public static Server getServer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

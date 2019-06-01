@@ -2,6 +2,8 @@ package rpgonline.entity;
 
 import java.math.BigInteger;
 
+import rpgonline.texture.entity.EntityTexture;
+
 public class EntityManager {
 	private BigInteger nextID = BigInteger.valueOf(System.currentTimeMillis() / 50);
 	
@@ -20,5 +22,10 @@ public class EntityManager {
 		}
 		
 		return id;
+	}
+
+	public EntityTexture getEntityTexture(String entity_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

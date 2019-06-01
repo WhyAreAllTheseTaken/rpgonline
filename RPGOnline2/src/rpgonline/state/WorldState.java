@@ -276,6 +276,8 @@ public class WorldState extends BasicGameState {
 							- sy * RPGConfig.getTileSize());
 		}
 		
+		lightBuffer.flushPixelData();
+		
 		if (renderBuffer == null) {
 			renderBuffer = new Image(container.getWidth(), container.getHeight());
 		} else if (container.getWidth() != renderBuffer.getWidth() || container.getHeight() != renderBuffer.getHeight()) {
@@ -395,6 +397,10 @@ public class WorldState extends BasicGameState {
 					} else {
 						Image img = TextureMap.getTexture(t.getTexture(x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z)));
 						
+						if(img == null) {
+							continue;
+						}
+						
 						if (img != inUse) {
 							if (inUse != null) {
 								inUse.endUse();
@@ -421,8 +427,28 @@ public class WorldState extends BasicGameState {
 									if (!e.isFlying()) {
 										if (FastMath.round(e.getX() + 0.5f) == x
 												&& FastMath.floor(e.getY() - 0.25) == y) {
-											e.render(container, game, g, e.getX(), e.getY(), z, world, lights,
-													(float) e.getX() - sx, (float) e.getY() - sy);
+											float esx = (float) e.getX() - sx;
+											float esy = (float) e.getY() - sy;
+											
+											int cbx = (int) ((esx + 0.5f) * RPGConfig.getTileSize());
+											int cby = (int) ((esy + 0.5f) * RPGConfig.getTileSize());
+											
+											if(cbx < 0) {
+												cbx = 0;
+											}
+											if(cbx >= lightBuffer.getWidth()) {
+												cbx = lightBuffer.getWidth() - 1;
+											}
+											
+											if(cby < 0) {
+												cby = 0;
+											}
+											if(cby >= lightBuffer.getHeight()) {
+												cby = lightBuffer.getHeight() - 1;
+											}
+											
+											Color light = lightBuffer.getColor(cbx, cby);
+											e.getTexture().render(rbg, x, y, z, world, e, esx, esy, wind, light);
 										}
 									}
 								}
@@ -445,7 +471,7 @@ public class WorldState extends BasicGameState {
 				
 				//Draw layer
 				Graphics.setCurrent(g);
-				g.drawImage(renderBuffer, 0, 0);
+				g.drawImage(renderBuffer, 0, 0, Color.white);
 				
 				//Clear buffer
 				rbg.clear();
@@ -459,8 +485,28 @@ public class WorldState extends BasicGameState {
 			for (Entity e : entities) {
 				synchronized (e) {
 					if (e.isFlying()) {
-						e.render(container, game, g, e.getX(), e.getY(), -3, world, lights, (float) e.getX() - sx,
-								(float) e.getY() - sy);
+						float esx = (float) e.getX() - sx;
+						float esy = (float) e.getY() - sy;
+						
+						int cbx = (int) ((esx + 0.5f) * RPGConfig.getTileSize());
+						int cby = (int) ((esy + 0.5f) * RPGConfig.getTileSize());
+						
+						if(cbx < 0) {
+							cbx = 0;
+						}
+						if(cbx >= lightBuffer.getWidth()) {
+							cbx = lightBuffer.getWidth() - 1;
+						}
+						
+						if(cby < 0) {
+							cby = 0;
+						}
+						if(cby >= lightBuffer.getHeight()) {
+							cby = lightBuffer.getHeight() - 1;
+						}
+						
+						Color light = lightBuffer.getColor(cbx, cby);
+						e.getTexture().render(rbg, x, y, -2, world, e, esx, esy, wind, light);
 					}
 				}
 			}
