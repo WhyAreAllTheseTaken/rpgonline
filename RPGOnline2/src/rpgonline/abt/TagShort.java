@@ -1,6 +1,10 @@
 package rpgonline.abt;
 
 public class TagShort extends Tag {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2634062576907254468L;
 	private short data;
 	
 	public TagShort(String name, short data) {

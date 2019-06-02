@@ -6,8 +6,9 @@ import java.util.List;
 import org.newdawn.slick.util.Log;
 
 import rpgonline.abt.TagGroup;
+import rpgonline.net.packet.NetPacket;
 
-public class UpdatePacket implements Serializable {
+public class UpdatePacket implements Serializable, NetPacket {
 	/**
 	 * 
 	 */

@@ -1,6 +1,11 @@
 package rpgonline.abt;
 
 public class TagBooleanArray extends TagGroup {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5651631010558425924L;
+
 	public TagBooleanArray(String name, boolean[] data) {
 		super(name);
 		

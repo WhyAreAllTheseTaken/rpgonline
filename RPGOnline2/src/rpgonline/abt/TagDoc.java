@@ -116,7 +116,12 @@ public class TagDoc {
 				writeTag(out, t2);
 			}
 			
-			writeTag(out, new Tag("", 0x0) {}); // End tag
+			writeTag(out, new Tag("", 0x0) {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -7308059970539366716L;}); // End tag
 			break;
 		case 0x2:
 			out.writeByte(((TagByte) t).getData());

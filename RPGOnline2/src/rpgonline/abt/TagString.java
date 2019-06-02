@@ -1,6 +1,10 @@
 package rpgonline.abt;
 
 public class TagString extends Tag {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6344197038704127023L;
 	private String data;
 	
 	public TagString(String name, String data) {
@@ -23,6 +27,10 @@ public class TagString extends Tag {
 			try {
 				int i = Integer.parseInt(name);
 				t = new TagChar(name, data.charAt(i)) {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 832728519849455689L;
 					@Override
 					public void setData(char data) {
 						StringBuilder sb = new StringBuilder(TagString.this.data);

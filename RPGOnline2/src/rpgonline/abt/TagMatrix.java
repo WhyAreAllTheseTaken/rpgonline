@@ -3,6 +3,11 @@ package rpgonline.abt;
 import java.util.Arrays;
 
 public class TagMatrix extends TagGroup {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7750785924888483349L;
+
 	public TagMatrix(String name, double[][] data) {
 		super(name);
 	}

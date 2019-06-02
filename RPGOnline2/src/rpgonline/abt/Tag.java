@@ -1,11 +1,17 @@
 package rpgonline.abt;
 
+import java.io.Serializable;
+
 /**
  * A representation of an ABTTag.
  * 
  * @author Tomas
  */
-public abstract class Tag {
+public abstract class Tag implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1432761640748613837L;
 	/**
 	 * The name of the tag.
 	 */

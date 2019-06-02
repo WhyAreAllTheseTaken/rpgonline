@@ -3,6 +3,11 @@ package rpgonline.abt;
 import java.math.BigDecimal;
 
 public class TagBigFloat extends TagString {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7745491369069382304L;
+
 	public TagBigFloat(String name, String data) {
 		super(name, data);
 	}

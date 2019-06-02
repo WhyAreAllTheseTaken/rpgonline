@@ -1,6 +1,10 @@
 package rpgonline.abt;
 
 public class TagFloat extends Tag {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 878957984413787929L;
 	private float data;
 	
 	public TagFloat(String name, float data) {

@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class TagGroup extends Tag implements Iterable<Tag> {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4699095497765857990L;
+	/**
 	 * Internal list of tags.
 	 */
 	protected final List<Tag> tags = new ArrayList<Tag>();

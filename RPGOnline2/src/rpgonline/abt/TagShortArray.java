@@ -1,6 +1,11 @@
 package rpgonline.abt;
 
 public class TagShortArray extends TagGroup {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1010121178154657137L;
+
 	public TagShortArray(String name, short[] data) {
 		super(name);
 		

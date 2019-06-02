@@ -1,6 +1,11 @@
 package rpgonline.abt;
 
 public class TagBigFloatArray extends TagGroup {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2758615385190637862L;
+
 	public TagBigFloatArray(String name, String[] data) {
 		super(name);
 		

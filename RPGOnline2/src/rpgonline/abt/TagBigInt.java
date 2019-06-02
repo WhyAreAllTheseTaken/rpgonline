@@ -4,6 +4,11 @@ import java.math.BigInteger;
 
 public class TagBigInt extends TagByteArray {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5935071441164263751L;
+
 	public TagBigInt(String name, byte[] data) {
 		super(name, data);
 	}
