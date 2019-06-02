@@ -1,4 +1,4 @@
-package rpgonline.entity;
+package rpgonline.net.packet;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.newdawn.slick.util.Log;
 
 import rpgonline.abt.TagGroup;
-import rpgonline.net.packet.NetPacket;
+import rpgonline.entity.Entity;
 
 public class UpdatePacket implements Serializable, NetPacket {
 	/**
@@ -197,7 +197,7 @@ public class UpdatePacket implements Serializable, NetPacket {
 			}
 		}
 	}
-	
+
 	public static final class UTag extends UpdatePacket {
 		/**
 		 * 

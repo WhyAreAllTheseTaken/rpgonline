@@ -12,7 +12,7 @@ import org.newdawn.slick.util.Log;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-public class AESSecurityCap {
+class AESSecurityCap {
 
     private PublicKey publickey;
     KeyAgreement keyAgreement;

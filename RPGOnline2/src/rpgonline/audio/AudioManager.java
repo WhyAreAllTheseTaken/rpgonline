@@ -33,6 +33,8 @@ public final class AudioManager {
 	
 	private static final List<String> ambient = new ArrayList<>();
 	
+	private static final Map<String, AmbientMusic> ambientMusic = new HashMap<>();
+	
 	static {
 		boolean aLCompatible = SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class);
 		boolean jSCompatible = SoundSystem.libraryCompatible(LibraryJavaSound.class);
@@ -288,5 +290,13 @@ public final class AudioManager {
 
 	public static SoundSystem getSystem() {
 		return system;
+	}
+	
+	public static AmbientMusic getAmbientMusic(String id) {
+		return ambientMusic.get(id);
+	}
+	
+	public static void setAmbientMusic(String id, AmbientMusic m) {
+		ambientMusic.put(id, m);
 	}
 }

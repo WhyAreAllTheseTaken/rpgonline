@@ -20,14 +20,15 @@ import rpgonline.abt.TagGroup;
 import rpgonline.abt.TagInt;
 import rpgonline.abt.TagLong;
 import rpgonline.abt.TagString;
-import rpgonline.entity.UpdatePacket.UBoolean;
-import rpgonline.entity.UpdatePacket.UDouble;
-import rpgonline.entity.UpdatePacket.UFloat;
-import rpgonline.entity.UpdatePacket.UInt;
-import rpgonline.entity.UpdatePacket.ULong;
-import rpgonline.entity.UpdatePacket.UString;
-import rpgonline.entity.UpdatePacket.UTag;
 import rpgonline.net.ServerManager;
+import rpgonline.net.packet.UpdatePacket;
+import rpgonline.net.packet.UpdatePacket.UBoolean;
+import rpgonline.net.packet.UpdatePacket.UDouble;
+import rpgonline.net.packet.UpdatePacket.UFloat;
+import rpgonline.net.packet.UpdatePacket.UInt;
+import rpgonline.net.packet.UpdatePacket.ULong;
+import rpgonline.net.packet.UpdatePacket.UString;
+import rpgonline.net.packet.UpdatePacket.UTag;
 import rpgonline.texture.entity.EntityTexture;
 
 /**

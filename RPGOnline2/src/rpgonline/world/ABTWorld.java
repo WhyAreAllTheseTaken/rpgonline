@@ -1,12 +1,15 @@
 package rpgonline.world;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
@@ -183,6 +186,51 @@ public class ABTWorld extends ChunkWorld {
 			}
 		} else {
 			throw new IOException("Chunk file is from newer version.");
+		}
+	}
+	
+	@Override
+	public void save() {
+		TagGroup tg = new TagGroup("map");
+		tg.add(new TagInt("version", 0));
+		
+		TagGroup lights = new TagGroup("lights");
+		for(LightSource l : getLights()) {
+			TagGroup g = new TagGroup(l.toString());
+			
+			TagVector4 c = new TagVector4("color", l.getColor().r, l.getColor().g, l.getColor().b, l.getBrightness());
+			g.add(c);
+			
+			TagVector2 pos = new TagVector2("pos", l.getLX(), l.getLY());
+			g.add(pos);
+			
+			lights.add(g);
+		}
+		
+		tg.add(lights);
+		
+		TagGroup entities = new TagGroup("entities");
+		for (Entity e : getEntities()) {
+			entities.add(e.toABT(e.toString()));
+		}
+		
+		TagDoc d = new TagDoc("map", tg);
+		
+		try {
+			d.write(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(new File(folder, "map.abt")))));
+		} catch (IOException e) {
+			Log.error("Error writing map data.", e);
+		}
+		
+		for (Chunk c : chunks) {
+			File f = new File(folder, "chunk_" + Long.toHexString(c.getX()) + "_" + Long.toHexString(c.getY()) + "_" + Long.toHexString(c.getZ()) + ".abt");
+			TagDoc doc = new TagDoc("map_c", c.save());
+			
+			try {
+				doc.write(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(f))));
+			} catch (IOException e) {
+				Log.error("Error writing chunk " + c.getX() + " " + c.getY() + " " + c.getZ(), e);
+			}
 		}
 	}
 }

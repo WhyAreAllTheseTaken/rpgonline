@@ -2,6 +2,11 @@ package rpgonline.world.chunk;
 
 import java.util.Map;
 
+import rpgonline.abt.TagBoolean;
+import rpgonline.abt.TagGroup;
+import rpgonline.abt.TagInt;
+import rpgonline.abt.TagLong;
+import rpgonline.abt.TagString;
 import rpgonline.tile.Tile;
 
 public class Chunk {
@@ -113,5 +118,45 @@ public class Chunk {
 
 	public long getLastUsed() {
 		return lastUsed;
+	}
+	
+	public TagGroup save() {
+		TagGroup tg = new TagGroup("chunk");
+		
+		tg.add(new TagLong("x", x));
+		tg.add(new TagLong("y", y));
+		tg.add(new TagLong("z", z));
+		
+		tg.add(new TagInt("version", 0x0));
+		
+		tg.add(new TagGroup("tile"));
+		tg.add(new TagGroup("state"));
+		tg.add(new TagGroup("flag"));
+		tg.add(new TagGroup("area"));
+		tg.add(new TagGroup("biome"));
+		
+		for (int cz = 0; cz < 1; cz++) {
+			((TagGroup) tg.getTag("tile")).add(new TagGroup(cz + ""));
+			((TagGroup) tg.getTag("state")).add(new TagGroup(cz + ""));
+			((TagGroup) tg.getTag("flag")).add(new TagGroup(cz + ""));
+			((TagGroup) tg.getTag("area")).add(new TagGroup(cz + ""));
+			((TagGroup) tg.getTag("biome")).add(new TagGroup(cz + ""));
+			for (int cy = 0; cy < Chunk.SIZE; cy++) {
+				((TagGroup) tg.getTag("tile/" + cz)).add(new TagGroup(cy + ""));
+				((TagGroup) tg.getTag("state/" + cz)).add(new TagGroup(cy + ""));
+				((TagGroup) tg.getTag("flag/" + cz)).add(new TagGroup(cy + ""));
+				((TagGroup) tg.getTag("area/" + cz)).add(new TagGroup(cy + ""));
+				((TagGroup) tg.getTag("biome/" + cz)).add(new TagGroup(cy + ""));
+				for (int cx = 0; cx < Chunk.SIZE; cx++) {
+					((TagGroup) tg.getTag("tile/" + cz + "/" + cy)).add(new TagString(cx + "", getTile(cx, cy, cz).getID()));
+					((TagGroup) tg.getTag("state/" + cz + "/" + cy)).add(new TagString(cx + "", getState(cx, cy, cz)));
+					((TagGroup) tg.getTag("flag/" + cz + "/" + cy)).add(new TagBoolean(cx + "", getFlag(cx, cy, cz)));
+					((TagGroup) tg.getTag("area/" + cz + "/" + cy)).add(new TagString(cx + "", getArea(cx, cy, cz)));
+					((TagGroup) tg.getTag("biome/" + cz + "/" + cy)).add(new TagInt(cx + "", getBiome(cx, cy, cz)));
+				}
+			}
+		}
+		
+		return tg;
 	}
 }

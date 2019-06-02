@@ -1,7 +1,7 @@
 package rpgonline.net;
 
 import rpgonline.entity.Entity;
-import rpgonline.entity.UpdatePacket;
+import rpgonline.net.packet.UpdatePacket;
 
 public interface Server {
 	public void updateEntity(UpdatePacket up);

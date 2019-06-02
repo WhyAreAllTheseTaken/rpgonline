@@ -51,7 +51,6 @@ public interface World {
 		return Color.white;
 	}
 
-	@Deprecated
 	public default void save() {
 
 	}

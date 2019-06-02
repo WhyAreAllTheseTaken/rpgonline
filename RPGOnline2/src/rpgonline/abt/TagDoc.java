@@ -17,6 +17,10 @@ public class TagDoc {
 		this.tags = tags;
 	}
 	
+	public TagDoc(String app, TagGroup tags) {
+		this(LATEST_VERSION, app, tags);
+	}
+	
 	private short version;
 	private String app;
 	private TagGroup tags;

@@ -35,4 +35,9 @@ public class EntityManager {
 	public EntityAI getAI(String entity_id) {
 		return ais.get(entity_id);
 	}
+	
+	public void register(String entity_id, EntityTexture t, EntityAI ai) {
+		textures.put(entity_id, t);
+		ais.put(entity_id, ai);
+	}
 }
