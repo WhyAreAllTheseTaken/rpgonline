@@ -2,6 +2,7 @@ package rpgonline.net;
 
 public class ServerManager {
 	private static Client client;
+	private static Server server;
 	
 	public static Client getClient() {
 		return client;
@@ -12,7 +13,10 @@ public class ServerManager {
 	}
 
 	public static Server getServer() {
-		// TODO Auto-generated method stub
-		return null;
+		return server;
+	}
+
+	public static void setServer(Server server) {
+		ServerManager.server = server;
 	}
 }

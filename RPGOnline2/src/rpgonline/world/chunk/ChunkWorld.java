@@ -22,7 +22,7 @@ public class ChunkWorld implements World {
 	private long maz = 0;
 	private List<LightSource> lights = new ArrayList<LightSource>();
 	protected long update_counter = 0;
-	private Map<String, Tile> registry;
+	protected Map<String, Tile> registry;
 	private List<Entity> entities = new ArrayList<>();
 	
 	public ChunkWorld(Map<String, Tile> registry) {

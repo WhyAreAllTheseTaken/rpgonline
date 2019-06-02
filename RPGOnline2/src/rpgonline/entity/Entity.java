@@ -35,7 +35,7 @@ import rpgonline.texture.entity.EntityTexture;
  * 
  * @author Tomas
  */
-public abstract class Entity {
+public class Entity {
 	private final Map<String, Object> objects = new HashMap<String, Object>();
 	private final Map<String, Integer> ints = new HashMap<String, Integer>();
 	private final Map<String, Long> longs = new HashMap<String, Long>();
