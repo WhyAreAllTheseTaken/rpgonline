@@ -163,43 +163,146 @@ public class RPGConfig {
 		RPGConfig.wind = wind;
 	}
 
+	/**
+	 * Determines if the the shader effect will be used by the rendering engine.
+	 * 
+	 * @return true if the shadow effect should be used. false otherwise.
+	 * 
+	 * @see rpgonline.state.WorldState
+	 */
 	public static boolean isShadow() {
 		return shadow;
 	}
 
+	/**
+	 * Determines if the the shader effect will be used by the rendering engine.
+	 * 
+	 * @param shadow true if the shadow effect should be used. false otherwise.
+	 * 
+	 * @see rpgonline.state.WorldState
+	 */
 	public static void setShadow(boolean shadow) {
 		RPGConfig.shadow = shadow;
 	}
 
+	/**
+	 * The size used by tiles as the grid size.
+	 * 
+	 * @return an int that is greater that 0.
+	 * 
+	 * @see rpgonline.tile.Tile
+	 * @see rpgonline.texture.TileTexture
+	 * @see rpgonline.state.WorldState
+	 */
 	public static int getTileSize() {
 		return tileSize;
 	}
 
+	/**
+	 * The size used by tiles as the grid size.
+	 * 
+	 * @param tileSize an int that is greater that 0.
+	 * 
+	 * @see rpgonline.tile.Tile
+	 * @see rpgonline.texture.TileTexture
+	 * @see rpgonline.state.WorldState
+	 */
 	public static void setTileSize(int tileSize) {
+		if (tileSize <= 0) {
+			throw new IllegalArgumentException("tileSize must be greater than 0.");
+		}
 		RPGConfig.tileSize = tileSize;
 	}
 
+	/**
+	 * A handler for storing bindings on keyboards. This defaults to a
+	 * {@code MapKeyProvider}
+	 * 
+	 * @return A KeyboardInputProvider.
+	 * 
+	 * @see rpgonline.input.MapKeyProvider
+	 * @see rpgonline.input.InputUtils
+	 */
 	public static KeyboardInputProvider getKeyInput() {
 		return keyInput;
 	}
 
+	/**
+	 * A handler for storing bindings on keyboards. This defaults to a
+	 * {@code MapKeyProvider}
+	 * 
+	 * @param keyInput A KeyboardInputProvider. This cannot be null.
+	 * 
+	 * @see rpgonline.input.MapKeyProvider
+	 * @see rpgonline.input.InputUtils
+	 */
 	public static void setKeyInput(KeyboardInputProvider keyInput) {
+		if (keyInput == null) {
+			throw new NullPointerException("keyInput");
+		}
 		RPGConfig.keyInput = keyInput;
 	}
 
+	/**
+	 * The sensitivity for interpreting an axis button as a normal button. If the
+	 * value passes this it will be considered as true. This is applied to the
+	 * absolute value of the axis.
+	 * 
+	 * @return A float that is equal to or greater than 0. A float value of Infinity
+	 *         or NaN may be used to disable axis that are used as buttons.
+	 * 
+	 * @see rpgonline.input.InputUtils
+	 * @see rpgonline.input.ControllerInputProvider
+	 */
 	public static float getControllerActuation() {
 		return controllerActuation;
 	}
 
+	/**
+	 * The sensitivity for interpreting an axis button as a normal button. If the
+	 * value passes this it will be considered as true. This is applied to the
+	 * absolute value of the axis.
+	 * 
+	 * @param controllerActuation A float that is equal to or greater than 0. A
+	 *                            float value of Infinity or NaN may be used to
+	 *                            disable axis that are used as buttons.
+	 * 
+	 * @see rpgonline.input.InputUtils
+	 * @see rpgonline.input.ControllerInputProvider
+	 */
 	public static void setControllerActuation(float controllerActuation) {
+		if (controllerActuation < 0) {
+			throw new IllegalArgumentException("Actuation point cannot be less than 0.");
+		}
 		RPGConfig.controllerActuation = controllerActuation;
 	}
 
+	/**
+	 * A handler for storing bindings on controllers. This defaults to a
+	 * {@code MapControllerProvider}
+	 * 
+	 * @return A ControllerInputProvider.
+	 * 
+	 * @see rpgonline.input.MapControllerProvider
+	 * @see rpgonline.input.InputUtils
+	 */
 	public static ControllerInputProvider getControllerInput() {
 		return controllerInput;
 	}
 
+	/**
+	 * A handler for storing bindings on controllers. This defaults to a
+	 * {@code MapControllerProvider}
+	 * 
+	 * @param controllerInput A ControllerInputProvider. This cannot be null.
+	 * 
+	 * @see rpgonline.input.MapControllerProvider
+	 * @see rpgonline.input.InputUtils
+	 */
 	public static void setControllerInput(ControllerInputProvider controllerInput) {
+		if (controllerInput == null) {
+			throw new NullPointerException("controllerInput");
+		}
 		RPGConfig.controllerInput = controllerInput;
 	}
 }

@@ -1,5 +1,10 @@
 package rpgonline.audio;
 
+/**
+ * A class for storing Ambient Music.
+ * @author Tomas
+ *
+ */
 public class AmbientMusic {
 	private final String[] sounds;
 	private final String[] groups;

@@ -31,7 +31,7 @@ public final class AudioManager {
 	
 	private static final Map<String, Float> volumes = new HashMap<>();
 	
-	private static final List<String> ambient = new ArrayList<>(16);
+	private static final List<String> ambient = new ArrayList<>();
 	
 	static {
 		boolean aLCompatible = SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class);
@@ -218,7 +218,9 @@ public final class AudioManager {
 		float factor = v / old;
 		
 		for (String s : ambient) {
-			system.setVolume(s, system.getVolume(s) * factor);
+			if (system.playing(s)) {
+				system.setVolume(s, system.getVolume(s) * factor);
+			}
 		}
 	}
 	
@@ -241,6 +243,27 @@ public final class AudioManager {
 	
 	public static String playSound(String name, float v, float p, float x, float y, float z) {
 		return playSound(name, v, p, x, y, z, false, 0, 0, 0);
+	}
+	
+	public static String playSound(String name, float v, float x, float y, float z) {
+		return playSound(name, v, 1, x, y, z, false, 0, 0, 0);
+	}
+	
+	public static String playSound(String name, float x, float y, float z) {
+		return playSound(name, 1, 1, x, y, z, false, 0, 0, 0);
+	}
+	
+	public static String playAmbient(String name, float v, float p, float x, float y, float z, boolean loop) {
+		String s = system.quickPlay(loop, sounds.get(name), sounds.get(name).getPath(), loop, x, y, z, SoundSystemConfig.ATTENUATION_ROLLOFF, rf);
+		system.setVolume(s, v);
+		system.setPitch(s, p);
+		
+		ambient.add(s);
+		return s;
+	}
+	
+	public static String playAmbient(String name, float v, float p, float x, float y, float z) {
+		return playAmbient(name, v, p, x, y, z, false);
 	}
 	
 	public static void setPlayerPos(float x, float y, float z) {

@@ -7,18 +7,14 @@ import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.ResourceLoader;
 
 /**
- * <p>
  * A class that represents version info of the RPGOnline library.
- * </p>
  * 
  * @author Tomas
  */
 public final class RPGOnline {
 	/**
-	 * <p>
 	 * A list of all previous versions of this library. This includes the current
 	 * version.
-	 * </p>
 	 */
 	public static final Version[] VERSIONS = { new Version("0.0.0-d0"), new Version("0.1.0-d0"),
 			new Version("0.1.1-d0"), new Version("0.1.2-d0"), new Version("0.1.3-d0"), new Version("0.1.3-d1"),
@@ -32,34 +28,34 @@ public final class RPGOnline {
 			new Version("0.6.1+1557657120"), new Version("0.6.2+1557659837"), new Version("0.6.3+1557771460"),
 			new Version("0.6.4+1557774208"), new Version("0.6.5+1557849408") };
 	/**
-	 * <p>
 	 * The current version of the RPGOnline library.
-	 * </p>
 	 */
 	public static final Version VERSION = new Version("0.7.0-d0+1559144811");
 	/**
-	 * <p>
 	 * The version of java that this library was compiled with.
-	 * </p>
 	 */
 	public static final Version JAVA_BUILD_VERSION = new Version("1.8.0_191");
 	/**
-	 * <p>
 	 * The current java version used by the JRE.
-	 * </p>
 	 */
 	public static final Version JAVA_VERSION = new Version(System.getProperty("java.version"));
 	/**
-	 * <p>
 	 * The minimum version that is required for java to work. Versions below this
 	 * may still work but are unlikely to even run.
-	 * </p>
 	 */
 	public static final Version MIN_SUPPORTED_VERSION = new Version("1.8.0");
 
+	/**
+	 * The current version of LWJGL.
+	 */
 	public static final Version LWJGL_VERSION = new Version(org.lwjgl.Sys.getVersion());
 
+	/**
+	 * The current version of Slick2D.
+	 */
 	public static final Version SLICK_VERSION;
+	
+	//Load anything that requires a method call.
 	static {
 		int build = 0;
 		try {
@@ -74,13 +70,14 @@ public final class RPGOnline {
 		SLICK_VERSION = new Version("1." + build);
 	}
 
+	/**
+	 * The current OpenGL version.
+	 */
 	private static Version OPENGL_VERSION;
 
 	/**
-	 * <p>
 	 * Prints version info and displays warnings in the case of unsupported java
 	 * versions.
-	 * </p>
 	 */
 	public static void queryVersionData() {
 		Log.info("RPGOnline version: " + RPGOnline.VERSION.toDatedString());
@@ -98,6 +95,10 @@ public final class RPGOnline {
 		}
 	}
 
+	/**
+	 * Gets the current OpenGL version.
+	 * @return A version object.
+	 */
 	public static Version getOpenGLVersion() {
 		if (OPENGL_VERSION == null) {
 			OPENGL_VERSION = new Version(GL11.glGetString(GL11.GL_VERSION).substring(0, 3));

@@ -5,59 +5,83 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * A group of tags.
+ * @author Tomas
+ *
+ */
 public class TagGroup extends Tag implements Iterable<Tag> {
+	/**
+	 * Internal list of tags.
+	 */
 	protected final List<Tag> tags = new ArrayList<Tag>();
 	
+	/**
+	 * Constructs a new Tag Group.
+	 * @param name
+	 */
 	public TagGroup(String name) {
 		super(name, 0x01);
 	}
 	
+	/**
+	 * Gets all tags within this tag.
+	 * @return A list of tags.
+	 */
 	public List<Tag> getTags() {
 		return tags;
 	}
 
+	/**
+	 * The size in elements of this tag.
+	 * @return An int that is greater than or equal to 0.
+	 */
 	public int size() {
-		return tags.size();
+		return getTags().size();
 	}
 
+	/**
+	 * Checks if this group is empty.
+	 * @return
+	 */
 	public boolean isEmpty() {
-		return tags.isEmpty();
+		return getTags().isEmpty();
 	}
 
 	public boolean contains(Object o) {
-		return tags.contains(o);
+		return getTags().contains(o);
 	}
 
 	public Iterator<Tag> iterator() {
-		return tags.iterator();
+		return getTags().iterator();
 	}
 
 	public boolean add(Tag e) {
-		return tags.add(e);
+		return getTags().add(e);
 	}
 
 	public boolean remove(Object o) {
-		return tags.remove(o);
+		return getTags().remove(o);
 	}
 
 	public boolean containsAll(Collection<?> c) {
-		return tags.containsAll(c);
+		return getTags().containsAll(c);
 	}
 
 	public boolean addAll(Collection<? extends Tag> c) {
-		return tags.addAll(c);
+		return getTags().addAll(c);
 	}
 
 	public boolean removeAll(Collection<?> c) {
-		return tags.removeAll(c);
+		return getTags().removeAll(c);
 	}
 
 	public boolean retainAll(Collection<?> c) {
-		return tags.retainAll(c);
+		return getTags().retainAll(c);
 	}
 
 	public void clear() {
-		tags.clear();
+		getTags().clear();
 	}
 	
 	@Override

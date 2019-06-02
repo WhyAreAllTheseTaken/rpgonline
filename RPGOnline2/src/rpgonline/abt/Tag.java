@@ -1,26 +1,55 @@
 package rpgonline.abt;
 
+/**
+ * A representation of an ABTTag.
+ * 
+ * @author Tomas
+ */
 public abstract class Tag {
+	/**
+	 * The name of the tag.
+	 */
 	private String name;
+	/**
+	 * The type of the tag.
+	 */
 	private byte type;
 
+	/**
+	 * Constructs a new Tag.
+	 * @param name The name of the tag.
+	 * @param type The type of the tag.
+	 */
 	public Tag(String name, int type) {
+		if(name == null) {
+			throw new NullPointerException("name");
+		}
 		this.name = name;
 		this.type = (byte) type;
 	}
 
-	public long getLength() {
-		return 2 + name.length();
-	}
-
+	/**
+	 * Gets the name of the tag.
+	 * @return A non-null string.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name of the tag.
+	 * @param name A non-null string.
+	 */
 	public void setName(String name) {
+		if(name == null) {
+			throw new NullPointerException("name");
+		}
 		this.name = name;
 	}
 
+	/**
+	 * Converts this tag to a string written in JSON format with new lines.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -36,10 +65,20 @@ public abstract class Tag {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the type of this tag.
+	 * @return A byte value.
+	 */
 	public byte getType() {
 		return type;
 	}
 
+	/**
+	 * A utility function for appending string data to JSON objects.
+	 * @param sb The string builder to append to.
+	 * @param key The variable name.
+	 * @param v The value of the variable.
+	 */
 	protected static void appendStr(StringBuilder sb, String key, String v) {
 		sb.append("\"");
 		sb.append(sanitiseJSON(key));
@@ -52,6 +91,12 @@ public abstract class Tag {
 		sb.append("\"");
 	}
 	
+	/**
+	 * A utility function for appending number data to JSON objects.
+	 * @param sb The string builder to append to.
+	 * @param key The variable name.
+	 * @param v The value of the variable.
+	 */
 	protected static void appendNum(StringBuilder sb, String key, double v) {
 		sb.append("\"");
 		sb.append(sanitiseJSON(key));
@@ -62,6 +107,12 @@ public abstract class Tag {
 		sb.append(v);
 	}
 	
+	/**
+	 * A utility function for appending boolean data to JSON objects.
+	 * @param sb The string builder to append to.
+	 * @param key The variable name.
+	 * @param v The value of the variable.
+	 */
 	protected static void appendBool(StringBuilder sb, String key, boolean v) {
 		sb.append("\"");
 		sb.append(sanitiseJSON(key));
@@ -72,6 +123,12 @@ public abstract class Tag {
 		sb.append(v);
 	}
 	
+	/**
+	 * A utility function for appending array data to JSON objects.
+	 * @param sb The string builder to append to.
+	 * @param key The variable name.
+	 * @param v The valid JSON to write.
+	 */
 	protected static void appendArray(StringBuilder sb, String key, String[] v) {
 		sb.append("\"");
 		sb.append(sanitiseJSON(key));
@@ -91,6 +148,12 @@ public abstract class Tag {
 		sb.append("]");
 	}
 	
+	/**
+	 * A utility function for appending JSON objects to JSON objects.
+	 * @param sb The string builder to append to.
+	 * @param key The variable name.
+	 * @param v The valid JSON object to write.
+	 */
 	protected static void appendObject(StringBuilder sb, String key, String o) {
 		sb.append("\"");
 		sb.append(sanitiseJSON(key));
@@ -101,16 +164,30 @@ public abstract class Tag {
 		sb.append(o);
 	}
 	
+	/**
+	 * Appends a separator to a JSON object.
+	 * @param sb The string builder to append to.
+	 */
 	protected static void appendSep(StringBuilder sb) {
 		sb.append(",");
 		sb.append("\n");
 	}
 	
+	/**
+	 * Santisises JSON strings by escaping special characters.
+	 * @param in The string to sanitise.
+	 * @return A sanitised string.
+	 */
 	protected static String sanitiseJSON(String in) {
 		return in.replace("\\", "\\\\").replace("\b", "\\b").replace("\f", "\\f").replace("\n", "\\n")
 				.replace("\r", "\\r").replace("\t", "\\t").replace("\"", "\\\"");
 	}
 	
+	/**
+	 * Gets a tag from within this tag.
+	 * @param name The tag to find separated with {@code /}.
+	 * @return A tag object or {@code null} if not tag could be found.
+	 */
 	public Tag getTag(String name) {
 		String[] name2 = name.split("/");
 		if(name2[0].equals("this")) {
