@@ -21,7 +21,7 @@ public class Tile {
 		registry.put(id, this);
 	}
 
-	public boolean isSolid() {
+	public boolean isSolid(String state) {
 		return true;
 	}
 
@@ -43,5 +43,9 @@ public class Tile {
 
 	public String getID() {
 		return id;
+	}
+	
+	public boolean isDamage(String entity_id) {
+		return false;
 	}
 }

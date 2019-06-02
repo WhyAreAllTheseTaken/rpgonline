@@ -51,6 +51,7 @@ public abstract class Entity {
 	public Entity(EntityManager m, String entity_id, boolean packet) {
 		setString("id", m.getNextID());
 		setString("entity_id", entity_id);
+		setBoolean("solid", true);
 		
 		t = m.getEntityTexture(entity_id);
 	}
@@ -346,5 +347,13 @@ public abstract class Entity {
 
 	public void setPacket(boolean packet) {
 		this.packet = packet;
+	}
+
+	public boolean isSolid() {
+		return getBoolean("solid");
+	}
+
+	public String getEntityID() {
+		return getString("entity_id");
 	}
 }
