@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_191"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="shaders"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Slick2D"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CommonsMath"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SoundSystem-Paul"/>
