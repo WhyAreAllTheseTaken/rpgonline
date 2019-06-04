@@ -15,6 +15,7 @@ public final class InputUtils {
 	public static final String ZOOM_OUT = "zoom_out";
 	public static final String EXIT = "exit";
 	public static final String GUI_TOGGLE = "gui_toggle";
+	public static final String SPRINT = "sprint";
 	
 	public static boolean isActionPressed(Input in, String func) {
 		if (in.getControllerCount() > 0) {

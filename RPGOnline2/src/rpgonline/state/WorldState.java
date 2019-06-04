@@ -584,6 +584,7 @@ public class WorldState extends BasicGameState {
 				ServerManager.getClient().walkX(in.getAxisValue(0, 1));
 			}
 		}
+		ServerManager.getClient().setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
 		
 		if (InputUtils.isActionPressed(in, InputUtils.ZOOM_IN)) {
 			zoom *= 1 + 0.25f * delf;

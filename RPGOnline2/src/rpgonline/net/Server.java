@@ -3,7 +3,7 @@ package rpgonline.net;
 import rpgonline.entity.Entity;
 import rpgonline.net.packet.UpdatePacket;
 
-public interface Server {
+public interface Server extends TickBased {
 	public void updateEntity(UpdatePacket up);
 
 	public void addEntity(Entity e);

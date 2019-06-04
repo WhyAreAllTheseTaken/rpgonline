@@ -48,10 +48,13 @@ public class SocketClientConnection extends AESSecurityCap implements Connection
 				boolean lastEncryptState = false;
 
 				try {
+					Log.info("Connecting to " + address + ":" + port);
 					Socket s = new Socket(address, port);
 
+					Log.debug("Mode: " + MODE_COMPRESS);
 					s.getOutputStream().write(MODE_COMPRESS);
 
+					Log.debug("Compressing data.");
 					ObjectInputStream in = new ObjectInputStream(
 							new BufferedInputStream(new GZIPInputStream(s.getInputStream())));
 					ObjectOutputStream out = new ObjectOutputStream(
@@ -60,6 +63,7 @@ public class SocketClientConnection extends AESSecurityCap implements Connection
 					while (!stopped) {
 						if (lastEncryptState != encrypted) {
 							if (encrypted) {
+								Log.info("Switching to encrypted mode.");
 								s.close();
 
 								s = new Socket(address, port);
@@ -138,14 +142,19 @@ public class SocketClientConnection extends AESSecurityCap implements Connection
 
 	@Override
 	public void encrypt() {
+		Log.info("Attempting encryption.");
+		
+		Log.debug("Sending key");
 		send(new KeyPacket(getPublickey()));
 
+		Log.debug("Waiting for server key.");
 		while (!isAvaliable()) {
 			Thread.yield();
 		}
 
 		KeyPacket p = (KeyPacket) getNext();
 
+		Log.debug("Encrypting");
 		try {
 			PublicKey k = KeyFactory.getInstance("AES").generatePublic(new X509EncodedKeySpec(p.key));
 			setReceiverPublicKey(k);

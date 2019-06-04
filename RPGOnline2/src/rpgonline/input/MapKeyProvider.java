@@ -18,6 +18,7 @@ public class MapKeyProvider implements KeyboardInputProvider {
 		bindings.put(InputUtils.ZOOM_OUT, Keyboard.KEY_MINUS);
 		bindings.put(InputUtils.EXIT, Keyboard.KEY_ESCAPE);
 		bindings.put(InputUtils.GUI_TOGGLE, Keyboard.KEY_F1);
+		bindings.put(InputUtils.SPRINT, Keyboard.KEY_LSHIFT);
 	}
 	
 	@Override

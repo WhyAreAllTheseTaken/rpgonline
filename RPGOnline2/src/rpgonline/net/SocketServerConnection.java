@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -60,11 +59,13 @@ public class SocketServerConnection extends AESSecurityCap implements Connection
 						in = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(s.getInputStream())));
 						out = new ObjectOutputStream(
 								new BufferedOutputStream(new GZIPOutputStream(s.getOutputStream())));
+						Log.debug("Connected in compress mode");
 					} else if (mode == SocketClientConnection.MODE_ENCRYPT_COMPRESS) {
 						in = new ObjectInputStream(new BufferedInputStream(
 								new CipherInputStream(new GZIPInputStream(s.getInputStream()), decryptCipher)));
 						out = new ObjectOutputStream(new BufferedOutputStream(
 								new CipherOutputStream(new GZIPOutputStream(s.getOutputStream()), encryptCipher)));
+						Log.debug("Connected in encrypt/compress mode");
 					}
 
 					while (!stopped) {
@@ -126,14 +127,19 @@ public class SocketServerConnection extends AESSecurityCap implements Connection
 
 	@Override
 	public void encrypt() {
+		Log.info("Attempting encryption.");
+		
+		Log.debug("Sending key");
 		send(new KeyPacket(getPublickey()));
 
+		Log.debug("Waiting for client key.");
 		while (!isAvaliable()) {
 			Thread.yield();
 		}
 
 		KeyPacket p = (KeyPacket) getNext();
 
+		Log.debug("Encrypting");
 		try {
 			PublicKey k = KeyFactory.getInstance("AES").generatePublic(new X509EncodedKeySpec(p.key));
 			setReceiverPublicKey(k);
@@ -150,11 +156,6 @@ public class SocketServerConnection extends AESSecurityCap implements Connection
 
 	public int getMode() {
 		return mode;
-	}
-	
-	@FunctionalInterface
-	public interface KeyCallback {
-		public void putKey(Key key);
 	}
 
 }

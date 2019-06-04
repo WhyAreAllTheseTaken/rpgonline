@@ -13,6 +13,7 @@ public class MapControllerProvider implements ControllerInputProvider {
 		bindings.put(InputUtils.ZOOM_OUT, L1);
 		bindings.put(InputUtils.ZOOM_NORMAL, L3);
 		bindings.put(InputUtils.GUI_TOGGLE, R3);
+		bindings.put(InputUtils.SPRINT, Y);
 	}
 	
 	@Override

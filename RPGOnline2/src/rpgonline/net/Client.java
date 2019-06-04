@@ -6,7 +6,7 @@ import rpgonline.abt.TagGroup;
 import rpgonline.audio.AmbientMusic;
 import rpgonline.world.World;
 
-public interface Client {
+public interface Client extends TickBased {
 	public World getWorld();
 	public double getPlayerX();
 	public double getPlayerY();
@@ -14,8 +14,10 @@ public interface Client {
 	public float getWind();
 	public float getShadow();
 	public AmbientMusic getMusic();
-	public void walkY(float s);
-	public void walkX(float s);
+	public void walkY(double s);
+	public void walkX(double s);
 	public void requestChunk(long x, long y, long z);
 	public List<TagGroup> getRequestedChunks();
+	public String getServerType();
+	public void setSprint(boolean s);
 }
