@@ -25,7 +25,7 @@ public class RPGConfig {
 	 * @see rpgonline.audio.AudioManager
 	 * @see paulscode.sound.SoundSystem
 	 */
-	private static boolean soundSystemDaemon = false;
+	private static boolean soundSystemDaemon = true;
 	/**
 	 * Determines if the wind effect will be used by the rendering engine. If set to
 	 * {@code false} any information provided by the game engine about wind will be
