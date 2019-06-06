@@ -180,6 +180,10 @@ public final class AudioManager {
 
 		setMusic(new AmbientMusic(s));
 	}
+	
+	public static void setMusicID(String s) {
+		setMusic(getAmbientMusic(s));
+	}
 
 	public static void setGroupVolume(String g, float v) {
 		volumes.put(g, v);
@@ -243,7 +247,7 @@ public final class AudioManager {
 			float dy, float dz) {
 		String s = system.quickPlay(false, sounds.get(name), sounds.get(name).getPath(), loop, x, y, z,
 				SoundSystemConfig.ATTENUATION_ROLLOFF, rf);
-		system.setVolume(s, v);
+		system.setVolume(s, v * getSoundVolume());
 		system.setPitch(s, p);
 		system.setVelocity(s, dx, dy, dz);
 
