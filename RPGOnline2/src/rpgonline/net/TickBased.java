@@ -117,4 +117,5 @@ public interface TickBased {
 	public double getTickSpeed();
 	public String getMainThreadName();
 	public void stop();
+	public boolean isInit();
 }
