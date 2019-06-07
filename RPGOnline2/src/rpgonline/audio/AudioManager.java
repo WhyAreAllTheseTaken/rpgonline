@@ -174,7 +174,7 @@ public final class AudioManager {
 	}
 
 	public static void setMusic(String s) {
-		if (music.getSounds().length == 1 && music.getSounds()[0].equals(s)) {
+		if (music != null && music.getSounds().length == 1 && music.getSounds()[0].equals(s)) {
 			return;
 		}
 
@@ -208,8 +208,10 @@ public final class AudioManager {
 
 		float factor = v / old;
 
-		for (String s : music.refs) {
-			system.setVolume(s, system.getVolume(s) * factor);
+		if(music != null) {
+			for (String s : music.refs) {
+				system.setVolume(s, system.getVolume(s) * factor);
+			}
 		}
 	}
 
