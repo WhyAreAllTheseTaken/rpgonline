@@ -13,24 +13,9 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public final class RPGOnline {
 	/**
-	 * A list of all previous versions of this library. This includes the current
-	 * version.
-	 */
-	public static final Version[] VERSIONS = { new Version("0.0.0-d0"), new Version("0.1.0-d0"),
-			new Version("0.1.1-d0"), new Version("0.1.2-d0"), new Version("0.1.3-d0"), new Version("0.1.3-d1"),
-			new Version("0.1.4-d0"), new Version("0.1.5-d0"), new Version("0.1.6-d0"), new Version("0.2.0-d0"),
-			new Version("0.3.0-d0+1549127426"), new Version("0.3.1-d0+1549134859"), new Version("0.3.2-d0+1549194835"),
-			new Version("0.3.3-d0+1549907231"), new Version("0.3.3+1550312026"), new Version("0.3.3-p1+1550313026"),
-			new Version("0.3.4+1550318158"), new Version("0.3.5+1551121021"), new Version("0.3.6+1551364566"),
-			new Version("0.3.7+1551629276"), new Version("0.3.8+1551632798"), new Version("0.3.9+1551724618"),
-			new Version("0.3.10+1552726489"), new Version("0.3.11+1554057287"), new Version("0.3.12+1554479444"),
-			new Version("0.4.0+1555165066"), new Version("0.5.0+1556906194"), new Version("0.6.0+1557583232"),
-			new Version("0.6.1+1557657120"), new Version("0.6.2+1557659837"), new Version("0.6.3+1557771460"),
-			new Version("0.6.4+1557774208"), new Version("0.6.5+1557849408") };
-	/**
 	 * The current version of the RPGOnline library.
 	 */
-	public static final Version VERSION = new Version("0.7.0-d3+1559847424");
+	public static final Version VERSION = new Version("0.7.0-d4+1559925879");
 	/**
 	 * The version of java that this library was compiled with.
 	 */
