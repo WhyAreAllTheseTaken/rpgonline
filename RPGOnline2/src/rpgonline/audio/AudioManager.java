@@ -156,18 +156,20 @@ public final class AudioManager {
 					}
 				}
 				music = m;
-
-				String[] sounds = music.getSounds();
-
-				for (int i = 0; i < sounds.length; i++) {
-					String s = sounds[i];
-					String g = music.getGroups()[i];
-					float v = music.getVolumes()[i];
-
-					music.refs[i] = playBackgroundMusic(AudioManager.sounds.get(s), true, volumes.get(g) * v);
-				}
-
+				
 				fadeThread = null;
+				
+				if (music != null) {
+					String[] sounds = music.getSounds();
+
+					for (int i = 0; i < sounds.length; i++) {
+						String s = sounds[i];
+						String g = music.getGroups()[i];
+						float v = music.getVolumes()[i];
+
+						music.refs[i] = playBackgroundMusic(AudioManager.sounds.get(s), true, volumes.get(g) * v);
+					}
+				}
 			}
 		};
 		fadeThread.start();
@@ -182,7 +184,13 @@ public final class AudioManager {
 	}
 	
 	public static void setMusicID(String s) {
-		setMusic(getAmbientMusic(s));
+		AmbientMusic m = getAmbientMusic(s);
+		
+		if (m == null && !s.equals("null")) {
+			Log.error("Could not find ambient music with ID " + s);
+		}
+		
+		setMusic(m);
 	}
 
 	public static void setGroupVolume(String g, float v) {
