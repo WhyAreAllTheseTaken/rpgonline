@@ -21,7 +21,7 @@ import org.newdawn.slick.util.Log;
 import rpgonline.FolderHelper;
 
 public class LocalDiskUserServer implements UserServer {
-	public static final int TOKEN_LENGTH = 512;
+	public static final int TOKEN_LENGTH = 512 / 8;
 	public static final String INVALID_TOKEN = generateInvalidToken(TOKEN_LENGTH);
 	
 	private final String appID;
@@ -84,7 +84,7 @@ public class LocalDiskUserServer implements UserServer {
 			
 			String token2 = generateToken(TOKEN_LENGTH);
 			
-			d.tokens2.put(token, getUserIDToken(token));
+			d.tokens2.put(token2, getUserIDToken(token));
 			
 			try {
 				saveDatabase(d);
@@ -106,6 +106,8 @@ public class LocalDiskUserServer implements UserServer {
 				return true;
 			}
 		}
+		
+		System.err.println(token + " is invalid");
 		
 		return false;
 	}
@@ -204,12 +206,16 @@ public class LocalDiskUserServer implements UserServer {
 	private static String generateToken(int length) {
 		SecureRandom r = new SecureRandom();
 		
-		byte[] data = r.generateSeed(length);
+		int[] data = new int[(int) Math.floor(TOKEN_LENGTH / (float) Integer.BYTES)];
+		
+		for (int i = 0; i < data.length; i++) {
+			data[i] = r.nextInt();
+		}
 		
 		StringBuilder sb = new StringBuilder();
 		
-		for (byte b : data) {
-			sb.append(Integer.toString(b, 16));
+		for (int i : data) {
+			sb.append(Integer.toHexString(i));
 		}
 		
 		String token = sb.toString();
@@ -224,8 +230,8 @@ public class LocalDiskUserServer implements UserServer {
 	private static String generateInvalidToken(int length) {
 		StringBuilder sb = new StringBuilder();
 		
-		for (int i = 0; i < length; i++) {
-			sb.append("00");
+		for (int i = 0; i < (int) Math.floor(TOKEN_LENGTH / (float) Integer.BYTES); i++) {
+			sb.append(Integer.toHexString(-1));
 		}
 		
 		return sb.toString();
@@ -255,7 +261,10 @@ public class LocalDiskUserServer implements UserServer {
 		
 		protected void readConnectTokens(DataInputStream in) throws IOException {
 			while (in.available() > 0) {
-				tokens2.put(in.readUTF(), in.readLong());
+				String token = in.readUTF();
+				long id = in.readLong();
+				
+				tokens2.put(token, id);
 			}
 			in.close();
 		}
@@ -314,7 +323,7 @@ public class LocalDiskUserServer implements UserServer {
 		}
 		
 		void save(File folder) throws IOException {
-			Log.info("Reading from " + folder.getAbsolutePath());
+			Log.info("Writing to " + folder.getAbsolutePath());
 			File tokens = new File(folder, "tokens.dat");
 			tokens.createNewFile();
 			File nettokens = new File(folder, "nettokens.dat");
@@ -466,15 +475,31 @@ public class LocalDiskUserServer implements UserServer {
 				Database d = server.getDatabase();
 				
 				for(User u : d.users) {
-					System.out.println(String.format("%30s\t%30s", u.getUsername(), u.getLogin()));
+					System.out.println(String.format("%10s\t%20s", u.getUsername(), u.getLogin()));
 				}
 				break;
 			case "listhash":
-				System.out.println(" --- List --- ");
+				System.out.println(" --- List Hashes --- ");
 				Database d2 = server.getDatabase();
 				
 				for(User u : d2.users) {
-					System.out.println(String.format("%30s\t%30s", u.getUsername(), u.getLogin()));
+					System.out.println(String.format("%10s\t%20s\t%30s", u.getUsername(), u.getLogin(), u.hash));
+				}
+				break;
+			case "listtoken":
+				System.out.println(" --- List Tokens --- ");
+				Database d3 = server.getDatabase();
+				
+				for(Entry<String, Long> t : d3.tokens.entrySet()) {
+					System.out.println(String.format("%70s\t%20s", t.getKey(), Long.toHexString(t.getValue())));
+				}
+				break;
+			case "listtoken2":
+				System.out.println(" --- List Connect Tokens --- ");
+				Database d4 = server.getDatabase();
+				
+				for(Entry<String, Long> t : d4.tokens2.entrySet()) {
+					System.out.println(String.format("%70s\t%20s", t.getKey(), Long.toHexString(t.getValue())));
 				}
 				break;
 			default:

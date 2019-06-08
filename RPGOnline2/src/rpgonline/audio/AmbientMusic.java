@@ -20,7 +20,7 @@ public class AmbientMusic {
 	}
 	
 	public AmbientMusic(String sound, String group, float volume) {
-		this(new String[] { sound }, new String[] { sound }, new float[] {volume});
+		this(new String[] { sound }, new String[] { group }, new float[] {volume});
 	}
 	
 	public AmbientMusic(String sound, float volume) {

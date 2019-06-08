@@ -166,7 +166,7 @@ public final class AudioManager {
 						String s = sounds[i];
 						String g = music.getGroups()[i];
 						float v = music.getVolumes()[i];
-
+						
 						music.refs[i] = playBackgroundMusic(AudioManager.sounds.get(s), true, volumes.get(g) * v);
 					}
 				}
