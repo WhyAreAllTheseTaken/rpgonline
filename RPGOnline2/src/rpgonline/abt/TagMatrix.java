@@ -72,4 +72,9 @@ public class TagMatrix extends TagGroup {
 	public double get(int x, int y) {
 		return getData()[x][y];
 	}
+	
+	@Override
+	public TagMatrix clone() {
+		return new TagMatrix(name, getData());
+	}
 }

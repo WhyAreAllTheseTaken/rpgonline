@@ -74,4 +74,9 @@ public class TagDoubleArray extends TagGroup {
 	public double get(int index) {
 		return ((TagDouble) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagDoubleArray clone() {
+		return new TagDoubleArray(name, getData());
+	}
 }

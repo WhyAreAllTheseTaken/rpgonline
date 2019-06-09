@@ -35,5 +35,10 @@ public class TagFloat extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagFloat clone() {
+		return new TagFloat(name, getData());
+	}
 
 }

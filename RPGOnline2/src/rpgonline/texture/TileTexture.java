@@ -1,6 +1,7 @@
 package rpgonline.texture;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 import rpgonline.tile.Tile;
 import rpgonline.world.World;
@@ -22,7 +23,7 @@ public interface TileTexture {
 		return new TileTexture[] {this};
 	}
 	
-	public default void render(Graphics g, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) {
+	public default void render(Graphics g, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) throws SlickException {
 		
 	}
 	

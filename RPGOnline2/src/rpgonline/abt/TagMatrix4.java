@@ -14,4 +14,9 @@ public class TagMatrix4 extends TagMatrix {
 	public byte getType() {
 		return 0x1F;
 	}
+	
+	@Override
+	public TagMatrix4 clone() {
+		return new TagMatrix4(name, getData());
+	}
 }

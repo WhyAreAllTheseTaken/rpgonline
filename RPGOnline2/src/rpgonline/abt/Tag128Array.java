@@ -50,4 +50,9 @@ public class Tag128Array extends TagGroup {
 	public byte[] get(int index) {
 		return ((Tag128) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public Tag128Array clone() {
+		return new Tag128Array(name, getData());
+	}
 }

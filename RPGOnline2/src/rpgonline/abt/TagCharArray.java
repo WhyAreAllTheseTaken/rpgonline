@@ -74,4 +74,9 @@ public class TagCharArray extends TagGroup {
 	public char get(int index) {
 		return ((TagChar) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagCharArray clone() {
+		return new TagCharArray(name, getData());
+	}
 }

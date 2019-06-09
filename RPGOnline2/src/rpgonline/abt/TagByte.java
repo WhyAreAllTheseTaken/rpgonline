@@ -35,5 +35,10 @@ public class TagByte extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagByte clone() {
+		return new TagByte(name, getData());
+	}
 
 }

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * @author Tomas
  */
-public abstract class Tag implements Serializable {
+public abstract class Tag implements Serializable, Cloneable {
 	/**
 	 * 
 	 */
@@ -15,11 +15,11 @@ public abstract class Tag implements Serializable {
 	/**
 	 * The name of the tag.
 	 */
-	private String name;
+	protected String name;
 	/**
 	 * The type of the tag.
 	 */
-	private byte type;
+	protected byte type;
 
 	/**
 	 * Constructs a new Tag.
@@ -210,5 +210,11 @@ public abstract class Tag implements Serializable {
 			return this.getTag(sb.toString());
 		}
 		return null;
+	}
+	
+	public Tag clone() {
+		return new Tag(name, type) {
+			private static final long serialVersionUID = 4607805369849768459L;
+		};
 	}
 }

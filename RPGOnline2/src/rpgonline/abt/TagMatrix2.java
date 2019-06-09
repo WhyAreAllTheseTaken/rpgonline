@@ -15,5 +15,10 @@ public class TagMatrix2 extends TagMatrix {
 	public byte getType() {
 		return 0x1D;
 	}
+	
+	@Override
+	public TagMatrix2 clone() {
+		return new TagMatrix2(name, getData());
+	}
 
 }

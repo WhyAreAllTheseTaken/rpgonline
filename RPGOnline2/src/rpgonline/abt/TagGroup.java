@@ -153,4 +153,15 @@ public class TagGroup extends Tag implements Iterable<Tag> {
 		return null;
 	}
 	
+	@Override
+	public TagGroup clone() {
+		TagGroup tg = new TagGroup(name);
+		
+		for(Tag t : tags) {
+			tg.add(t.clone());
+		}
+		
+		return tg;
+	}
+	
 }

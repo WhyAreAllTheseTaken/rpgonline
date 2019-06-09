@@ -33,7 +33,7 @@ public class WindTexture extends BasicTileTexture {
 		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).drawSheared(sx * RPGConfig.getTileSize(), sy * RPGConfig.getTileSize(),amount, 0);
 	}
 	
-	public double wibble(double v) {
+	public static double wibble(double v) {
 		double a = v % 50 + FastMath.log10(v);
 		double b = FastMath.sin(a) + FastMath.sin(FastMath.cbrt(a)) * 2 + (FastMath.cos(2 * a) / 3)
 				+ (FastMath.sin(-a) / 2) + (FastMath.tanh(a / 2)) / 3;

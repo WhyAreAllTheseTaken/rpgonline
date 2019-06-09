@@ -74,4 +74,9 @@ public class TagByteArray extends TagGroup {
 	public byte get(int index) {
 		return ((TagByte) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagByteArray clone() {
+		return new TagByteArray(name, getData());
+	}
 }

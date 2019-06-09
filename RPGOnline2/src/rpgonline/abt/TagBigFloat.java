@@ -28,4 +28,9 @@ public class TagBigFloat extends TagString {
 	public void set(BigDecimal v) {
 		setData(v.toString());
 	}
+	
+	@Override
+	public TagBigFloat clone() {
+		return new TagBigFloat(name, getData());
+	}
 }

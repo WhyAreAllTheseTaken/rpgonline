@@ -12,4 +12,9 @@ public class TagStringShort extends TagString {
 	public byte getType() {
 		return 0x0A;
 	}
+	
+	@Override
+	public TagStringShort clone() {
+		return new TagStringShort(name, getData());
+	}
 }

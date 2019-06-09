@@ -74,4 +74,9 @@ public class TagLongArray extends TagGroup {
 	public long get(int index) {
 		return ((TagLong) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagLongArray clone() {
+		return new TagLongArray(name, getData());
+	}
 }

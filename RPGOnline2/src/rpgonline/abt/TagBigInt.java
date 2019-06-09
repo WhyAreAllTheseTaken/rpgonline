@@ -29,4 +29,9 @@ public class TagBigInt extends TagByteArray {
 	public void set(BigInteger v) {
 		setData(v.toByteArray());
 	}
+	
+	@Override
+	public TagBigInt clone() {
+		return new TagBigInt(name, getData());
+	}
 }

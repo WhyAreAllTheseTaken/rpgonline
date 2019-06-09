@@ -14,4 +14,9 @@ public class TagVector3 extends TagDoubleArray {
 	public byte getType() {
 		return 0x1B;
 	}
+	
+	@Override
+	public TagVector3 clone() {
+		return new TagVector3(name, getData()[0], getData()[1], getData()[2]);
+	}
 }

@@ -74,4 +74,9 @@ public class TagShortArray extends TagGroup {
 	public short get(int index) {
 		return ((TagShort) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagShortArray clone() {
+		return new TagShortArray(name, getData());
+	}
 }

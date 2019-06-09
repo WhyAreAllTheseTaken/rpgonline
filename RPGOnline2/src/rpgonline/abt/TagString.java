@@ -67,4 +67,9 @@ public class TagString extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagString clone() {
+		return new TagString(name, getData());
+	}
 }

@@ -35,5 +35,10 @@ public class TagDouble extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagDouble clone() {
+		return new TagDouble(name, getData());
+	}
 
 }

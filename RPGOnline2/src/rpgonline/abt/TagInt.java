@@ -35,5 +35,10 @@ public class TagInt extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagInt clone() {
+		return new TagInt(name, getData());
+	}
 
 }

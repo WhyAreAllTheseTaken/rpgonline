@@ -35,5 +35,10 @@ public class TagBoolean extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagBoolean clone() {
+		return new TagBoolean(name, getData());
+	}
 
 }

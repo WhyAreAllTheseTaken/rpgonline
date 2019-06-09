@@ -1,5 +1,7 @@
 package rpgonline.tile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.Color;
@@ -11,6 +13,7 @@ public class Tile {
 	private final Color c;
 	private final TileTexture t;
 	private final String id;
+	private final List<String> tags = new ArrayList<String>();
 
 	public Tile(String id, Color c, TileTexture t, Map<String, Tile> registry) {
 		super();
@@ -19,6 +22,8 @@ public class Tile {
 		this.id = id;
 		
 		registry.put(id, this);
+		
+		addTag("id:" + id);
 	}
 
 	public boolean isSolid(String state) {
@@ -46,6 +51,19 @@ public class Tile {
 	}
 	
 	public boolean isDamage(String entity_id) {
+		return false;
+	}
+	
+	public void addTag(String tag) {
+		tags.add(tag);
+	}
+	
+	public boolean hasTag(String tag) {
+		for (String t : tags) {
+			if(t.equals(tag)) {
+				return true;
+			}
+		}
 		return false;
 	}
 }

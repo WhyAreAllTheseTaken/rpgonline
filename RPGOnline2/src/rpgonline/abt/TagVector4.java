@@ -14,4 +14,9 @@ public class TagVector4 extends TagDoubleArray {
 	public byte getType() {
 		return 0x1C;
 	}
+	
+	@Override
+	public TagVector4 clone() {
+		return new TagVector4(name, getData()[0], getData()[1], getData()[2], getData()[3]);
+	}
 }

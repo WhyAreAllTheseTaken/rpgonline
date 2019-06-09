@@ -15,5 +15,10 @@ public class TagMatrix3 extends TagMatrix {
 	public byte getType() {
 		return 0x1E;
 	}
+	
+	@Override
+	public TagMatrix3 clone() {
+		return new TagMatrix3(name, getData());
+	}
 
 }

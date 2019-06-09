@@ -35,5 +35,10 @@ public class TagShort extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagShort clone() {
+		return new TagShort(name, getData());
+	}
 
 }

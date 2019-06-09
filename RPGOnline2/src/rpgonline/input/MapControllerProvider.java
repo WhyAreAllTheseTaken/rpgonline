@@ -23,7 +23,13 @@ public class MapControllerProvider implements ControllerInputProvider {
 
 	@Override
 	public int getBinding(String func) {
-		return bindings.get(func);
+		Integer i = bindings.get(func);
+		
+		if(i == null) {
+			return ControllerInputProvider.INVALID;
+		}
+		
+		return i;
 	}
 
 	@Override

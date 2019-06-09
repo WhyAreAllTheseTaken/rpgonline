@@ -50,4 +50,9 @@ public class TagBigIntArray extends TagGroup {
 	public byte[] get(int index) {
 		return ((TagBigInt) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagBigIntArray clone() {
+		return new TagBigIntArray(name, getData());
+	}
 }

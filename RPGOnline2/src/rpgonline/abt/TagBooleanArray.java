@@ -74,4 +74,9 @@ public class TagBooleanArray extends TagGroup {
 	public boolean get(int index) {
 		return ((TagBoolean) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagBooleanArray clone() {
+		return new TagBooleanArray(name, getData());
+	}
 }

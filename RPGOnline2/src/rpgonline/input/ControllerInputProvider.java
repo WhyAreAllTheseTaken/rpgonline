@@ -47,6 +47,7 @@ public interface ControllerInputProvider {
 	public static final int RS_RIGHT = CONTROLLER_ANY | 21;
 	public static final int L2 = CONTROLLER_ANY | 22;
 	public static final int R2 = CONTROLLER_ANY | 23;
+	public static final int INVALID = CONTROLLER_ANY | 0xf0ffffff;
 	
 	public boolean isLeftHanded();
 	
@@ -57,6 +58,10 @@ public interface ControllerInputProvider {
 	public void bind(String func, int button);
 	
 	public static boolean isButtonPressed(Input in, int key) {
+		if((key & 0xf0000000) == 0xf0000000) {
+			return false;
+		}
+		
 		int c = key & 0x0f000000 >> 24;
 		if(c == 0xf) {
 			c = -1;

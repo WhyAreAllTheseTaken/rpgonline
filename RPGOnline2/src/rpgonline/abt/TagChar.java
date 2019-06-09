@@ -35,4 +35,9 @@ public class TagChar extends Tag {
 
 		return sb.toString();
 	}
+	
+	@Override
+	public TagChar clone() {
+		return new TagChar(name, getData());
+	}
 }

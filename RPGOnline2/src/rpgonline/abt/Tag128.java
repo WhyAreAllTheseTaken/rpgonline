@@ -18,4 +18,9 @@ public class Tag128 extends TagByteArray {
 	public byte getType() {
 		return 0x06;
 	}
+	
+	@Override
+	public Tag128 clone() {
+		return new Tag128(name, getData());
+	}
 }

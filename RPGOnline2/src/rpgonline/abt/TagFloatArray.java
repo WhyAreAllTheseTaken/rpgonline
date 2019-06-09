@@ -74,4 +74,9 @@ public class TagFloatArray extends TagGroup {
 	public float get(int index) {
 		return ((TagFloat) getTag(index + "")).getData();
 	}
+	
+	@Override
+	public TagFloatArray clone() {
+		return new TagFloatArray(name, getData());
+	}
 }
