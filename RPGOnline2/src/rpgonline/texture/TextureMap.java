@@ -15,6 +15,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.imageout.ImageOut;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
@@ -228,6 +229,8 @@ public class TextureMap {
 			for(String s : e.getValue()) {
 				addTexture(s, ss.getSprite(textureX.get(s), textureY.get(s)));
 			}
+			
+			ImageOut.write(e.getKey(), "map.png");
 		}
 		
 		Log.debug("Mapping complete");

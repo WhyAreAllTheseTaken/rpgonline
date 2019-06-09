@@ -13,6 +13,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -307,7 +308,8 @@ public class WorldState extends BasicGameState {
 				//Buffer position
 				rbg.translate(0, (y - sy) * RPGConfig.getTileSize() - 16);
 				
-				Image inUse = null;
+				Texture inUse = null;
+				Image inUseI = null;
 				
 				// Get textures
 				
@@ -331,21 +333,22 @@ public class WorldState extends BasicGameState {
 					
 					if (t.isCustom()) {
 						if (inUse != null) {
-							inUse.endUse();
+							inUseI.endUse();
 						}
 						t.render(rbg, x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z), x - sx, y - sy, wind);
 						Graphics.setCurrent(rbg);
 						if (inUse != null) {
-							inUse.startUse();
+							inUseI.startUse();
 						}
 					} else {
 						Image img = TextureMap.getTexture(t.getTexture(x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z)));
 						
-						if (img != inUse) {
+						if (img.getTexture() != inUse) {
 							if (inUse != null) {
-								inUse.endUse();
+								inUseI.endUse();
 							}
-							inUse = img;
+							inUse = img.getTexture();
+							inUseI = img;
 							img.startUse();
 						}
 						
@@ -354,7 +357,7 @@ public class WorldState extends BasicGameState {
 				}
 				
 				if (inUse != null) {
-					inUse.endUse();
+					inUseI.endUse();
 					inUse = null;
 				}
 				
@@ -387,12 +390,12 @@ public class WorldState extends BasicGameState {
 					
 					if (t.isCustom()) {
 						if (inUse != null) {
-							inUse.endUse();
+							inUseI.endUse();
 						}
 						t.render(rbg, x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z), x - sx, y - sy, wind);
 						Graphics.setCurrent(rbg);
 						if (inUse != null) {
-							inUse.startUse();
+							inUseI.startUse();
 						}
 					} else {
 						Image img = TextureMap.getTexture(t.getTexture(x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z)));
@@ -401,11 +404,12 @@ public class WorldState extends BasicGameState {
 							continue;
 						}
 						
-						if (img != inUse) {
+						if (img.getTexture() != inUse) {
 							if (inUse != null) {
-								inUse.endUse();
+								inUseI.endUse();
 							}
-							inUse = img;
+							inUseI = img;
+							inUse = img.getTexture();
 							img.startUse();
 						}
 						
@@ -414,7 +418,7 @@ public class WorldState extends BasicGameState {
 				}
 				
 				if (inUse != null) {
-					inUse.endUse();
+					inUseI.endUse();
 					inUse = null;
 				}
 				
