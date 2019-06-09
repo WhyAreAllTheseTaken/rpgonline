@@ -14,9 +14,11 @@ public interface TileTexture {
 		return false;
 	}
 	
-	public int getTexture(long x, long y, long z, World w, String state, Tile t);
+	public default int getTexture(long x, long y, long z, World w, String state, Tile t) {
+		return -1;
+	}
 	
-	public default TileTexture[] getTextures() {
+	public default TileTexture[] getTextures(long x, long y, long z, World w, String state, Tile t) {
 		return new TileTexture[] {this};
 	}
 	

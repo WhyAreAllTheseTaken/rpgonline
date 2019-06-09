@@ -22,7 +22,7 @@ public class GroupedTileTexture implements TileTexture {
 	}
 	
 	@Override
-	public TileTexture[] getTextures() {
+	public TileTexture[] getTextures(long x, long y, long z, World w, String state, Tile t) {
 		return textures;
 	}
 

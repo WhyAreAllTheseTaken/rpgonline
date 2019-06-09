@@ -320,7 +320,7 @@ public class WorldState extends BasicGameState {
 				for (long x = mix; x < max; x++) {
 					Tile t = world.getTile(x, y, z);
 					
-					expandTexture(t.getTexture(), withLight, tilePos, withoutLight, tilePos2, x);
+					expandTexture(t.getTexture(), withLight, tilePos, withoutLight, tilePos2, x, y, z, world);
 				}
 				
 				// Render lighting textures.
@@ -526,7 +526,7 @@ public class WorldState extends BasicGameState {
 		g.setDrawMode(Graphics.MODE_NORMAL);
 	}
 	
-	protected void expandTexture(TileTexture t, List<TileTexture> l, List<Long> p, List<TileTexture> l2, List<Long> p2, long x) {
+	protected void expandTexture(TileTexture t, List<TileTexture> l, List<Long> p, List<TileTexture> l2, List<Long> p2, long x, long y, long z, World world) {
 		if (t.isPure()) {
 			if(t.isLightAffected()) {
 				l.add(t);
@@ -536,10 +536,10 @@ public class WorldState extends BasicGameState {
 				p2.add(x);
 			}
 		} else {
-			TileTexture[] ta = t.getTextures();
+			TileTexture[] ta = t.getTextures(x, y, z, world, world.getTileState(x, y, z), world.getTile(x, y, z));
 			
 			for (TileTexture t2 : ta) {
-				expandTexture(t2, l, p, l2, p2, x);
+				expandTexture(t2, l, p, l2, p2, x, y, z, world);
 			}
 		}
 	}

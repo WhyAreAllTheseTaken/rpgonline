@@ -194,11 +194,11 @@ public class TextureMap {
 		Graphics g = null;
 		for (Entry<String, Image> t : toMap) {
 			Log.debug("Mapping " + t.getKey());
-			if (tx > wc) {
+			if (tx >= wc) {
 				tx = 0;
 				ty += 1;
 			}
-			if (ty > hc) {
+			if (ty >= hc) {
 				img = null;
 				tx = 0;
 				ty = 0;
@@ -218,11 +218,11 @@ public class TextureMap {
 			t.getValue().destroy();
 			
 			tx += 1;
-			ty += 1;
 		}
 		
 		Log.debug("Storing data");
 		
+		int i = 0;
 		for (Entry<Image, List<String>> e : textureImg.entrySet()) {
 			SpriteSheet ss = new SpriteSheet(e.getKey(), sw, sh);
 			
@@ -230,7 +230,9 @@ public class TextureMap {
 				addTexture(s, ss.getSprite(textureX.get(s), textureY.get(s)));
 			}
 			
-			ImageOut.write(e.getKey(), "map.png");
+			ImageOut.write(e.getKey(), "map" + sw + "-" + sh + "-" + i + ".png");
+			
+			i += 1;
 		}
 		
 		Log.debug("Mapping complete");
