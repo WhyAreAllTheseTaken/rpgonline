@@ -27,6 +27,7 @@ import rpgonline.post.MultiEffect;
 import rpgonline.post.NullPostProcessEffect;
 import rpgonline.post.PostEffect;
 import rpgonline.post.pack.PotatoShaderPack;
+import rpgonline.sky.SkyLayer;
 import rpgonline.texture.TextureMap;
 import rpgonline.texture.TileTexture;
 import rpgonline.tile.Tile;
@@ -95,6 +96,8 @@ public class WorldState extends BasicGameState {
 	private boolean gui = true;
 
 	private float gui_cooldown = 0.25f;
+	
+	private SkyLayer sky;
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -191,6 +194,8 @@ public class WorldState extends BasicGameState {
 		}
 		
 		World world = ServerManager.getClient().getWorld();
+		
+		sky.render(g, container, x, y, 0, world, world.getLightColor());
 
 		g.translate(container.getWidth() / 2, container.getHeight() / 2);
 
@@ -730,5 +735,13 @@ public class WorldState extends BasicGameState {
 
 	public void setGuiShown(boolean gui) {
 		this.gui = gui;
+	}
+
+	public SkyLayer getSky() {
+		return sky;
+	}
+
+	public void setSky(SkyLayer sky) {
+		this.sky = sky;
 	}
 }
