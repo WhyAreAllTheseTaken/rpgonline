@@ -29,7 +29,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 		expose = new ToggledEffect(new FragmentExpose(), true);
 		expose2 = new ToggledEffect(new LowExpose());
 		motionBlur = new ToggledEffect(new MotionBlur(0.35f), true);
-		colorEffects = new ToggledEffect(new ColorEffectsShader(1f /*s*/, 0f /*b*/, 1.3f /*c*/, 1.25f /*v*/, 0f /*h*/, 0.9f /*g*/), true);
+		colorEffects = new ToggledEffect(new ColorEffectsShader(1f /*s*/, 0f /*b*/, 1.1f /*c*/, 1.25f /*v*/, 0f /*h*/, 1f /*g*/), true);
 		fxaa = new ToggledEffect(new FXAA());
 		
 		return new PostEffect[] {

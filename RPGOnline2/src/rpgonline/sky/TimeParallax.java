@@ -20,7 +20,7 @@ public class TimeParallax implements SkyLayer {
 
 	@Override
 	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
-		l.render(g, c, x + (System.currentTimeMillis() * factorX), y + (System.currentTimeMillis() * factorY), z, world, light);
+		l.render(g, c, x + ((System.currentTimeMillis() - 1561284966000L) * factorX), y + ((System.currentTimeMillis() - 1561284966000L) * factorY), z, world, light);
 	}
 
-}
+} 

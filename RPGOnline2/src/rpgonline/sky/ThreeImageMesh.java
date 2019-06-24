@@ -15,8 +15,8 @@ public class ThreeImageMesh extends ImageMeshLayer {
 	}
 
 	@Override
-	public Image getImageAt(int x, int y) {
-		if (y > 0) {
+	public Image getImageAt(long x, long y) {
+		if (y < 0) {
 			return top;
 		} else if (y == 0) {
 			return middle;

@@ -1,15 +1,23 @@
 package rpgonline;
 
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.Color;
 
+import rpgonline.atmosphere.Atmosphere;
+import rpgonline.atmosphere.EarthAtmosphere;
+import rpgonline.atmosphere.MoonAtmosphere;
+
 /**
  * A class with utilities for manipulating colors.
  * 
- * Some of this code is adapted from {@link http://blog.ruofeidu.com/postprocessing-brightness-contrast-hue-saturation-vibrance/} and is designed to behave in a simular way to the ColorEffectsShader.
+ * Some of this code is adapted from
+ * {@link http://blog.ruofeidu.com/postprocessing-brightness-contrast-hue-saturation-vibrance/}
+ * and is designed to behave in a simular way to the ColorEffectsShader.
  * 
  * @see rpgonline.post.ColorEffectsShader
  * 
@@ -20,7 +28,8 @@ public class ColorUtils {
 	 * Converts a temperature in kelvin to the colour output (RGB) of a black body
 	 * at the specified temperature.
 	 * 
-	 * This is an expanded algorithm of {@link http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/}.
+	 * This is an expanded algorithm of
+	 * {@link http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/}.
 	 * 
 	 * @param kelvin A float greater than 0
 	 * @return a {@code Color} object.
@@ -169,13 +178,13 @@ public class ColorUtils {
 	}
 
 	// In the original shader code left so that nothing brakes.
-	// XXX Figure out what this does an optimise it.
+	// XXX Figure out what this does and optimise it.
 	private static int modi(int x, int y) {
 		return x - y * (x / y);
 	}
 
 	// In the original shader code left so that nothing brakes.
-	// XXX Figure out what this does an optimise it.
+	// XXX Figure out what this does and optimise it.
 	private static int and(int a, int b) {
 		int result = 0;
 		int n = 1;
@@ -434,8 +443,8 @@ public class ColorUtils {
 	}
 
 	/**
-	 * Adjusts the saturation of a color by sat. {@code vibrance()} may offer a better
-	 * effect.
+	 * Adjusts the saturation of a color by sat. {@code vibrance()} may offer a
+	 * better effect.
 	 * 
 	 * @param col The color to adjust.
 	 * @param sat A value from 0 to infinity.
@@ -451,10 +460,10 @@ public class ColorUtils {
 	}
 
 	/**
-	 * Adjusts the saturation of a color by sat. {@code vibrance()} may offer a better
-	 * effect.
+	 * Adjusts the saturation of a color by sat. {@code vibrance()} may offer a
+	 * better effect.
 	 * 
-	 * @param c The color to adjust.
+	 * @param c   The color to adjust.
 	 * @param sat A value from 0 to infinity.
 	 * @return A saturation of 0 will produce a grayscale color, a saturation
 	 *         between 0 and 1 will desaturate the color, a saturation of 1 will
@@ -474,5 +483,184 @@ public class ColorUtils {
 	 */
 	public static Color shiftHue(Color col, float shift) {
 		return toColor(shiftHue(toVector(col), shift));
+	}
+	
+	public static Color scatter(Color c, float v) {
+		float bv = v * 2 + 1;
+		float gv = v + 1;
+		float rv = v / 10 + 1;
+		
+		return new Color(c.r / rv, c.g / gv, c.b / bv);
+	}
+	
+	public static Color dynamicBrighten(Color c, float factor) {
+		float r = c.r;
+		float g = c.g;
+		float b = c.b;
+		
+		float m = r + g + b;
+		m /= 3;
+		
+		if (m < factor) {
+			float f = factor / m;
+			r *= f;
+			g *= f;
+			b *= f;
+		}
+		
+		return new Color(r, g, b);
+	}
+	
+	public static class SunColorGenerator {
+		private PolynomialSplineFunction sun_r;
+		private PolynomialSplineFunction sun_g;
+		private PolynomialSplineFunction sun_b;
+		private PolynomialSplineFunction sky_r;
+		private PolynomialSplineFunction sky_g;
+		private PolynomialSplineFunction sky_b;
+		private PolynomialSplineFunction sun_x;
+		private PolynomialSplineFunction sun_y;
+		private PolynomialSplineFunction moon_x;
+		private PolynomialSplineFunction moon_y;
+		private float sunSize;
+
+		public static final float SUN_TEMP_SUPERNOVA = 100000000000f;
+		public static final float SUN_TEMP_O = (40000f + 30000f) / 2f;
+		public static final float SUN_TEMP_B = (10000f + 30000f) / 2f;
+		public static final float SUN_TEMP_A = (7500f + 10000f) / 2f;
+		public static final float SUN_TEMP_F = (6000f + 7500f) / 2f;
+		public static final float SUN_TEMP_G = (5200f + 6000f) / 2f;
+		public static final float SUN_TEMP_K = (3700f + 5200f) / 2f;
+		public static final float SUN_TEMP_M = (2400f + 3700f) / 2f;
+		
+		public SunColorGenerator(float kelvin, float min, float mul) {
+			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, 1);
+		}
+		
+		public SunColorGenerator(float kelvin, float min, float mul, float dist) {
+			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, dist);
+		}
+		
+		public SunColorGenerator(float kelvin, float min, float mul, Atmosphere a, float dist) {
+			this(kelvin, min, a, new MoonAtmosphere(), mul, dist);
+		}
+		
+		public SunColorGenerator(float kelvin, float min, Atmosphere a, Atmosphere ma, float mul, float dist) {
+			this(kelvin, new Color(0x898383), min, a, ma, mul, dist);
+		}
+		
+		public SunColorGenerator(float kelvin, Color moon, float min, Atmosphere a, Atmosphere ma, float mul, float dist) {
+			Color sunlight = ColorUtils.kelvinToColor(kelvin).multiply(new Color(1 / dist, 1 / dist, 1 / dist));
+			Color moonlight = ma.scatter(ma.scatter(sunlight, 2).multiply(moon).multiply(new Color(1f / 400000, 1f / 400000, 1f / 400000)), 2);
+			float starBrightness = 1f / 12473835142f;
+			Color starlight = ColorUtils.kelvinToColor(9940).multiply(new Color(starBrightness, starBrightness, starBrightness));
+			
+			Color mulC = new Color(mul, mul, mul);
+			
+			Color sunlight2 = a.scatter(sunlight, 1f).multiply(mulC);
+			Color sundown1 = a.scatter(sunlight, 4f).multiply(mulC);
+			Color sundown2 = a.scatter(sunlight, 7f).multiply(mulC);
+			
+			Color moonlight2 = a.scatter(moonlight, 1f).multiply(mulC);
+			Color starlight2 = a.scatter(starlight, 2f).multiply(mulC);
+			moonlight2.b *= 2;
+			starlight2.b *= 1;
+			
+			Color daySky = a.skyScatter(sunlight, 1f).multiply(mulC);
+			Color sundown1Sky = a.skyScatter(sunlight, 4f).multiply(mulC);
+			Color sundown2Sky = a.skyScatter(sunlight, 7f).multiply(mulC);
+			Color moonlightSky = a.skyScatter(moonlight, 1f).multiply(mulC);
+			Color starlightSky = a.skyScatter(starlight, 2f).multiply(mulC);
+			if (a.getDensity() > 0) {
+				daySky = saturationAdjust(daySky, 0.75f / a.getDensity());
+				sundown1Sky = saturationAdjust(sundown1Sky, 0.8f / a.getDensity());
+				sundown2Sky = saturationAdjust(sundown2Sky, 0.7f / a.getDensity());
+				moonlightSky = saturationAdjust(moonlightSky, 0.6f / a.getDensity());
+				starlightSky = saturationAdjust(starlightSky, 0.5f / a.getDensity());
+			} else {
+				daySky = Color.black;
+				sundown1Sky = Color.black;
+				sundown2Sky = Color.black;
+				moonlightSky = Color.black;
+				starlightSky = Color.black;
+			}
+			
+			sunSize = 1 / dist;
+			
+			init(sunlight2, dynamicBrighten(moonlight2, min), sundown1, sundown2, dynamicBrighten(starlight2, min), daySky, sundown1Sky, sundown2Sky, moonlightSky, starlightSky);
+		}
+		
+		private void init(Color sunlight, Color moonlight, Color sundown1, Color sundown2, Color night, Color sunlightSky, Color sundown1Sky, Color sundown2Sky, Color moonlightSky, Color nightSky) {
+			double[] x = { 0, 4.5, 5, 5.5, 6.5, 17, 18.5, 19, 20, 24, };
+			double[] r = { moonlight.r, night.r, sundown2.r, sundown1.r, sunlight.r, sunlight.r, sundown1.r, sundown2.r,
+					night.r, moonlight.r, };
+			double[] g = { moonlight.g, night.g, sundown2.g, sundown1.g, sunlight.g, sunlight.g, sundown1.g, sundown2.g,
+					night.g, moonlight.g, };
+			double[] b = { moonlight.b, night.b, sundown2.b, sundown1.b, sunlight.b, sunlight.b, sundown1.b, sundown2.b,
+					night.b, moonlight.b, };
+
+			SplineInterpolator interp = new SplineInterpolator();
+			sun_r = interp.interpolate(x, r);
+			sun_g = interp.interpolate(x, g);
+			sun_b = interp.interpolate(x, b);
+
+			double[] sky_x = { 0, 4, 5, 5.5, 6.5, 17, 18.5, 19, 20.5, 24 };
+			double[] sky_r = { moonlightSky.r, nightSky.r, sundown2Sky.r, sundown1Sky.r, sunlightSky.r, sunlightSky.r, sundown1Sky.r, sundown2Sky.r,
+					nightSky.r, moonlightSky.r, };
+			double[] sky_g = { moonlightSky.g, nightSky.g, sundown2Sky.g, sundown1Sky.g, sunlightSky.g, sunlightSky.g, sundown1Sky.g, sundown2Sky.g,
+					nightSky.g, moonlightSky.g, };
+			double[] sky_b = { moonlightSky.b, nightSky.b, sundown2Sky.b, sundown1Sky.b, sunlightSky.b, sunlightSky.b, sundown1Sky.b, sundown2Sky.b,
+					nightSky.b, moonlightSky.b, };
+
+			this.sky_r = interp.interpolate(sky_x, sky_r);
+			this.sky_g = interp.interpolate(sky_x, sky_g);
+			this.sky_b = interp.interpolate(sky_x, sky_b);
+			
+			double[] sun_t = { 0, 3, 5, 12, 18, 20, 24};
+			double[] sun_x = { -2, -1.1, -0.95, 0, 0.95, 1.1, 2};
+			double[] sun_y = { 1.5, 0.9, 0.25, -0.75, 0.25, 0.9, 1.5};
+			double[] moon_t = { -4,   0,     3,    5,   12,  18, 20,   24,     28};
+			double[] moon_x = { -0.9, 0,     0.9,  2,   0,   -2, -0.9, 0,      0.9};
+			double[] moon_y = { 0.25, -0.75, 0.25, 0.9, 1.5, 0.9, 0.25, -0.75, 0.25};
+			
+			this.sun_x = interp.interpolate(sun_t, sun_x);
+			this.sun_y = interp.interpolate(sun_t, sun_y);
+			this.moon_x = interp.interpolate(moon_t, moon_x);
+			this.moon_y = interp.interpolate(moon_t, moon_y);
+		}
+
+		public Color getSunLight(long time) {
+			return getSunLight((time - 1561248000000L) / 1000.0 / 60.0 / 60.0 % 24);
+		}
+
+		public Color getSunLight(double hour) {
+			return new Color((float) sun_r.value(hour), (float) sun_g.value(hour), (float) sun_b.value(hour));
+		}
+		
+		public Color getSkyColor(long time) {
+			return getSkyColor((time - 1561248000000L) / 1000.0 / 60.0 / 60.0 % 24);
+		}
+		
+		public Color getSkyColor(double hour) {
+			return new Color((float) sky_r.value(hour), (float) sky_g.value(hour), (float) sky_b.value(hour));
+		}
+		
+		public float getSunSize() {
+			return sunSize;
+		}
+		
+		public double getSunX(double hour) {
+			return sun_x.value(hour);
+		}
+		public double getSunY(double hour) {
+			return sun_y.value(hour);
+		}
+		
+		public double getMoonX(double hour) {
+			return moon_x.value(hour);
+		}
+		public double getMoonY(double hour) {
+			return moon_y.value(hour);
+		}
 	}
 }
