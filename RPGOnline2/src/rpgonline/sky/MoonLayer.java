@@ -19,10 +19,10 @@ public abstract class MoonLayer implements SkyLayer {
 		double time = getTime();
 		float sx = (float) sg.getMoonX(time) * c.getWidth() / 2 + c.getWidth() / 2;
 		float sy =  (float) sg.getMoonY(time) * c.getHeight() / 2 + c.getHeight() / 2;
-		float size = sg.getSunSize() * 128;
+		float size = 196 * (c.getHeight() / 1440f);
 		
 		Image img = TextureMap.getTexture("moon").getScaledCopy((int) size, (int) size);
-		g.drawImage(img, sx + size / 2, sy + size / 2);
+		g.drawImage(img, sx - size / 2, sy - size / 2, light.brighter(1));
 	}
 	
 	public abstract double getTime();

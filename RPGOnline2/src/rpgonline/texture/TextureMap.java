@@ -1,6 +1,9 @@
 package rpgonline.texture;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,9 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -23,12 +27,13 @@ import org.newdawn.slick.util.Log;
 import rpgonline.RPGConfig;
 
 public class TextureMap {
-	private static List<Image> texturesFast = new ArrayList<Image>();
-	private static Map<String, Image> textures = new HashMap<String, Image>();
-	private static Map<String, Image> texturesMapped = new HashMap<String, Image>();
+	private static List<Image> texturesFast = new ArrayList<>();
+	private static Map<String, Image> textures = new HashMap<>();
+	private static Map<String, BufferedImage> texturesMapped = new HashMap<>();
+	public static Map<Image, Image> sheets = new HashMap<>();
 	
 	public static void addTexture(String s, Image img) {
-		textures.put(s, img);
+		textures.put(s.intern(), img);
 		texturesFast.add(img);
 	}
 	
@@ -48,21 +53,24 @@ public class TextureMap {
 	}
 	
 	public static void loadMappedTexture(String s, URL loc) throws SlickException {
+		if(!RPGConfig.isMapped()) {
+			loadTexture(s, loc);
+			return;
+		}
+		
 		Log.debug("Loading mapped texture " + s + " from " + loc);
-		Texture tex;
+		
+		BufferedImage img;
 		try {
-			tex = TextureLoader.getTexture("PNG", new BufferedInputStream(loc.openStream()));
+			img = ImageIO.read(loc);
 		} catch (IOException e) {
-			Log.error(e);
 			throw new SlickException(e.toString());
 		}
-		Image img = new Image(tex);
-		img.setFilter(Image.FILTER_NEAREST);
-
+		
 		addMappedTexture(s, img);
 	}
 	
-	public static void addMappedTexture(String s, Image img) {
+	public static void addMappedTexture(String s, BufferedImage img) {
 		texturesMapped.put(s, img);
 	}
 	
@@ -87,11 +95,7 @@ public class TextureMap {
 		for (int y = 0; y < map.getVerticalCount(); y++) {
 			for (int x = 0; x < map.getHorizontalCount(); x++) {
 				Log.debug("Loading sprite map part " + s + "." + id + " @ " + x + " " + y);
-				if (tw <= RPGConfig.getAutoSpriteMapSize() / 4 && th <= RPGConfig.getAutoSpriteMapSize() / 4) {
-					addMappedTexture(s + "." + id, map.getSprite(x, y));
-				} else {
-					addTexture(s + "." + id, map.getSprite(x, y));
-				}
+				addTexture(s + "." + id, map.getSprite(x, y));
 				id += 1;
 			}
 		}
@@ -128,7 +132,7 @@ public class TextureMap {
 	}
 	
 	public static int getTextureIndex(String s) {
-		return texturesFast.indexOf(textures.get(s));
+		return texturesFast.indexOf(textures.get(s.intern()));
 	}
 	
 	public static Image getTexture(int i) {
@@ -139,10 +143,13 @@ public class TextureMap {
 	}
 	
 	public static Image getTexture(String s) {
-		return textures.get(s);
+		return textures.get(s.intern());
 	}
 	
-	public static void genTextureMap(int sw, int sh, int f) throws SlickException {
+	public static void genTextureMap(int sw, int sh) throws SlickException {
+		if(!RPGConfig.isMapped()) {
+			return;
+		}
 		Log.debug("Preparing to map textures of size " + sw + " x " + sh);
 		
 		// Get largest texture size.
@@ -169,16 +176,16 @@ public class TextureMap {
 		Log.debug("Grabbing textures to map.");
 		
 		// List of textures to put in map.
-		List<Entry<String, Image>> toMap = new ArrayList<>();
+		List<Entry<String, BufferedImage>> toMap = new ArrayList<>();
 		
-		for (Entry<String, Image> e : texturesMapped.entrySet()) {
-			if(e.getValue().getWidth() == sw && e.getValue().getHeight() == sh && e.getValue().getFilter() == f) {
+		for (Entry<String, BufferedImage> e : texturesMapped.entrySet()) {
+			if(e.getValue().getWidth() == sw && e.getValue().getHeight() == sh) {
 				toMap.add(e);
 			}
 		}
 		
 		// Remove mapped textures
-		for (Entry<String, Image> t : toMap) {
+		for (Entry<String, BufferedImage> t : toMap) {
 			texturesMapped.remove(t.getKey());
 		}
 		
@@ -186,63 +193,87 @@ public class TextureMap {
 		
 		Map<String, Integer> textureX = new HashMap<>();
 		Map<String, Integer> textureY = new HashMap<>();
-		Map<Image, List<String>> textureImg = new HashMap<>();
+		Map<BufferedImage, List<String>> textureImg = new HashMap<>();
+		Map<BufferedImage, File> textureFile = new HashMap<>();
 		
-		Image img = null;
-		int tx = 0;
-		int ty = 0;
-		Graphics g = null;
-		for (Entry<String, Image> t : toMap) {
-			Log.debug("Mapping " + t.getKey());
-			if (tx >= wc) {
-				tx = 0;
-				ty += 1;
+		try {
+			BufferedImage img = null;
+			int tx = 0;
+			int ty = 0;
+			Graphics2D g = null;
+			for (Entry<String, BufferedImage> t : toMap) {
+				Log.debug("Mapping " + t.getKey());
+				if (tx >= wc) {
+					tx = 0;
+					ty += 1;
+				}
+				if (ty >= hc) {
+					File f = File.createTempFile("rpgonline_tilesheet_", ".png");
+					ImageIO.write(img, "PNG", f);
+					textureFile.put(img, f);
+					
+					img = null;
+					tx = 0;
+					ty = 0;
+				}
+				if(img == null) {
+					img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+					textureImg.put(img, new ArrayList<String>(64));
+					g = img.createGraphics();
+				}
+				
+				textureX.put(t.getKey(), tx);
+				textureY.put(t.getKey(), ty);
+				textureImg.get(img).add(t.getKey());
+				
+				g.drawImage(t.getValue(), tx * sh, ty * sh, null);
+				
+				tx += 1;
 			}
-			if (ty >= hc) {
-				img = null;
-				tx = 0;
-				ty = 0;
-			}
-			if(img == null) {
-				img = new Image(w, h, f);
-				textureImg.put(img, new ArrayList<String>(64));
-				g = img.getGraphics();
+			
+			if (img != null) {
+				File f = File.createTempFile("rpgonline_tilesheet_", ".png");
+				ImageIO.write(img, "PNG", f);
+				textureFile.put(img, f);
 			}
 			
-			textureX.put(t.getKey(), tx);
-			textureY.put(t.getKey(), ty);
-			textureImg.get(img).add(t.getKey());
+			Log.debug("Storing data in temporary file");
 			
-			g.drawImage(t.getValue(), tx * sw, ty * sh);
+			int i = 0;
+			for (Entry<BufferedImage, List<String>> e : textureImg.entrySet()) {
+				File f = textureFile.get(e.getKey());
+				
+				Texture tex;
+				tex = TextureLoader.getTexture("PNG", new BufferedInputStream(f.toURI().toURL().openStream()));
+				Image img2 = new Image(tex);
+				img2.setFilter(Image.FILTER_NEAREST);
+				
+				SpriteSheet ss = new SpriteSheet(img2, sw, sh);
+				
+				for(String s : e.getValue()) {
+					System.out.println(s + " " + textureX.get(s) + " " + textureY.get(s));
+					addTexture(s, ss.getSubImage(textureX.get(s), textureY.get(s)));
+					
+					sheets.put(ss.getSubImage(textureX.get(s), textureY.get(s)), ss);
+				}
+				
+				ImageOut.write(ss, "map" + sw + "-" + sh + "-" + i + ".png");
+				
+				i += 1;
+			}
 			
-			t.getValue().destroy();
-			
-			tx += 1;
+			Log.debug("Mapping complete");
+		} catch(IOException e) {
+			Log.error(e);
+			throw new SlickException(e.toString());
 		}
-		
-		Log.debug("Storing data");
-		
-		int i = 0;
-		for (Entry<Image, List<String>> e : textureImg.entrySet()) {
-			SpriteSheet ss = new SpriteSheet(e.getKey(), sw, sh);
-			
-			for(String s : e.getValue()) {
-				addTexture(s, ss.getSprite(textureX.get(s), textureY.get(s)));
-			}
-			
-			ImageOut.write(e.getKey(), "map" + sw + "-" + sh + "-" + i + ".png");
-			
-			i += 1;
-		}
-		
-		Log.debug("Mapping complete");
 	}
 	
 	public static void generateAllMaps() throws SlickException {
 		Log.info("Generating all texture maps.");
 		while (!texturesMapped.isEmpty()) {
-			Entry<String, Image> e = texturesMapped.entrySet().iterator().next();
-			genTextureMap(e.getValue().getWidth(), e.getValue().getHeight(), e.getValue().getFilter());
+			Entry<String, BufferedImage> e = texturesMapped.entrySet().iterator().next();
+			genTextureMap(e.getValue().getWidth(), e.getValue().getHeight());
 		}
 		Log.info("Map generation complete.");
 	}
@@ -257,5 +288,13 @@ public class TextureMap {
 		}
 		
 		return (i - 2) * x;
+	}
+
+	public static Image getSheet(Image img) {
+		Image sheet = sheets.get(img);
+		if (sheet == null) {
+			sheet = img;
+		}
+		return sheet;
 	}
 }

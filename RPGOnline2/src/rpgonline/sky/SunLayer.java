@@ -19,10 +19,10 @@ public abstract class SunLayer implements SkyLayer {
 		double time = getTime();
 		float sx = (float) sg.getSunX(time) * c.getWidth() / 2 + c.getWidth() / 2;
 		float sy =  (float) sg.getSunY(time) * c.getHeight() / 2 + c.getHeight() / 2;
-		float size = sg.getSunSize() * 256;
+		float size = sg.getSunSize() * 256 * (c.getHeight() / 1440f);
 		
 		Image img = TextureMap.getTexture("sun").getScaledCopy((int) size, (int) size);
-		g.drawImage(img, sx + size / 2, sy + size / 2, sg.getSunLight(time));
+		g.drawImage(img, sx - size / 2, sy - size / 2, sg.getSunLight(time).brighter(2));
 	}
 	
 	public abstract double getTime();

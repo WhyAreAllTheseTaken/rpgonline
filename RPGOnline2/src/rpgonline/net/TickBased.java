@@ -37,14 +37,14 @@ public interface TickBased {
 					while (true) {
 						last_update = System.nanoTime();
 						update();
-						if (System.nanoTime() - last_update > (1000000000 / 60)) {
-							if (System.nanoTime() - last_update - 1000000000 / 60 > 32) {
+						if (System.nanoTime() - last_update > (1000000000 / getTickSpeed())) {
+							if (System.nanoTime() - last_update - 1000000000 / getTickSpeed() > 32000) {
 								Log.warn(getType() + " is running "
-										+ (System.nanoTime() - last_update - 1000000000 / 60) / 1000000
+										+ (System.nanoTime() - last_update - 1000000000 / getTickSpeed()) / 1000000
 										+ " millis behind.");
 							}
 						}
-						while (System.nanoTime() - last_update < (1000000000 / 60)) {
+						while (System.nanoTime() - last_update < (1000000000 / getTickSpeed())) {
 							Thread.yield();
 						}
 						if (ServerManager.getServer() == TickBased.this) {
@@ -68,14 +68,14 @@ public interface TickBased {
 						while (true) {
 							last_update = System.nanoTime();
 							update();
-							if (System.nanoTime() - last_update > (1000000000 / 60)) {
-								if (System.nanoTime() - last_update - 1000000000 / 60 > 32) {
+							if (System.nanoTime() - last_update > (1000000000 / getTickSpeed())) {
+								if (System.nanoTime() - last_update - 1000000000 / getTickSpeed() > 32000) {
 									Log.warn(getType() + " is running "
-											+ (System.nanoTime() - last_update - 1000000000 / 60) / 1000000
+											+ (System.nanoTime() - last_update - 1000000000 / getTickSpeed()) / 1000000
 											+ " millis behind.");
 								}
 							}
-							while (System.nanoTime() - last_update < (1000000000 / 60)) {
+							while (System.nanoTime() - last_update < (1000000000 / getTickSpeed())) {
 								Thread.yield();
 							}
 							if (ServerManager.getServer() == TickBased.this) {
