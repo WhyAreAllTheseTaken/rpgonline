@@ -3,7 +3,6 @@ package rpgonline.texture;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import rpgonline.RPGConfig;
 import rpgonline.tile.Tile;
 import rpgonline.world.World;
 
@@ -26,6 +25,6 @@ public class FilterTileTexture extends BasicTileTexture {
 			float wind) {
 		Graphics.setCurrent(g);
 		
-		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).draw(sx * RPGConfig.getTileSize(), sy * RPGConfig.getTileSize(), new Color(Integer.parseUnsignedInt(state, 16)));
+		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).draw(sx, sy, new Color(Integer.parseUnsignedInt(state, 16)));
 	}
 }

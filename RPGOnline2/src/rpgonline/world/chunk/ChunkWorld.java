@@ -30,7 +30,7 @@ public class ChunkWorld implements World {
 	}
 
 	@Override
-	public synchronized Tile getTile(long x, long y, long z) {
+	public Tile getTile(long x, long y, long z) {
 		Tile t = getChunk(x, y, z).getTile(xToChunk(x), xToChunk(y), zToChunk(z));
 		if (t == null) {
 			return registry.get("air");
@@ -39,12 +39,12 @@ public class ChunkWorld implements World {
 	}
 
 	@Override
-	public synchronized String getTileState(long x, long y, long z) {
+	public String getTileState(long x, long y, long z) {
 		return getChunk(x, y, z).getState(xToChunk(x), xToChunk(y), zToChunk(z));
 	}
 
 	@Override
-	public synchronized void setTile(long x, long y, long z, Tile tile, String state) {
+	public void setTile(long x, long y, long z, Tile tile, String state) {
 		if (x < mix) {
 			mix = x;
 		}
@@ -68,12 +68,12 @@ public class ChunkWorld implements World {
 	}
 
 	@Override
-	public synchronized long getMinZ() {
+	public long getMinZ() {
 		return miz;
 	}
 
 	@Override
-	public synchronized long getMaxZ() {
+	public long getMaxZ() {
 		return maz;
 	}
 
@@ -115,19 +115,19 @@ public class ChunkWorld implements World {
 		return chunk;
 	}
 
-	protected synchronized long xToChunk(long x) {
+	protected long xToChunk(long x) {
 		return Math.abs(x) % Chunk.SIZE;
 	}
 
-	protected synchronized long zToChunk(long x) {
+	protected long zToChunk(long x) {
 		return 0;
 	}
 
-	public synchronized void checkCacheServerQuick() {
+	public void checkCacheServerQuick() {
 		clearCacheQuick(1000 * 60 * 3, 32);
 	}
 
-	public synchronized void checkCacheClientQuick() {
+	public void checkCacheClientQuick() {
 		clearCacheQuick(1000 * 60, 8);
 	}
 
@@ -147,11 +147,11 @@ public class ChunkWorld implements World {
 		}
 	}
 
-	public synchronized void checkCacheServer() {
+	public void checkCacheServer() {
 		clearCache(1000 * 60 * 2);
 	}
 
-	public synchronized void checkCacheClient() {
+	public void checkCacheClient() {
 		clearCache(1000 * 30);
 	}
 
@@ -170,7 +170,7 @@ public class ChunkWorld implements World {
 		cache.clear();
 	}
 
-	public synchronized void doUpdateClient() {
+	public void doUpdateClient() {
 		update_counter += 1;
 		if (update_counter % 60 == 0) {
 			checkCacheClientQuick();
@@ -183,7 +183,7 @@ public class ChunkWorld implements World {
 		}
 	}
 
-	public synchronized void doUpdateServer() {
+	public void doUpdateServer() {
 		update_counter += 1;
 		if (update_counter % 120 == 0) {
 			checkCacheServerQuick();
@@ -216,22 +216,22 @@ public class ChunkWorld implements World {
 		return may;
 	}
 
-	public List<Chunk> getChunks() {
+	public synchronized List<Chunk> getChunks() {
 		return new ArrayList<Chunk>(chunks);
 	}
 
 	@Override
-	public void addLight(LightSource light) {
+	public synchronized void addLight(LightSource light) {
 		lights.add(light);
 	}
 
 	@Override
-	public void removeLight(LightSource light) {
+	public synchronized void removeLight(LightSource light) {
 		lights.remove(light);
 	}
 
 	@Override
-	public List<LightSource> getLights() {
+	public synchronized List<LightSource> getLights() {
 		return new ArrayList<LightSource>(lights);
 	}
 
@@ -256,7 +256,7 @@ public class ChunkWorld implements World {
 	}
 
 	@Override
-	public List<Entity> getEntities() {
+	public synchronized List<Entity> getEntities() {
 		return entities;
 	}
 }

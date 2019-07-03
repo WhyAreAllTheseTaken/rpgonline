@@ -306,15 +306,23 @@ public class WorldState extends BasicGameState {
 					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
 					
 					for(TileTexture tex : textures) {
-						Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-						
-						if (img != null) {
-							if(TextureMap.getSheet(img) != current) {
-								if (current != null) current.endUse();
-								current = TextureMap.getSheet(img);
-								current.startUse();
+						if (tex.isCustom()) {
+							if (current != null) current.endUse();
+							
+							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+							
+							if (current != null) current.startUse();
+						} else {
+							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
+							
+							if (img != null) {
+								if(TextureMap.getSheet(img) != current) {
+									if (current != null) current.endUse();
+									current = TextureMap.getSheet(img);
+									current.startUse();
+								}
+								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 							}
-							img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 						}
 					}
 					

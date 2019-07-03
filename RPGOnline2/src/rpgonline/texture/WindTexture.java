@@ -30,7 +30,7 @@ public class WindTexture extends BasicTileTexture {
 		float amount = (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
 				* f;
 		
-		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).drawSheared(sx * RPGConfig.getTileSize(), sy * RPGConfig.getTileSize(),amount, 0);
+		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).drawSheared(sx - amount, sy, amount, 0);
 	}
 	
 	public static double wibble(double v) {
