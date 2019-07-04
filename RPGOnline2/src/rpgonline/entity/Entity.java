@@ -137,6 +137,32 @@ public class Entity {
 	public void setY(double y) {
 		setDouble("y", y);
 	}
+	
+	/**
+	 * Gets the {@code x} position of this tile.
+	 * 
+	 * @return A double value.
+	 */
+	public double getDX() {
+		return getDouble("dx");
+	}
+
+	/**
+	 * Gets the {@code y} position of this tile.
+	 * 
+	 * @return A double value.
+	 */
+	public double getDY() {
+		return getDouble("dy");
+	}
+
+	public void setDX(double x) {
+		setDouble("dx", x);
+	}
+
+	public void setDY(double y) {
+		setDouble("dy", y);
+	}
 
 	public boolean isFlying() {
 		return false;

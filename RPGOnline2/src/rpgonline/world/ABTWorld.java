@@ -31,71 +31,74 @@ import rpgonline.world.chunk.Chunk;
 import rpgonline.world.chunk.ChunkWorld;
 
 public class ABTWorld extends ChunkWorld {
-	private File folder;
-	private int format;
+	protected File folder;
+	protected int format;
 	public ABTWorld(File folder, Map<String, Tile> registry, EntityManager em, boolean server) throws IOException {
 		super(registry);
 		this.folder = folder;
+		folder.mkdirs();
 		
-		TagDoc d = TagDoc.read(new GZIPInputStream(new BufferedInputStream(new FileInputStream(new File(folder, "map.abt")))), "map");
-		
-		format = ((TagInt) d.getTags().getTag("version")).getData();
-		
-		if (format == 0) {
-			TagGroup lights = (TagGroup) d.getTags().getTag("lights");
+		if (new File(folder, "map.abt").exists()) {
+			TagDoc d = TagDoc.read(new GZIPInputStream(new BufferedInputStream(new FileInputStream(new File(folder, "map.abt")))), "map");
 			
-			for(Tag t : lights.getTags()) {
-				TagGroup g = (TagGroup) t;
+			format = ((TagInt) d.getTags().getTag("version")).getData();
+			
+			if (format == 0) {
+				TagGroup lights = (TagGroup) d.getTags().getTag("lights");
 				
-				TagVector4 c = (TagVector4) g.getTag("color");
-				
-				float lr = (float) c.get(0);
-				float lg = (float) c.get(1);
-				float lb = (float) c.get(2);
-				
-				TagVector2 pos = (TagVector2) g.getTag("pos");
-				
-				double x = pos.get(0);
-				double y = pos.get(1);
-				
-				float b = (float) c.get(3);
-				
-				Color color = new Color(lr, lg, lb);
-				
-				addLight(new LightSource() {
-					private static final long serialVersionUID = -7735632885503935298L;
-
-					@Override
-					public double getLX() {
-						return x;
-					}
-
-					@Override
-					public double getLY() {
-						return y;
-					}
-
-					@Override
-					public Color getColor() {
-						return color;
-					}
+				for(Tag t : lights.getTags()) {
+					TagGroup g = (TagGroup) t;
 					
-					@Override
-					public float getBrightness() {
-						return b;
-					}
-				});
-			}
-			
-			TagGroup entities = (TagGroup) d.getTags().getTag("entities");
-			
-			for (Tag t : entities.getTags()) {
-				TagGroup g = (TagGroup) t;
+					TagVector4 c = (TagVector4) g.getTag("color");
+					
+					float lr = (float) c.get(0);
+					float lg = (float) c.get(1);
+					float lb = (float) c.get(2);
+					
+					TagVector2 pos = (TagVector2) g.getTag("pos");
+					
+					double x = pos.get(0);
+					double y = pos.get(1);
+					
+					float b = (float) c.get(3);
+					
+					Color color = new Color(lr, lg, lb);
+					
+					addLight(new LightSource() {
+						private static final long serialVersionUID = -7735632885503935298L;
+
+						@Override
+						public double getLX() {
+							return x;
+						}
+
+						@Override
+						public double getLY() {
+							return y;
+						}
+
+						@Override
+						public Color getColor() {
+							return color;
+						}
+						
+						@Override
+						public float getBrightness() {
+							return b;
+						}
+					});
+				}
 				
-				getEntities().add(new Entity(em, g, server));
+				TagGroup entities = (TagGroup) d.getTags().getTag("entities");
+				
+				for (Tag t : entities.getTags()) {
+					TagGroup g = (TagGroup) t;
+					
+					getEntities().add(new Entity(em, g, server));
+				}
+			} else {
+				throw new IOException("Unknown version file: " + format);
 			}
-		} else {
-			throw new IOException("Unknown version file: " + format);
 		}
 	}
 	

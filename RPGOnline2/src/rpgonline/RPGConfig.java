@@ -38,12 +38,6 @@ public class RPGConfig {
 	 */
 	private static boolean wind = false;
 	/**
-	 * Determines if the the shader effect will be used by the rendering engine.
-	 * 
-	 * @see rpgonline.state.WorldState
-	 */
-	private static boolean shadow = false;
-	/**
 	 * The size used by tiles as the grid size.
 	 * 
 	 * @see rpgonline.tile.Tile
@@ -165,28 +159,6 @@ public class RPGConfig {
 	 */
 	public static void setWind(boolean wind) {
 		RPGConfig.wind = wind;
-	}
-
-	/**
-	 * Determines if the the shader effect will be used by the rendering engine.
-	 * 
-	 * @return true if the shadow effect should be used. false otherwise.
-	 * 
-	 * @see rpgonline.state.WorldState
-	 */
-	public static boolean isShadow() {
-		return shadow;
-	}
-
-	/**
-	 * Determines if the the shader effect will be used by the rendering engine.
-	 * 
-	 * @param shadow true if the shadow effect should be used. false otherwise.
-	 * 
-	 * @see rpgonline.state.WorldState
-	 */
-	public static void setShadow(boolean shadow) {
-		RPGConfig.shadow = shadow;
 	}
 
 	/**

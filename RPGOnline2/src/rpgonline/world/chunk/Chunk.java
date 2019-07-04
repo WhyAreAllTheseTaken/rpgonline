@@ -37,56 +37,56 @@ public class Chunk {
 		}
 	}
 
-	public synchronized Tile getTile(long x, long y, long z) {
+	public Tile getTile(long x, long y, long z) {
 		lastUsed = System.currentTimeMillis();
 		return tiles[(int) z][(int) x][(int) y];
 	}
 
-	public synchronized void setTile(long x, long y, long z, Tile tile) {
+	public void setTile(long x, long y, long z, Tile tile) {
 		lastUsed = System.currentTimeMillis();
 		change = true;
 		tiles[(int) z][(int) x][(int) y] = tile;
 	}
 
-	public synchronized String getState(long x, long y, long z) {
+	public String getState(long x, long y, long z) {
 		lastUsed = System.currentTimeMillis();
 		return states[(int) z][(int) x][(int) y];
 	}
 
-	public synchronized void setState(long x, long y, long z, String state) {
+	public void setState(long x, long y, long z, String state) {
 		lastUsed = System.currentTimeMillis();
 		change = true;
 		states[(int) z][(int) x][(int) y] = state;
 	}
 
-	public synchronized boolean getFlag(long x, long y, long z) {
+	public boolean getFlag(long x, long y, long z) {
 		lastUsed = System.currentTimeMillis();
 		return flag[(int) z][(int) x][(int) y];
 	}
 
-	public synchronized void setFlag(long x, long y, long z, boolean f) {
+	public void setFlag(long x, long y, long z, boolean f) {
 		lastUsed = System.currentTimeMillis();
 		change = true;
 		flag[(int) z][(int) x][(int) y] = f;
 	}
 
-	public synchronized String getArea(long x, long y, long z) {
+	public String getArea(long x, long y, long z) {
 		lastUsed = System.currentTimeMillis();
 		return area[(int) z][(int) x][(int) y];
 	}
 
-	public synchronized void setArea(long x, long y, long z, String id) {
+	public void setArea(long x, long y, long z, String id) {
 		lastUsed = System.currentTimeMillis();
 		change = true;
 		area[(int) z][(int) x][(int) y] = id;
 	}
 
-	public synchronized int getBiome(long x, long y, long z) {
+	public int getBiome(long x, long y, long z) {
 		lastUsed = System.currentTimeMillis();
 		return biome[(int) z][(int) x][(int) y];
 	}
 
-	public synchronized void setBiome(long x, long y, long z, int id) {
+	public void setBiome(long x, long y, long z, int id) {
 		lastUsed = System.currentTimeMillis();
 		change = true;
 		biome[(int) z][(int) x][(int) y] = id;

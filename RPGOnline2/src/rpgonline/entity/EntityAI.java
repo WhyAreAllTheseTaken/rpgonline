@@ -56,7 +56,15 @@ public interface EntityAI {
 		
 		return nearest;
 	}
+	
+	public default double dist(double x1, double y1, double x2, double y2) {
+		return FastMath.hypot(x1 - x2, y1 - y2);
+	}
 
+	public default double dist(Entity e, Entity e2) {
+		return FastMath.hypot(e.getX() - e2.getX(), e.getY() - e2.getY());
+	}
+	
 	public default List<Tile> getValuedTiles(Map<String, Tile> tileRegistry) {
 		return Collections.emptyList();
 	}

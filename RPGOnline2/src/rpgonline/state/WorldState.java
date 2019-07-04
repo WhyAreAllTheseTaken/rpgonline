@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -24,10 +25,10 @@ import rpgonline.net.ServerManager;
 import rpgonline.post.MultiEffect;
 import rpgonline.post.NullPostProcessEffect;
 import rpgonline.post.PostEffect;
-import rpgonline.post.pack.PotatoShaderPack;
 import rpgonline.sky.SkyLayer;
 import rpgonline.texture.TextureMap;
 import rpgonline.texture.TileTexture;
+import rpgonline.texture.entity.EntityTexture;
 import rpgonline.tile.Tile;
 import rpgonline.world.LightSource;
 import rpgonline.world.World;
@@ -83,13 +84,11 @@ public class WorldState extends BasicGameState {
 	 * A buffer for lighting.
 	 */
 	private Image lightBuffer;
-	
-	private Image renderBuffer;
 
 	/**
 	 * The current shader effect.
 	 */
-	private PostEffect post = new MultiEffect(new PotatoShaderPack());
+	private PostEffect post = new MultiEffect();
 
 	private boolean gui = true;
 
@@ -152,6 +151,9 @@ public class WorldState extends BasicGameState {
 		}
 	}
 
+	List<TileTexture> textures = new ArrayList<>();
+	List<EntityTexture> entityTextures = new ArrayList<>();
+	
 	/**
 	 * A method that renders the world.
 	 */
@@ -292,13 +294,10 @@ public class WorldState extends BasicGameState {
 		long maz = world.getMaxZ();
 		
 		float wind = ServerManager.getClient().getWind();
-		float shadow = ServerManager.getClient().getShadow();
-		
-		List<TileTexture> textures = new ArrayList<>();
 
 		Image current = null;
 
-		for (long z = maz; z >= miz; z--) {
+		for (long z = maz; z >= FastMath.min(-1, miz); z--) {
 			for (long y = miy; y <= may; y++) {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, z);
@@ -327,6 +326,73 @@ public class WorldState extends BasicGameState {
 					}
 					
 					textures.clear();
+					
+					if(z == -1) {
+						for (Entity e : entities) {
+							if(!e.isFlying()) {
+								if (FastMath.round(e.getX() + 0.5f) == x
+										&& FastMath.floor(e.getY() - 0.25) == y) {
+									entityTextures.clear();
+									
+									if (current != null) current.endUse();
+									
+									if (current != null) current.startUse();
+									
+									expandTexture(e.getTexture(), entityTextures, e.getX(), e.getY(), world, wind, e);
+									
+									for(EntityTexture tex : entityTextures) {
+										if (tex.isCustom()) {
+											if (current != null) current.endUse();
+											
+											tex.render(g, x, y, -1, world, e, sx, sy, wind);
+											
+											if (current != null) current.startUse();
+										} else {
+											Image img = TextureMap.getTexture(tex.getTexture(e.getX(), e.getY(), -1, world, e, wind));
+											
+											if (img != null) {
+												if(TextureMap.getSheet(img) != current) {
+													if (current != null) current.endUse();
+													current = TextureMap.getSheet(img);
+													current.startUse();
+												}
+												img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx, (float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		for (Entity e : entities) {
+			if(e.isFlying()) {
+				entityTextures.clear();
+				
+				expandTexture(e.getTexture(), entityTextures, e.getX(), e.getY(), world, wind, e);
+				
+				for(EntityTexture tex : entityTextures) {
+					if (tex.isCustom()) {
+						if (current != null) current.endUse();
+						
+						tex.render(g, x, y, -3, world, e, sx, sy, wind);
+						
+						if (current != null) current.startUse();
+					} else {
+						Image img = TextureMap.getTexture(tex.getTexture(e.getX(), e.getY(), -3, world, e, wind));
+						
+						if (img != null) {
+							if(TextureMap.getSheet(img) != current) {
+								if (current != null) current.endUse();
+								current = TextureMap.getSheet(img);
+								current.startUse();
+							}
+							img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx, (float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+						}
+					}
 				}
 			}
 		}
@@ -334,6 +400,65 @@ public class WorldState extends BasicGameState {
 		if(current != null) current.endUse();
 		
 		g.resetTransform();
+		
+		Graphics sg = g;
+
+		if (lightBuffer == null) {
+			lightBuffer = new Image(container.getWidth(), container.getHeight());
+		} else if (container.getWidth() != lightBuffer.getWidth() || container.getHeight() != lightBuffer.getHeight()) {
+			lightBuffer.destroy();
+			lightBuffer = new Image(container.getWidth(), container.getHeight());
+		}
+
+		g = lightBuffer.getGraphics();
+
+		g.clear();
+
+		g.setDrawMode(Graphics.MODE_NORMAL);
+
+		Color wl = world.getLightColor();
+
+		float red = wl.r;
+		float green = wl.g;
+		float blue = wl.b;
+
+		float lum = (red + green + blue) / 3;
+
+		float rscale = FastMath.max(lum * 10, 1);
+		float gscale = FastMath.max(lum * 10, 1);
+		float bscale = FastMath.max(lum * 10, 1);
+
+		g.setColor(wl);
+		g.fillRect(0, 0, container.getWidth(), container.getHeight());
+
+		g.translate(container.getWidth() / 2, container.getHeight() / 2);
+
+		g.scale(base_scale, base_scale);
+		g.pushTransform();
+
+		g.scale(zoom, zoom);
+		if (shake > 0) {
+			g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+		}
+
+		g.setDrawMode(Graphics.MODE_SCREEN);
+
+		for (LightSource l : lights) {
+			Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
+
+			img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
+
+			g.drawImage(img,
+					(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2 - sx * RPGConfig.getTileSize(),
+					(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
+							- sy * RPGConfig.getTileSize());
+		}
+
+		sg.resetTransform();
+
+		sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
+		sg.drawImage(lightBuffer, 0, 0);
+		sg.setDrawMode(Graphics.MODE_NORMAL);
 	}
 	
 	protected void expandTexture(TileTexture t, List<TileTexture> l, long x, long y, long z, World world, Tile tile, String state) {
@@ -344,6 +469,18 @@ public class WorldState extends BasicGameState {
 			
 			for (TileTexture t2 : ta) {
 				expandTexture(t2, l, x, y, z, world, tile, state);
+			}
+		}
+	}
+	
+	protected void expandTexture(EntityTexture t, List<EntityTexture> l, double x, double y, World world, float wind, Entity e) {
+		if (t.isPure()) {
+			l.add(t);
+		} else {
+			EntityTexture[] ta = t.getTextures(x, y, -1, world, e, wind);
+			
+			for (EntityTexture t2 : ta) {
+				expandTexture(t2, l, x, y, world, wind, e);
 			}
 		}
 	}

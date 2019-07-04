@@ -34,8 +34,4 @@ public interface TileTexture {
 	public default float getY() {
 		return 0;
 	}
-	
-	public default boolean isLightAffected() {
-		return true;
-	}
 }
