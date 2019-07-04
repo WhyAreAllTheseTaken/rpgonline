@@ -251,7 +251,6 @@ public class TextureMap {
 				SpriteSheet ss = new SpriteSheet(img2, sw, sh);
 				
 				for(String s : e.getValue()) {
-					System.out.println(s + " " + textureX.get(s) + " " + textureY.get(s));
 					addTexture(s, ss.getSubImage(textureX.get(s), textureY.get(s)));
 					
 					sheets.put(ss.getSubImage(textureX.get(s), textureY.get(s)), ss);
