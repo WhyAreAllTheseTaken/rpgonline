@@ -9,9 +9,6 @@ public class MapControllerProvider implements ControllerInputProvider {
 	
 	public MapControllerProvider() {
 		bindings.put(InputUtils.EXIT, BACK);
-		bindings.put(InputUtils.ZOOM_IN, R1);
-		bindings.put(InputUtils.ZOOM_OUT, L1);
-		bindings.put(InputUtils.ZOOM_NORMAL, L3);
 		bindings.put(InputUtils.GUI_TOGGLE, R3);
 		bindings.put(InputUtils.SPRINT, Y);
 	}

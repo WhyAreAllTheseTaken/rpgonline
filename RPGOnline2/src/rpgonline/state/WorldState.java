@@ -609,22 +609,6 @@ public class WorldState extends BasicGameState {
 //			}
 //		}
 		ServerManager.getClient().setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
-		
-		if (InputUtils.isActionPressed(in, InputUtils.ZOOM_IN)) {
-			zoom *= 1 + 0.25f * delf;
-		}
-		if (InputUtils.isActionPressed(in, InputUtils.ZOOM_OUT)) {
-			zoom /= 1 + 0.25f * delf;
-		}
-		if (InputUtils.isActionPressed(in, InputUtils.ZOOM_NORMAL)) {
-			zoom = 2.25f;
-		}
-		if (zoom > 190) {
-			zoom = 190;
-		}
-		if (zoom < 0.5f) {
-			zoom = 0.5f;
-		}
 
 		ServerManager.getClient().getWorld().doUpdateClient();
 
