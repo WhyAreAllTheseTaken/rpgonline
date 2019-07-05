@@ -38,12 +38,12 @@ public class Tile {
 		return t;
 	}
 	
-	public void update(long x, long y, long z, World w, String state, Tile t, float wind) {
+	public void update(long x, long y, long z, World w, String state, float wind) {
 		
 	}
 	
-	public void update(long x, long y, long z, World w, String state, Tile t) {
-		update(x, y, z, w, state, t, 0);
+	public void update(long x, long y, long z, World w, String state) {
+		update(x, y, z, w, state, 0);
 	}
 
 	public String getID() {

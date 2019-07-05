@@ -431,6 +431,7 @@ public class WorldState extends BasicGameState {
 						current = TextureMap.getSheet(img);
 						current.startUse();
 					}
+					new Color(1, 1, 1, particle.getAlpha()).bind();
 					img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 				}
 			}
@@ -528,6 +529,7 @@ public class WorldState extends BasicGameState {
 						current = TextureMap.getSheet(img);
 						current.startUse();
 					}
+					new Color(1, 1, 1, particle.getAlpha()).bind();
 					img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 				}
 			}

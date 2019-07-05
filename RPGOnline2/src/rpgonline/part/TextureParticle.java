@@ -6,16 +6,18 @@ import rpgonline.texture.TextureMap;
 import rpgonline.world.World;
 
 public class TextureParticle implements Particle {
-	private float x;
-	private float y;
-	private int t;
-	private float time;
+	protected float x;
+	protected float y;
+	protected int t;
+	protected float time;
+	private final float otime;
 	
 	public TextureParticle(String s, float x, float y, float time) {
 		this.t = TextureMap.getTextureIndex(s);
 		this.x = x;
 		this.y = y;
 		this.time = time;
+		this.otime = time;
 	}
 	
 	@Override
@@ -43,6 +45,14 @@ public class TextureParticle implements Particle {
 		}
 		
 		x += wind * delta;
+	}
+
+	@Override
+	public float getAlpha() {
+		if (time > otime - 1f) {
+			return 1 - (time - (otime - 1f));
+		}
+		return time / otime;
 	}
 
 }

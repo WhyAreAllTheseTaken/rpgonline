@@ -30,4 +30,6 @@ public interface Particle {
 	public default void doBehaviour(World w, float wind, List<Particle> particles, float delta) {
 		
 	}
+	
+	public float getAlpha();
 }
