@@ -1,6 +1,8 @@
 package rpgonline.state;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import rpgonline.audio.AudioManager;
 import rpgonline.entity.Entity;
 import rpgonline.input.InputUtils;
 import rpgonline.net.ServerManager;
+import rpgonline.part.Particle;
 import rpgonline.post.MultiEffect;
 import rpgonline.post.NullPostProcessEffect;
 import rpgonline.post.PostEffect;
@@ -95,6 +98,8 @@ public class WorldState extends BasicGameState {
 	private float gui_cooldown = 0.25f;
 	
 	private SkyLayer sky;
+	
+	private List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(512));
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -224,6 +229,21 @@ public class WorldState extends BasicGameState {
 			for (Entity e : entities1) {
 				if (screen_bounds.contains((float) e.getX(), (float) e.getY())) {
 					entities.add(e);
+				}
+			}
+		}
+		
+		List<Particle> particles_light = new ArrayList<Particle>(particles.size());
+		List<Particle> particles_nolight = new ArrayList<Particle>(32);
+		
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+			
+			if (screen_bounds.contains(p.getX(), p.getY())) {
+				if (p.isLightAffected()) {
+					particles_light.add(p);
+				} else {
+					particles_nolight.add(p);
 				}
 			}
 		}
@@ -397,7 +417,27 @@ public class WorldState extends BasicGameState {
 			}
 		}
 		
-		if(current != null) current.endUse();
+		for (Particle particle : particles_light) {
+			if (particle.isCustom()) {
+				if (current != null) current.endUse();
+				particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
+				if (current != null) current.startUse();
+			} else {
+				Image img = TextureMap.getTexture(particle.getTexture());
+				
+				if (img != null) {
+					if(TextureMap.getSheet(img) != current) {
+						if (current != null) current.endUse();
+						current = TextureMap.getSheet(img);
+						current.startUse();
+					}
+					img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+				}
+			}
+		}
+		
+		if (current != null) current.endUse();
+		current = null;
 		
 		g.resetTransform();
 		
@@ -459,6 +499,43 @@ public class WorldState extends BasicGameState {
 		sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
 		sg.drawImage(lightBuffer, 0, 0);
 		sg.setDrawMode(Graphics.MODE_NORMAL);
+		
+		g = sg;
+		
+		g.resetTransform();
+		
+		g.translate(container.getWidth() / 2, container.getHeight() / 2);
+
+		g.scale(base_scale, base_scale);
+
+		g.scale(zoom, zoom);
+
+		if (shake > 0) {
+			g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+		}
+		
+		for (Particle particle : particles_nolight) {
+			if (particle.isCustom()) {
+				if (current != null) current.endUse();
+				particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
+				if (current != null) current.startUse();
+			} else {
+				Image img = TextureMap.getTexture(particle.getTexture());
+				
+				if (img != null) {
+					if(TextureMap.getSheet(img) != current) {
+						if (current != null) current.endUse();
+						current = TextureMap.getSheet(img);
+						current.startUse();
+					}
+					img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+				}
+			}
+		}
+		
+		if (current != null) current.endUse();
+		
+		g.resetTransform();
 	}
 	
 	protected void expandTexture(TileTexture t, List<TileTexture> l, long x, long y, long z, World world, Tile tile, String state) {
@@ -573,6 +650,25 @@ public class WorldState extends BasicGameState {
 			gui = !gui;
 			gui_cooldown = 0.25f;
 		}
+		
+		float wind = ServerManager.getClient().getWind();
+		World world = ServerManager.getClient().getWorld();
+		for (int i = 0; i < particles.size(); i++) {
+			particles.get(i).doBehaviour(world, wind, particles, delta / 1000f);
+		}
+		
+		particles.sort(new Comparator<Particle>() {
+			@Override
+			public int compare(Particle o1, Particle o2) {
+				int a = o1.getClass().equals(o2.getClass()) ? 0 : 1;
+				
+				if (!o1.isLightAffected()) {
+					a += 2;
+				}
+				
+				return a;
+			}
+		});
 	}
 
 	public void exit() {
@@ -679,5 +775,17 @@ public class WorldState extends BasicGameState {
 
 	public void setSky(SkyLayer sky) {
 		this.sky = sky;
+	}
+	
+	public void addParticle(Particle p) {
+		particles.add(p);
+	}
+	
+	public void addParticles(Collection<? extends Particle> p) {
+		particles.addAll(p);
+	}
+	
+	public void clearParticles() {
+		particles.clear();
 	}
 }
