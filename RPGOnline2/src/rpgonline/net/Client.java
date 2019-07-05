@@ -12,7 +12,6 @@ public interface Client extends TickBased {
 	public double getPlayerY();
 	public float getHeatEffect();
 	public float getWind();
-	public float getShadow();
 	public AmbientMusic getMusic();
 	public void walkY(double s);
 	public void walkX(double s);
