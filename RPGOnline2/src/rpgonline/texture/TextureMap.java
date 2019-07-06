@@ -131,6 +131,30 @@ public class TextureMap {
 		addSpriteMap(s, img, tw, th);
 	}
 	
+	public static void loadSpriteMapMapped(String s, URL loc, int tw, int th) throws SlickException {
+		Log.debug("Loading sprite map texture " + s + " from " + loc);
+		BufferedImage img;
+		try {
+			img = ImageIO.read(loc);
+			
+			addSpriteMapMapped(s, img, tw, th);
+		} catch (IOException e) {
+			throw new SlickException(e.toString());
+		}
+	}
+	
+	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) {
+		int id = 0;
+		Log.debug("Map size " + img.getWidth() / tw + " x " + img.getHeight() / th);
+		for (int y = 0; y < img.getHeight() / th; y++) {
+			for (int x = 0; x < img.getWidth() / tw; x++) {
+				Log.debug("Loading sprite map part " + s + "." + id + " @ " + x + " " + y);
+				addMappedTexture(s + "." + id, img.getSubimage(x * tw, y * th, tw, th));
+				id += 1;
+			}
+		}
+	}
+	
 	public static int getTextureIndex(String s) {
 		return texturesFast.indexOf(textures.get(s.intern()));
 	}
