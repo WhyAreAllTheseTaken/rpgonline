@@ -101,6 +101,8 @@ public class WorldState extends BasicGameState {
 	private SkyLayer sky;
 	
 	private List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(128));
+	
+	private boolean post_enable = true;
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -132,7 +134,7 @@ public class WorldState extends BasicGameState {
 
 		g.resetTransform();
 
-		if(post != null) {
+		if(post != null && post_enable) {
 			Debugger.start("effects");
 			
 			if (buffer == null) {
@@ -609,26 +611,24 @@ public class WorldState extends BasicGameState {
 
 		Input in = container.getInput();
 		
+		double walk_x = 0;
+		double walk_y = 0;
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
-			ServerManager.getClient().walkY(-1);
-		} else {
-			ServerManager.getClient().walkY(0);
-		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
-			ServerManager.getClient().walkX(1);
-		} else {
-			ServerManager.getClient().walkX(0);
-		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
-			ServerManager.getClient().walkX(-1);
-		} else {
-			ServerManager.getClient().walkX(0);
+			walk_y += -1;
 		}
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
-			ServerManager.getClient().walkY(1);
-		} else {
-			ServerManager.getClient().walkY(0);
+			walk_y += 1;
 		}
+		
+		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
+			walk_x += 1;
+		}
+		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
+			walk_x -= 1;
+		}
+		
+		ServerManager.getClient().walkX(walk_x);
+		ServerManager.getClient().walkY(walk_y);
 		
 //		if (in.getControllerCount() > 0) {
 //			if(RPGConfig.getControllerInput().isLeftHanded()) {
@@ -686,6 +686,12 @@ public class WorldState extends BasicGameState {
 				return a;
 			}
 		});
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			post_enable = false;
+		} else {
+			post_enable = true;
+		}
 	}
 
 	public void exit() {

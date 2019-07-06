@@ -51,6 +51,7 @@ public class ShaderEffect implements PostEffect {
 
 		if (shader == null) {
 			shader = Shader.makeShader(vertex, fragment);
+			initShader(shader, container);
 		}
 
 		shader.startShader();
@@ -69,6 +70,10 @@ public class ShaderEffect implements PostEffect {
 	 */
 	protected void updateShader(Shader shader, GameContainer c) {
 
+	}
+	
+	protected void initShader(Shader shader, GameContainer c) {
+		
 	}
 
 	@Override

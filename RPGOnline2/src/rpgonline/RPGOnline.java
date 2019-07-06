@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.ResourceLoader;
 
+import slickshader.SlickShader;
+
 /**
  * A class that represents version info of the RPGOnline library.
  * 
@@ -59,6 +61,8 @@ public final class RPGOnline {
 	 * The current OpenGL version.
 	 */
 	private static Version OPENGL_VERSION;
+	
+	public static final Version SHADER_VERSION = new Version(SlickShader.VERSION);
 
 	/**
 	 * Prints version info and displays warnings in the case of unsupported java
