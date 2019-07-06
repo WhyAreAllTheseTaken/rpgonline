@@ -15,6 +15,10 @@ import rpgonline.tile.Tile;
 import rpgonline.world.World;
 
 public interface EntityAI {
+	public default void init(Entity e) {
+		
+	}
+	
 	public void doAI(Entity e, World w, float wind, List<Entity> entities);
 
 	public default Path pathfind(Entity e, World w, double tx, double ty, int searchDistance, List<Entity> entities,

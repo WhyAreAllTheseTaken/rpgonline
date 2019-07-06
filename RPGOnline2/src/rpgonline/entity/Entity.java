@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.util.Log;
 
 import rpgonline.abt.Tag;
@@ -48,6 +51,8 @@ public class Entity {
 
 	private EntityTexture t;
 	private boolean packet;
+	private EntityManager m;
+	private Rectangle hitbox;
 	
 	public Entity(EntityManager m, String entity_id, boolean packet) {
 		setString("id", m.getNextID());
@@ -55,6 +60,8 @@ public class Entity {
 		setBoolean("solid", true);
 		
 		t = m.getEntityTexture(entity_id);
+		
+		setHitBox(new Rectangle(0, 0, 0, 0));
 	}
 	
 	public Entity(EntityManager m, TagGroup g, boolean packet) {
@@ -105,6 +112,8 @@ public class Entity {
 		}
 		
 		t = m.getEntityTexture(getString("entity_id"));
+		
+		setHitBox(new Rectangle((float) getDouble("hitbox_x"), (float) getDouble("hitbox_y"), (float) getDouble("hitbox_w"), (float) getDouble("hitbox_h")));
 	}
 
 	/**
@@ -382,5 +391,30 @@ public class Entity {
 
 	public String getEntityID() {
 		return getString("entity_id");
+	}
+	
+	public EntityAI getAI() {
+		return m.getAI(getEntityID());
+	}
+	
+	public void setHitBox(Rectangle r) {
+		setDouble("hitbox_x", r.getX());
+		setDouble("hitbox_y", r.getY());
+		setDouble("hitbox_w", r.getWidth());
+		setDouble("hitbox_h", r.getHeight());
+		
+		this.hitbox = r;
+	}
+	
+	public void setHitBoxAngle(float a) {
+		setDouble("hitbox_a", a);
+	}
+	
+	public float getHitBoxAngle() {
+		return (float) getDouble("hitbox_a");
+	}
+	
+	public Shape getHitBox() {
+		return hitbox.transform(Transform.createRotateTransform(getHitBoxAngle()));
 	}
 }
