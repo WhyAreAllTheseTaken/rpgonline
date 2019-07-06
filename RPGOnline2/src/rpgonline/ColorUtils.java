@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import rpgonline.atmosphere.Atmosphere;
 import rpgonline.atmosphere.EarthAtmosphere;
 import rpgonline.atmosphere.MoonAtmosphere;
+import rpgonline.debug.Debugger;
 
 /**
  * A class with utilities for manipulating colors.
@@ -35,6 +36,7 @@ public class ColorUtils {
 	 * @return a {@code Color} object.
 	 */
 	public static Color kelvinToColor(float kelvin) {
+		Debugger.start("kelvin-compute");
 		float temp = kelvin / 100;
 
 		double r, g, b;
@@ -99,6 +101,7 @@ public class ColorUtils {
 			b = 0;
 		}
 
+		Debugger.stop("kelvin-compute");
 		return new Color((float) r, (float) g, (float) b, 1);
 	}
 

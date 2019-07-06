@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import org.newdawn.slick.util.Log;
 
 import rpgonline.GameExceptionHandler;
+import rpgonline.debug.DebugFrame;
 
 public interface TickBased {
 	public default void start() {
@@ -118,4 +119,5 @@ public interface TickBased {
 	public String getMainThreadName();
 	public void stop();
 	public boolean isInit();
+	public DebugFrame getDebugFrame();
 }

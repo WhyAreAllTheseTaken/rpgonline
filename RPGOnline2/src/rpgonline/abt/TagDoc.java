@@ -8,6 +8,8 @@ import java.io.OutputStream;
 
 import org.newdawn.slick.util.Log;
 
+import rpgonline.debug.Debugger;
+
 public class TagDoc {
 	public static final short LATEST_VERSION = 0;
 	public TagDoc(short version, String app, TagGroup tags) {
@@ -45,62 +47,76 @@ public class TagDoc {
 	}
 	
 	public static TagDoc read(InputStream in, String app) throws IOException {
-		ABTDataInputStream dis = new ABTDataInputStream(new BufferedInputStream(in));
-		
-		char c1 = (char) dis.readByte();
-		char c2 = (char) dis.readByte();
-		char c3 = (char) dis.readByte();
-		char c4 = (char) dis.readByte();
-		
-		if (!(c1 == 'A' && c2 == 'B' && c3 == 'T' && c4 == '1')) {
-			dis.close();
+		Debugger.start("abt-decode");
+		try {
+			ABTDataInputStream dis = new ABTDataInputStream(new BufferedInputStream(in));
 			
-			throw new InvalidHeaderException("" + c1 + c2 + c3 + c4, "abt");
-		}
-		
-		short version = dis.readShort();
-		
-		if (version == 0) {
-			String app2 = dis.readUTFByte();
+			char c1 = (char) dis.readByte();
+			char c2 = (char) dis.readByte();
+			char c3 = (char) dis.readByte();
+			char c4 = (char) dis.readByte();
 			
-			if(app != null) {
-				if (!app2.equals(app)) {
-					dis.close();
-					throw new IOException("Cannot read file from another game.");
-				}
-			}
-			
-			byte tagID = dis.readByte();
-			
-			if (tagID == 0x01) {
-				TagGroup g = readTagGroup(dis);
-				
+			if (!(c1 == 'A' && c2 == 'B' && c3 == 'T' && c4 == '1')) {
 				dis.close();
 				
-				return new TagDoc(version, app, g);
+				throw new InvalidHeaderException("" + c1 + c2 + c3 + c4, "abt");
+			}
+			
+			short version = dis.readShort();
+			
+			if (version == 0) {
+				String app2 = dis.readUTFByte();
+				
+				if(app != null) {
+					if (!app2.equals(app)) {
+						dis.close();
+						throw new IOException("Cannot read file from another game.");
+					}
+				}
+				
+				byte tagID = dis.readByte();
+				
+				if (tagID == 0x01) {
+					TagGroup g = readTagGroup(dis);
+					
+					dis.close();
+					
+					Debugger.stop("abt-decode");
+					return new TagDoc(version, app, g);
+				} else {
+					dis.close();
+					throw new IOException("Malformed intial tag group with ID: " + tagID);
+				}
 			} else {
 				dis.close();
-				throw new IOException("Malformed intial tag group with ID: " + tagID);
+				throw new IOException("Unknown or unsupported ABT version: " + version);
 			}
-		} else {
-			dis.close();
-			throw new IOException("Unknown or unsupported ABT version: " + version);
+		} catch (IOException e) {
+			Debugger.stop("abt-decode");
+			throw e;
 		}
 	}
 	
 	public void write(OutputStream out) throws IOException {
-		ABTDataOutputStream dos = new ABTDataOutputStream(new BufferedOutputStream(out));
-		
-		dos.write(new byte[] {'A', 'B', 'T', '1'});
-		
-		dos.writeShort(LATEST_VERSION);
-		
-		dos.writeUTFByte(app);
-		
-		writeTag(dos, tags);
-		
-		dos.flush();
-		dos.close();
+		Debugger.start("abt-encode");
+		try {
+			ABTDataOutputStream dos = new ABTDataOutputStream(new BufferedOutputStream(out));
+			
+			dos.write(new byte[] {'A', 'B', 'T', '1'});
+			
+			dos.writeShort(LATEST_VERSION);
+			
+			dos.writeUTFByte(app);
+			
+			writeTag(dos, tags);
+			
+			dos.flush();
+			dos.close();
+		} catch (IOException e) {
+			Debugger.stop("abt-encode");
+			throw e;
+		}
+		Debugger.stop("abt-encode");
 	}
 	
 	public void writeTag(ABTDataOutputStream out, Tag t) throws IOException {

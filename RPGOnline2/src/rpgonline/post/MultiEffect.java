@@ -6,6 +6,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import rpgonline.debug.Debugger;
+
 /**
  * Allows for the chaining of multiple effects together.
  * 
@@ -37,6 +39,9 @@ public class MultiEffect implements PostEffect {
 			NullPostProcessEffect.INSTANCE.doPostProcess(container, game, buffer, g);
 		}
 		for (PostEffect e : effects) {
+			if (!(e instanceof MultiEffect)) {
+				Debugger.start("post-" + e.getClass());
+			}
 			e.doPostProcess(container, game, buffer, g);
 
 			buffer.flushPixelData();
@@ -44,6 +49,9 @@ public class MultiEffect implements PostEffect {
 			g.resetTransform();
 
 			g.copyArea(buffer, 0, 0);
+			if (!(e instanceof MultiEffect)) {
+				Debugger.stop("post-" + e.getClass());
+			}
 		}
 	}
 
