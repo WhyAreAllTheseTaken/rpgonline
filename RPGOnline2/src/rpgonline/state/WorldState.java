@@ -255,7 +255,7 @@ public class WorldState extends BasicGameState {
 		float sx = (float) (x * RPGConfig.getTileSize());
 		float sy = (float) (y * RPGConfig.getTileSize());
 
-		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 3;
+		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
 		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
 		
 		Debugger.start("entity-compute");
@@ -606,8 +606,8 @@ public class WorldState extends BasicGameState {
 
 		float delf = delta / 1000f;
 
-		x = ServerManager.getClient().getPlayerX() + 0.5;
-		y = ServerManager.getClient().getPlayerY() - 0.1;
+		x = ServerManager.getClient().getPlayerX();
+		y = ServerManager.getClient().getPlayerY();
 
 		Input in = container.getInput();
 		
