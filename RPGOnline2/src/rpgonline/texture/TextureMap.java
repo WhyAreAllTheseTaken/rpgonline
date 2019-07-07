@@ -70,7 +70,20 @@ public class TextureMap {
 		addMappedTexture(s, img);
 	}
 	
-	public static void addMappedTexture(String s, BufferedImage img) {
+	public static void addMappedTexture(String s, BufferedImage img) throws SlickException {
+		if (!RPGConfig.isMapped()) {
+			try {
+				File f = File.createTempFile("rpgonline_unmapped_", ".png");
+				ImageIO.write(img, "PNG", f);
+				
+				loadTexture(s, f.toURI().toURL());
+				
+				f.deleteOnExit();
+			} catch (IOException e) {
+				throw new SlickException(e.toString());
+			}
+			return;
+		}
 		texturesMapped.put(s, img);
 	}
 	
@@ -143,7 +156,7 @@ public class TextureMap {
 		}
 	}
 	
-	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) {
+	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) throws SlickException {
 		int id = 0;
 		Log.debug("Map size " + img.getWidth() / tw + " x " + img.getHeight() / th);
 		for (int y = 0; y < img.getHeight() / th; y++) {
@@ -227,6 +240,7 @@ public class TextureMap {
 			Graphics2D g = null;
 			for (Entry<String, BufferedImage> t : toMap) {
 				Log.debug("Mapping " + t.getKey());
+				
 				if (tx >= wc) {
 					tx = 0;
 					ty += 1;
@@ -246,11 +260,13 @@ public class TextureMap {
 					g = img.createGraphics();
 				}
 				
+				Log.debug("Placing " + t.getKey() + " @ " + tx + " " + ty);
+				
 				textureX.put(t.getKey(), tx);
 				textureY.put(t.getKey(), ty);
 				textureImg.get(img).add(t.getKey());
 				
-				g.drawImage(t.getValue(), tx * sh, ty * sh, null);
+				g.drawImage(t.getValue(), tx * sw, ty * sh, null);
 				
 				tx += 1;
 			}

@@ -348,10 +348,6 @@ public class WorldState extends BasicGameState {
 										&& FastMath.floor(e.getY() - 0.25) == y) {
 									entityTextures.clear();
 									
-									if (current != null) current.endUse();
-									
-									if (current != null) current.startUse();
-									
 									expandTexture(e.getTexture(), entityTextures, e.getX(), e.getY(), world, wind, e);
 									
 									for(EntityTexture tex : entityTextures) {
@@ -627,8 +623,8 @@ public class WorldState extends BasicGameState {
 			walk_x -= 1;
 		}
 		
-		ServerManager.getClient().walkX(walk_x);
-		ServerManager.getClient().walkY(walk_y);
+		ServerManager.getClient().walkX(walk_x, delf);
+		ServerManager.getClient().walkY(walk_y, delf);
 		
 //		if (in.getControllerCount() > 0) {
 //			if(RPGConfig.getControllerInput().isLeftHanded()) {

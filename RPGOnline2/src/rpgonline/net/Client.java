@@ -13,8 +13,8 @@ public interface Client extends TickBased {
 	public float getHeatEffect();
 	public float getWind();
 	public AmbientMusic getMusic();
-	public void walkY(double s);
-	public void walkX(double s);
+	public void walkY(double s, double delta);
+	public void walkX(double s, double delta);
 	public void requestChunk(long x, long y, long z);
 	public List<TagGroup> getRequestedChunks();
 	public String getServerType();
