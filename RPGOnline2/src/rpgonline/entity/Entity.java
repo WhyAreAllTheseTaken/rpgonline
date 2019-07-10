@@ -14,6 +14,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.util.Log;
 
+import rpgonline.Direction;
 import rpgonline.abt.Tag;
 import rpgonline.abt.TagBoolean;
 import rpgonline.abt.TagByteArray;
@@ -62,6 +63,8 @@ public class Entity {
 		t = m.getEntityTexture(entity_id);
 		
 		setHitBox(new Rectangle(0, 0, 0, 0));
+		
+		m.getAI(entity_id).init(this);
 	}
 	
 	public Entity(EntityManager m, TagGroup g, boolean packet) {
@@ -415,6 +418,14 @@ public class Entity {
 	}
 	
 	public Shape getHitBox() {
-		return hitbox.transform(Transform.createRotateTransform(getHitBoxAngle()));
+		return hitbox.transform(Transform.createRotateTransform(getHitBoxAngle())).transform(Transform.createTranslateTransform((float) getX(), (float) getY()));
+	}
+
+	public Direction getDirection() {
+		return Direction.values()[getInt("direction")];
+	}
+	
+	public void setDirection(Direction d) {
+		setInt("direction", d.ordinal());
 	}
 }

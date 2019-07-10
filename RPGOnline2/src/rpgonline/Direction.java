@@ -9,7 +9,7 @@ import org.apache.commons.math3.util.FastMath;
  * @author Tomas
  */
 public enum Direction {
-	NORTH, SOUTH, EAST, WEST,;
+	SOUTH, NORTH, EAST, WEST,;
 	/**
 	 * Gets the distance along the x axis required to move in this direction at the
 	 * inputed speed.

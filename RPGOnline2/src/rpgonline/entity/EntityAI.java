@@ -31,7 +31,7 @@ public interface EntityAI {
 				}, (int) e.getX(), (int) e.getY(), (int) tx, (int) ty);
 	}
 	
-	public default Entity locateNearest(Entity e, List<Entity> entities, String entity_id, int searchDistance) {
+	public static Entity locateNearest(Entity e, List<Entity> entities, String entity_id, int searchDistance) {
 		return locateNearest(e, entities, new Comparable<Entity>() {
 
 			@Override
@@ -41,7 +41,7 @@ public interface EntityAI {
 		}, searchDistance);
 	}
 	
-	public default Entity locateNearest(Entity e, List<Entity> entities, Comparable<Entity> c, int searchDistance) {
+	public static Entity locateNearest(Entity e, List<Entity> entities, Comparable<Entity> c, int searchDistance) {
 		Entity nearest = null;
 		double ndist = Double.POSITIVE_INFINITY;
 		
@@ -61,11 +61,11 @@ public interface EntityAI {
 		return nearest;
 	}
 	
-	public default double dist(double x1, double y1, double x2, double y2) {
+	public static double dist(double x1, double y1, double x2, double y2) {
 		return FastMath.hypot(x1 - x2, y1 - y2);
 	}
 
-	public default double dist(Entity e, Entity e2) {
+	public static double dist(Entity e, Entity e2) {
 		return FastMath.hypot(e.getX() - e2.getX(), e.getY() - e2.getY());
 	}
 	

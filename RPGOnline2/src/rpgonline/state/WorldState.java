@@ -15,6 +15,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -58,7 +59,7 @@ public class WorldState extends BasicGameState {
 	/**
 	 * The world zoom.
 	 */
-	public float zoom = 2.75f;
+	public float zoom = 1f;
 	/**
 	 * The strength of the shake effect.
 	 */
@@ -370,6 +371,15 @@ public class WorldState extends BasicGameState {
 											}
 										}
 									}
+									
+									if (RPGConfig.isHitbox()) {
+										if (current != null) current.endUse();
+										
+										g.setColor(Color.red);
+										g.draw(e.getHitBox().transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize())).transform(Transform.createTranslateTransform(-sx, -sy)));
+										
+										if (current != null) current.startUse();
+									}
 								}
 							}
 						}
@@ -405,6 +415,15 @@ public class WorldState extends BasicGameState {
 							img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx, (float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 						}
 					}
+				}
+				
+				if (RPGConfig.isHitbox()) {
+					if (current != null) current.endUse();
+					
+					g.setColor(Color.red);
+					g.draw(e.getHitBox().transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize())).transform(Transform.createTranslateTransform(-sx, -sy)));
+					
+					if (current != null) current.startUse();
 				}
 			}
 		}
@@ -602,9 +621,6 @@ public class WorldState extends BasicGameState {
 
 		float delf = delta / 1000f;
 
-		x = ServerManager.getClient().getPlayerX();
-		y = ServerManager.getClient().getPlayerY();
-
 		Input in = container.getInput();
 		
 		double walk_x = 0;
@@ -636,6 +652,9 @@ public class WorldState extends BasicGameState {
 //			}
 //		}
 		ServerManager.getClient().setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
+		
+		x = ServerManager.getClient().getPlayerX();
+		y = ServerManager.getClient().getPlayerY();
 
 		ServerManager.getClient().getWorld().doUpdateClient();
 

@@ -80,6 +80,8 @@ public final class RPGConfig {
 	
 	private static boolean particles = false;
 	
+	private static boolean hitbox = false;
+	
 	private static LangProvider lang = new LangProvider() {
 		@Override
 		public void setLang(String lang) {
@@ -347,6 +349,14 @@ public final class RPGConfig {
 
 	public static void setParticles(boolean particles) {
 		RPGConfig.particles = particles;
+	}
+
+	public static boolean isHitbox() {
+		return hitbox;
+	}
+
+	public static void setHitbox(boolean hitbox) {
+		RPGConfig.hitbox = hitbox;
 	}
 	
 	

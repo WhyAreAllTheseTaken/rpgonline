@@ -1,9 +1,13 @@
 package rpgonline.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
+import rpgonline.tile.Tile;
 import rpgonline.world.World;
 
 public class VelocityAI implements EntityAI {
@@ -42,30 +46,47 @@ public class VelocityAI implements EntityAI {
 		e.setDY(0);
 	}
 
-	public boolean isCollision(double x, double y, Entity e, World w, List<Entity> entities) {
+	public static boolean isCollision(double x, double y, Entity e, World w, List<Entity> entities) {
 		long wx = FastMath.round(x);
 		long wy = FastMath.round(y);
-
-		if (w.getTile(wx, wy, -1).isSolid(w.getTileState(wx, wy, -1))) {
-			return true;
+		
+		if (!e.isSolid()) {
+			return false;
 		}
 
-		if (!w.getTile(wx, wy, 0).isSolid(w.getTileState(wx, wy, 0))) {
-			return true;
-		}
-
-		for (Entity e2 : entities) {
-			if (e2 != e) {
-				if (dist(e.getX(), e.getY(), e2.getX(), e2.getY()) < 0.25) {
-					return true;
+		List<Shape> hitboxes = new ArrayList<Shape>();
+		for (int tx = (int) (Math.round(x) - 1); tx <= (int) (Math.round(x) + 1); tx++) {
+			for (int ty = (int) (Math.round(y) - 1); ty <= (int) (Math.round(y) + 1); ty++) {
+				Tile t = w.getTile(tx, ty, -1);
+				
+				if (t.isSolid(w.getTileState(tx, ty, -1))) {
+					hitboxes.add(new Rectangle(tx, ty, 1, 1));
 				}
 			}
+		}
+		
+		for (Entity e2 : entities) {
+			if (e2 != e) {
+				if(e2.isSolid()) {
+					hitboxes.add(e2.getHitBox());
+				}
+			}
+		}
+		
+		for (Shape s : hitboxes) {
+			if (e.getHitBox().intersects(s)) {
+				return true;
+			}
+		}
+		
+		if (!w.getTile(wx, wy, 0).isSolid(w.getTileState(wx, wy, 0))) {
+			return true;
 		}
 
 		return false;
 	}
 
-	public boolean onGround(Entity e, World w, List<Entity> entities) {
+	public static boolean onGround(Entity e, World w, List<Entity> entities) {
 		long wx = FastMath.round(e.getX());
 		long wy = FastMath.round(e.getY());
 
