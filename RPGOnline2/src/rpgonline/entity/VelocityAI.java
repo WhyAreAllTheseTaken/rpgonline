@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 
 import rpgonline.tile.Tile;
 import rpgonline.world.World;
@@ -60,7 +60,7 @@ public class VelocityAI implements EntityAI {
 				Tile t = w.getTile(tx, ty, -1);
 				
 				if (t.isSolid(w.getTileState(tx, ty, -1))) {
-					hitboxes.add(new Rectangle(tx, ty, 1, 1));
+					hitboxes.add(t.getHitBox().transform(Transform.createTranslateTransform(tx, ty)));
 				}
 			}
 		}

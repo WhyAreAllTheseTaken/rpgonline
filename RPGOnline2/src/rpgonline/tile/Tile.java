@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Rectangle;
 
 import rpgonline.texture.TileTexture;
 import rpgonline.world.World;
 
 public class Tile {
+	private static final Rectangle defaultBox = new Rectangle(0, 0, 1, 1);
 	private final Color c;
 	private final TileTexture t;
 	private final String id;
@@ -65,5 +67,9 @@ public class Tile {
 			}
 		}
 		return false;
+	}
+	
+	public Rectangle getHitBox() {
+		return defaultBox;
 	}
 }
