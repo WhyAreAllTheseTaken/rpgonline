@@ -47,7 +47,7 @@ public class MotionBlur implements PostEffect {
 			last = new Image(container.getWidth(), container.getHeight());
 		}
 
-		last.setImageColor(1, 1, 1, amount);
+		last.setImageColor(1, 1, 1, amount * container.getFPS());
 
 		g.drawImage(last, 0, 0);
 

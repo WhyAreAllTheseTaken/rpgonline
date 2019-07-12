@@ -39,7 +39,7 @@ public class ABTWorld extends ChunkWorld {
 		folder.mkdirs();
 		
 		if (new File(folder, "map.abt").exists()) {
-			TagDoc d = TagDoc.read(new GZIPInputStream(new BufferedInputStream(new FileInputStream(new File(folder, "map.abt")))), "map");
+			TagDoc d = TagDoc.read(new BufferedInputStream(new FileInputStream(new File(folder, "map.abt"))), "map");
 			
 			format = ((TagInt) d.getTags().getTag("version")).getData();
 			
@@ -99,6 +99,18 @@ public class ABTWorld extends ChunkWorld {
 			} else {
 				throw new IOException("Unknown version file: " + format);
 			}
+		} else {
+			TagGroup root = new TagGroup("root");
+			
+			root.add(new TagInt("version", 0));
+			root.add(new TagGroup("lights"));
+			root.add(new TagGroup("entities"));
+			
+			TagDoc doc = new TagDoc("map", root);
+			
+			new File(folder, "map.abt").createNewFile();
+			
+			doc.write(new BufferedOutputStream(new FileOutputStream(new File(folder, "map.abt"))));
 		}
 	}
 	
@@ -151,6 +163,7 @@ public class ABTWorld extends ChunkWorld {
 		}
 
 		Chunk chunk = new Chunk(registry, cx, cy, cz);
+		generateChunk(chunk);
 		chunks.add(chunk);
 		cache.add(new CacheEntry(chunk, System.currentTimeMillis()));
 		last_chunk = chunk;
@@ -233,6 +246,19 @@ public class ABTWorld extends ChunkWorld {
 				doc.write(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(f))));
 			} catch (IOException e) {
 				Log.error("Error writing chunk " + c.getX() + " " + c.getY() + " " + c.getZ(), e);
+			}
+		}
+	}
+	
+	public void generateChunk(Chunk c) {
+		for (int x = 0; x < Chunk.SIZE; x++) {
+			for (int y = 0; y < Chunk.SIZE; y++) {
+				if (c.getZ() == 0) {
+					c.setTile(x, y, 0, registry.get("defaultGround"));
+				}
+				if (c.getZ() == -1) {
+					c.setTile(x, y, 0, registry.get("defaultAbove"));
+				}
 			}
 		}
 	}

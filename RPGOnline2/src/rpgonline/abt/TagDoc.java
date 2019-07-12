@@ -77,7 +77,9 @@ public class TagDoc {
 				byte tagID = dis.readByte();
 				
 				if (tagID == 0x01) {
-					TagGroup g = readTagGroup(dis);
+					String name = dis.readUTF();
+					
+					TagGroup g = readTagGroup(name, dis);
 					
 					dis.close();
 					
@@ -120,7 +122,7 @@ public class TagDoc {
 	}
 	
 	public void writeTag(ABTDataOutputStream out, Tag t) throws IOException {
-		out.writeByte(0x0);
+		out.writeByte(t.getType());
 		
 		if(t.getType() != 0x0) {
 			out.writeUTF(t.getName());
@@ -298,9 +300,7 @@ public class TagDoc {
 		}
 	}
 	
-	public static TagGroup readTagGroup(ABTDataInputStream in) throws IOException {
-		String name = in.readUTF();
-		
+	public static TagGroup readTagGroup(String name, ABTDataInputStream in) throws IOException {
 		// Item count. Not needed by this parser.
 		in.readLong();
 		
@@ -332,7 +332,7 @@ public class TagDoc {
 			Log.warn("Unhandled case of end tag.");
 			return null;
 		case 0x01:
-			return readTagGroup(in);
+			return readTagGroup(name, in);
 		case 0x02:
 			return new TagByte(name, in.readByte());
 		case 0x03:
