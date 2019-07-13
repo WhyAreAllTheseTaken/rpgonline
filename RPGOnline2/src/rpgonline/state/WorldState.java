@@ -43,7 +43,7 @@ import rpgonline.world.World;
  * 
  * @author Tomas
  */
-public class WorldState extends BasicGameState {
+public class WorldState extends BasicGameState implements BaseScaleState {
 	/**
 	 * This state's id.
 	 */
@@ -835,5 +835,10 @@ public class WorldState extends BasicGameState {
 	
 	public void clearParticles() {
 		particles.clear();
+	}
+
+	@Override
+	public void scale(float base) {
+		base_scale = base;
 	}
 }
