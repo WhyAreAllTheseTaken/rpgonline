@@ -1,5 +1,6 @@
 package rpgonline.world;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -51,7 +52,7 @@ public interface World {
 		return Color.white;
 	}
 
-	public default void save() {
+	public default void save() throws IOException {
 
 	}
 

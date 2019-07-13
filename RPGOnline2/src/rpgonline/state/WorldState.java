@@ -51,11 +51,11 @@ public class WorldState extends BasicGameState {
 	/**
 	 * The cached {@code x} position of the player.
 	 */
-	private double x;
+	protected double x;
 	/**
 	 * The cached {@code y} position of the player.
 	 */
-	private double y;
+	protected double y;
 	/**
 	 * The world zoom.
 	 */
@@ -83,27 +83,27 @@ public class WorldState extends BasicGameState {
 	/**
 	 * A buffer for shader effects.
 	 */
-	private Image buffer;
+	protected Image buffer;
 
 	/**
 	 * A buffer for lighting.
 	 */
-	private Image lightBuffer;
+	protected Image lightBuffer;
 
 	/**
 	 * The current shader effect.
 	 */
-	private PostEffect post = null;
+	protected PostEffect post = null;
 
-	private boolean gui = true;
+	protected boolean gui = true;
 
-	private float gui_cooldown = 0.25f;
+	protected float gui_cooldown = 0.25f;
 	
-	private SkyLayer sky;
+	protected SkyLayer sky;
 	
-	private List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(128));
+	protected List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(128));
 	
-	private boolean post_enable = true;
+	protected boolean post_enable = true;
 
 	/**
 	 * Creates a new {@code WorldState}.

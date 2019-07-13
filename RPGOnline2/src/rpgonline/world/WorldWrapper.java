@@ -1,5 +1,6 @@
 package rpgonline.world;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -91,8 +92,7 @@ public class WorldWrapper implements World {
 	}
 
 	@Override
-	@Deprecated
-	public void save() {
+	public void save() throws IOException {
 		world.save();
 	}
 

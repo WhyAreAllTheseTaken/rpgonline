@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -37,6 +38,37 @@ public class WorldFromImage extends ChunkWorld {
 		this.size = size;
 		this.f = f;
 	}
+	
+	@Override
+	public synchronized void setTile(long x, long y, long z, Tile tile) {
+		if (tile == null) {
+			tile = registry.get("air");
+		}
+		BufferedImage img = null;
+		long imgX = (long) (x + ix);
+		long imgY = (long) (y + iy);
+		
+		if (z == 0) {
+			img = getImageLand(imgX, imgY);
+		} else if (z == -1) {
+			img = getImageTop(imgX, imgY);
+		} else if (z == -2) {
+			img = getImageRoof(imgX, imgY);
+		}
+		
+		img.setRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)), getColor(tile.getID()));
+		
+		super.setTile(x, y, z, tile);
+	}
+	
+	private int getColor(String id) {
+		for(Entry<Integer, String> e : mappings.entrySet()) {
+			if(e.getValue().equals(id)) {
+				return e.getKey();
+			}
+		}
+		return 0;
+	}
 
 	@Override
 	protected synchronized Chunk getChunk(long x, long y, long z) {
@@ -50,7 +82,7 @@ public class WorldFromImage extends ChunkWorld {
 			long imgX = (long) (gx + ix);
 			long imgY = (long) (gy + iy);
 			
-			int biome_c = getImageBiome(imgX, imgY).getRGB((int) (imgX % size), (int) (imgY % size));
+			int biome_c = getImageBiome(imgX, imgY).getRGB(Math.abs(Math.abs((int) (imgX % size))), Math.abs(Math.abs((int) (imgY % size))));
 			
 			if ((biome_c & 0xff000000) == 0xff000000) {
 				Integer bi = biomes.get(biome_c & 0x00ffffff);
@@ -62,7 +94,7 @@ public class WorldFromImage extends ChunkWorld {
 			}
 
 			if (z == 0) {
-				int land = getImageLand(imgX, imgY).getRGB((int) (imgX % size), (int) (imgY % size));
+				int land = getImageLand(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
 				
 				if ((land & 0xff000000) == 0xff000000) {
 					String ti = mappings.get(land & 0x00ffffff);
@@ -75,7 +107,7 @@ public class WorldFromImage extends ChunkWorld {
 			}
 			
 			if (z == -1) {
-				int land = getImageTop(imgX, imgY).getRGB((int) (imgX % size), (int) (imgY % size));
+				int land = getImageTop(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
 				
 				if ((land & 0xff000000) == 0xff000000) {
 					String ti = mappings.get(land & 0x00ffffff);
@@ -88,7 +120,7 @@ public class WorldFromImage extends ChunkWorld {
 			}
 			
 			if (z == -2) {
-				int land = getImageRoof(imgX, imgY).getRGB((int) (imgX % size), (int) (imgY % size));
+				int land = getImageRoof(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
 				
 				if ((land & 0xff000000) == 0xff000000) {
 					String ti = mappings.get(land & 0x00ffffff);
@@ -105,6 +137,7 @@ public class WorldFromImage extends ChunkWorld {
 	}
 
 	public BufferedImage getImageLand(long x, long y) {
+		System.out.println("Found " + x / size);
 		for (ImageCache img : imgsLand) {
 			if (img.getX() == x / size && img.getY() == y / size) {
 				return img.getImage();
@@ -186,6 +219,46 @@ public class WorldFromImage extends ChunkWorld {
 		imgsBiome.add(new ImageCache(img, x / size, y / size));
 
 		return img;
+	}
+	
+	@Override
+	public synchronized void save() throws IOException {
+		for (ImageCache i : imgsLand) {
+			File f = new File(new File(this.f, "z0"), "map_" + i.getX() + "_" + i.getY() + ".png").getAbsoluteFile();
+			
+			Log.debug("Saving " + f.getAbsolutePath());
+			
+			if (!f.exists()) {
+				f.getParentFile().mkdirs();
+				f.createNewFile();
+			}
+			
+			ImageIO.write(i.getImage(), "png", f);
+		}
+		for (ImageCache i : imgsTop) {
+			File f = new File(new File(this.f, "z1"), "map_" + i.getX() + "_" + i.getY() + ".png").getAbsoluteFile();
+			
+			Log.debug("Saving " + f.getAbsolutePath());
+			
+			if (!f.exists()) {
+				f.getParentFile().mkdirs();
+				f.createNewFile();
+			}
+			
+			ImageIO.write(i.getImage(), "png", f);
+		}
+		for (ImageCache i : imgsRoof) {
+			File f = new File(new File(this.f, "z2"), "map_" + i.getX() + "_" + i.getY() + ".png").getAbsoluteFile();
+			
+			Log.debug("Saving " + f.getAbsolutePath());
+			
+			if (!f.exists()) {
+				f.getParentFile().mkdirs();
+				f.createNewFile();
+			}
+			
+			ImageIO.write(i.getImage(), "png", f);
+		}
 	}
 
 }
