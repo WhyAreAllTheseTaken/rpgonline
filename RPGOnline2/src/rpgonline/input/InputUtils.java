@@ -13,6 +13,10 @@ public final class InputUtils {
 	public static final String EXIT = "exit";
 	public static final String GUI_TOGGLE = "gui_toggle";
 	public static final String SPRINT = "sprint";
+	public static final String BULLET_NORTH = "bullet_north";
+	public static final String BULLET_EAST = "bullet_east";
+	public static final String BULLET_SOUTH = "bullet_south";
+	public static final String BULLET_WEST = "bullet_west";
 	
 	public static boolean isActionPressed(Input in, String func) {
 		if (in.getControllerCount() > 0) {
