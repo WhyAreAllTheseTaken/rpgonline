@@ -85,7 +85,7 @@ public class WorldFromImage extends ChunkWorld {
 			int biome_c = getImageBiome(imgX, imgY).getRGB(Math.abs(Math.abs((int) (imgX % size))), Math.abs(Math.abs((int) (imgY % size))));
 			
 			if ((biome_c & 0xff000000) == 0xff000000) {
-				Integer bi = biomes.get(biome_c & 0x00ffffff);
+				Integer bi = biomes.get(biome_c & 0x00ffffff | 0xff000000);
 				if (bi != null) {
 					setBiomeID(gx, gy, z, bi);
 				}
@@ -95,9 +95,8 @@ public class WorldFromImage extends ChunkWorld {
 
 			if (z == 0) {
 				int land = getImageLand(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
-				
 				if ((land & 0xff000000) == 0xff000000) {
-					String ti = mappings.get(land & 0x00ffffff);
+					String ti = mappings.get(land & 0x00ffffff | 0xff000000);
 					if (ti != null) {
 						setTile(gx, gy, z, registry.get(ti));
 					}
@@ -110,7 +109,7 @@ public class WorldFromImage extends ChunkWorld {
 				int land = getImageTop(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
 				
 				if ((land & 0xff000000) == 0xff000000) {
-					String ti = mappings.get(land & 0x00ffffff);
+					String ti = mappings.get(land & 0x00ffffff | 0xff000000);
 					if (ti != null) {
 						setTile(gx, gy, z, registry.get(ti));
 					}
@@ -123,7 +122,7 @@ public class WorldFromImage extends ChunkWorld {
 				int land = getImageRoof(imgX, imgY).getRGB(Math.abs((int) (imgX % size)), Math.abs((int) (imgY % size)));
 				
 				if ((land & 0xff000000) == 0xff000000) {
-					String ti = mappings.get(land & 0x00ffffff);
+					String ti = mappings.get(land & 0x00ffffff | 0xff000000);
 					if (ti != null) {
 						setTile(gx, gy, z, registry.get(ti));
 					}
@@ -137,7 +136,6 @@ public class WorldFromImage extends ChunkWorld {
 	}
 
 	public BufferedImage getImageLand(long x, long y) {
-		System.out.println("Found " + x / size);
 		for (ImageCache img : imgsLand) {
 			if (img.getX() == x / size && img.getY() == y / size) {
 				return img.getImage();

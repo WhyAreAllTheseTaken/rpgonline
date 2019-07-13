@@ -133,6 +133,9 @@ public final class AudioManager {
 
 	@SuppressWarnings("deprecation")
 	public static void setMusic(AmbientMusic m) {
+		if (m == music) {
+			return;
+		}
 		if (fadeThread != null) {
 			fadeThread.stop();
 		}

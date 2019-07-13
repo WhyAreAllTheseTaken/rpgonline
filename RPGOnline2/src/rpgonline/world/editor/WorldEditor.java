@@ -67,22 +67,22 @@ public class WorldEditor extends WorldState {
 
 		Debugger.start("game-render");
 		render2(container, game, g);
-		
+
 		g.resetTransform();
 		Debugger.stop("game-render");
-		
-		if(post != null && post_enable) {
+
+		if (post != null && post_enable) {
 			Debugger.start("effects");
-			
+
 			if (buffer == null) {
 				buffer = new Image(container.getWidth(), container.getHeight());
 			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
 				buffer = new Image(container.getWidth(), container.getHeight());
 			}
-			
+
 			g.copyArea(buffer, 0, 0);
-			
+
 			if (!(post instanceof MultiEffect)) {
 				Debugger.start("post-" + post.getClass());
 			}
@@ -90,80 +90,83 @@ public class WorldEditor extends WorldState {
 			if (!(post instanceof MultiEffect)) {
 				Debugger.stop("post-" + post.getClass());
 			}
-			
+
 			Debugger.stop("effects");
 		}
 		g.resetTransform();
 		g.flush();
-		
+
 		if (!light) {
 			Debugger.start("gui");
-			
+
 			g.setColor(new Color(0, 0, 0, 128));
 			g.fillRect(0, 0, 512, 512);
-			
+
 			g.scale(zoom * base_scale, zoom * base_scale);
-			
+
 			Tile t = tiles.get(set).get(tile);
 			String state = "";
 			expandTexture(t.getTexture(), textures, Math.round(x), Math.round(y), z, world, t, state);
-			
-			for(TileTexture tex : textures) {
+
+			for (TileTexture tex : textures) {
 				if (tex.isCustom()) {
 					Debugger.start("custom-tile");
-					
-					tex.render(g, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(), 0.1f);
-					
+
+					tex.render(g, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(),
+							0.1f);
+
 					Debugger.stop("custom-tile");
 				} else {
 					Image img = TextureMap.getTexture(tex.getTexture(Math.round(x), Math.round(y), z, world, state, t));
-					
+
 					if (img != null) {
 						img.draw(32 + tex.getX(), 32 + tex.getY(), img.getWidth(), img.getHeight());
 					}
 				}
 			}
-			
+
 			textures.clear();
-			
+
 			g.resetTransform();
-			
+
 			g.setColor(Color.white);
-			
+
 			g.drawString(Math.round(x) + " " + Math.round(y) + " " + z + " : " + set + "-" + t.getID(), 8, 8 + 32);
-			switch(brush_mode) {
+			switch (brush_mode) {
 			case 0:
 				g.drawString("Draw", 8, 8 + 32 * 2);
 				break;
 			case 1:
-				g.drawString("Random scatter", 8, 8 + 32 * 2);
+				g.drawString("Random - weak", 8, 8 + 32 * 2);
 				break;
 			case 2:
 				g.drawString("Remove", 8, 8 + 32 * 2);
 				break;
+			case 3:
+				g.drawString("Random - medium", 8, 8 + 32 * 2);
+				break;
 			}
-			
-			
+
 			Debugger.stop("gui");
 		}
-		
+
 		g.flush();
-		
+
 		Debugger.stop("render");
 	}
 
 	List<TileTexture> textures = new ArrayList<>();
-	
+
 	/**
 	 * A method that renders the world.
 	 */
 	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		List<LightSource> lights = null;
-		if(RPGConfig.isLighting() && light) {
+		if (RPGConfig.isLighting() && light) {
 			Debugger.start("light-compute");
-			
+
 			lights = world.getLights();
-			
+
 			if (lights.size() != 0) {
 				lights.sort(new Comparator<LightSource>() {
 					@Override
@@ -198,10 +201,10 @@ public class WorldEditor extends WorldState {
 					lights.remove(lights.size() - 1);
 				}
 			}
-			
+
 			Debugger.stop("light-compute");
 		}
-		
+
 		Debugger.start("sky");
 		if (sky != null) {
 			sky.render(g, container, x, y, 0, world, world.getLightColor());
@@ -231,43 +234,49 @@ public class WorldEditor extends WorldState {
 		Image current = null;
 
 		Rectangle box = new Rectangle(Math.round(x) - size / 2, Math.round(y) - size / 2, size, size);
-		
-		for (long z = 1; z >= -2; z--) {
+
+		for (long z = 0; z >= -2; z--) {
 			for (long y = miy; y <= may; y++) {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, z);
 					String state = world.getTileState(x, y, z);
 					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
-					
-					for(TileTexture tex : textures) {
+
+					for (TileTexture tex : textures) {
 						if (tex.isCustom()) {
 							Debugger.start("custom-tile");
-							if (current != null) current.endUse();
-							
-							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
-							
-							if (current != null) current.startUse();
+							if (current != null)
+								current.endUse();
+
+							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+
+							if (current != null)
+								current.startUse();
 							Debugger.stop("custom-tile");
 						} else {
 							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-							
+
 							if (img != null) {
-								if(TextureMap.getSheet(img) != current) {
-									if (current != null) current.endUse();
+								if (TextureMap.getSheet(img) != current) {
+									if (current != null)
+										current.endUse();
 									current = TextureMap.getSheet(img);
 									current.startUse();
 								}
-								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx,
+										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 							}
 						}
 					}
-					
+
 					textures.clear();
-					
+
 					if (!light && box.contains(x, y) && z == this.z) {
-						if (current != null) current.endUse();
-						
-						switch(brush_mode) {
+						if (current != null)
+							current.endUse();
+
+						switch (brush_mode) {
 						case 0:
 							g.setColor(new Color(0, 255, 255, 128));
 							break;
@@ -277,28 +286,34 @@ public class WorldEditor extends WorldState {
 						case 2:
 							g.setColor(new Color(255, 0, 0, 128));
 							break;
+						case 3:
+							g.setColor(new Color(255, 128, 0, 128));
+							break;
 						}
-						
-						g.fillRect(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy, RPGConfig.getTileSize(), RPGConfig.getTileSize());
-						
-						if (current != null) current.startUse();
+
+						g.fillRect(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
+								RPGConfig.getTileSize(), RPGConfig.getTileSize());
+
+						if (current != null)
+							current.startUse();
 					}
 				}
 			}
 		}
-		
+
 		Debugger.stop("world");
-		
-		if (current != null) current.endUse();
+
+		if (current != null)
+			current.endUse();
 		current = null;
-		
+
 		g.flush();
-		
+
 		g.resetTransform();
-		
-		if(RPGConfig.isLighting() && light) {
+
+		if (RPGConfig.isLighting() && light) {
 			Debugger.start("lighting");
-			
+
 			if (lights.size() == 0) {
 				g.setColor(world.getLightColor());
 				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
@@ -306,74 +321,76 @@ public class WorldEditor extends WorldState {
 				g.setDrawMode(Graphics.MODE_NORMAL);
 			} else {
 				Graphics sg = g;
-				
+
 				if (lightBuffer == null) {
 					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				} else if (container.getWidth() != lightBuffer.getWidth() || container.getHeight() != lightBuffer.getHeight()) {
+				} else if (container.getWidth() != lightBuffer.getWidth()
+						|| container.getHeight() != lightBuffer.getHeight()) {
 					lightBuffer.destroy();
 					lightBuffer = new Image(container.getWidth(), container.getHeight());
 				}
-		
+
 				g = lightBuffer.getGraphics();
-		
+
 				g.clear();
-		
+
 				g.setDrawMode(Graphics.MODE_NORMAL);
-		
+
 				Color wl = world.getLightColor();
-		
+
 				float red = wl.r;
 				float green = wl.g;
 				float blue = wl.b;
-		
+
 				float lum = (red + green + blue) / 3;
-		
+
 				float rscale = FastMath.max(lum * 10, 1);
 				float gscale = FastMath.max(lum * 10, 1);
 				float bscale = FastMath.max(lum * 10, 1);
-		
+
 				g.setColor(wl);
 				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-		
+
 				g.translate(container.getWidth() / 2, container.getHeight() / 2);
-		
+
 				g.scale(base_scale, base_scale);
 				g.pushTransform();
-		
+
 				g.scale(zoom, zoom);
 				if (shake > 0) {
 					g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 				}
-		
+
 				g.setDrawMode(Graphics.MODE_SCREEN);
-		
+
 				for (LightSource l : lights) {
 					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
-		
+
 					img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
-		
+
 					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2 - sx * RPGConfig.getTileSize(),
+							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
+									- sx * RPGConfig.getTileSize(),
 							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
 									- sy * RPGConfig.getTileSize());
 				}
-				
+
 				g.flush();
-		
+
 				sg.resetTransform();
-		
+
 				sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
 				sg.drawImage(lightBuffer, 0, 0);
 				sg.setDrawMode(Graphics.MODE_NORMAL);
-				
+
 				g = sg;
 			}
-			
+
 			g.flush();
-		
+
 			Debugger.stop("lighting");
 		}
-		
+
 		g.resetTransform();
 	}
 
@@ -387,9 +404,9 @@ public class WorldEditor extends WorldState {
 		float delf = delta / 1000f;
 
 		Input in = container.getInput();
-		
+
 		boolean sprint = InputUtils.isActionPressed(in, InputUtils.SPRINT);
-		
+
 		double walk_x = 0;
 		double walk_y = 0;
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
@@ -398,141 +415,151 @@ public class WorldEditor extends WorldState {
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
 			walk_y += 1;
 		}
-		
+
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
 			walk_x += 1;
 		}
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
 			walk_x -= 1;
 		}
-		
+
 		x += walk_x * (sprint ? 30 : 10) * delf;
 		y += walk_y * (sprint ? 30 : 10) * delf;
 
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
 			exit();
 		}
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 			zoom /= 1.01f;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 			zoom *= 1.01f;
 		}
-		
+
 		if (cooldown <= 0) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
 				light = !light;
 				cooldown = 1f;
 			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				z += 1;
-				cooldown = 1f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				z -= 1;
-				cooldown = 1f;
-				
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				tile -= 1;
-				cooldown = 0.4f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				tile += 1;
-				cooldown = 0.4f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
-				set += 1;
-				tile = 0;
-				cooldown = 0.5f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_MINUS)) {
-				set -= 1;
-				tile = 0;
-				cooldown = 0.5f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)) {
-				size -= 1;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)) {
-				size += 1;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_0)) {
-				size = 2;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
-				size = 50;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
-				size = 200;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-				brush_mode = 0;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-				brush_mode = 1;
-				cooldown = 0.2f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-				brush_mode = 2;
-				cooldown = 0.2f;
-			}
-			
-			if (set < 0) {
-				set = 0;
-			}
-			if (set >= tiles.size()) {
-				set = tiles.size() - 1;
-			}
-			if (tile < 0) {
-				tile = 0;
-			}
-			if (tile >= tiles.get(set).size()) {
-				tile = tiles.get(set).size() - 1;
-			}
-			if (size < 2) {
-				size = 2;
-			}
-			
-			if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				for(long tx = Math.round(x) - size / 2 + 1; tx < Math.round(x) - size / 2 + size; tx++) {
-					for(long ty = Math.round(y) - size / 2 + 1; ty < Math.round(y) - size / 2 + size; ty++) {
-						switch(brush_mode) {
-						case 1:
-							if (Math.random() < 0.0025) {
+			if (!light) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+					z += 1;
+					cooldown = 1f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+					z -= 1;
+					cooldown = 1f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+					tile -= 1;
+					cooldown = 0.4f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+					tile += 1;
+					cooldown = 0.4f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
+					set += 1;
+					tile = 0;
+					cooldown = 0.5f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_MINUS)) {
+					set -= 1;
+					tile = 0;
+					cooldown = 0.5f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)) {
+					size -= 1;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)) {
+					size += 1;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_0)) {
+					size = 2;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+					size = 50;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+					size = 200;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+					brush_mode = 0;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+					brush_mode = 1;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+					brush_mode = 2;
+					cooldown = 0.2f;
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+					brush_mode = 3;
+					cooldown = 0.2f;
+				}
+
+				if (set < 0) {
+					set = 0;
+				}
+				if (set >= tiles.size()) {
+					set = tiles.size() - 1;
+				}
+				if (tile < 0) {
+					tile = 0;
+				}
+				if (tile >= tiles.get(set).size()) {
+					tile = tiles.get(set).size() - 1;
+				}
+				if (size < 2) {
+					size = 2;
+				}
+
+				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+					for (long tx = Math.round(x) - size / 2 + 1; tx < Math.round(x) - size / 2 + size; tx++) {
+						for (long ty = Math.round(y) - size / 2 + 1; ty < Math.round(y) - size / 2 + size; ty++) {
+							switch (brush_mode) {
+							case 1:
+								if (Math.random() < 0.0025) {
+									world.setTile(tx, ty, z, tiles.get(set).get(tile));
+								}
+								break;
+							case 0:
 								world.setTile(tx, ty, z, tiles.get(set).get(tile));
+								break;
+							case 2:
+								world.setTile(tx, ty, z, null);
+								break;
+							case 3:
+								if (Math.random() < 0.05) {
+									world.setTile(tx, ty, z, tiles.get(set).get(tile));
+								}
+								break;
 							}
-							break;
-						case 0:
-							world.setTile(tx, ty, z, tiles.get(set).get(tile));
-							break;
-						case 2:
-							world.setTile(tx, ty, z, null);
-							break;
 						}
 					}
+					cooldown = 0.075f;
 				}
-				cooldown = 0.35f;
-			}
-			
-			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
-				try {
-					world.save();
-				} catch (IOException e) {
-					Log.error("Error saving world.", e);
+
+				if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+					try {
+						world.save();
+					} catch (IOException e) {
+						Log.error("Error saving world.", e);
+					}
+					cooldown = 1f;
 				}
-				cooldown = 1f;
 			}
 		}
-		
+
 		cooldown -= delf;
 	}
-	
+
 }
