@@ -12,8 +12,9 @@ import paulscode.sound.Library;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import paulscode.sound.SoundSystemLogger;
 import paulscode.sound.codecs.CodecIBXM;
-import paulscode.sound.codecs.CodecJOgg;
+import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
@@ -34,8 +35,35 @@ public final class AudioManager {
 	private static final List<String> ambient = new ArrayList<>();
 
 	private static final Map<String, AmbientMusic> ambientMusic = new HashMap<>();
-
+	
 	static {
+		SoundSystemConfig.setLogger(new SoundSystemLogger() {
+			@Override
+			public boolean errorCheck(boolean error, String classname, String message, int indent) {
+				if (error) Log.error("Error in paulscode sound engine in class " + classname + ": " + message);
+				return error;
+			}
+			@Override
+			public void errorMessage(String classname, String message, int indent) {
+				Log.error("Error in paulscode sound engine in class " + classname + ": " + message);
+			}
+			@Override
+			public void importantMessage(String message, int indent) {
+				Log.info(message);
+			}
+			@Override
+			public void message(String message, int indent) {
+				Log.debug(message);
+			}
+			@Override
+			public void printExceptionMessage(Exception e, int indent) {
+				Log.error("Exception in paulscode class.", e);
+			}
+			@Override
+			public void printStackTrace(Exception e, int indent) {
+				Log.error("Exception in paulscode class.", e);
+			}
+		});
 		boolean aLCompatible = SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class);
 		boolean jSCompatible = SoundSystem.libraryCompatible(LibraryJavaSound.class);
 
@@ -60,9 +88,9 @@ public final class AudioManager {
 			Log.error("Error linking with the CodecWav plug-in.", e);
 		}
 		try {
-			SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
+			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 		} catch (SoundSystemException e) {
-			Log.error("Error linking with the CodecJOgg plug-in.", e);
+			Log.error("Error linking with the CodecJOrbis plug-in.", e);
 		}
 		try {
 			SoundSystemConfig.setCodec("xm", CodecIBXM.class);
@@ -91,7 +119,7 @@ public final class AudioManager {
 								ambient.remove(s);
 							}
 						}
-
+						
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
@@ -103,6 +131,14 @@ public final class AudioManager {
 			t.setDaemon(true);
 			t.start();
 		}
+	}
+	
+	public static float pitchAdjust(float base, float range) {
+		return (float) ((Math.random() * 2 - 1) * range + base);
+	}
+	
+	public static float pitchAdjust(float range) {
+		return pitchAdjust(1, range);
 	}
 
 	public static void dispose() {

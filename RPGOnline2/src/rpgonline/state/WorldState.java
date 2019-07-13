@@ -56,6 +56,10 @@ public class WorldState extends BasicGameState {
 	 * The cached {@code y} position of the player.
 	 */
 	protected double y;
+	
+	protected double px;
+	
+	protected double py;
 	/**
 	 * The world zoom.
 	 */
@@ -682,6 +686,12 @@ public class WorldState extends BasicGameState {
 			gui = !gui;
 			gui_cooldown = 0.25f;
 		}
+		
+		AudioManager.setPlayerPos((float) x, 0, (float) y);
+		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
+		
+		px = x;
+		py = y;
 		
 		float wind = ServerManager.getClient().getWind();
 		World world = ServerManager.getClient().getWorld();
