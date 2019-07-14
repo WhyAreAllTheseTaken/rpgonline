@@ -58,7 +58,7 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 	
 	private List<GUIItem> guis = new ArrayList<GUIItem>();
 	protected List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(256));
-	protected List<Bullet> bullets = new ArrayList<Bullet>();
+	protected List<Bullet> bullets = new ArrayList<Bullet>(256);
 	
 	public BulletState(int id) {
 		this.id = id;
@@ -132,7 +132,7 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 		
 		Debugger.start("sky");
 		if (sky != null) {
-			sky.render(g, container, x, y, 0, null, Color.white);
+			sky.render(g, container, center_camera ? x : 0, center_camera ? x : 0, 0, null, Color.white);
 		}
 		Debugger.stop("sky");
 		
@@ -146,8 +146,8 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 			g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 		}
 		
-		float sx = center_camera ? (float) (x * RPGConfig.getTileSize()) : 0;
-		float sy = center_camera ? (float) (y * RPGConfig.getTileSize()) : 0;
+		float sx = center_camera ? x : 0;
+		float sy = center_camera ? x : 0;
 		
 		if (!player_top) {
 			Debugger.start("player");
@@ -155,6 +155,7 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 			Debugger.stop("player");
 		}
 		
+		Debugger.start("bullets");
 		Image current = null;
 		for (Bullet b : bullets) {
 			if (b.isCustom()) {
@@ -174,9 +175,15 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 					}
 					
 					img.drawEmbedded(b.getX() - sx - img.getWidth() / 2, b.getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+				} else {
+					if (current != null) current.endUse();
+					g.setColor(Color.white);
+					g.fillRect(b.getX() - sx, b.getY() - sy, 8, 8);
+					if (current != null) current.startUse();
 				}
 			}
 		}
+		Debugger.stop("bullets");
 		
 		if (RPGConfig.isParticles()) {
 			Debugger.start("particles");
@@ -205,9 +212,11 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 		
 		if (current != null) current.endUse();
 		
+		g.flush();
+		
 		if (player_top) {
 			Debugger.start("player");
-			renderPlayer(container, game, g, sx, sy);
+			renderPlayer(container, game, g, x - sx, y - sx);
 			Debugger.stop("player");
 		}
 	}
@@ -262,7 +271,8 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 			exit();
 		}
 		
-		for (Bullet b : bullets) {
+		for (int i = 0; i < bullets.size(); i++) {
+			Bullet b = bullets.get(i);
 			b.update(container, game, delf, x, y, x - px, y - py, this, bullets);
 		}
 		
@@ -271,8 +281,14 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 		AudioManager.setPlayerPos(x, 0, y);
 		AudioManager.setPlayerVelocity((x - px) / delf, 0, (y - py) / delf);
 		
+		AudioManager.setMusic(getMusic());
+		
 		px = x;
 		py = y;
+		
+		if (shake > 0) {
+			shake -= delf;
+		}
 		
 		postUpdate(container, game, delf, in);
 	}
@@ -295,7 +311,7 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 	}
 	
 	public Rectangle getStateBounds(GameContainer c) {
-		return new Rectangle(-c.getWidth() / 2f / base_scale / zoom, -c.getHeight() / 2f / base_scale / zoom, c.getWidth() / base_scale / zoom, c.getHeight() / base_scale / zoom);
+		return new Rectangle(-c.getWidth() / 2f / base_scale / zoom - 32, -c.getHeight() / 2f / base_scale / zoom - 32, c.getWidth() / base_scale / zoom + 64, c.getHeight() / base_scale / zoom + 64);
 	}
 
 	@Override
@@ -349,6 +365,18 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 
 	public void addGUI(int index, GUIItem element) {
 		guis.add(index, element);
+	}
+	
+	public void addBullet(Bullet p) {
+		bullets.add(p);
+	}
+	
+	public void addBullet(Collection<? extends Bullet> p) {
+		bullets.addAll(p);
+	}
+	
+	public void clearBullets() {
+		bullets.clear();
 	}
 
 }

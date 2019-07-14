@@ -8,11 +8,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import rpgonline.texture.TextureMap;
 
 public class BasicBullet implements Bullet {
-	private float xv;
-	private float yv;
-	private float x;
-	private float y;
-	private int texture;
+	public float xv;
+	public float yv;
+	public float x;
+	public float y;
+	public int texture;
 	
 	public BasicBullet(float x, float y, float xv, float yv, String texture) {
 		super();

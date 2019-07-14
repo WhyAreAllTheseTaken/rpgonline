@@ -1,5 +1,8 @@
 package rpgonline;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -152,4 +155,16 @@ public abstract class RPGGame extends StateBasedGame {
 	 * @throws SlickException Indicates an internal error occured in the game.
 	 */
 	public abstract void load(GameContainer container, RPGGame game, LoadCounter counter) throws SlickException;
+	
+	@SuppressWarnings("rawtypes")
+	public HashMap getStates() throws SlickException {
+		Field f;
+		try {
+			f = StateBasedGame.class.getDeclaredField("states");
+			f.setAccessible(true);
+			return (HashMap) f.get(this);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			throw new SlickException(e.toString());
+		}
+	}
 }

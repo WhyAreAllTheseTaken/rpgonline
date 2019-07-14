@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import rpgonline.texture.TextureMap;
 import rpgonline.world.World;
 
 public abstract class ImageMeshLayer implements SkyLayer {
@@ -24,14 +25,25 @@ public abstract class ImageMeshLayer implements SkyLayer {
 		g.translate(c.getWidth() / 2, c.getHeight() / 2);
 		g.translate((float) x % imageWidth, (float) y % imageHeight);
 		
-		for (long tx = -2; tx <= 1; tx++) {
-			for (long ty = -2; ty <= 1; ty++) {
+		long dist_x = c.getWidth() / 2 / imageWidth + 1;
+		long dist_y = c.getHeight() / 2 / imageHeight + 1;
+		
+		Image current = null;
+		for (long tx = -dist_x; tx <= dist_x; tx++) {
+			for (long ty = -dist_y; ty <= dist_y; ty++) {
 				Image img = getImageAt(tx - (long) (x / imageWidth), ty - (long) (y / imageHeight));
 				if (img != null) {
-					g.drawImage(img, tx * imageWidth, ty * imageHeight, light);
+					if (TextureMap.getSheet(img) != current) {
+						if (current != null) current.endUse();
+						current = TextureMap.getSheet(img);
+						current.startUse();
+					}
+					light.bind();
+					img.drawEmbedded(tx * imageWidth, ty * imageHeight, imageWidth, imageHeight);
 				}
 			}
 		}
+		if (current != null) current.endUse();
 		
 		g.popTransform();
 	}
