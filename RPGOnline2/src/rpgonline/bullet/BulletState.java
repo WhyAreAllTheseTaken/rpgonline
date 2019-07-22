@@ -271,15 +271,18 @@ public class BulletState extends BasicGameState implements BaseScaleState {
 			exit();
 		}
 		
+		xv = x - px;
+		yv = y - py;
+		xv /= delf;
+		yv /= delf;
+		
 		for (int i = 0; i < bullets.size(); i++) {
 			Bullet b = bullets.get(i);
 			b.update(container, game, delf, x, y, x - px, y - py, this, bullets);
 		}
 		
-		xv = x - px;
-		yv = y - px;
 		AudioManager.setPlayerPos(x, 0, y);
-		AudioManager.setPlayerVelocity((x - px) / delf, 0, (y - py) / delf);
+		AudioManager.setPlayerVelocity(xv / RPGConfig.getTileSize(), 0, yv / RPGConfig.getTileSize());
 		
 		AudioManager.setMusic(getMusic());
 		
