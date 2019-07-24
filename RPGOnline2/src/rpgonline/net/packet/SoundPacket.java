@@ -1,8 +1,15 @@
 package rpgonline.net.packet;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import rpgonline.audio.AudioManager;
+import rpgonline.net.PacketType;
 
 public class SoundPacket implements NetPacket {
+	public static final byte PACKET_ID = (byte) 0xFF - 9;
+
 	private static final long serialVersionUID = 1589226011832111169L;
 	private final String id;
 	private final float v;
@@ -29,5 +36,27 @@ public class SoundPacket implements NetPacket {
 
 	public void apply() {
 		AudioManager.playSound(id, v, p, x, y, z, false, dx, dy, dz);
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException {
+		out.write(PACKET_ID);
+		out.writeUTF(id);
+		out.writeFloat(v);
+		out.writeFloat(p);
+		out.writeFloat(x);
+		out.writeFloat(y);
+		out.writeFloat(z);
+		out.writeFloat(dx);
+		out.writeFloat(dy);
+		out.writeFloat(dz);
+	}
+
+	public static class Type implements PacketType {
+		@Override
+		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
+			return new SoundPacket(in.readUTF(), in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat(),
+					in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat());
+		}
 	}
 }

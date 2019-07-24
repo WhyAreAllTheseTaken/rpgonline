@@ -6,29 +6,35 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
-public class ServerInfoPacket implements NetPacket {
-	public static final byte PACKET_ID = (byte) 0xFF - 8;
+public class TextPacket implements NetPacket {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3045769783056355431L;
+
+	public static final byte PACKET_ID = (byte) 0xFF - 12;
 	
-	private static final long serialVersionUID = -5803480872418619141L;
-	public final String type;
-	
-	public ServerInfoPacket(String type) {
+	private final String text;
+
+	public TextPacket(String text) {
 		super();
-		this.type = type;
+		this.text = text;
+	}
+
+	public String getText() {
+		return text;
 	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
-		out.writeUTF(type);
+		out.writeUTF(text);
 	}
 	
 	public static class Type implements PacketType {
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			return new ServerInfoPacket(in.readUTF());
+			return new TextPacket(in.readUTF());
 		}
 	}
-	
-	
 }

@@ -1,8 +1,15 @@
 package rpgonline.net.packet;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import rpgonline.net.PacketType;
 import rpgonline.net.ServerManager;
 
 public class LoginPacket implements NetPacket {
+	public static final byte PACKET_ID = (byte) 0xFF - 5;
+	
 	private static final long serialVersionUID = 246722656302089465L;
 	private final String token;
 	private final long id;
@@ -19,6 +26,20 @@ public class LoginPacket implements NetPacket {
 	
 	public long getID() {
 		return id;
+	}
+	
+	@Override
+	public void write(DataOutputStream out) throws IOException {
+		out.write(PACKET_ID);
+		out.writeUTF(token);
+		out.writeLong(id);
+	}
+	
+	public static class Type implements PacketType {
+		@Override
+		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
+			return new LoginPacket(in.readUTF(), in.readLong());
+		}
 	}
 	
 }
