@@ -1,5 +1,5 @@
 package se.liu.itn.stegu.simplexnoise;
-/*
+/**
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
  *
  * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
@@ -14,10 +14,13 @@ package se.liu.itn.stegu.simplexnoise;
  * Stefan Gustavson. You may use it as you see fit, but
  * attribution is appreciated.
  *
+ * @author Stefan Gustavson
  */
-
-public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
-	//Added to prevent instantiation.
+public class SimplexNoise {
+	// Simplex noise in 2D, 3D and 4D
+	/**
+	 * Added to prevent instantiation.
+	 */
 	private SimplexNoise() {
 		
 	}
@@ -66,7 +69,11 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 	private static final double F4 = (Math.sqrt(5.0) - 1.0) / 4.0;
 	private static final double G4 = (5.0 - Math.sqrt(5.0)) / 20.0;
 
-	// This method is a *lot* faster than using (int)Math.floor(x)
+	/**
+	 * This method is a *lot* faster than using (int)Math.floor(x)
+	 * @param x The value to floor.
+	 * @return The floor of x
+	 */
 	private static int fastfloor(double x) {
 		int xi = (int) x;
 		return x < xi ? xi - 1 : xi;
@@ -84,7 +91,12 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 		return g.x * x + g.y * y + g.z * z + g.w * w;
 	}
 
-	// 2D simplex noise
+	/**
+	 * 2D simplex noise
+	 * @param xin The X coordinate.
+	 * @param yin The Y coordinate.
+	 * @return A double value in the range -1 to 1
+	 */
 	public static double noise(double xin, double yin) {
 		double n0, n1, n2; // Noise contributions from the three corners
 		// Skew the input space to determine which simplex cell we're in
@@ -147,7 +159,13 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 		return 70.0 * (n0 + n1 + n2);
 	}
 
-	// 3D simplex noise
+	/**
+	 * 3D simplex noise
+	 * @param xin The X coordinate.
+	 * @param yin The Y coordinate.
+	 * @param zin The Z coordinate.
+	 * @return A double value in the range -1 to 1
+	 */
 	public static double noise(double xin, double yin, double zin) {
 		double n0, n1, n2, n3; // Noise contributions from the four corners
 		// Skew the input space to determine which simplex cell we're in
@@ -273,6 +291,14 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 	}
 
 	// 4D simplex noise, better simplex rank ordering method 2012-03-09
+	/**
+	 * 4D simplex noise
+	 * @param x The X coordinate.
+	 * @param y The Y coordinate.
+	 * @param z The Z coordinate.
+	 * @param w The W coordinate
+	 * @return A double value in the range -1 to 1
+	 */
 	public static double noise(double x, double y, double z, double w) {
 
 		double n0, n1, n2, n3, n4; // Noise contributions from the five corners
@@ -414,8 +440,10 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 		return 27.0 * (n0 + n1 + n2 + n3 + n4);
 	}
 
-	// Inner class to speed upp gradient computations
-	// (array access is a lot slower than member access)
+	/**
+	 * Inner class to speed up gradient computations (array access is a lot slower than member access)
+	 * @author Stefan Gustavson
+	 */
 	private static class Grad {
 		double x, y, z, w;
 
