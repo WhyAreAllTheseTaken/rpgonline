@@ -86,6 +86,8 @@ public final class RPGConfig {
 	
 	private static int filterMode = Image.FILTER_NEAREST;
 	
+	private static boolean snapToPixel = false;
+	
 	private static LangProvider lang = new LangProvider() {
 		@Override
 		public void setLang(String lang) {
@@ -369,6 +371,14 @@ public final class RPGConfig {
 
 	public static void setFilterMode(int filterMode) {
 		RPGConfig.filterMode = filterMode;
+	}
+
+	public static boolean isSnapToPixel() {
+		return snapToPixel;
+	}
+
+	public static void setSnapToPixel(boolean snapToPixel) {
+		RPGConfig.snapToPixel = snapToPixel;
 	}
 	
 	

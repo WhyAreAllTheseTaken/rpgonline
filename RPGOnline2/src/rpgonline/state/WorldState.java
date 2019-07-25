@@ -88,6 +88,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * A buffer for shader effects.
 	 */
 	protected Image buffer;
+	
+	protected Image buffer2;
 
 	/**
 	 * A buffer for lighting.
@@ -138,8 +140,36 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		Debugger.stop("game-render");
 
 		g.resetTransform();
+		
+		if (RPGConfig.isSnapToPixel() && post_enable) {
+			Debugger.start("snap");
+			if (buffer == null) {
+				buffer = new Image(container.getWidth(), container.getHeight());
+			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
+				buffer.destroy();
+				buffer = new Image(container.getWidth(), container.getHeight());
+			}
+			if (buffer2 == null) {
+				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
+			} else if (container.getWidth() / (int) (zoom) != buffer2.getWidth() || container.getHeight() / (int) (zoom) != buffer2.getHeight()) {
+				buffer2.destroy();
+				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
+			}
+			
+			buffer.setFilter(Image.FILTER_NEAREST);
+			buffer2.setFilter(Image.FILTER_NEAREST);
+			
+			g.copyArea(buffer, 0, 0);
+			g.drawImage(buffer.getScaledCopy(buffer2.getWidth(), buffer2.getHeight()), 0, 0);
+			g.copyArea(buffer2, 0, 0);
+			g.drawImage(buffer2.getScaledCopy(buffer.getWidth(), buffer.getHeight()), 0, 0);
+			
+			buffer.setFilter(Image.FILTER_LINEAR);
+			
+			Debugger.stop("snap");
+		}
 
-		if(post != null && post_enable) {
+		if (post != null && post_enable) {
 			Debugger.start("effects");
 			
 			if (buffer == null) {
