@@ -1,5 +1,6 @@
 package rpgonline.atmosphere;
 
+@Deprecated
 public class ChlorineFluorine extends Atmosphere {
 	public ChlorineFluorine(float chlorine, float fluorine, float density) {
 		setDensity(density);

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public abstract class Tag implements Serializable, Cloneable {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = 1432761640748613837L;
 	/**
@@ -212,6 +212,9 @@ public abstract class Tag implements Serializable, Cloneable {
 		return null;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public Tag clone() {
 		return new Tag(name, type) {
 			private static final long serialVersionUID = 4607805369849768459L;

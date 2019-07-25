@@ -2,7 +2,7 @@ package rpgonline.abt;
 
 public class TagBoolean extends Tag {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = -5639673941391616798L;
 	private boolean data;

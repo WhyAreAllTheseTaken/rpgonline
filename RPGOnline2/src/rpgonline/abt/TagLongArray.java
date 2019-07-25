@@ -2,7 +2,7 @@ package rpgonline.abt;
 
 public class TagLongArray extends TagGroup {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = -8423838098514114284L;
 

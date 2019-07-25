@@ -2,9 +2,9 @@ package rpgonline.abt;
 
 import java.util.Arrays;
 
-public class TagMatrix extends TagGroup {
+class TagMatrix extends TagGroup {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = -7750785924888483349L;
 

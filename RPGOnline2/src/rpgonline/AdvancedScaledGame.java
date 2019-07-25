@@ -1,5 +1,6 @@
 package rpgonline;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
@@ -48,6 +49,14 @@ public class AdvancedScaledGame implements Game {
 	 */
 	public AdvancedScaledGame(Game game, float w, float h) {
 		this.game = game;
+		Validate.finite(w, "Width must be finite: " + w);
+		Validate.finite(h, "Height must be finite: " + h);
+		if (w < 0) {
+			throw new IllegalArgumentException("Width cannot be negative: " + w);
+		}
+		if (h < 0) {
+			throw new IllegalArgumentException("Height cannot be negative: " + h);
+		}
 		this.w = w;
 		this.h = h;
 	}

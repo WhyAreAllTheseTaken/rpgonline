@@ -3,7 +3,7 @@ package rpgonline.abt;
 public class TagMatrix2 extends TagMatrix {
 
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = -8333903528570351735L;
 

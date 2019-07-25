@@ -2,7 +2,7 @@ package rpgonline.abt;
 
 public class TagByte extends Tag {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = -5823727651026695943L;
 	private byte data;

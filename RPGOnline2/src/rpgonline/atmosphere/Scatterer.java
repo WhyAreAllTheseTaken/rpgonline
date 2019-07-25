@@ -2,6 +2,7 @@ package rpgonline.atmosphere;
 
 import org.newdawn.slick.Color;
 
+@Deprecated
 public interface Scatterer {
 	public default Color scatter(Color c, float v) {
 		float bv = v + 1;

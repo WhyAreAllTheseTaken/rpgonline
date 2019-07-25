@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public class TagBigInt extends TagByteArray {
 
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = 5935071441164263751L;
 

@@ -3,6 +3,7 @@ package rpgonline.atmosphere;
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
 
+@Deprecated
 public class AtmosphereGas extends AtmosphereParticle {
 	public static final AtmosphereGas OXYGEN = new AtmosphereGas(158f / 255f, 162f / 255f, 207f / 255f, 0.01f);
 	public static final AtmosphereGas METHANE = new AtmosphereGas(208f / 255f, 135f / 255f, 77f / 255f, 0.7f);

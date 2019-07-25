@@ -2,6 +2,7 @@ package rpgonline.atmosphere;
 
 import org.newdawn.slick.Color;
 
+@Deprecated
 public class AtmosphereParticle implements Scatterer {
 	public float r;
 	public float g;

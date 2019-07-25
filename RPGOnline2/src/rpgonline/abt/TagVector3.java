@@ -2,7 +2,7 @@ package rpgonline.abt;
 
 public class TagVector3 extends TagDoubleArray {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = 7179822069996874868L;
 

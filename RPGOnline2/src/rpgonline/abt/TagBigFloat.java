@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class TagBigFloat extends TagString {
 	/**
-	 * 
+	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = 7745491369069382304L;
 

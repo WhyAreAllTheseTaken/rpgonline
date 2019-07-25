@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 
 import rpgonline.ColorUtils;
 
+@Deprecated
 public class Atmosphere {
 	private final Map<Scatterer, Float> gases = new HashMap<>();
 	private float density = 0;

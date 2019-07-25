@@ -18,7 +18,7 @@ import rpgonline.debug.Debugger;
  * 
  * Some of this code is adapted from
  * {@link http://blog.ruofeidu.com/postprocessing-brightness-contrast-hue-saturation-vibrance/}
- * and is designed to behave in a simular way to the ColorEffectsShader.
+ * and is designed to behave in a similar way to the ColorEffectsShader.
  * 
  * @see rpgonline.post.ColorEffectsShader
  * 
@@ -487,88 +487,217 @@ public class ColorUtils {
 	public static Color shiftHue(Color col, float shift) {
 		return toColor(shiftHue(toVector(col), shift));
 	}
-	
+
+	/**
+	 * A basic simulation of light scattering.
+	 * 
+	 * @param c The color to scatter.
+	 * @param v The amount to scatter by.
+	 * @return A new scattered color.
+	 * @deprecated This method causes more problems than it solves and overall
+	 *             doesn't create a good effect.
+	 */
+	@Deprecated
 	public static Color scatter(Color c, float v) {
 		float bv = v * 2 + 1;
 		float gv = v + 1;
 		float rv = v / 10 + 1;
-		
+
 		return new Color(c.r / rv, c.g / gv, c.b / bv);
 	}
-	
+
+	/**
+	 * <p>
+	 * Brightens the color if it is darker than a factor.
+	 * <p>
+	 * <p>
+	 * The brightness is given by {@code (r + g + b) / 3}.
+	 * </p>
+	 * 
+	 * @param c      The color to brighten.
+	 * @param factor The minimum brightness.
+	 * @return A new color instance.
+	 * @deprecated This method can make colors appear strange and isn't reliable.
+	 */
+	@Deprecated
 	public static Color dynamicBrighten(Color c, float factor) {
 		float r = c.r;
 		float g = c.g;
 		float b = c.b;
-		
+
 		float m = r + g + b;
 		m /= 3;
-		
+
 		if (m < factor) {
 			float f = factor / m;
 			r *= f;
 			g *= f;
 			b *= f;
 		}
-		
+
 		return new Color(r, g, b);
 	}
-	
+
+	/**
+	 * A system for generating sun colors at a specific time.
+	 * 
+	 * @author Tomas
+	 */
 	public static class SunColorGenerator {
+		/**
+		 * Sun color red channel.
+		 */
 		private PolynomialSplineFunction sun_r;
+		/**
+		 * Sun color green channel.
+		 */
 		private PolynomialSplineFunction sun_g;
+		/**
+		 * Sun color blue channel.
+		 */
 		private PolynomialSplineFunction sun_b;
+		/**
+		 * Sky color red channel.
+		 */
 		private PolynomialSplineFunction sky_r;
+		/**
+		 * Sky color green channel.
+		 */
 		private PolynomialSplineFunction sky_g;
+		/**
+		 * Sky color blue channel.
+		 */
 		private PolynomialSplineFunction sky_b;
+		/**
+		 * Sun x position.
+		 */
 		private PolynomialSplineFunction sun_x;
+		/**
+		 * Sun y position.
+		 */
 		private PolynomialSplineFunction sun_y;
+		/**
+		 * Moon x position.
+		 */
 		private PolynomialSplineFunction moon_x;
+		/**
+		 * Moon y position.
+		 */
 		private PolynomialSplineFunction moon_y;
+		/**
+		 * The scale factor for the size of the sun.
+		 */
 		private float sunSize;
 
+		@Deprecated
 		public static final float SUN_TEMP_SUPERNOVA = 100000000000f;
+		@Deprecated
 		public static final float SUN_TEMP_O = (40000f + 30000f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_B = (10000f + 30000f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_A = (7500f + 10000f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_F = (6000f + 7500f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_G = (5200f + 6000f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_K = (3700f + 5200f) / 2f;
+		@Deprecated
 		public static final float SUN_TEMP_M = (2400f + 3700f) / 2f;
-		
+
+		/**
+		 * Creates a generator based on various factors.
+		 * 
+		 * @param kelvin The temperature of the sun.
+		 * @param min    The minimum brightness.
+		 * @param mul    The brightness multiplier for the distance from the sun.
+		 * @deprecated This uses scattering.
+		 */
+		@Deprecated
 		public SunColorGenerator(float kelvin, float min, float mul) {
 			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, 1);
 		}
-		
+
+		/**
+		 * Creates a generator based on various factors.
+		 * 
+		 * @param kelvin The temperature of the sun.
+		 * @param min    The minimum brightness.
+		 * @param mul    The brightness multiplier for the distance from the sun.
+		 * @param dist   The distance from the sun.
+		 * @deprecated This uses scattering.
+		 */
+		@Deprecated
 		public SunColorGenerator(float kelvin, float min, float mul, float dist) {
 			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, dist);
 		}
-		
+
+		/**
+		 * Creates a generator based on various factors.
+		 * 
+		 * @param kelvin The temperature of the sun.
+		 * @param min    The minimum brightness.
+		 * @param mul    The brightness multiplier for the distance from the sun.
+		 * @param dist   The distance from the sun.
+		 * @param a      The atmospheric parameters for the surface of this world.
+		 * @deprecated This uses scattering.
+		 */
+		@Deprecated
 		public SunColorGenerator(float kelvin, float min, float mul, Atmosphere a, float dist) {
 			this(kelvin, min, a, new MoonAtmosphere(), mul, dist);
 		}
-		
+
+		/**
+		 * Creates a generator based on various factors.
+		 * 
+		 * @param kelvin The temperature of the sun.
+		 * @param min    The minimum brightness.
+		 * @param mul    The brightness multiplier for the distance from the sun.
+		 * @param dist   The distance from the sun.
+		 * @param a      The atmospheric parameters for the surface of this world.
+		 * @param ma     The atmospheric parameters for the surface of the moon.
+		 * @deprecated This uses scattering.
+		 */
+		@Deprecated
 		public SunColorGenerator(float kelvin, float min, Atmosphere a, Atmosphere ma, float mul, float dist) {
 			this(kelvin, new Color(0x898383), min, a, ma, mul, dist);
 		}
-		
-		public SunColorGenerator(float kelvin, Color moon, float min, Atmosphere a, Atmosphere ma, float mul, float dist) {
+
+		/**
+		 * Creates a generator based on various factors.
+		 * 
+		 * @param kelvin The temperature of the sun.
+		 * @param min    The minimum brightness.
+		 * @param mul    The brightness multiplier for the distance from the sun.
+		 * @param dist   The distance from the sun.
+		 * @param a      The atmospheric parameters for the surface of this world.
+		 * @param ma     The atmospheric parameters for the surface of the moon.
+		 * @param moon   The color of the moon.
+		 * @deprecated This uses scattering.
+		 */
+		@Deprecated
+		public SunColorGenerator(float kelvin, Color moon, float min, Atmosphere a, Atmosphere ma, float mul,
+				float dist) {
 			Color sunlight = ColorUtils.kelvinToColor(kelvin).multiply(new Color(1 / dist, 1 / dist, 1 / dist));
-			Color moonlight = ma.scatter(ma.scatter(sunlight, 2).multiply(moon).multiply(new Color(1f / 400000, 1f / 400000, 1f / 400000)), 2);
+			Color moonlight = ma.scatter(
+					ma.scatter(sunlight, 2).multiply(moon).multiply(new Color(1f / 400000, 1f / 400000, 1f / 400000)),
+					2);
 			float starBrightness = 1f / 12473835142f;
-			Color starlight = ColorUtils.kelvinToColor(9940).multiply(new Color(starBrightness, starBrightness, starBrightness));
-			
+			Color starlight = ColorUtils.kelvinToColor(9940)
+					.multiply(new Color(starBrightness, starBrightness, starBrightness));
+
 			Color mulC = new Color(mul, mul, mul);
-			
+
 			Color sunlight2 = a.scatter(sunlight, 1f).multiply(mulC);
 			Color sundown1 = a.scatter(sunlight, 4f).multiply(mulC);
 			Color sundown2 = a.scatter(sunlight, 7f).multiply(mulC);
-			
+
 			Color moonlight2 = a.scatter(moonlight, 1f).multiply(mulC);
 			Color starlight2 = a.scatter(starlight, 2f).multiply(mulC);
 			moonlight2.b *= 2;
 			starlight2.b *= 1;
-			
+
 			Color daySky = a.skyScatter(sunlight, 1f).multiply(mulC);
 			Color sundown1Sky = a.skyScatter(sunlight, 4f).multiply(mulC);
 			Color sundown2Sky = a.skyScatter(sunlight, 7f).multiply(mulC);
@@ -587,13 +716,39 @@ public class ColorUtils {
 				moonlightSky = Color.black;
 				starlightSky = Color.black;
 			}
-			
+
 			sunSize = 1 / dist;
-			
-			init(sunlight2, dynamicBrighten(moonlight2, min), sundown1, sundown2, dynamicBrighten(starlight2, min), daySky, sundown1Sky, sundown2Sky, moonlightSky, starlightSky);
+
+			init(sunlight2, dynamicBrighten(moonlight2, min), sundown1, sundown2, dynamicBrighten(starlight2, min),
+					daySky, sundown1Sky, sundown2Sky, moonlightSky, starlightSky);
 		}
-		
-		private void init(Color sunlight, Color moonlight, Color sundown1, Color sundown2, Color night, Color sunlightSky, Color sundown1Sky, Color sundown2Sky, Color moonlightSky, Color nightSky) {
+
+		/**
+		 * Creates a generator based on a set of colors.
+		 * 
+		 * @param sunlight     The color of light at noon.
+		 * @param moonlight    The color of light at midnight.
+		 * @param sundown1     The color of light during early sundown / late sunrise.
+		 * @param sundown2     The color of light during late sundown / early sunrise.
+		 * @param night        The color of light bat night.
+		 * @param sunlightSky  The color of the sky at noon.
+		 * @param sundown1Sky  The color of the sky during early sundown / late sunrise.
+		 * @param sundown2Sky  The color of the sky during late sundown / early sunrise.
+		 * @param moonlightSky The color of the sky at midnight.
+		 * @param nightSky     The color of the sky at night.
+		 * @param sunSize      The size of the sun (1 is normal).
+		 */
+		public SunColorGenerator(Color sunlight, Color moonlight, Color sundown1, Color sundown2, Color night,
+				Color sunlightSky, Color sundown1Sky, Color sundown2Sky, Color moonlightSky, Color nightSky,
+				float sunSize) {
+			this.sunSize = sunSize;
+
+			init(sunlight, moonlight, sundown1, sundown2, night, sunlightSky, sundown1Sky, sundown2Sky, moonlightSky,
+					nightSky);
+		}
+
+		private void init(Color sunlight, Color moonlight, Color sundown1, Color sundown2, Color night,
+				Color sunlightSky, Color sundown1Sky, Color sundown2Sky, Color moonlightSky, Color nightSky) {
 			double[] x = { 0, 4.5, 5, 5.5, 6.5, 17, 18.5, 19, 20, 24, };
 			double[] r = { moonlight.r, night.r, sundown2.r, sundown1.r, sunlight.r, sunlight.r, sundown1.r, sundown2.r,
 					night.r, moonlight.r, };
@@ -608,62 +763,118 @@ public class ColorUtils {
 			sun_b = interp.interpolate(x, b);
 
 			double[] sky_x = { 0, 4, 5, 5.5, 6.5, 17, 18.5, 19, 20.5, 24 };
-			double[] sky_r = { moonlightSky.r, nightSky.r, sundown2Sky.r, sundown1Sky.r, sunlightSky.r, sunlightSky.r, sundown1Sky.r, sundown2Sky.r,
-					nightSky.r, moonlightSky.r, };
-			double[] sky_g = { moonlightSky.g, nightSky.g, sundown2Sky.g, sundown1Sky.g, sunlightSky.g, sunlightSky.g, sundown1Sky.g, sundown2Sky.g,
-					nightSky.g, moonlightSky.g, };
-			double[] sky_b = { moonlightSky.b, nightSky.b, sundown2Sky.b, sundown1Sky.b, sunlightSky.b, sunlightSky.b, sundown1Sky.b, sundown2Sky.b,
-					nightSky.b, moonlightSky.b, };
+			double[] sky_r = { moonlightSky.r, nightSky.r, sundown2Sky.r, sundown1Sky.r, sunlightSky.r, sunlightSky.r,
+					sundown1Sky.r, sundown2Sky.r, nightSky.r, moonlightSky.r, };
+			double[] sky_g = { moonlightSky.g, nightSky.g, sundown2Sky.g, sundown1Sky.g, sunlightSky.g, sunlightSky.g,
+					sundown1Sky.g, sundown2Sky.g, nightSky.g, moonlightSky.g, };
+			double[] sky_b = { moonlightSky.b, nightSky.b, sundown2Sky.b, sundown1Sky.b, sunlightSky.b, sunlightSky.b,
+					sundown1Sky.b, sundown2Sky.b, nightSky.b, moonlightSky.b, };
 
 			this.sky_r = interp.interpolate(sky_x, sky_r);
 			this.sky_g = interp.interpolate(sky_x, sky_g);
 			this.sky_b = interp.interpolate(sky_x, sky_b);
-			
-			double[] sun_t = { 0, 3, 5, 12, 18, 20, 24};
-			double[] sun_x = { -2, -1.1, -0.95, 0, 0.95, 1.1, 2};
-			double[] sun_y = { 1.5, 0.9, 0.25, -0.75, 0.25, 0.9, 1.5};
-			double[] moon_t = { -4,   0,     3,    5,   12,  18, 20,   24,     28};
-			double[] moon_x = { -0.9, 0,     0.9,  2,   0,   -2, -0.9, 0,      0.9};
-			double[] moon_y = { 0.25, -0.75, 0.25, 0.9, 1.5, 0.9, 0.25, -0.75, 0.25};
-			
+
+			double[] sun_t = { 0, 3, 5, 12, 18, 20, 24 };
+			double[] sun_x = { -2, -1.1, -0.95, 0, 0.95, 1.1, 2 };
+			double[] sun_y = { 1.5, 0.9, 0.25, -0.75, 0.25, 0.9, 1.5 };
+			double[] moon_t = { -4, 0, 3, 5, 12, 18, 20, 24, 28 };
+			double[] moon_x = { -0.9, 0, 0.9, 2, 0, -2, -0.9, 0, 0.9 };
+			double[] moon_y = { 0.25, -0.75, 0.25, 0.9, 1.5, 0.9, 0.25, -0.75, 0.25 };
+
 			this.sun_x = interp.interpolate(sun_t, sun_x);
 			this.sun_y = interp.interpolate(sun_t, sun_y);
 			this.moon_x = interp.interpolate(moon_t, moon_x);
 			this.moon_y = interp.interpolate(moon_t, moon_y);
 		}
 
+		/**
+		 * Gets the sunlight color at a specified time starting at midnight.
+		 * 
+		 * @param time A time (in milliseconds).
+		 * @return A new color instance.
+		 */
 		public Color getSunLight(long time) {
 			return getSunLight((time - 1561248000000L) / 1000.0 / 60.0 / 60.0 % 24);
 		}
 
+		/**
+		 * Gets the sunlight color at a specified time starting at midnight.
+		 * 
+		 * @param time A time (in hours).
+		 * @return A new color instance.
+		 */
 		public Color getSunLight(double hour) {
-			return new Color((float) sun_r.value(hour), (float) sun_g.value(hour), (float) sun_b.value(hour));
+			return new Color((float) sun_r.value(hour % 24), (float) sun_g.value(hour % 24),
+					(float) sun_b.value(hour % 24));
 		}
-		
+
+		/**
+		 * Gets the sky color at a specified time starting at midnight.
+		 * 
+		 * @param time A time (in milliseconds).
+		 * @return A new color instance.
+		 */
 		public Color getSkyColor(long time) {
 			return getSkyColor((time - 1561248000000L) / 1000.0 / 60.0 / 60.0 % 24);
 		}
-		
+
+		/**
+		 * Gets the sky color at a specified time starting at midnight.
+		 * 
+		 * @param time A time (in hours).
+		 * @return A new color instance.
+		 */
 		public Color getSkyColor(double hour) {
 			return new Color((float) sky_r.value(hour), (float) sky_g.value(hour), (float) sky_b.value(hour));
 		}
-		
+
+		/**
+		 * Gets the scale factor for the size of the sun.
+		 * 
+		 * @return A float in the range 0 to Infinity.
+		 */
 		public float getSunSize() {
 			return sunSize;
 		}
-		
+
+		/**
+		 * Gets the x position of the sun at a specified hour.
+		 * 
+		 * @param hour A time (in hours)
+		 * @return A double value.
+		 */
 		public double getSunX(double hour) {
-			return sun_x.value(hour);
+			return sun_x.value(hour % 24);
 		}
+
+		/**
+		 * Gets the y position of the sun at a specified hour.
+		 * 
+		 * @param hour A time (in hours)
+		 * @return A double value.
+		 */
 		public double getSunY(double hour) {
-			return sun_y.value(hour);
+			return sun_y.value(hour % 24);
 		}
-		
+
+		/**
+		 * Gets the x position of the moon at a specified hour.
+		 * 
+		 * @param hour A time (in hours)
+		 * @return A double value.
+		 */
 		public double getMoonX(double hour) {
-			return moon_x.value(hour);
+			return moon_x.value(hour % 24);
 		}
+
+		/**
+		 * Gets the y position of the moon at a specified hour.
+		 * 
+		 * @param hour A time (in hours)
+		 * @return A double value.
+		 */
 		public double getMoonY(double hour) {
-			return moon_y.value(hour);
+			return moon_y.value(hour % 24);
 		}
 	}
 }

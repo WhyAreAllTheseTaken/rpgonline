@@ -1,5 +1,6 @@
 package rpgonline.atmosphere;
 
+@Deprecated
 public class EarthAtmosphere extends Atmosphere {
 	public EarthAtmosphere() {
 		setDensity(1);
