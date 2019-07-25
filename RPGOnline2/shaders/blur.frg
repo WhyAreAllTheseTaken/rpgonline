@@ -1,3 +1,4 @@
+//Fragment Shader
 uniform sampler2D texel;
 
 uniform float ss;
@@ -6,6 +7,7 @@ float hypot(float x, float y) {
 	return sqrt(x * x + y * y);
 }
 
+// A shader for applying a blur effect
 void main() {  
 	vec2 loc = gl_TexCoord[0].st;
 	
