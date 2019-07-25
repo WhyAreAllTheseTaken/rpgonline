@@ -29,7 +29,8 @@ import rpgonline.RPGConfig;
 /**
  * <p>
  * A class for storing, managing and mapping textures.
- * <p>
+ * </p>
+ * <p>Textures are loaded using the filter method described by {@link rpgonline.RPGConfig#getFilterMode()}</p>
  * <p>
  * Textures can be stored in 2 ways: by a string id or by index. When a texture
  * is added it is automatically put into a map with a key based on its string ID
@@ -121,7 +122,7 @@ public class TextureMap {
 		Image img = new Image(tex);
 
 		// Disabled interpolation.
-		img.setFilter(Image.FILTER_NEAREST);
+		img.setFilter(RPGConfig.getFilterMode());
 
 		// Add the texture.
 		addTexture(s, img);
@@ -248,7 +249,7 @@ public class TextureMap {
 			throw new SlickException(e.toString());
 		}
 		Image img = new Image(tex);
-		img.setFilter(Image.FILTER_NEAREST);
+		img.setFilter(RPGConfig.getFilterMode());
 
 		addSpriteMap(s, img, tw, th);
 	}
@@ -460,7 +461,7 @@ public class TextureMap {
 				Texture tex;
 				tex = TextureLoader.getTexture("PNG", new BufferedInputStream(f.toURI().toURL().openStream()));
 				Image img2 = new Image(tex);
-				img2.setFilter(Image.FILTER_NEAREST);
+				img2.setFilter(RPGConfig.getFilterMode());
 
 				SpriteSheet ss = new SpriteSheet(img2, sw, sh);
 

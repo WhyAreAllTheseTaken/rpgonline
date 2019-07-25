@@ -1,5 +1,7 @@
 package rpgonline;
 
+import org.newdawn.slick.Image;
+
 import rpgonline.input.ControllerInputProvider;
 import rpgonline.input.KeyboardInputProvider;
 import rpgonline.input.MapControllerProvider;
@@ -81,6 +83,8 @@ public final class RPGConfig {
 	private static boolean particles = false;
 	
 	private static boolean hitbox = false;
+	
+	private static int filterMode = Image.FILTER_NEAREST;
 	
 	private static LangProvider lang = new LangProvider() {
 		@Override
@@ -357,6 +361,14 @@ public final class RPGConfig {
 
 	public static void setHitbox(boolean hitbox) {
 		RPGConfig.hitbox = hitbox;
+	}
+
+	public static int getFilterMode() {
+		return filterMode;
+	}
+
+	public static void setFilterMode(int filterMode) {
+		RPGConfig.filterMode = filterMode;
 	}
 	
 	
