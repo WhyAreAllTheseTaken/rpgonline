@@ -28,19 +28,60 @@ import rpgonline.tile.Tile;
 import rpgonline.world.LightSource;
 import rpgonline.world.World;
 
+/**
+ * A class that allows for the editing of game worlds.
+ * @author Tomas
+ * 
+ * @see rpgonline.state.WorldState
+ */
 public class WorldEditor extends WorldState {
+	/**
+	 * The current world to edit.
+	 */
 	private World world;
+	/**
+	 * If lights/other effects should be enabled.
+	 */
 	private boolean light;
+	/**
+	 * The currently selected tile.
+	 */
 	private int tile = 0;
+	/**
+	 * The currently selected tile set.
+	 */
 	private int set = 0;
+	/**
+	 * The tile sets.
+	 */
 	private final List<List<Tile>> tiles;
+	/**
+	 * The current z value.
+	 */
 	private long z;
+	/**
+	 * The cooldown for actions.
+	 */
 	private float cooldown = 0;
+	/**
+	 * The brush size.
+	 */
 	private int size = 2;
+	/**
+	 * <p>The brush mode.</p>
+	 * <table>
+	 * <tr>
+	 * <td>0</td><td>Draw Mode</td>
+	 * <td>1</td><td>Random (very light)</td>
+	 * <td>2</td><td>Delete</td>
+	 * <td>3</td><td>Random (light)</td>
+	 * </tr>
+	 * <table>
+	 */
 	private int brush_mode = 0;
 
 	/**
-	 * Creates a new {@code WorldState}.
+	 * Creates a new {@code WorldEditor}.
 	 * 
 	 * @param id the ID of the state.
 	 */
@@ -158,7 +199,7 @@ public class WorldEditor extends WorldState {
 	List<TileTexture> textures = new ArrayList<>();
 
 	/**
-	 * A method that renders the world.
+	 * {@inheritDoc}
 	 */
 	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		List<LightSource> lights = null;
