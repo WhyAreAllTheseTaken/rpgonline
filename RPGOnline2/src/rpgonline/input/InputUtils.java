@@ -6,6 +6,12 @@ import org.newdawn.slick.Input;
 import rpgonline.RPGConfig;
 
 public final class InputUtils {
+	/**
+	 Prevent instantiation
+	 */
+	private InputUtils() {
+		
+	}
 	public static final String WALK_NORTH = "walk_north";
 	public static final String WALK_EAST = "walk_east";
 	public static final String WALK_SOUTH = "walk_south";

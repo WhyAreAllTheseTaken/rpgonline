@@ -8,7 +8,13 @@ import org.newdawn.slick.util.Log;
 
 import rpgonline.RPGConfig;
 
-public class Lang {
+public final class Lang {
+	/**
+	 Prevent instantiation
+	 */
+	private Lang() {
+		
+	}
 	private static List<LangPack> packs = new ArrayList<LangPack>();
 	
 	public static LangPack getPack(String id) {

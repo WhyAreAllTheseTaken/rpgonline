@@ -20,7 +20,18 @@ import paulscode.sound.libraries.LibraryJavaSound;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 import rpgonline.RPGConfig;
 
+/**
+ * <p>A class for managing audio</p>
+ * @author Tomas
+ *
+ */
 public final class AudioManager {
+	/**
+	 * Prevent instantiation
+	 */
+	private AudioManager() {
+		
+	}
 	private static SoundSystem system;
 	private static float rf;
 

@@ -24,7 +24,13 @@ import rpgonline.debug.Debugger;
  * 
  * @author Tomas, Ruo Feidu, Tanner Hellend
  */
-public class ColorUtils {
+public final class ColorUtils {
+	/**
+	 * Prevent instantiation.
+	 */
+	private ColorUtils() {
+		
+	}
 	/**
 	 * Converts a temperature in kelvin to the colour output (RGB) of a black body
 	 * at the specified temperature.

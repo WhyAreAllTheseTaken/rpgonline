@@ -6,6 +6,13 @@ import java.util.Map;
 import rpgonline.RPGConfig;
 
 public final class Debugger {
+	/**
+	 Prevent instantiation
+	 */
+	private Debugger() {
+		
+	}
+	
 	private static final Map<Thread, DebugFrame> debug = new HashMap<>();
 	private static Thread renderThread;
 	

@@ -3,6 +3,12 @@ package rpgonline.net;
 import rpgonline.net.login.UserServer;
 
 public final class ServerManager {
+	/**
+	 Prevent instantiation
+	 */
+	private ServerManager() {
+		
+	}
 	private static Client client;
 	private static Server server;
 	private static UserServer user_server;

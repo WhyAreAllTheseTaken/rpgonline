@@ -16,10 +16,10 @@ package se.liu.itn.stegu.simplexnoise;
  *
  * @author Stefan Gustavson
  */
-public class SimplexNoise {
+public final class SimplexNoise {
 	// Simplex noise in 2D, 3D and 4D
 	/**
-	 * Added to prevent instantiation.
+	 * Prevent instantiation.
 	 */
 	private SimplexNoise() {
 		

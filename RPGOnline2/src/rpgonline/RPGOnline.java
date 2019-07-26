@@ -15,6 +15,12 @@ import slickshader.SlickShader;
  */
 public final class RPGOnline {
 	/**
+	 * Prevent instantiation
+	 */
+	private RPGOnline() {
+		
+	}
+	/**
 	 * The current version of the RPGOnline library.
 	 */
 	public static final Version VERSION = new Version("0.7.0-d18+1562400459");

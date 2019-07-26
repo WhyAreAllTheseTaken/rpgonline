@@ -6,7 +6,13 @@ import java.io.File;
  * A class to assist with storing save files.
  * @author Tomas
  */
-public class FolderHelper {
+public final class FolderHelper {
+	/**
+	 * Prevent instantiation
+	 */
+	private FolderHelper() {
+		
+	}
 	/**
 	 * <p>Gets a file representing a folder suitable for storing program save files / config files.</p>
 	 * <p>The currently supported platforms are listed below:

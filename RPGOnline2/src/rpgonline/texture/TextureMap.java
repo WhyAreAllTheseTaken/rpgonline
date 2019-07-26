@@ -68,7 +68,7 @@ import rpgonline.RPGConfig;
  */
 public class TextureMap {
 	/**
-	 * Added to prevent instantiation.
+	 * Prevent instantiation.
 	 */
 	private TextureMap() {
 
