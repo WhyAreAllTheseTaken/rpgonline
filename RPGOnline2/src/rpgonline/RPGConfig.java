@@ -80,7 +80,7 @@ public final class RPGConfig {
 	 */
 	private static ControllerInputProvider controllerInput = new MapControllerProvider();
 	
-	private static boolean mapped = true;
+	private static boolean mapped = false;
 	
 	private static boolean debug = false;
 	
