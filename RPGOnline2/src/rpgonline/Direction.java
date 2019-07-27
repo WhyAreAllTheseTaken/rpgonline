@@ -78,8 +78,10 @@ public enum Direction {
 	 * Returns the inverse of this direction 90% of the time. May also return a
 	 * direction perpendicular to this direction. e.g. {@code EAST.flip() ~= WEST}.
 	 * 
+	 * @deprecated This method is mostly useless.
 	 * @return A direction.
 	 */
+	@Deprecated
 	public Direction bounce() {
 		switch (this) {
 		case EAST:
