@@ -139,7 +139,7 @@ public abstract class RPGGame extends StateBasedGame {
 	 * @param container The container holding the game.
 	 * @param game      This game.
 	 * @param counter   An interface providing access to a loading screen.
-	 * @throws SlickException Indicates an internal error occured in the game.
+	 * @throws SlickException Indicates an internal error occurred in the game.
 	 */
 	public abstract void textureLoad(GameContainer container, RPGGame game, LoadCounter counter) throws SlickException;
 
@@ -152,10 +152,17 @@ public abstract class RPGGame extends StateBasedGame {
 	 * @param container The container holding the game.
 	 * @param game      This game.
 	 * @param counter   An interface providing access to a loading screen.
-	 * @throws SlickException Indicates an internal error occured in the game.
+	 * @throws SlickException Indicates an internal error occurred in the game.
 	 */
 	public abstract void load(GameContainer container, RPGGame game, LoadCounter counter) throws SlickException;
-	
+
+	/**
+	 * A method that gets the hashmap containing all states in this game. This
+	 * method uses reflection to bypass slick2Ds restrictions.
+	 * 
+	 * @return A hashmap.
+	 * @throws SlickException If an error occurs trying to get all game states.
+	 */
 	@SuppressWarnings("rawtypes")
 	public HashMap getStates() throws SlickException {
 		Field f;
