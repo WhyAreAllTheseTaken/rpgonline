@@ -42,6 +42,10 @@ public final class ColorUtils {
 	 * @return a {@code Color} object.
 	 */
 	public static Color kelvinToColor(float kelvin) {
+		if (kelvin < 0) {
+			throw new IllegalArgumentException("A temperature cannot be less that 0K");
+		}
+		
 		Debugger.start("kelvin-compute");
 		float temp = kelvin / 100;
 
