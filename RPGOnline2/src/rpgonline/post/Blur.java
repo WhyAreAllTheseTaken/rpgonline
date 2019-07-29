@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import slickshader.Shader;
 
 /**
- * A blur effect.
+ * <p>A 2 pass gaussian blur effect.</p>
  * 
  * @author Tomas
  */
@@ -30,6 +30,7 @@ public class Blur implements PostEffect {
 			throws SlickException {
 		buffer.setFilter(Image.FILTER_LINEAR);
 		
+		//XXX Two files needed because uniforms wouldn't change.
 		if (shader == null) {
 			shader = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
 		}
@@ -44,6 +45,7 @@ public class Blur implements PostEffect {
 		// vertical pass
 		g.drawImage(buffer, 0, 0);
 		
+		//TODO Is this needed?
 		Shader.forceFixedShader();
 		
 		buffer.flushPixelData();
