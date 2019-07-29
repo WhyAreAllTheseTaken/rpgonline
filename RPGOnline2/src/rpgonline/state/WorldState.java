@@ -125,7 +125,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		Debugger.initRender();
+		
 	}
 
 	/**
@@ -651,6 +651,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		Debugger.initRender();
+		
 		this.last_delta = delta;
 
 		float delf = delta / 1000f;
