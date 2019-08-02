@@ -14,6 +14,7 @@ import slickshader.Shader;
  * 
  * @author Tomas
  */
+@Deprecated
 public class EdgeResample extends ShaderEffect {
 	private float ss;
 
