@@ -15,6 +15,7 @@ import rpgonline.net.packet.AmbientPacket;
 import rpgonline.net.packet.ChunkRequestPacket;
 import rpgonline.net.packet.EntityRemovePacket;
 import rpgonline.net.packet.KeyPacket;
+import rpgonline.net.packet.LightsPacket;
 import rpgonline.net.packet.LoginPacket;
 import rpgonline.net.packet.MovePacket;
 import rpgonline.net.packet.MusicPacket;
@@ -52,6 +53,7 @@ public class BasicPacketConnection implements Connection {
 		types[StopAmbientPacket.PACKET_ID & 0xFF] = new StopAmbientPacket.Type();
 		types[WindPacket.PACKET_ID & 0xFF] = new WindPacket.Type();
 		types[TextPacket.PACKET_ID & 0xFF] = new TextPacket.Type();
+		types[LightsPacket.PACKET_ID & 0xFF] = new LightsPacket.Type();
 		
 		return types;
 	}

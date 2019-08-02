@@ -4,26 +4,46 @@ import java.io.Serializable;
 
 import org.newdawn.slick.Color;
 
-public interface LightSource extends Serializable {
-	public double getLX();
-
-	public double getLY();
-
-	public default float getR() {
-		return getColor().r * getBrightness();
+public class LightSource implements Serializable {
+	private static final long serialVersionUID = 3084200355976862821L;
+	public double x;
+	public double y;
+	public Color c;
+	public float brightness;
+	
+	public LightSource(double x, double y, Color c, float brightness) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.c = c;
+		this.brightness = brightness;
 	}
 
-	public default float getG() {
-		return getColor().g * getBrightness();
+	public double getLX() {
+		return x;
 	}
 
-	public default float getB() {
-		return getColor().b * getBrightness();
+	public double getLY() {
+		return y;
 	}
 
-	public Color getColor();
+	public float getR() {
+		return c.r;
+	}
 
-	public default float getBrightness() {
-		return 1;
+	public float getG() {
+		return c.g;
+	}
+
+	public float getB() {
+		return c.b;
+	}
+
+	public Color getColor() {
+		return c;
+	}
+
+	public float getBrightness() {
+		return brightness;
 	}
 }

@@ -64,29 +64,7 @@ public class ABTWorld extends ChunkWorld {
 					
 					Color color = new Color(lr, lg, lb);
 					
-					addLight(new LightSource() {
-						private static final long serialVersionUID = -7735632885503935298L;
-
-						@Override
-						public double getLX() {
-							return x;
-						}
-
-						@Override
-						public double getLY() {
-							return y;
-						}
-
-						@Override
-						public Color getColor() {
-							return color;
-						}
-						
-						@Override
-						public float getBrightness() {
-							return b;
-						}
-					});
+					addLight(new LightSource(x, y, color, b));
 				}
 				
 				TagGroup entities = (TagGroup) d.getTags().getTag("entities");
