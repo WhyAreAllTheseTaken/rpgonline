@@ -89,7 +89,7 @@ public class TextureMap {
 	/**
 	 * A map of textures to their sprite sheet.
 	 */
-	public static Map<Image, Image> sheets = new HashMap<>();
+	private static Map<Image, Image> sheets = new HashMap<>();
 
 	/**
 	 * Adds a texture to the texture map.
