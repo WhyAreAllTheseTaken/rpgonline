@@ -5,6 +5,12 @@ import org.newdawn.slick.GameContainer;
 import slickshader.Shader;
 
 public class SaturateShader extends ShaderEffect {
+	/**
+	 * 0 - Grayscale
+	 * 0..1 - Desaturated
+	 * 1 - Normal
+	 * 1.. - Saturated.
+	 */
 	private float sat;
 	
 	public SaturateShader(float sat) {
