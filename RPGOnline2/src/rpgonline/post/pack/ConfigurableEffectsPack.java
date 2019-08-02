@@ -10,6 +10,7 @@ import rpgonline.post.MultiEffect;
 import rpgonline.post.PostEffect;
 import rpgonline.post.ToggledEffect;
 
+@Deprecated
 public class ConfigurableEffectsPack extends MultiEffect {
 	public static final ConfigurableEffectsPack INSTANCE = new ConfigurableEffectsPack();
 	

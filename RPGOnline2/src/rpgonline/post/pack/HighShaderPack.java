@@ -9,6 +9,7 @@ import rpgonline.post.MultiEffect;
  * 
  * @author Tomas
  */
+@Deprecated
 public class HighShaderPack extends MultiEffect {
 	/**
 	 * Create the shader pack.
