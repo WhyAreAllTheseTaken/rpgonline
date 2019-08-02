@@ -3,6 +3,8 @@ package rpgonline;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import org.lwjgl.opengl.Display;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -173,5 +175,29 @@ public abstract class RPGGame extends StateBasedGame {
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			throw new SlickException(e.toString());
 		}
+	}
+	
+	public void setFullscreen(boolean fullscreen) throws SlickException {
+		if (isFullscreen() == fullscreen) {
+			return;
+		}
+		if (fullscreen) {
+			((AppGameContainer) getContainer()).setDisplayMode(getContainer().getScreenWidth(), getContainer().getScreenHeight(),
+					true);
+		} else {
+			int[] size = getFullScreenSize();
+			((AppGameContainer) getContainer()).setDisplayMode(size[0], size[1], false);
+		}
+	}
+	
+	protected int[] getFullScreenSize() {
+		return new int[] {
+				(int) (getContainer().getScreenWidth() / 1.5f),
+				(int) (getContainer().getScreenHeight() / 1.5f)
+		};
+	}
+	
+	public boolean isFullscreen() {
+		return Display.isFullscreen();
 	}
 }
