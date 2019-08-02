@@ -5,6 +5,7 @@ package rpgonline.post;
  * 
  * @author Tomas
  */
+@Deprecated
 public class ColorBoostEffect extends ShaderEffect {
 
 	/**
