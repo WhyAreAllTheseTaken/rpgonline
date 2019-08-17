@@ -18,7 +18,6 @@ import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-import rpgonline.RPGConfig;
 
 /**
  * <p>
@@ -164,33 +163,30 @@ public final class AudioManager {
 		volumes.put("sound", 1f);
 		volumes.put("ambient", 1f);
 
-		//TODO This should probably be permanently on.
-		if (RPGConfig.isSoundSystemDaemon()) {
-			Thread t = new Thread("Sound Daemon") {
-				@Override
-				public void run() {
-					while (true) {
-						system.checkFadeVolumes();
+		Thread t = new Thread("Sound Daemon") {
+			@Override
+			public void run() {
+				while (true) {
+					system.checkFadeVolumes();
 
-						for (int i = 0; i < ambient.size(); i++) {
-							String s = ambient.get(i);
+					for (int i = 0; i < ambient.size(); i++) {
+						String s = ambient.get(i);
 
-							if (!system.playing(s)) {
-								ambient.remove(s);
-							}
-						}
-
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							Log.error(e);
+						if (!system.playing(s)) {
+							ambient.remove(s);
 						}
 					}
+
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						Log.error(e);
+					}
 				}
-			};
-			t.setDaemon(true);
-			t.start();
-		}
+			}
+		};
+		t.setDaemon(true);
+		t.start();
 	}
 
 	/**

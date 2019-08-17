@@ -41,16 +41,6 @@ public final class RPGConfig {
 	 */
 	private static int autoSpriteMapSize = 512;
 	/**
-	 * Determines whether an additional thread is used to manage audio fading. A
-	 * thread will still be used when needed for features that cannot be done with
-	 * just SoundSystem. <b>This must be set before the sound system is
-	 * initialised.</b>
-	 * 
-	 * @see rpgonline.audio.AudioManager
-	 * @see paulscode.sound.SoundSystem
-	 */
-	private static boolean soundSystemDaemon = true;
-	/**
 	 * Determines if the wind effect will be used by the rendering engine. If set to
 	 * {@code false} any information provided by the game engine about wind will be
 	 * set to 0.
@@ -243,39 +233,6 @@ public final class RPGConfig {
 			throw new IllegalArgumentException("autoSpriteMapSize must be greater than 0.");
 		}
 		RPGConfig.autoSpriteMapSize = autoSpriteMapSize;
-	}
-
-	/**
-	 * Determines whether an additional thread is used to manage audio fading. A
-	 * thread will still be used when needed for features that cannot be done with
-	 * just SoundSystem. <b>This must be set before the sound system is
-	 * initialised.</b>
-	 * 
-	 * @return true if an additional thread should be used false otherwise.
-	 * 
-	 * @see rpgonline.audio.AudioManager
-	 * @see paulscode.sound.SoundSystem
-	 * @see #setSoundSystemDaemon(boolean)
-	 */
-	public static boolean isSoundSystemDaemon() {
-		return soundSystemDaemon;
-	}
-
-	/**
-	 * Determines whether an additional thread is used to manage audio fading. A
-	 * thread will still be used when needed for features that cannot be done with
-	 * just SoundSystem. <b>This must be set before the sound system is
-	 * initialised.</b>
-	 * 
-	 * @param soundSystemDaemon true if an additional thread should be used false
-	 *                          otherwise.
-	 * 
-	 * @see rpgonline.audio.AudioManager
-	 * @see paulscode.sound.SoundSystem
-	 * @see #isSoundSystemDaemon()
-	 */
-	public static void setSoundSystemDaemon(boolean soundSystemDaemon) {
-		RPGConfig.soundSystemDaemon = soundSystemDaemon;
 	}
 
 	/**
