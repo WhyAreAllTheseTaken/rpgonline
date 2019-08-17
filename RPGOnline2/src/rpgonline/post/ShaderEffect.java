@@ -30,6 +30,17 @@ public class ShaderEffect implements PostEffect {
 	protected Shader shader;
 
 	/**
+	 * Creates a shader effect with a basic vertex shader that returns the inputed coordinates.
+	 * 
+	 * @param fragment The fragment shader.
+	 */
+	public ShaderEffect(URL fragment) {
+		super();
+		this.vertex = ShaderEffect.class.getResource("/generic.vrt");
+		this.fragment = fragment;
+	}
+	
+	/**
 	 * Creates a shader effect.
 	 * 
 	 * @param vertex   The vertex shader.
