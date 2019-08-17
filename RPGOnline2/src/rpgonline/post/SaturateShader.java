@@ -4,6 +4,11 @@ import org.newdawn.slick.GameContainer;
 
 import slickshader.Shader;
 
+/**
+ * <strong>It may be best to use VibranceEffect instead as it offers better results for improving colours.</strong>
+ * @author Tomas
+ *
+ */
 public class SaturateShader extends ShaderEffect {
 	/**
 	 * 0 - Grayscale
