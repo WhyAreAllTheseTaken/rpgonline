@@ -57,8 +57,14 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	protected double y;
 	
+	/**
+	 * Previous X position of the player used for velocity calculations.
+	 */
 	protected double px;
 	
+	/**
+	 * Previous Y position of the player used for velocity calculations.
+	 */
 	protected double py;
 	/**
 	 * The world zoom.
@@ -89,6 +95,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	protected Image buffer;
 	
+	/**
+	 * A second (smaller) buffer for pixel perfect effects.
+	 */
 	protected Image buffer2;
 
 	/**
@@ -101,14 +110,29 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	protected PostEffect post = null;
 
+	/**
+	 * The GUI toggle.
+	 */
 	protected boolean gui = true;
 
+	/**
+	 * Cooldown for GUI buttons.
+	 */
 	protected float gui_cooldown = 0.25f;
 	
+	/**
+	 * The background for this world.
+	 */
 	protected SkyLayer sky;
 	
+	/**
+	 * Currently displaying particles.
+	 */
 	protected List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(128));
 	
+	/**
+	 * If shaders are enabled.
+	 */
 	protected boolean post_enable = true;
 
 	/**
@@ -219,8 +243,14 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		Debugger.stop("render");
 	}
 
-	List<TileTexture> textures = new ArrayList<>();
-	List<EntityTexture> entityTextures = new ArrayList<>();
+	/**
+	 * A reusable list of tile textures for faster rendering.
+	 */
+	protected List<TileTexture> textures = new ArrayList<>();
+	/**
+	 * A reusable list of entity textures for faster rendering.
+	 */
+	protected List<EntityTexture> entityTextures = new ArrayList<>();
 	
 	/**
 	 * A method that renders the world.
@@ -622,6 +652,17 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		}
 	}
 	
+	/**
+	 * Expands a single tile texture into all its subtextures.
+	 * @param t The texture to expand.
+	 * @param l The list to expand into.
+	 * @param x The tile X position.
+	 * @param y The tile Y position.
+	 * @param z The tile Z position.
+	 * @param world The current world.
+	 * @param tile The current tile.
+	 * @param state The tile's current state.
+	 */
 	protected void expandTexture(TileTexture t, List<TileTexture> l, long x, long y, long z, World world, Tile tile, String state) {
 		if (t.isPure()) {
 			l.add(t);
@@ -634,6 +675,16 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		}
 	}
 	
+	/**
+	 * Expands a single entity texture into all its subtextures.
+	 * @param t The texture to expand.
+	 * @param l The list to expand into.
+	 * @param x The entity X position.
+	 * @param y The entity Y position.
+	 * @param world The current world.
+	 * @param wind The current wind.
+	 * @param e The current entity.
+	 */
 	protected void expandTexture(EntityTexture t, List<EntityTexture> l, double x, double y, World world, float wind, Entity e) {
 		if (t.isPure()) {
 			l.add(t);
@@ -751,6 +802,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		}
 	}
 
+	/**
+	 * A method called upon game exit.
+	 */
 	public void exit() {
 		AudioManager.dispose();
 		System.exit(0);
@@ -841,34 +895,64 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		this.post = post;
 	}
 
+	/**
+	 * Determines if the GUI is currently displayed.
+	 * @return {@code true} if the GUI is enabled, {@code false} otherwise.
+	 */
 	public boolean isGuiShown() {
 		return gui;
 	}
 
+	/**
+	 * Sets if the GUI is currently displayed.
+	 * @param gui {@code true} if the GUI should be enabled, {@code false} otherwise.
+	 */
 	public void setGuiShown(boolean gui) {
 		this.gui = gui;
 	}
 
+	/**
+	 * Gets the current sky.
+	 * @return A {@code SkyLayer} or {@code null} if no sky is set.
+	 */
 	public SkyLayer getSky() {
 		return sky;
 	}
 
+	/**
+	 * Sets the current sky.
+	 * @param sky A {@code SkyLayer} or {@code null} to disable sky rendering.
+	 */
 	public void setSky(SkyLayer sky) {
 		this.sky = sky;
 	}
 	
+	/**
+	 * Adds a particle to this state.
+	 * @param p The particle to add.
+	 */
 	public void addParticle(Particle p) {
 		particles.add(p);
 	}
 	
+	/**
+	 * Adds a collection of particles to this state.
+	 * @param p The particles to add.
+	 */
 	public void addParticles(Collection<? extends Particle> p) {
 		particles.addAll(p);
 	}
 	
+	/**
+	 * Clears all particles.
+	 */
 	public void clearParticles() {
 		particles.clear();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void scale(float base) {
 		base_scale = base;
