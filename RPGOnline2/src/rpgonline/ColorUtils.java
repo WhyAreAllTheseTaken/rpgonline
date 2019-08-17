@@ -519,7 +519,7 @@ public final class ColorUtils {
 	/**
 	 * <p>
 	 * Brightens the color if it is darker than a factor.
-	 * <p>
+	 * </p>
 	 * <p>
 	 * The brightness is given by {@code (r + g + b) / 3}.
 	 * </p>
