@@ -555,7 +555,7 @@ public class LocalDiskUserServer implements UserServer {
 		 * @param salt The password salt.
 		 * @return A hash string.
 		 */
-		private static String get_SHA_512_SecurePassword(String passwordToHash, byte[] salt) {
+		private static String getSHA512SecurePassword(String passwordToHash, byte[] salt) {
 			String generatedPassword = null;
 			try {
 				MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -585,7 +585,7 @@ public class LocalDiskUserServer implements UserServer {
 				System.exit(-1);
 				this.salt = new byte[0];
 			}
-			this.hash = get_SHA_512_SecurePassword(password, salt);
+			this.hash = getSHA512SecurePassword(password, salt);
 		}
 		
 		/**
@@ -598,7 +598,7 @@ public class LocalDiskUserServer implements UserServer {
 			if (!login.equalsIgnoreCase(login)) {
 				return false;
 			}
-			return get_SHA_512_SecurePassword(password, salt).equals(hash);
+			return getSHA512SecurePassword(password, salt).equals(hash);
 		}
 		
 		/**
