@@ -23,6 +23,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**Log Files**
+Please attach log files.
+
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows]
  - OS Version [e.g. 10 (1906)]
