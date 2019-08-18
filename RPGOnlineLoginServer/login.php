@@ -1,6 +1,6 @@
 <?php
 // 64bit invalid token.
-$invalid_token = "ffffffffffffffffffffffffffffffff";
+$invalid_token = "ffffffffffffffff";
 
 // These should be set for each game.
 $sql_username = "example_user";
