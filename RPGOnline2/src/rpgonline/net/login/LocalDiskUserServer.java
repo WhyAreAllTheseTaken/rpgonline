@@ -28,11 +28,16 @@ public class LocalDiskUserServer implements UserServer {
 	/**
 	 * The length of a token in bytes.
 	 */
-	public static final int TOKEN_LENGTH = 512 / 8;
+	public static final int TOKEN_LENGTH = 64 / 8;
 	/**
 	 * A token what is invalid.
+	 * 
+	 * @deprecated use rpgonline.net.login.UserServer.INVALID_TOKEN
+	 * 
+	 * @see rpgonline.net.login.UserServer#INVALID_TOKEN
 	 */
-	public static final String INVALID_TOKEN = generateInvalidToken(TOKEN_LENGTH);
+	@Deprecated
+	public static final String INVALID_TOKEN = UserServer.INVALID_TOKEN;
 	
 	/**
 	 * ID of the game.
@@ -69,7 +74,7 @@ public class LocalDiskUserServer implements UserServer {
 			return token;
 		}
 		
-		return INVALID_TOKEN;
+		return UserServer.INVALID_TOKEN;
 	}
 	
 	/**
@@ -123,7 +128,7 @@ public class LocalDiskUserServer implements UserServer {
 			
 			return token2;
 		}
-		return INVALID_TOKEN;
+		return UserServer.INVALID_TOKEN;
 	}
 
 	/**
@@ -296,6 +301,8 @@ public class LocalDiskUserServer implements UserServer {
 	 * @param length The length of the token in bytes (in multiples of 4).
 	 * @return A hex string of the token.
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private static String generateInvalidToken(int length) {
 		StringBuilder sb = new StringBuilder();
 		

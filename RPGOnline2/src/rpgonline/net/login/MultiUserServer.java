@@ -60,7 +60,7 @@ public class MultiUserServer implements UserServer {
 		 */
 		@Override
 		public String getLoginToken(String login, String password) {
-			return LocalDiskUserServer.INVALID_TOKEN;
+			return UserServer.INVALID_TOKEN;
 		}
 
 		/**
@@ -76,7 +76,7 @@ public class MultiUserServer implements UserServer {
 		 */
 		@Override
 		public String getConnectToken(String token) {
-			return LocalDiskUserServer.INVALID_TOKEN;
+			return UserServer.INVALID_TOKEN;
 		}
 
 		/**
