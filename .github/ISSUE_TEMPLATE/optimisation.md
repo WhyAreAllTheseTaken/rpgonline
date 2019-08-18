@@ -8,7 +8,9 @@ assignees: ''
 ---
 
 **Describe the optimisation**
-A clear and concise description of what the bug is.
+A clear and concise description of what the optimisation is.
+
+**Example Code (Optional)**
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows]
