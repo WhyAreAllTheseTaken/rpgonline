@@ -15,9 +15,37 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.newdawn.slick.util.Log;
 
+/**
+ * <p>
+ * A web connection using the HTTPS-POST method. It is usually better to use
+ * {@code WebUserServer} instead as it will automatically choose the correct
+ * protocol.
+ * </p>
+ * <p>
+ * Any data request is sent with the POST method. The server is also pinged on
+ * port 80 to determine if the server is up. A new connection is opened and
+ * closed for each request for data.
+ * </p>
+ * 
+ * @author Tomas
+ * 
+ * @see rpgonline.net.login.HTTPProtocol
+ * @see rpgonline.net.login.WebUserServer
+ */
 public class HTTPSProtocol implements ServerProtocol {
-	private String url;
+	/**
+	 * The site URL.
+	 */
+	private final String url;
 	
+	/**
+	 * Constructs a new interface for a HTTPS connection.
+	 * 
+	 * @param url The URL to connect to. <b>http:// should use
+	 *            {@code HTTPProtocol} instead.</b>
+	 * 
+	 * @see rpgonline.net.login.HTTPProtocol
+	 */
 	public HTTPSProtocol(String url) {
 		if (url.startsWith("https://")) {
 			this.url = url;
@@ -27,6 +55,9 @@ public class HTTPSProtocol implements ServerProtocol {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String request(Map<String, String> args) {
 		try {
@@ -77,6 +108,10 @@ public class HTTPSProtocol implements ServerProtocol {
 			return "";
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isUp() {
 		try {

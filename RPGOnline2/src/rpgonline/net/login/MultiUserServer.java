@@ -3,6 +3,10 @@ package rpgonline.net.login;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A user server that combines multiple servers in a priority list.
+ * @author Tomas
+ */
 public class MultiUserServer implements UserServer {
 	/**
 	 * A server used if not server is available.
@@ -51,57 +55,89 @@ public class MultiUserServer implements UserServer {
 	 * @author Tomas
 	 */
 	private static class DownServer implements UserServer {
-
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getLoginToken(String login, String password) {
 			return LocalDiskUserServer.INVALID_TOKEN;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public boolean isValidToken(String token) {
 			return false;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getConnectToken(String token) {
 			return LocalDiskUserServer.INVALID_TOKEN;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public boolean isValidConnectToken(String token) {
 			return false;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void clearConnectToken(String token) {
 			
 		}
 
 		@Override
+		/**
+		 * {@inheritDoc}
+		 */
 		public long getUserID(String login) {
 			return -1;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public long getUserIDToken(String token) {
 			return -1;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public long getUserIDToken2(String token) {
 			return -1;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public long getUserIDUsername(String username) {
 			return -1;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getUsername(long id) {
 			return Long.toHexString(id);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public boolean isUp() {
 			return false;
@@ -109,56 +145,89 @@ public class MultiUserServer implements UserServer {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getLoginToken(String login, String password) {
 		return getBestServer().getLoginToken(login, password);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isValidToken(String token) {
 		return getBestServer().isValidToken(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getConnectToken(String token) {
 		return getBestServer().getConnectToken(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isValidConnectToken(String token) {
 		return getBestServer().isValidConnectToken(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void clearConnectToken(String token) {
 		getBestServer().clearConnectToken(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserID(String login) {
 		return getBestServer().getUserID(login);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDToken(String token) {
 		return getBestServer().getUserIDToken(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDToken2(String token) {
 		return getBestServer().getUserIDToken2(token);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDUsername(String username) {
 		return getBestServer().getUserIDUsername(username);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getUsername(long id) {
 		return getBestServer().getUsername(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isUp() {
 		return getBestServer().isUp();

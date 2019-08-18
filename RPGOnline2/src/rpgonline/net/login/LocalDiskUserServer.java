@@ -20,17 +20,37 @@ import org.newdawn.slick.util.Log;
 
 import rpgonline.FolderHelper;
 
+/**
+ * A user server stored in appdata on the local disk.
+ * @author Tomas
+ */
 public class LocalDiskUserServer implements UserServer {
+	/**
+	 * The length of a token in bytes.
+	 */
 	public static final int TOKEN_LENGTH = 512 / 8;
+	/**
+	 * A token what is invalid.
+	 */
 	public static final String INVALID_TOKEN = generateInvalidToken(TOKEN_LENGTH);
 	
+	/**
+	 * ID of the game.
+	 */
 	private final String appID;
 
+	/**
+	 * Constructs a new {@code LocalDiskUserServer}.
+	 * @param appID The ID name of the app. (a package name can be used).
+	 */
 	public LocalDiskUserServer(String appID) {
 		super();
 		this.appID = appID;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getLoginToken(String login, String password) {
 		if (isValidLogin(login, password)) {
@@ -52,6 +72,9 @@ public class LocalDiskUserServer implements UserServer {
 		return INVALID_TOKEN;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	private boolean isValidLogin(String login, String password) {
 		Database d = getDatabase();
 		
@@ -64,6 +87,9 @@ public class LocalDiskUserServer implements UserServer {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isValidToken(String token) {
 		Database d = getDatabase();
@@ -77,6 +103,9 @@ public class LocalDiskUserServer implements UserServer {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getConnectToken(String token) {
 		if (isValidToken(token)) {
@@ -97,6 +126,9 @@ public class LocalDiskUserServer implements UserServer {
 		return INVALID_TOKEN;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isValidConnectToken(String token) {
 		Database d = getDatabase();
@@ -112,6 +144,9 @@ public class LocalDiskUserServer implements UserServer {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void clearConnectToken(String token) {
 		Database d = getDatabase();
@@ -125,6 +160,9 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserID(String login) {
 		Database d = getDatabase();
@@ -138,6 +176,9 @@ public class LocalDiskUserServer implements UserServer {
 		return -1;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getUsername(long id) {
 		Database d = getDatabase();
@@ -151,6 +192,9 @@ public class LocalDiskUserServer implements UserServer {
 		return Long.toHexString(id);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDToken(String token) {
 		Database d = getDatabase();
@@ -164,6 +208,9 @@ public class LocalDiskUserServer implements UserServer {
 		return l;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDToken2(String token) {
 		Database d = getDatabase();
@@ -177,6 +224,9 @@ public class LocalDiskUserServer implements UserServer {
 		return l;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getUserIDUsername(String username) {
 		Database d = getDatabase();
@@ -190,6 +240,10 @@ public class LocalDiskUserServer implements UserServer {
 		return -1;
 	}
 	
+	/**
+	 * Gets the database stored in a file for this.
+	 * @return A non-null database object.
+	 */
 	private Database getDatabase() {
 		try {
 			return new Database(FolderHelper.createAppDataFolder("rpgonline", "userverify", appID, "database"));
@@ -199,10 +253,20 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 	
-	public void saveDatabase(Database d) throws IOException {
+	/**
+	 * Saves the database to a file.
+	 * @param d The database to save.
+	 * @throws IOException If an error occurs saving data.
+	 */
+	private void saveDatabase(Database d) throws IOException {
 		d.save(FolderHelper.createAppDataFolder("rpgonline", "userverify", appID, "database"));
 	}
 	
+	/**
+	 * Generates a token.
+	 * @param length The length of the token in bytes (in multiples of 4).
+	 * @return A hex string of the token.
+	 */
 	private static String generateToken(int length) {
 		SecureRandom r = new SecureRandom();
 		
@@ -227,6 +291,11 @@ public class LocalDiskUserServer implements UserServer {
 		return token;
 	}
 	
+	/**
+	 * Generates a token with a value of -1 in 2s compliment.
+	 * @param length The length of the token in bytes (in multiples of 4).
+	 * @return A hex string of the token.
+	 */
 	private static String generateInvalidToken(int length) {
 		StringBuilder sb = new StringBuilder();
 		
@@ -237,21 +306,48 @@ public class LocalDiskUserServer implements UserServer {
 		return sb.toString();
 	}
 
-	private class Database {
+	/**
+	 * A class storing local user data.
+	 * @author Tomas
+	 */
+	private static class Database {
+		/**
+		 * A map of tokens.
+		 */
 		private Map<String, Long> tokens = new HashMap<>();
+		/**
+		 * A map of connect tokens.
+		 */
 		private Map<String, Long> tokens2 = new HashMap<>();
+		/**
+		 * A map of users.
+		 */
 		private List<User> users = new ArrayList<>();
 		
-		Database(File folder) throws IOException {
+		/**
+		 * Loads a database from a folder.
+		 * @param folder The folder containing the database.
+		 * @throws IOException If an error occurs loading the database/
+		 */
+		private Database(File folder) throws IOException {
 			readTokens(new DataInputStream(new FileInputStream(new File(folder, "tokens.dat"))));
 			readConnectTokens(new DataInputStream(new FileInputStream(new File(folder, "nettokens.dat"))));
 			readUsers(new DataInputStream(new FileInputStream(new File(folder, "users.dat"))));
 		}
 		
-		Database() {
+		/**
+		 * Constructs an empty database.
+		 */
+		private Database() {
 			
 		}
 		
+		/**
+		 * Reads all tokens from binary data.
+		 * @param in The source of the data.
+		 * @throws IOException If an error occurs reading data.
+		 * @see #writeTokens(DataOutputStream)
+		 */
 		protected void readTokens(DataInputStream in) throws IOException {
 			while (in.available() > 0) {
 				tokens.put(in.readUTF(), in.readLong());
@@ -259,6 +355,12 @@ public class LocalDiskUserServer implements UserServer {
 			in.close();
 		}
 		
+		/**
+		 * Reads all connect tokens from binary data.
+		 * @param in The source of the data.
+		 * @throws IOException If an error occurs reading data.
+		 * @see #writeConnectTokens(DataOutputStream)
+		 */
 		protected void readConnectTokens(DataInputStream in) throws IOException {
 			while (in.available() > 0) {
 				String token = in.readUTF();
@@ -269,6 +371,12 @@ public class LocalDiskUserServer implements UserServer {
 			in.close();
 		}
 		
+		/**
+		 * Reads all users from binary data.
+		 * @param in The source of the data.
+		 * @throws IOException If an error occurs reading data.
+		 * @see #writeUsers(DataOutputStream)
+		 */
 		protected void readUsers(DataInputStream in) throws IOException {
 			while (in.available() > 0) {
 				String login = in.readUTF();
@@ -287,6 +395,12 @@ public class LocalDiskUserServer implements UserServer {
 			in.close();
 		}
 		
+		/**
+		 * Writes all tokens to a stream in a binary format.
+		 * @param out The stream to write to.
+		 * @throws IOException If an error occurs writing data.
+		 * @see #readTokens(DataInputStream)
+		 */
 		protected void writeTokens(DataOutputStream out) throws IOException {
 			for (Entry<String, Long> t : tokens.entrySet()) {
 				out.writeUTF(t.getKey());
@@ -296,6 +410,12 @@ public class LocalDiskUserServer implements UserServer {
 			out.close();
 		}
 		
+		/**
+		 * Writes all connect tokens to a stream in a binary format.
+		 * @param out The stream to write to.
+		 * @throws IOException If an error occurs writing data.
+		 * @see #readConnectTokens(DataInputStream)
+		 */
 		protected void writeConnectTokens(DataOutputStream out) throws IOException {
 			for (Entry<String, Long> t : tokens2.entrySet()) {
 				out.writeUTF(t.getKey());
@@ -305,6 +425,12 @@ public class LocalDiskUserServer implements UserServer {
 			out.close();
 		}
 		
+		/**
+		 * Writes all users to a stream in a binary format.
+		 * @param out The stream to write to.
+		 * @throws IOException If an error occurs writing data.
+		 * @see #readUsers(DataInputStream)
+		 */
 		protected void writeUsers(DataOutputStream out) throws IOException {
 			for (User u : users) {
 				out.writeUTF(u.login);
@@ -322,7 +448,12 @@ public class LocalDiskUserServer implements UserServer {
 			out.close();
 		}
 		
-		void save(File folder) throws IOException {
+		/**
+		 * Saves the database to a file.
+		 * @param folder The folder to write to.
+		 * @throws IOException If an error occurs writing data.
+		 */
+		private void save(File folder) throws IOException {
 			Log.info("Writing to " + folder.getAbsolutePath());
 			File tokens = new File(folder, "tokens.dat");
 			tokens.createNewFile();
@@ -337,13 +468,39 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 
+	/**
+	 * A representation of a user.
+	 * @author Tomas
+	 */
 	public static class User {
+		/**
+		 * The user's login.
+		 */
 		private String login;
+		/**
+		 * The user's password hash.
+		 */
 		private String hash;
+		/**
+		 * The user's username.
+		 */
 		private String username;
+		/**
+		 * The password salt.
+		 */
 		private byte[] salt;
+		/**
+		 * The user ID.
+		 */
 		private final long id;
 
+		/**
+		 * Creates a new user.
+		 * @param login The user's login.
+		 * @param password The user's password.
+		 * @param id The user ID.
+		 * @param username The user's username.
+		 */
 		public User(String login, String password, long id, String username) {
 			super();
 			this.login = login;
@@ -352,6 +509,14 @@ public class LocalDiskUserServer implements UserServer {
 			this.username = username;
 		}
 
+		/**
+		 * Creates a user object with existing data.
+		 * @param login The user's login.
+		 * @param hash The user's password hash.
+		 * @param id The user ID.
+		 * @param salt The password salt.
+		 * @param username The user's username.
+		 */
 		public User(String login, String hash, String username, byte[] salt, long id) {
 			super();
 			this.login = login;
@@ -361,6 +526,11 @@ public class LocalDiskUserServer implements UserServer {
 			this.id = id;
 		}
 
+		/**
+		 * Generates a salt using {@code SHA1PRNG}
+		 * @return A random 16-item byte array.
+		 * @throws NoSuchAlgorithmException If {@code SHA1PRNG} is not available.
+		 */
 		private static byte[] getSalt() throws NoSuchAlgorithmException {
 			// Always use a SecureRandom generator
 			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -372,6 +542,12 @@ public class LocalDiskUserServer implements UserServer {
 			return salt;
 		}
 
+		/**
+		 * Hashes a password.
+		 * @param passwordToHash The password to hash.
+		 * @param salt The password salt.
+		 * @return A hash string.
+		 */
 		private static String get_SHA_512_SecurePassword(String passwordToHash, byte[] salt) {
 			String generatedPassword = null;
 			try {
@@ -389,6 +565,10 @@ public class LocalDiskUserServer implements UserServer {
 			return generatedPassword;
 		}
 		
+		/**
+		 * Sets the user's password.
+		 * @param password The password to set.
+		 */
 		public void setPassword(String password) {
 			try {
 				this.salt = getSalt();
@@ -401,6 +581,12 @@ public class LocalDiskUserServer implements UserServer {
 			this.hash = get_SHA_512_SecurePassword(password, salt);
 		}
 		
+		/**
+		 * Verifies if a login and password match this user.
+		 * @param login The login to test.
+		 * @param password The password to test.
+		 * @return {@code true} if the login and password matches this user, {@code false} otherwise.
+		 */
 		public boolean verify(String login, String password) {
 			if (!login.equalsIgnoreCase(login)) {
 				return false;
@@ -408,27 +594,51 @@ public class LocalDiskUserServer implements UserServer {
 			return get_SHA_512_SecurePassword(password, salt).equals(hash);
 		}
 		
+		/**
+		 * Gets this user's ID.
+		 * @return A long value.
+		 */
 		public long getID() {
 			return id;
 		}
 		
+		/**
+		 * Gets this user's username.
+		 * @return A username string.
+		 */
 		public String getUsername() {
 			return username;
 		}
 		
+		/**
+		 * Gets this user's login.
+		 * @return A login string.
+		 */
 		public String getLogin() {
 			return login;
 		}
 
+		/**
+		 * Sets this user's login.
+		 * @param login A login string.
+		 */
 		public void setLogin(String login) {
 			this.login = login;
 		}
 
+		/**
+		 * Sets this user's username.
+		 * @param username A username string.
+		 */
 		public void setUsername(String username) {
 			this.username = username;
 		}
 	}
 	
+	/**
+	 * The main method for the CLI for the user server.
+	 * @param args Command line arguments.
+	 */
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		
@@ -510,6 +720,11 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 	
+	/**
+	 * Adds a user to the disk.
+	 * @param s The input from the console.
+	 * @param server The user server.
+	 */
 	private static void add(Scanner s, LocalDiskUserServer server) {
 		System.out.print("Login: ");
 		String login = s.nextLine();
@@ -533,6 +748,11 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 	
+	/**
+	 * Changes the details of a user on disk.
+	 * @param s The input from the console.
+	 * @param server The user server.
+	 */
 	private static void change(Scanner s, LocalDiskUserServer server) {
 		System.out.print("Username: ");
 		String username = s.nextLine();
@@ -559,6 +779,11 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 	
+	/**
+	 * Removes a user from the disk.
+	 * @param s The input from the console.
+	 * @param server The user server.
+	 */
 	private static void remove(Scanner s, LocalDiskUserServer server) {
 		System.out.print("Username: ");
 		String username = s.nextLine();
@@ -578,6 +803,11 @@ public class LocalDiskUserServer implements UserServer {
 		}
 	}
 	
+	/**
+	 * Gets the next user ID.
+	 * @param server The current user server.
+	 * @return A long value that is not -1 and does not match previous entries in the server.
+	 */
 	private static long getNextID(LocalDiskUserServer server) {
 		Database d = server.getDatabase();
 		
@@ -598,6 +828,9 @@ public class LocalDiskUserServer implements UserServer {
 		return id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isUp() {
 		return true;
