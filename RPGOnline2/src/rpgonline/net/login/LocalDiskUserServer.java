@@ -97,6 +97,10 @@ public class LocalDiskUserServer implements UserServer {
 	 */
 	@Override
 	public boolean isValidToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return false;
+		}
+		
 		Database d = getDatabase();
 		
 		for (Entry<String, Long> t : d.tokens.entrySet()) {
@@ -136,6 +140,10 @@ public class LocalDiskUserServer implements UserServer {
 	 */
 	@Override
 	public boolean isValidConnectToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return false;
+		}
+		
 		Database d = getDatabase();
 		
 		for (Entry<String, Long> t : d.tokens2.entrySet()) {
@@ -144,7 +152,7 @@ public class LocalDiskUserServer implements UserServer {
 			}
 		}
 		
-		System.err.println(token + " is invalid");
+		Log.error(token + " is invalid");
 		
 		return false;
 	}

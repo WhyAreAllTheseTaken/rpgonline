@@ -55,6 +55,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public boolean isValidToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return false;
+		}
 		return Boolean.parseBoolean(sp.request("mode=tokenvalid", "token=" + token));
 	}
 
@@ -63,6 +66,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public String getConnectToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return UserServer.INVALID_TOKEN;
+		}
 		return sp.request("mode=token2get", "token=" + token);
 	}
 
@@ -71,6 +77,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public boolean isValidConnectToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return false;
+		}
 		return Boolean.parseBoolean(sp.request("mode=token2valid", "token=" + token));
 	}
 
@@ -79,6 +88,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public void clearConnectToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return;
+		}
 		sp.request("mode=token2clear", "token=" + token);
 	}
 
@@ -95,6 +107,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public long getUserIDToken(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return -1;
+		}
 		return Long.parseLong(sp.request("mode=idtoken", "token=" + token));
 	}
 
@@ -103,6 +118,9 @@ public class WebUserServer implements UserServer {
 	 */
 	@Override
 	public long getUserIDToken2(String token) {
+		if (token.equals(UserServer.INVALID_TOKEN)) {
+			return -1;
+		}
 		return Long.parseLong(sp.request("mode=idtoken2", "token=" + token));
 	}
 
