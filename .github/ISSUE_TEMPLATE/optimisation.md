@@ -2,7 +2,7 @@
 name: Optimisation
 about: Create a report to help us optimise code.
 title: ''
-labels: ''
+labels: optimisation
 assignees: ''
 
 ---
