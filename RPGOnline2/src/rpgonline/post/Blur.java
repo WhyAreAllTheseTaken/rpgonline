@@ -14,17 +14,37 @@ import slickshader.Shader;
  * @author Tomas
  */
 public class Blur implements PostEffect {
+	/**
+	 * Vertical shader.
+	 */
 	private Shader shader;
+	/**
+	 * Horizontal shader.
+	 */
 	private Shader shader2;
+	/**
+	 * Size of the blur.
+	 */
 	public int size;
+	/**
+	 * Deviation of the blur.
+	 */
 	public float sigma;
 	
+	/**
+	 * Constructs a new blur effect.
+	 * @param size The size of the blur.
+	 * @param sigma The deviation of the blur.
+	 */
 	public Blur(int size, float sigma) {
 		super();
 		this.size = size;
 		this.sigma = sigma;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
 			throws SlickException {

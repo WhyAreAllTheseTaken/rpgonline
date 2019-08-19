@@ -4,11 +4,21 @@ import org.newdawn.slick.GameContainer;
 
 import slickshader.Shader;
 
+/**
+ * An implementation of FXAA anti-aliasing.
+ * @author Tomas
+ */
 public class FXAA extends ShaderEffect {
+	/**
+	 * Constructs a new FXAA effect.
+	 */
 	public FXAA() {
 		super(FXAA.class.getResource("/generic.vrt"), FXAA.class.getResource("/fxaa.frg"));
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void updateShader(Shader shader, GameContainer c) {
 		shader.setUniformFloatVariable("u_texelStep", 1f / c.getWidth(), 1f / c.getHeight());

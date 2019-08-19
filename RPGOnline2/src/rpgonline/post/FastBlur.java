@@ -6,14 +6,31 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * A fast (but very bad) blur algorithm.
+ * @author Tomas
+ */
 public class FastBlur implements PostEffect {
+	/**
+	 * The buffer used for this effect.
+	 */
 	private Image buffer2;
+	/**
+	 * The size of the blur.
+	 */
 	private int size;
 	
+	/**
+	 * Constructs a new FastBlur instance
+	 * @param size The radius of the blur.
+	 */
 	public FastBlur(int size) {
 		this.size = size * 2 + 1;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
 			throws SlickException {
