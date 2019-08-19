@@ -26,6 +26,10 @@ public interface PostEffect {
 	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
 			throws SlickException;
 
+	/**
+	 * Disposes of and destroys all resources used by this effect.
+	 * @throws SlickException If an error occurs in the Slick2D library.
+	 */
 	public default void dispose() throws SlickException {
 
 	}

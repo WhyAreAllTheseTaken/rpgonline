@@ -48,5 +48,13 @@ public class FastBlur implements PostEffect {
 		g.copyArea(buffer2, 0, 0);
 		g.drawImage(buffer2.getScaledCopy(buffer.getWidth(), buffer.getHeight()), 0, 0);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() throws SlickException {
+		buffer2.destroy();
+	}
 
 }

@@ -64,4 +64,13 @@ public class Bloom extends MultiEffect {
 		g.drawImage(buffer2, 0, 0);
 		g.setDrawMode(Graphics.MODE_NORMAL);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() throws SlickException {
+		super.dispose();
+		buffer2.destroy();
+	}
 }

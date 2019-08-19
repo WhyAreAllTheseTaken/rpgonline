@@ -77,16 +77,25 @@ public class ShaderEffect implements PostEffect {
 	/**
 	 * Updates any shader uniforms
 	 * 
-	 * @param shader the shader to update.
+	 * @param shader The shader to update.
+	 * @param c The game container.
 	 */
 	protected void updateShader(Shader shader, GameContainer c) {
 
 	}
 	
+	/**
+	 * Sets up the shader.
+	 * @param shader The shader to set up.
+	 * @param c The game container.
+	 */
 	protected void initShader(Shader shader, GameContainer c) {
 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispose() {
 		if (shader != null) {

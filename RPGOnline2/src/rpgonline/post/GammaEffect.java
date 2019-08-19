@@ -30,6 +30,9 @@ public class GammaEffect extends ShaderEffect {
 		this(2.2f);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void updateShader(Shader shader, GameContainer c) {
 		super.updateShader(shader, c);

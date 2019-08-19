@@ -55,6 +55,9 @@ public class MultiEffect implements PostEffect {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispose() throws SlickException {
 		for (PostEffect e : effects) {

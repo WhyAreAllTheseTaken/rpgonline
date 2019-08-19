@@ -56,6 +56,9 @@ public class MotionBlur implements PostEffect {
 		last.flushPixelData();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispose() throws SlickException {
 		if (last != null) {

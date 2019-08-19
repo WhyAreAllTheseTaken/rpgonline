@@ -44,7 +44,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static DynamicHeatShader2 getHeatShader() {
-		return (DynamicHeatShader2) heatShader.getE();
+		return (DynamicHeatShader2) heatShader.getEffect();
 	}
 
 	public static void setHeatShader(boolean b) {
@@ -52,7 +52,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static FragmentExpose getExpose() {
-		return (FragmentExpose) expose.getE();
+		return (FragmentExpose) expose.getEffect();
 	}
 
 	public static void setExpose(boolean b) {
@@ -60,7 +60,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static LowExpose getExpose2() {
-		return (LowExpose) expose2.getE();
+		return (LowExpose) expose2.getEffect();
 	}
 
 	public static void setExpose2(boolean b) {
@@ -68,7 +68,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static MotionBlur getMotionBlur() {
-		return (MotionBlur) motionBlur.getE();
+		return (MotionBlur) motionBlur.getEffect();
 	}
 
 	public static void setMotionBlur(boolean b) {
@@ -76,7 +76,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static ColorEffectsShader getColorEffects() {
-		return (ColorEffectsShader) colorEffects.getE();
+		return (ColorEffectsShader) colorEffects.getEffect();
 	}
 
 	public static void setColorEffects(boolean b) {
@@ -84,7 +84,7 @@ public class ConfigurableEffectsPack extends MultiEffect {
 	}
 
 	public static FXAA getFxaa() {
-		return (FXAA) fxaa.getE();
+		return (FXAA) fxaa.getEffect();
 	}
 
 	public static void setFxaa(boolean b) {

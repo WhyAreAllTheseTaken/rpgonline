@@ -80,4 +80,13 @@ public class Blur implements PostEffect {
 		g.drawImage(buffer, 0, 0);
 		Shader.forceFixedShader();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() throws SlickException {
+		shader.deleteShader();
+		shader2.deleteShader();
+	}
 }
