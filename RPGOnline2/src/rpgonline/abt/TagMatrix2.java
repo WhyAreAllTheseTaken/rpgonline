@@ -1,5 +1,6 @@
 package rpgonline.abt;
 
+@Deprecated
 public class TagMatrix2 extends TagMatrix {
 
 	/**

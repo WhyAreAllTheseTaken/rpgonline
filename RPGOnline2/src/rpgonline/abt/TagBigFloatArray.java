@@ -1,22 +1,39 @@
 package rpgonline.abt;
 
+/**
+ * A tag holding an array of BigDecimals.
+ * @author Tomas
+ *
+ */
+@Deprecated
 public class TagBigFloatArray extends TagGroup {
 	/**
 	 * ID for serilization.
 	 */
 	private static final long serialVersionUID = 2758615385190637862L;
 
+	/**
+	 * Constructs a new TagBigFloatArray.
+	 * @param name The name of the tag.
+	 * @param data The data as string to be held in this array.
+	 */
 	public TagBigFloatArray(String name, String[] data) {
 		super(name);
 		
 		setData(data);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public byte getType() {
 		return 0x15;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean add(Tag e) {
 		if (!(e instanceof TagString)) {
@@ -25,6 +42,10 @@ public class TagBigFloatArray extends TagGroup {
 		return super.add(e);
 	}
 	
+	/**
+	 * Sets the data of this tag.
+	 * @param data The data to set.
+	 */
 	public void setData(String[] data) {
 		tags.clear();
 		
@@ -33,6 +54,10 @@ public class TagBigFloatArray extends TagGroup {
 		}
 	}
 	
+	/**
+	 * Gets the data of this tag.
+	 * @return The data held in this tag.
+	 */
 	public String[] getData() {
 		String[] data = new String[size()];
 		
@@ -43,6 +68,9 @@ public class TagBigFloatArray extends TagGroup {
 		return data;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -67,6 +95,11 @@ public class TagBigFloatArray extends TagGroup {
 		return sb.toString();
 	}
 	
+	/**
+	 * Sets the value in one of the tags held in this array.
+	 * @param index
+	 * @param v
+	 */
 	public void set(int index, String v) {
 		((TagString) getTag(index + "")).setData(v);
 	}

@@ -1,5 +1,6 @@
 package rpgonline.abt;
 
+@Deprecated
 public class TagVector4 extends TagDoubleArray {
 	/**
 	 * ID for serilization.

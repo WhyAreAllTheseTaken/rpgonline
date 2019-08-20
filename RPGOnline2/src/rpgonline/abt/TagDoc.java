@@ -11,7 +11,7 @@ import org.newdawn.slick.util.Log;
 import rpgonline.debug.Debugger;
 
 public class TagDoc {
-	public static final short LATEST_VERSION = 0;
+	public static final short LATEST_VERSION = 1;
 	public TagDoc(short version, String app, TagGroup tags) {
 		super();
 		this.version = version;
@@ -64,7 +64,7 @@ public class TagDoc {
 			
 			short version = dis.readShort();
 			
-			if (version == 0) {
+			if (version >= 0 || version <= 1) {
 				String app2 = dis.readUTFByte();
 				
 				if(app != null) {
@@ -121,6 +121,7 @@ public class TagDoc {
 		Debugger.stop("abt-encode");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void writeTag(ABTDataOutputStream out, Tag t) throws IOException {
 		out.writeByte(t.getType());
 		
@@ -318,6 +319,7 @@ public class TagDoc {
 		
 		return g;
 	}
+	@SuppressWarnings("deprecation")
 	public static Tag readTag(byte id, ABTDataInputStream in) throws IOException {
 		byte[] buffer;
 		

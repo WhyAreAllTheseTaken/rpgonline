@@ -2,6 +2,7 @@ package rpgonline.abt;
 
 import java.util.Arrays;
 
+@Deprecated
 class TagMatrix extends TagGroup {
 	/**
 	 * ID for serilization.

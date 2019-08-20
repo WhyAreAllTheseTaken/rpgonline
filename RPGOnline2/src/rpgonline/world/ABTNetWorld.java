@@ -11,12 +11,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
 
 import rpgonline.abt.TagBoolean;
+import rpgonline.abt.TagDouble;
+import rpgonline.abt.TagFloat;
 import rpgonline.abt.TagGroup;
 import rpgonline.abt.TagInt;
 import rpgonline.abt.TagLong;
 import rpgonline.abt.TagString;
-import rpgonline.abt.TagVector2;
-import rpgonline.abt.TagVector4;
 import rpgonline.net.ServerManager;
 import rpgonline.tile.Tile;
 import rpgonline.world.chunk.CacheEntry;
@@ -29,18 +29,18 @@ public class ABTNetWorld extends ChunkWorld {
 		super(registry);
 		
 		for(TagGroup g : lights) {
-			TagVector4 c = (TagVector4) g.getTag("color");
+			TagGroup c = (TagGroup) g.getTag("color");
 			
-			float lr = (float) c.get(0);
-			float lg = (float) c.get(1);
-			float lb = (float) c.get(2);
+			float lr = ((TagFloat) c.getTag("r")).getData();
+			float lg = ((TagFloat) c.getTag("g")).getData();
+			float lb = ((TagFloat) c.getTag("b")).getData();
 			
-			TagVector2 pos = (TagVector2) g.getTag("pos");
+			TagGroup pos = (TagGroup) g.getTag("pos");
 			
-			double x = pos.get(0);
-			double y = pos.get(1);
+			double x = ((TagDouble) pos.getTag("x")).getData();
+			double y = ((TagDouble) pos.getTag("y")).getData();
 			
-			float b = (float) c.get(3);
+			float b = ((TagFloat) c.getTag("brightness")).getData();
 			
 			Color color = new Color(lr, lg, lb);
 			

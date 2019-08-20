@@ -17,7 +17,6 @@ import org.newdawn.slick.util.Log;
 import rpgonline.Direction;
 import rpgonline.abt.Tag;
 import rpgonline.abt.TagBoolean;
-import rpgonline.abt.TagByteArray;
 import rpgonline.abt.TagDouble;
 import rpgonline.abt.TagFloat;
 import rpgonline.abt.TagGroup;
@@ -97,9 +96,9 @@ public class Entity {
 				longs.put(t.getName(), ((TagLong) t).getData());
 				continue;
 			}
-			if (t instanceof TagByteArray) {
+			if (t instanceof TagGroup) {
 				try {
-					ByteArrayInputStream in = new ByteArrayInputStream(((TagByteArray) t).getData());
+					ByteArrayInputStream in = new ByteArrayInputStream(((TagGroup) t).asByteArray());
 					ObjectInputStream ois = new ObjectInputStream(in);
 					
 					Object o = ois.readObject();
@@ -371,7 +370,7 @@ public class Entity {
 				oos.flush();
 				oos.close();
 				
-				g.add(new TagByteArray(e.getKey(), out.toByteArray()));
+				g.add(new TagGroup(e.getKey(), out.toByteArray()));
 			} catch (IOException e1) {
 				Log.error("Error writing object to entity data.", e1);
 			}

@@ -21,8 +21,8 @@ import rpgonline.abt.TagGroup;
 import rpgonline.abt.TagInt;
 import rpgonline.abt.TagLong;
 import rpgonline.abt.TagString;
-import rpgonline.abt.TagVector2;
-import rpgonline.abt.TagVector4;
+import rpgonline.abt.TagFloat;
+import rpgonline.abt.TagDouble;
 import rpgonline.entity.Entity;
 import rpgonline.entity.EntityManager;
 import rpgonline.tile.Tile;
@@ -49,18 +49,18 @@ public class ABTWorld extends ChunkWorld {
 				for(Tag t : lights.getTags()) {
 					TagGroup g = (TagGroup) t;
 					
-					TagVector4 c = (TagVector4) g.getTag("color");
+					TagGroup c = (TagGroup) g.getTag("color");
 					
-					float lr = (float) c.get(0);
-					float lg = (float) c.get(1);
-					float lb = (float) c.get(2);
+					float lr = ((TagFloat) c.getTag("r")).getData();
+					float lg = ((TagFloat) c.getTag("g")).getData();
+					float lb = ((TagFloat) c.getTag("b")).getData();
 					
-					TagVector2 pos = (TagVector2) g.getTag("pos");
+					TagGroup pos = (TagGroup) g.getTag("pos");
 					
-					double x = pos.get(0);
-					double y = pos.get(1);
+					double x = ((TagDouble) pos.getTag("x")).getData();
+					double y = ((TagDouble) pos.getTag("y")).getData();
 					
-					float b = (float) c.get(3);
+					float b = ((TagFloat) c.getTag("brightness")).getData();
 					
 					Color color = new Color(lr, lg, lb);
 					
@@ -192,10 +192,16 @@ public class ABTWorld extends ChunkWorld {
 		for(LightSource l : getLights()) {
 			TagGroup g = new TagGroup(l.toString());
 			
-			TagVector4 c = new TagVector4("color", l.getColor().r, l.getColor().g, l.getColor().b, l.getBrightness());
+			TagGroup c = new TagGroup("color");
+			c.add(new TagFloat("r", l.getR()));
+			c.add(new TagFloat("g", l.getG()));
+			c.add(new TagFloat("b", l.getB()));
+			c.add(new TagFloat("brightness", l.getBrightness()));
 			g.add(c);
 			
-			TagVector2 pos = new TagVector2("pos", l.getLX(), l.getLY());
+			TagGroup pos = new TagGroup("pos");
+			pos.add(new TagDouble("x", l.getLX()));
+			pos.add(new TagDouble("y", l.getLY()));
 			g.add(pos);
 			
 			lights.add(g);

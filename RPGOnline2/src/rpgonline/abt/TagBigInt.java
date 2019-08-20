@@ -2,6 +2,7 @@ package rpgonline.abt;
 
 import java.math.BigInteger;
 
+@Deprecated
 public class TagBigInt extends TagByteArray {
 
 	/**

@@ -1,5 +1,7 @@
 package rpgonline.abt;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,10 +28,22 @@ public class TagGroup extends Tag implements Iterable<Tag> {
 	
 	/**
 	 * Constructs a new Tag Group.
-	 * @param name
+	 * @param name The name of the tag.
 	 */
 	public TagGroup(String name) {
 		super(name, 0x01);
+	}
+	
+	/**
+	 * Constructs a new Tag Group with byte data.
+	 * @param name The name of the tag.
+	 * @param data A byte array.
+	 */
+	public TagGroup(String name, byte[] data) {
+		super(name, 0x01);
+		for (int i = 0; i < data.length; i++) {
+			add(new TagByte(i + "", data[i]));
+		}
 	}
 	
 	/**
@@ -277,6 +291,62 @@ public class TagGroup extends Tag implements Iterable<Tag> {
 		}
 		
 		return tg;
+	}
+
+	/**
+	 * A method that (if valid) takes a tag group and generates an array from all tags with named indexes. This method requires that the tags be indexed properly.
+	 * @return A byte array.
+	 * @throws IOException If an error occurs converting to byte data.
+	 */
+	public byte[] asByteArray() throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		@SuppressWarnings("resource")
+		ABTDataOutputStream dos = new ABTDataOutputStream(out);
+		
+		for (int i = 0; i < size(); i++) {
+			Tag t = getTag(i + "");
+			
+			if (t == null) {
+				throw new IndexOutOfBoundsException(i + " is not avaliable as an indexed tag.");
+			}
+			
+			if (t instanceof TagByte) {
+				dos.write(((TagByte) t).getData());
+			}
+			if (t instanceof TagShort) {
+				dos.writeShort(((TagShort) t).getData());
+			}
+			if (t instanceof TagInt) {
+				dos.writeInt(((TagInt) t).getData());
+			}
+			if (t instanceof TagLong) {
+				dos.writeLong(((TagLong) t).getData());
+			}
+			if (t instanceof TagFloat) {
+				dos.writeFloat(((TagFloat) t).getData());
+			}
+			if (t instanceof TagDouble) {
+				dos.writeDouble(((TagDouble) t).getData());
+			}
+			if (t instanceof TagBoolean) {
+				dos.writeBoolean(((TagBoolean) t).getData());
+			}
+			if (t instanceof TagChar) {
+				dos.writeChar(((TagChar) t).getData());
+			}
+			if (t instanceof TagString) {
+				dos.writeUTFLong(((TagString) t).getData());
+			}
+			if (t instanceof TagGroup) {
+				dos.writeLong(((TagGroup) t).size());
+				dos.write(((TagGroup) t).asByteArray());
+			}
+		}
+		
+		dos.flush();
+		dos.close();
+		
+		return out.toByteArray();
 	}
 	
 }

@@ -4,6 +4,7 @@ package rpgonline.abt;
  * A 128bit integer tag.
  * @author Tomas
  */
+@Deprecated
 public class Tag128 extends TagByteArray {
 	/**
 	 * ID for serilization.

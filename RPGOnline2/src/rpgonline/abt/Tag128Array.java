@@ -1,5 +1,11 @@
 package rpgonline.abt;
 
+/**
+ * An array of 128bit integer tags.
+ * @author Tomas
+ * @deprecated This tag should be made package access.
+ */
+@Deprecated
 public class Tag128Array extends TagGroup {
 	/**
 	 * ID for serilization.

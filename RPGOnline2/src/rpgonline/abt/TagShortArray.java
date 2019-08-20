@@ -1,5 +1,6 @@
 package rpgonline.abt;
 
+@Deprecated
 public class TagShortArray extends TagGroup {
 	/**
 	 * ID for serilization.

@@ -1,5 +1,6 @@
 package rpgonline.abt;
 
+@Deprecated
 public class TagMatrix4 extends TagMatrix {
 	/**
 	 * ID for serilization.
