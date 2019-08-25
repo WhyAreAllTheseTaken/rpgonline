@@ -23,7 +23,7 @@ public final class RPGOnline {
 	/**
 	 * The current version of the RPGOnline library.
 	 */
-	public static final Version VERSION = new Version("0.7.0-d18+1562400459");
+	public static final Version VERSION = new Version("0.7.0-d19+1566744751");
 	/**
 	 * The version of java that this library was compiled with.
 	 */
