@@ -19,14 +19,14 @@ public class Chunk {
 	 * The size of the chunk on the X and Y axis.
 	 */
 	public static final int SIZE = 64;
-	private volatile long x;
-	private volatile long y;
-	private volatile long z;
-	private volatile Tile[][][] tiles = new Tile[1][SIZE][SIZE];
-	private volatile String[][][] states = new String[1][SIZE][SIZE];
-	private volatile boolean[][][] flag = new boolean[1][SIZE][SIZE];
-	private volatile String[][][] area = new String[1][SIZE][SIZE];
-	private volatile int[][][] biome = new int[1][SIZE][SIZE];
+	private final long x;
+	private final long y;
+	private final long z;
+	private Tile[][][] tiles = new Tile[1][SIZE][SIZE];
+	private String[][][] states = new String[1][SIZE][SIZE];
+	private boolean[][][] flag = new boolean[1][SIZE][SIZE];
+	private String[][][] area = new String[1][SIZE][SIZE];
+	private int[][][] biome = new int[1][SIZE][SIZE];
 	private boolean change = false;
 	private long lastUsed = System.currentTimeMillis();
 
