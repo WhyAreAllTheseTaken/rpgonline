@@ -281,10 +281,18 @@ public class Chunk {
 		this.change = change;
 	}
 
+	/**
+	 * Gets the last used time that this chunk was accessed.
+	 * @return A unix timestamp in milliseconds.
+	 */
 	public long getLastUsed() {
 		return lastUsed;
 	}
 
+	/**
+	 * Converts this chunk to a tag group.
+	 * @return A tag group object containing chunk data.
+	 */
 	public TagGroup save() {
 		TagGroup tg = new TagGroup("chunk");
 
