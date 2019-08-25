@@ -9,7 +9,15 @@ import rpgonline.abt.TagLong;
 import rpgonline.abt.TagString;
 import rpgonline.tile.Tile;
 
+/**
+ * A class for holding world data in separate chunks.
+ * @author Tomas
+ *
+ */
 public class Chunk {
+	/**
+	 * The size of the chunk on the X and Y axis.
+	 */
 	public static final int SIZE = 64;
 	private volatile long x;
 	private volatile long y;
