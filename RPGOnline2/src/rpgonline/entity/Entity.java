@@ -215,6 +215,11 @@ public class Entity {
 		setString("entity_id", entity_id);
 		setBoolean("solid", true);
 		setBoolean("flying", false);
+		
+		setX(0);
+		setY(0);
+		setDX(0);
+		setDY(0);
 
 		t = m.getEntityTexture(entity_id);
 
