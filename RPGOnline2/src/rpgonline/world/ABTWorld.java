@@ -30,9 +30,27 @@ import rpgonline.world.chunk.CacheEntry;
 import rpgonline.world.chunk.Chunk;
 import rpgonline.world.chunk.ChunkWorld;
 
+/**
+ * A world format that stores data as ABT.
+ * @author Tomas
+ */
 public class ABTWorld extends ChunkWorld {
+	/**
+	 * The folder to store ABT files in.
+	 */
 	protected File folder;
+	/**
+	 * The format version number for this ABTWorld.
+	 */
 	protected int format;
+	/**
+	 * 
+	 * @param folder The folder containing world data.
+	 * @param registry The tile registry for tiles.
+	 * @param em The entity manager to use.
+	 * @param server Determines if the world is running on a server.
+	 * @throws IOException If an error occurs reading world metadata.
+	 */
 	public ABTWorld(File folder, Map<String, Tile> registry, EntityManager em, boolean server) throws IOException {
 		super(registry);
 		this.folder = folder;
@@ -92,6 +110,9 @@ public class ABTWorld extends ChunkWorld {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected synchronized Chunk getChunk(long x, long y, long z) {
 		long cx = (int) Math.floor(x / (Chunk.SIZE * 1f));
@@ -149,6 +170,17 @@ public class ABTWorld extends ChunkWorld {
 		return chunk;
 	}
 	
+	/**
+	 * Loads a chunk from a file.
+	 * @param registry The tile registry to use.
+	 * @param x The X position of the chunk.
+	 * @param y The Y position of the chunk.
+	 * @param z The Z position of the chunk.
+	 * @param f The file to read from.
+	 * @return A chunk object.
+	 * @throws FileNotFoundException If the chunk file does not exist.
+	 * @throws IOException If an error occurs reading chunk data.
+	 */
 	protected Chunk loadChunk(Map<String, Tile> registry, long x, long y, long z, File f) throws FileNotFoundException, IOException {
 		TagDoc d = TagDoc.read(new GZIPInputStream(new BufferedInputStream(new FileInputStream(f))), "map_c");
 		
@@ -182,7 +214,10 @@ public class ABTWorld extends ChunkWorld {
 			throw new IOException("Chunk file is from newer version.");
 		}
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void save() {
 		TagGroup tg = new TagGroup("map");
@@ -234,6 +269,10 @@ public class ABTWorld extends ChunkWorld {
 		}
 	}
 	
+	/**
+	 * Generates a new empty chunk using the defaultGround and defaultabove data.
+	 * @param c The chunk to generate.
+	 */
 	public void generateChunk(Chunk c) {
 		for (int x = 0; x < Chunk.SIZE; x++) {
 			for (int y = 0; y < Chunk.SIZE; y++) {

@@ -1,7 +1,5 @@
 package rpgonline.world;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,24 @@ import rpgonline.world.chunk.CacheEntry;
 import rpgonline.world.chunk.Chunk;
 import rpgonline.world.chunk.ChunkWorld;
 
+/**
+ * A world that stores ABT data received from the server on the client side.
+ * @author Tomas
+ * 
+ * @see rpgonline.net.Client#getRequestedChunks()
+ */
 public class ABTNetWorld extends ChunkWorld {
+	/**
+	 * Determines if the world should disconnect from the server.
+	 */
 	private boolean stop = false;
-	public ABTNetWorld(File folder, Map<String, Tile> registry, List<TagGroup> lights) throws IOException {
+	/**
+	 * Constructs a new ABTNetWorld.
+	 * @param registry The tile registry for this world.
+	 * @param lights The list of lights in this world.
+	 * @throws IOException If an error occurs reading world data.
+	 */
+	public ABTNetWorld(Map<String, Tile> registry, List<TagGroup> lights) throws IOException {
 		super(registry);
 		
 		for(TagGroup g : lights) {
@@ -68,6 +81,9 @@ public class ABTNetWorld extends ChunkWorld {
 		}.start();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected synchronized Chunk getChunk(long x, long y, long z) {
 		long cx = (int) Math.floor(x / (Chunk.SIZE * 1f));
@@ -109,7 +125,18 @@ public class ABTNetWorld extends ChunkWorld {
 		return chunk;
 	}
 	
-	protected Chunk loadChunk(Map<String, Tile> registry, long x, long y, long z, TagGroup tg, Chunk c) throws FileNotFoundException, IOException {
+	/**
+	 * Loads a chunk from the network.
+	 * @param registry The registry of tile.
+	 * @param x The X position of the chunk
+	 * @param y The Y position of the chunk
+	 * @param z The Z position of the chunk
+	 * @param tg The tag containing chunk data.
+	 * @param c The chunk to load to.
+	 * @return A chunk with tile data.
+	 * @throws IOException If an error occurs reading world data.
+	 */
+	protected Chunk loadChunk(Map<String, Tile> registry, long x, long y, long z, TagGroup tg, Chunk c) throws IOException {
 		int version = ((TagInt) tg.getTag("version")).getData();
 		
 		if (version == 0) {
@@ -137,6 +164,9 @@ public class ABTNetWorld extends ChunkWorld {
 		}
 	}
 	
+	/**
+	 * Stops this world's connection to the server.
+	 */
 	public void stop() {
 		stop = true;
 	}
