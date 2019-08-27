@@ -6,7 +6,10 @@ package rpgonline.net.login;
  * @author Tomas
  */
 public interface UserServer {
-	public static final String INVALID_TOKEN = "ffffffffffffffff";
+	/**
+	 * Tokens used for invalid requests.
+	 */
+	public static final String INVALID_TOKEN = "ffffffffffffffffffffffffffffffff";
 	/**
 	 * Gets a token for logging in.
 	 * @param login The username/email of the user.
