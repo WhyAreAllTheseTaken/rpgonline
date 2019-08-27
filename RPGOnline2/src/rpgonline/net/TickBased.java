@@ -15,6 +15,13 @@ public interface TickBased {
 
 				long last_update = System.nanoTime();
 
+				if (ServerManager.getServer() == TickBased.this) {
+					ServerManager.server_max_time = (long) (1000000000 / getTickSpeed());
+				}
+				if (ServerManager.getClient() == TickBased.this) {
+					ServerManager.client_max_time = (long) (1000000000 / getTickSpeed());
+				}
+				
 				try {
 					init();
 				} catch (Exception e) {
@@ -49,14 +56,14 @@ public interface TickBased {
 										+ " millis behind.");
 							}
 						}
-						while (System.nanoTime() - last_update < (1000000000 / getTickSpeed())) {
-							Thread.yield();
-						}
 						if (ServerManager.getServer() == TickBased.this) {
 							ServerManager.server_time = System.nanoTime() - last_update;
 						}
 						if (ServerManager.getClient() == TickBased.this) {
 							ServerManager.client_time = System.nanoTime() - last_update;
+						}
+						while (System.nanoTime() - last_update < (1000000000 / getTickSpeed())) {
+							Thread.yield();
 						}
 					}
 				} catch (Exception e) {

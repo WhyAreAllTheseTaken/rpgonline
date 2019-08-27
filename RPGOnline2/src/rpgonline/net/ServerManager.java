@@ -14,6 +14,8 @@ public final class ServerManager {
 	private static UserServer user_server;
 	public static long server_time;
 	public static long client_time;
+	public static long server_max_time;
+	public static long client_max_time;
 	
 	public static Client getClient() {
 		return client;

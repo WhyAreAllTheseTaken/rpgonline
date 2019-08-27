@@ -154,7 +154,9 @@ public class Version implements Comparable<Version> {
 			// Special case for java version numbers.
 			major = Integer.parseInt(verstr.split("_|\\.")[0]);
 			minor = Integer.parseInt(verstr.split("_|\\.")[1]);
-			patch = Integer.parseInt(verstr.split("_|\\.")[3]);
+			patch = Integer.parseInt(verstr.split("_|\\.")[2]);
+			snapshot = Integer.parseInt(verstr.split("_|\\.")[3]);
+			type = TYPE_NORMAL_PATCH;
 		} else {
 			String[] parts = verstr.split("-|\\+")[0].split("\\.");
 
