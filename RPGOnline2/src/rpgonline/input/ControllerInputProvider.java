@@ -4,59 +4,214 @@ import org.newdawn.slick.Input;
 
 import rpgonline.RPGConfig;
 
+/**
+ * A system that provides binding controls for keyboards.
+ * @author Tomas
+ *
+ */
 public interface ControllerInputProvider {
+	/**
+	 * Command for any controller pressed.
+	 */
 	public static final int CONTROLLER_ANY = 0x0f000000;
+	/**
+	 * Command for controller 0.
+	 */
 	public static final int CONTROLLER_0 = 0x00000000;
+	/**
+	 * Command for controller 1.
+	 */
 	public static final int CONTROLLER_1 = 0x01000000;
+	/**
+	 * Command for controller 2.
+	 */
 	public static final int CONTROLLER_2 = 0x02000000;
+	/**
+	 * Command for controller 3.
+	 */
 	public static final int CONTROLLER_3 = 0x03000000;
+	/**
+	 * Command for controller 4.
+	 */
 	public static final int CONTROLLER_4 = 0x04000000;
+	/**
+	 * Command for controller 5.
+	 */
 	public static final int CONTROLLER_5 = 0x05000000;
+	/**
+	 * Command for controller 6.
+	 */
 	public static final int CONTROLLER_6 = 0x06000000;
+	/**
+	 * Command for controller 7.
+	 */
 	public static final int CONTROLLER_7 = 0x07000000;
+	/**
+	 * Command for controller 8.
+	 */
 	public static final int CONTROLLER_8 = 0x08000000;
+	/**
+	 * Command for controller 9.
+	 */
 	public static final int CONTROLLER_9 = 0x09000000;
+	/**
+	 * Command for controller 10.
+	 */
 	public static final int CONTROLLER_10 = 0x0A000000;
+	/**
+	 * Command for controller 11.
+	 */
 	public static final int CONTROLLER_11 = 0x0B000000;
+	/**
+	 * Command for controller 12.
+	 */
 	public static final int CONTROLLER_12 = 0x0C000000;
+	/**
+	 * Command for controller 13.
+	 */
 	public static final int CONTROLLER_13 = 0x0D000000;
+	/**
+	 * Command for controller 14.
+	 */
 	public static final int CONTROLLER_14 = 0x0E000000;
+	/**
+	 * Bitwise int for clearing controller information.
+	 */
 	public static final int CONTROLLER_CLEAR = 0xF0FFFFFF;
 	
+	/**
+	 * XBOX A
+	 */
 	public static final int A = CONTROLLER_ANY | 0;
+	/**
+	 * XBOX B
+	 */
 	public static final int B = CONTROLLER_ANY | 1;
+	/**
+	 * XBOX X
+	 */
 	public static final int X = CONTROLLER_ANY | 2;
+	/**
+	 * XBOX Y
+	 */
 	public static final int Y = CONTROLLER_ANY | 3;
+	/**
+	 * XBOX L1
+	 */
 	public static final int L1 = CONTROLLER_ANY | 4;
+	/**
+	 * XBOX R1
+	 */
 	public static final int R1 = CONTROLLER_ANY | 5;
+	/**
+	 * XBOX BACK
+	 */
 	public static final int BACK = CONTROLLER_ANY | 6;
+	/**
+	 * XBOX START
+	 */
 	public static final int START = CONTROLLER_ANY | 7;
+	/**
+	 * XBOX L3
+	 */
 	public static final int L3 = CONTROLLER_ANY | 8;
+	/**
+	 * XBOX R3
+	 */
 	public static final int R3 = CONTROLLER_ANY | 9;
+	/**
+	 * XBOX DPAD UP
+	 */
 	public static final int DPAD_UP = CONTROLLER_ANY | 10;
+	/**
+	 * XBOX DPAD DOWN
+	 */
 	public static final int DPAD_DOWN = CONTROLLER_ANY | 11;
+	/**
+	 * XBOX DPAD LEFT
+	 */
 	public static final int DPAD_LEFT = CONTROLLER_ANY | 12;
+	/**
+	 * XBOX DPAD RIGHT
+	 */
 	public static final int DPAD_RIGHT = CONTROLLER_ANY | 13;
+	/**
+	 * XBOX Left Stick UP.
+	 */
 	public static final int LS_UP = CONTROLLER_ANY | 14;
+	/**
+	 * XBOX Left Stick DOWN.
+	 */
 	public static final int LS_DOWN = CONTROLLER_ANY | 15;
+	/**
+	 * XBOX Left Stick LEFT.
+	 */
 	public static final int LS_LEFT = CONTROLLER_ANY | 16;
+	/**
+	 * XBOX Left Stick RIGHT.
+	 */
 	public static final int LS_RIGHT = CONTROLLER_ANY | 17;
+	/**
+	 * XBOX Right Stick UP.
+	 */
 	public static final int RS_UP = CONTROLLER_ANY | 18;
+	/**
+	 * XBOX Right Stick DOWN.
+	 */
 	public static final int RS_DOWN = CONTROLLER_ANY | 19;
+	/**
+	 * XBOX Right Stick LEFT.
+	 */
 	public static final int RS_LEFT = CONTROLLER_ANY | 20;
+	/**
+	 * XBOX Right Stick RIGHT.
+	 */
 	public static final int RS_RIGHT = CONTROLLER_ANY | 21;
+	/**
+	 * XBOX L2.
+	 */
 	public static final int L2 = CONTROLLER_ANY | 22;
+	/**
+	 * XBOX R2.
+	 */
 	public static final int R2 = CONTROLLER_ANY | 23;
+	/**
+	 * Invalid key.
+	 */
 	public static final int INVALID = CONTROLLER_ANY | 0xf0ffffff;
 	
+	/**
+	 * Determines if the controls are left handed.
+	 * @return {@code true} if the controls are left handed, {@code false} otherwise.
+	 */
 	public boolean isLeftHanded();
 	
+	/**
+	 * Sets if the controls are left handed.
+	 * @param leftHanded {@code true} if the controls are left handed, {@code false} otherwise.
+	 */
 	public void setLeftHanded(boolean leftHanded);
 	
+	/**
+	 * Gets the binding for the specified function.
+	 * @param func A function ID.
+	 * @return A keyboard binding.
+	 */
 	public int getBinding(String func);
 	
+	/**
+	 * Binds the function to the specified button.
+	 * @param func The function to bind.
+	 * @param button The button to bind to.
+	 */
 	public void bind(String func, int button);
 	
+	/**
+	 * Determines if the button is pressed.
+	 * @param in The current input.
+	 * @param key The button.
+	 * @return {@code true} if the button is pressed, {@code false} otherwise.
+	 */
 	public static boolean isButtonPressed(Input in, int key) {
 		if((key & 0xf0000000) == 0xf0000000) {
 			return false;

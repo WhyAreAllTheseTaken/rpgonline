@@ -5,9 +5,20 @@ import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 
+/**
+ * An implementation of the KeyboardInputProvider based on a hash map.
+ * @author Tomas
+ *
+ */
 public class MapKeyProvider implements KeyboardInputProvider {
+	/**
+	 * The map to store bindings.
+	 */
 	private final Map<String, Integer> bindings = new HashMap<String, Integer>();
 	
+	/**
+	 * Constructs a new MapKeyProvider.
+	 */
 	public MapKeyProvider() {
 		bindings.put(InputUtils.WALK_NORTH, Keyboard.KEY_W);
 		bindings.put(InputUtils.WALK_EAST, Keyboard.KEY_D);
@@ -18,6 +29,9 @@ public class MapKeyProvider implements KeyboardInputProvider {
 		bindings.put(InputUtils.SPRINT, Keyboard.KEY_LSHIFT);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getKeyCodeForAction(String s) {
 		if (bindings.containsKey(s)) {
@@ -27,6 +41,9 @@ public class MapKeyProvider implements KeyboardInputProvider {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void bind(String s, int code) {
 		bindings.put(s, code);
