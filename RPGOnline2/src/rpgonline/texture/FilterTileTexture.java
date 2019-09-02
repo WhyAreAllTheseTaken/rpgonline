@@ -6,20 +6,40 @@ import org.newdawn.slick.Graphics;
 import rpgonline.tile.Tile;
 import rpgonline.world.World;
 
+/**
+ * A tile texture that is filtered through a color based upon the hex value of their game state.
+ * @author Tomas
+ */
 public class FilterTileTexture extends BasicTileTexture {
+	/**
+	 * Constructs a new FilterTileTexture.
+	 * @param s The texture ID.
+	 * @param x The X offset of this texture.
+	 * @param y The Y offset of this texture.
+	 */
 	public FilterTileTexture(String s, float x, float y) {
 		super(s, x, y);
 	}
 	
+	/**
+	 * Constructs a new FilterTileTexture.
+	 * @param s The texture ID.
+	 */
 	public FilterTileTexture(String s) {
 		super(s, 0, 0);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isCustom() {
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void render(Graphics g, long x, long y, long z, World w, String state, Tile t, float sx, float sy,
 			float wind) {
