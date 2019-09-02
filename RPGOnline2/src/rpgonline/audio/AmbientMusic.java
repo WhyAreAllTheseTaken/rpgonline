@@ -1,5 +1,7 @@
 package rpgonline.audio;
 
+import javax.annotation.Nonnull;
+
 /**
  * <p>
  * A class for storing Ambient Music.
@@ -40,7 +42,7 @@ public class AmbientMusic {
 	 * @param groups  The sound groups associated with the each sound.
 	 * @param volumes The volumes associated with each sound.
 	 */
-	public AmbientMusic(String[] sounds, String[] groups, float[] volumes) {
+	public AmbientMusic(@Nonnull String[] sounds, @Nonnull String[] groups, @Nonnull float[] volumes) {
 		super();
 		this.sounds = sounds;
 		refs = new String[sounds.length];
@@ -54,7 +56,7 @@ public class AmbientMusic {
 	 * @param group The sound group associated with the sound.
 	 * @param volume The volume to play the music at.
 	 */
-	public AmbientMusic(String sound, String group, float volume) {
+	public AmbientMusic(@Nonnull String sound, @Nonnull String group, @Nonnull float volume) {
 		this(new String[] { sound }, new String[] { group }, new float[] { volume });
 	}
 
@@ -63,7 +65,7 @@ public class AmbientMusic {
 	 * @param sound The sound to loop.
 	 * @param volume The volume to play the music at.
 	 */
-	public AmbientMusic(String sound, float volume) {
+	public AmbientMusic(@Nonnull String sound, @Nonnull float volume) {
 		this(sound, "music", volume);
 	}
 
@@ -71,7 +73,7 @@ public class AmbientMusic {
 	 * Constructs a new piece of ambient music from one audio track at full volume.
 	 * @param sound The sound to loop.
 	 */
-	public AmbientMusic(String sound) {
+	public AmbientMusic(@Nonnull String sound) {
 		this(sound, 1f);
 	}
 
@@ -79,6 +81,7 @@ public class AmbientMusic {
 	 * Gets the list of sounds in this music.
 	 * @return The array of sounds used by this music.
 	 */
+	@Nonnull
 	public String[] getSounds() {
 		return sounds;
 	}
@@ -87,6 +90,7 @@ public class AmbientMusic {
 	 * Gets the list of sound groups. in this music.
 	 * @return The array of sound group IDs used by this music.
 	 */
+	@Nonnull
 	public String[] getGroups() {
 		return groups;
 	}
@@ -95,6 +99,7 @@ public class AmbientMusic {
 	 * Gets the list of volumes in this music.
 	 * @return The array of volumes used by this music.
 	 */
+	@Nonnull
 	public float[] getVolumes() {
 		return volumes;
 	}

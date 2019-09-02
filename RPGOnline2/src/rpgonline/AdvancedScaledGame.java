@@ -1,5 +1,7 @@
 package rpgonline;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Game;
@@ -47,7 +49,7 @@ public class AdvancedScaledGame implements Game {
 	 * @param w    The target width in pixels
 	 * @param h    The target height in pixels
 	 */
-	public AdvancedScaledGame(Game game, float w, float h) {
+	public AdvancedScaledGame(@Nonnull Game game, float w, float h) {
 		this.game = game;
 		Validate.finite(w, "Width must be finite: " + w);
 		Validate.finite(h, "Height must be finite: " + h);

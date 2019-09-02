@@ -1,5 +1,7 @@
 package rpgonline;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -59,6 +61,7 @@ public enum Direction {
 	 * 
 	 * @return A direction.
 	 */
+	@Nonnull
 	public Direction flip() {
 		switch (this) {
 		case EAST:

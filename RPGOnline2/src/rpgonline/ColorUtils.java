@@ -1,5 +1,7 @@
 package rpgonline;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.util.FastMath;
@@ -123,6 +125,7 @@ public final class ColorUtils {
 	 * @param br The factor to adjust by.
 	 * @return A new color object.
 	 */
+	@Nonnull
 	public static Color brightnessAdjust(Color c, float br) {
 		float r = c.r + br;
 		float g = c.g + br;
@@ -138,6 +141,7 @@ public final class ColorUtils {
 	 * @param c     The contrast factor.
 	 * @return A new color object.
 	 */
+	@Nonnull
 	public static Color contrastAdjust(Color color, float c) {
 		float t = 0.5f - c * 0.5f;
 		float r = color.r * c + t;
@@ -153,6 +157,7 @@ public final class ColorUtils {
 	 * @param saturation A value between 0 and infinity.
 	 * @return A matrix4f object.
 	 */
+	@Nonnull
 	private static Matrix4f saturationMatrix(float saturation) {
 		Vector3f luminance = new Vector3f(0.3086f, 0.6094f, 0.0820f);
 		float oneMinusSat = 1.0f - saturation;
@@ -235,6 +240,7 @@ public final class ColorUtils {
 	 * @param a Specify the value to use to interpolate between x and y.
 	 * @return A new Vector3f.
 	 */
+	@Nonnull
 	private static Vector3f mix(Vector3f x, Vector3f y, float a) {
 		if (a == 0) {
 			return new Vector3f(x);
@@ -272,6 +278,7 @@ public final class ColorUtils {
 	 *         and 1 will desaturate the color, a vibrance of 1 will return the same
 	 *         color and a vibrance above 1 will return a more vibrant color.
 	 */
+	@Nonnull
 	private static Vector4f vibrance(Vector4f inCol, float vibrance) {
 		Vector4f outCol = new Vector4f();
 		if (vibrance <= 1.0) {
@@ -381,6 +388,7 @@ public final class ColorUtils {
 	 * @param c The color to convert.
 	 * @return A new Vector4f object.
 	 */
+	@Nonnull
 	private static Vector4f toVector(Color c) {
 		return new Vector4f(c.r, c.g, c.b, c.a);
 	}
@@ -391,6 +399,7 @@ public final class ColorUtils {
 	 * @param v The Vector4f to convert.
 	 * @return A new Color object.
 	 */
+	@Nonnull
 	private static Color toColor(Vector4f v) {
 		return new Color(v.x, v.y, v.z, v.w);
 	}
@@ -404,6 +413,7 @@ public final class ColorUtils {
 	 *         and 1 will desaturate the color, a vibrance of 1 will return the same
 	 *         color and a vibrance above 1 will return a more vibrant color.
 	 */
+	@Nonnull
 	public static Color vibrance(Color c, float v) {
 		return toColor(vibrance(toVector(c), v));
 	}
@@ -415,6 +425,7 @@ public final class ColorUtils {
 	 * @param y The multiplication factor.
 	 * @return A modified Vector3f.
 	 */
+	@Nonnull
 	private static Vector3f mul(Vector3f x, float y) {
 		x.x *= y;
 		x.y *= y;
@@ -430,6 +441,7 @@ public final class ColorUtils {
 	 * @param y The multiplication factor.
 	 * @return A modified Vector3f.
 	 */
+	@Nonnull
 	private static Vector3f mul(Vector3f x, double y) {
 		return mul(x, (float) y);
 	}
@@ -442,6 +454,7 @@ public final class ColorUtils {
 	 * @param Shift The value to alter it's hue by.
 	 * @return A new Vector4f object.
 	 */
+	@Nonnull
 	private static Vector4f shiftHue(Vector4f col, float Shift) {
 		Vector3f P = new Vector3f(0.55735f, 0.55735f, 0.55735f);
 		float dot_P = Vector3f.dot(new Vector3f(0.55735f, 0.55735f, 0.55735f), new Vector3f(col.x, col.y, col.z));
@@ -466,6 +479,7 @@ public final class ColorUtils {
 	 *         return the same color and a saturation above 1 will return a more
 	 *         saturated color.
 	 */
+	@Nonnull
 	private static Vector4f saturationAdjust(Vector4f col, float sat) {
 		Matrix4f matrix = saturationMatrix(sat);
 
@@ -483,6 +497,7 @@ public final class ColorUtils {
 	 *         return the same color and a saturation above 1 will return a more
 	 *         saturated color.
 	 */
+	@Nonnull
 	public static Color saturationAdjust(Color c, float sat) {
 		return toColor(saturationAdjust(toVector(c), sat));
 	}
@@ -494,6 +509,7 @@ public final class ColorUtils {
 	 * @param shift The value to alter it's hue by.
 	 * @return A new Color object.
 	 */
+	@Nonnull
 	public static Color shiftHue(Color col, float shift) {
 		return toColor(shiftHue(toVector(col), shift));
 	}

@@ -1,5 +1,8 @@
 package rpgonline;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 import org.newdawn.slick.Image;
 
 import rpgonline.input.ControllerInputProvider;
@@ -279,6 +282,7 @@ public final class RPGConfig {
 	 * @see rpgonline.state.WorldState
 	 * @see #setTileSize(int)
 	 */
+	@Nonnegative
 	public static int getTileSize() {
 		return tileSize;
 	}
@@ -293,6 +297,7 @@ public final class RPGConfig {
 	 * @see rpgonline.state.WorldState
 	 * @see #getTileSize()
 	 */
+	@Nonnegative
 	public static void setTileSize(int tileSize) {
 		if (tileSize <= 0) {
 			throw new IllegalArgumentException("tileSize must be greater than 0.");
@@ -310,6 +315,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.InputUtils
 	 * @see #setKeyInput(KeyboardInputProvider)
 	 */
+	@Nonnull
 	public static KeyboardInputProvider getKeyInput() {
 		return keyInput;
 	}
@@ -324,6 +330,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.InputUtils
 	 * @see #getKeyInput()
 	 */
+	@Nonnull
 	public static void setKeyInput(KeyboardInputProvider keyInput) {
 		if (keyInput == null) {
 			throw new NullPointerException("keyInput");
@@ -343,6 +350,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.ControllerInputProvider
 	 * @see #setControllerActuation(float)
 	 */
+	@Nonnegative
 	public static float getControllerActuation() {
 		return controllerActuation;
 	}
@@ -360,6 +368,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.ControllerInputProvider
 	 * @see #getControllerActuation()
 	 */
+	@Nonnegative
 	public static void setControllerActuation(float controllerActuation) {
 		if (controllerActuation < 0) {
 			throw new IllegalArgumentException("Actuation point cannot be less than 0.");
@@ -377,6 +386,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.InputUtils
 	 * @see #setControllerInput(ControllerInputProvider)
 	 */
+	@Nonnull
 	public static ControllerInputProvider getControllerInput() {
 		return controllerInput;
 	}
@@ -391,6 +401,7 @@ public final class RPGConfig {
 	 * @see rpgonline.input.InputUtils
 	 * @see #getControllerInput()
 	 */
+	@Nonnull
 	public static void setControllerInput(ControllerInputProvider controllerInput) {
 		if (controllerInput == null) {
 			throw new NullPointerException("controllerInput");
@@ -456,6 +467,7 @@ public final class RPGConfig {
 	 * @see rpgonline.lang.Lang
 	 * @see #setLangProvider(LangProvider)
 	 */
+	@Nonnull
 	public static LangProvider getLangProvider() {
 		return lang;
 	}
@@ -469,6 +481,7 @@ public final class RPGConfig {
 	 * @see rpgonline.lang.Lang
 	 * @see #getLangProvider(LangProvider)
 	 */
+	@Nonnull
 	public static void setLangProvider(LangProvider lang) {
 		if (lang == null) {
 			throw new NullPointerException("lang");
@@ -486,6 +499,7 @@ public final class RPGConfig {
 	 * @see rpgonline.lang.Lang
 	 * @see rpgonline.lang.LangPack
 	 */
+	@Nonnull
 	public static String[] getLangloc() {
 		return langloc;
 	}
