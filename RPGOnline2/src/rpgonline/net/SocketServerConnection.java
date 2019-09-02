@@ -29,19 +29,43 @@ import rpgonline.net.packet.KeyPacket;
 import rpgonline.net.packet.NetPacket;
 
 public class SocketServerConnection extends AESSecurityCap implements Connection {
-
+	/**
+	 * The list of packets to send.
+	 */
 	private List<NetPacket> toSend = Collections.synchronizedList(new ArrayList<NetPacket>());
+	/**
+	 * The list of received packets.
+	 */
 	private List<NetPacket> recieved = Collections.synchronizedList(new ArrayList<NetPacket>());
-
+	/**
+	 * Determines if the connection has been closed.
+	 */
 	private boolean stopped = false;
+	/**
+	 * The encryption cipher.
+	 */
 	private Cipher encryptCipher;
+	/**
+	 * The decryption cipher.
+	 */
 	private Cipher decryptCipher;
+	/**
+	 * Determines the mode to use.
+	 */
 	private int mode;
 
+	/**
+	 * Constructs a new SocketServerConnection.
+	 * @param s The incoming socket.
+	 */
 	public SocketServerConnection(Socket s) {
 		reload(s);
 	}
 	
+	/**
+	 * Reopens the connection on a new socket.
+	 * @param s The new socket.
+	 */
 	public void reload(Socket s) {
 		new Thread(toString()) {
 			public void run() {
@@ -105,26 +129,41 @@ public class SocketServerConnection extends AESSecurityCap implements Connection
 		}.start();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void close() throws IOException {
 		stopped = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(NetPacket p) {
 		toSend.add(p);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isAvaliable() {
 		return recieved.size() > 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public NetPacket getNext() {
 		return recieved.get(0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void encrypt() {
 		Log.info("Attempting encryption.");
@@ -154,6 +193,15 @@ public class SocketServerConnection extends AESSecurityCap implements Connection
 		}
 	}
 
+	/**
+	 * Gets the mode of the connection.
+	 * @return see SocketClientConnection
+	 * 
+	 * @see SocketClientConnection#MODE_COMPRESS
+	 * @see SocketClientConnection#MODE_NORMAL
+	 * @see SocketClientConnection#MODE_ENCRYPT
+	 * @see SocketClientConnection#MODE_ENCRYPT_COMPRESS
+	 */
 	public int getMode() {
 		return mode;
 	}

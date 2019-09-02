@@ -12,18 +12,40 @@ import org.newdawn.slick.util.Log;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * A system for setting up key exchange for AES.
+ * @author Jegan Babu
+ * @author Wojciech Wirzbicki
+ */
 class AESSecurityCap {
-
+	/**
+	 * The public key to use.
+	 */
     private PublicKey publickey;
+    /**
+   	 * The key agreement.
+     */
     KeyAgreement keyAgreement;
+    /**
+     * The shared secret for key exchange.
+     */
     byte[] sharedsecret;
 
-    String ALGO = "AES";
+    /**
+     * The algorithm to use.
+     */
+    static final String ALGO = "AES";
 
+    /**
+     * Construct a new AESSecurityCap.
+     */
     AESSecurityCap() {
         makeKeyExchangeParams();
     }
 
+    /**
+     * Generate parameters.
+     */
     private void makeKeyExchangeParams() {
         KeyPairGenerator kpg = null;
         try {
@@ -39,6 +61,10 @@ class AESSecurityCap {
         }
     }
 
+    /**
+     * Recieve the public key from the other side of the connection.
+     * @param publickey
+     */
     public void setReceiverPublicKey(PublicKey publickey) {
         try {
             keyAgreement.doPhase(publickey, true);
@@ -48,6 +74,11 @@ class AESSecurityCap {
         }
     }
 
+    /**
+     * Encrypt the message.
+     * @param msg The message to encrypt.
+     * @return An encrypted string in base64.
+     */
     public String encrypt(String msg) {
         try {
             Key key = generateKey();
@@ -61,6 +92,11 @@ class AESSecurityCap {
         return msg;
     }
 
+    /**
+     * Decrypt the message.
+     * @param msg An encrypted string in base64.
+     * @return A string.
+     */
     public String decrypt(String encryptedData) {
         try {
             Key key = generateKey();
@@ -75,10 +111,18 @@ class AESSecurityCap {
         return encryptedData;
     }
 
+    /**
+     * Get the public key.
+     * @return A public key.
+     */
     public PublicKey getPublickey() {
         return publickey;
     }
-
+    
+    /**
+     * Generates a key from the provided public key and shared secret.
+     * @return An AES key.
+     */
     public Key generateKey() {
         return new SecretKeySpec(sharedsecret, ALGO);
     }

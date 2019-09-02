@@ -9,11 +9,28 @@ import org.newdawn.slick.util.Log;
 
 import rpgonline.net.packet.NetPacket;
 
+/**
+ * A class for generating local connections for use without the need for an internet connection or IO.
+ * @author Tomas
+ */
 public class LocalConnectionGenerator {
+	/**
+	 * {@code true} if the connection is closed, {@code false} otherwise.
+	 */
 	private boolean closed;
+	/**
+	 * The list of packets sent to the client.
+	 */
 	private List<NetPacket> client = Collections.synchronizedList(new ArrayList<NetPacket>());
+	/**
+	 * The list of packets sent to the server.
+	 */
 	private List<NetPacket> server = Collections.synchronizedList(new ArrayList<NetPacket>());
 
+	/**
+	 * Gets a connection from the server to the client.
+	 * @return A connection object.
+	 */
 	public Connection getServer() {
 		return new Connection() {
 			@Override
@@ -55,6 +72,10 @@ public class LocalConnectionGenerator {
 		};
 	}
 	
+	/**
+	 * Gets a connection from the client to the server.
+	 * @return A connection object.
+	 */
 	public Connection getClient() {
 		return new Connection() {
 			@Override

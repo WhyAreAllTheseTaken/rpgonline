@@ -26,20 +26,42 @@ import rpgonline.net.packet.StopAmbientPacket;
 import rpgonline.net.packet.TextPacket;
 import rpgonline.net.packet.WindPacket;
 
+/**
+ * A connection that uses TCP over IP to send data. The data is sent as one or
+ * more packets and are read in the order they are sent. First, the ID of the
+ * packet is sent as an 8bit integer. Next, the data of the packet is sent.
+ * 
+ * @author Tomas
+ *
+ */
 public class BasicPacketConnection implements Connection {
-
+	/**
+	 * The list of packets to send.
+	 */
 	private List<NetPacket> toSend = Collections.synchronizedList(new ArrayList<NetPacket>());
+	/**
+	 * The list of received packets/
+	 */
 	private List<NetPacket> recieved = Collections.synchronizedList(new ArrayList<NetPacket>());
-
+	/**
+	 * Determines if the system should be stopped.
+	 */
 	private boolean stopped = false;
-	
+	/**
+	 * Constructs a new BasicPacketConnection.
+	 * @param s The socket to connect to.
+	 */
 	public BasicPacketConnection(Socket s) {
 		this(s, basicTypes());
 	}
-	
+
+	/**
+	 * A method that constructs an array of packet types for the default supported types an maps them to their IDs.
+	 * @return A 256-length array of packet types.
+	 */
 	public static PacketType[] basicTypes() {
 		PacketType[] types = new PacketType[0x100];
-		
+
 		types[NetPacket.PACKET_OBJECT & 0xFF] = new NetPacket.Type();
 		types[AmbientPacket.PACKET_AMBIENT & 0xFF] = new AmbientPacket.Type();
 		types[ChunkRequestPacket.PACKET_ID & 0xFF] = new ChunkRequestPacket.Type();
@@ -54,10 +76,15 @@ public class BasicPacketConnection implements Connection {
 		types[WindPacket.PACKET_ID & 0xFF] = new WindPacket.Type();
 		types[TextPacket.PACKET_ID & 0xFF] = new TextPacket.Type();
 		types[LightsPacket.PACKET_ID & 0xFF] = new LightsPacket.Type();
-		
+
 		return types;
 	}
-	
+
+	/**
+	 * Constructs a new BasicPacketConnection.
+	 * @param s The socket to connect to.
+	 * @param types The array of packet types.
+	 */
 	public BasicPacketConnection(Socket s, PacketType[] types) {
 		if (types.length != 0x100) {
 			throw new IllegalArgumentException("Type array must be of length 256");
@@ -99,7 +126,7 @@ public class BasicPacketConnection implements Connection {
 
 						Thread.yield();
 					}
-					
+
 					s.close();
 				} catch (IOException e) {
 					Log.error(e);
@@ -107,22 +134,34 @@ public class BasicPacketConnection implements Connection {
 			}
 		}.start();
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void close() throws IOException {
 		stopped = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(NetPacket p) throws IOException {
 		toSend.add(p);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isAvaliable() throws IOException {
 		return recieved.size() > 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public NetPacket getNext() throws IOException {
 		NetPacket p = recieved.get(0);
@@ -130,6 +169,9 @@ public class BasicPacketConnection implements Connection {
 		return p;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void encrypt() throws IOException {
 		throw new UnsupportedOperationException("Encrypting is not supported");

@@ -28,20 +28,59 @@ import org.newdawn.slick.util.Log;
 import rpgonline.net.packet.KeyPacket;
 import rpgonline.net.packet.NetPacket;
 
+/**
+ * A client connection that connects to a server and uses java serialisation for IO.
+ * @author Tomas
+ */
 public class SocketClientConnection extends AESSecurityCap implements Connection {
+	/**
+	 * Mode indicating to perform normal buffered serialisation.
+	 */
 	public static final int MODE_NORMAL = 0b0;
+	/**
+	 * Mode indicating to compress before sending data.
+	 */
 	public static final int MODE_COMPRESS = 0b1;
+	/**
+	 * Mode indicating to encrypt data.
+	 */
 	public static final int MODE_ENCRYPT = 0b10;
+	/**
+	 * Mode indicating to encrypt and compress data.
+	 */
 	public static final int MODE_ENCRYPT_COMPRESS = 0b11;
 
+	/**
+	 * The list of packets to send.
+	 */
 	private List<NetPacket> toSend = Collections.synchronizedList(new ArrayList<NetPacket>());
+	/**
+	 * The list of received packets.
+	 */
 	private List<NetPacket> recieved = Collections.synchronizedList(new ArrayList<NetPacket>());
+	/**
+	 * Determines if the connection is encrypted.
+	 */
 	private boolean encrypted = false;
 
+	/**
+	 * Determines if the connection has been closed.
+	 */
 	private boolean stopped;
+	/**
+	 * The encryption cipher.
+	 */
 	private Cipher encryptCipher;
+	/**
+	 * The decryption cipher.
+	 */
 	private Cipher decryptCipher;
 
+	/**
+	 * Constructs a new SocketClientConnection.
+	 * @param address The address to connect to.
+	 * @param port The port to connect to.
+	 */
 	public SocketClientConnection(String address, int port) {
 		new Thread(toString()) {
 			public void run() {
@@ -125,21 +164,33 @@ public class SocketClientConnection extends AESSecurityCap implements Connection
 		}.start();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(NetPacket p) {
 		toSend.add(p);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isAvaliable() {
 		return recieved.size() > 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public NetPacket getNext() {
 		return recieved.get(0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void encrypt() {
 		Log.info("Attempting encryption.");
@@ -171,6 +222,9 @@ public class SocketClientConnection extends AESSecurityCap implements Connection
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void close() throws IOException {
 		stopped = true;
