@@ -7,7 +7,7 @@ import java.io.IOException;
 import rpgonline.net.PacketType;
 
 /**
- * Packet used for sending chat data./
+ * Packet used for sending chat data.
  * @author Tomas
  *
  */
