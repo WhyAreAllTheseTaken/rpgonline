@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for sending chat data./
+ * @author Tomas
+ *
+ */
 public class TextPacket implements NetPacket {
 	/**
 	 * 

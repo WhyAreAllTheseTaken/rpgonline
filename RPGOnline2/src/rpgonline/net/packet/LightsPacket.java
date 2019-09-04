@@ -11,6 +11,11 @@ import org.newdawn.slick.Color;
 import rpgonline.net.PacketType;
 import rpgonline.world.LightSource;
 
+/**
+ * Packet used for sending light data.
+ * @author Tomas
+ *
+ */
 public class LightsPacket implements NetPacket {
 	private static final long serialVersionUID = -3648467862338726913L;
 	

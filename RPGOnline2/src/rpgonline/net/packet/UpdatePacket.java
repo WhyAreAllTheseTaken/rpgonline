@@ -8,6 +8,11 @@ import org.newdawn.slick.util.Log;
 import rpgonline.abt.TagGroup;
 import rpgonline.entity.Entity;
 
+/**
+ * Packet used for sending entity updates.
+ * @author Tomas
+ *
+ */
 public class UpdatePacket implements Serializable, NetPacket {
 	/**
 	 * 

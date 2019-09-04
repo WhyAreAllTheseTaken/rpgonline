@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for requests for chunk data.
+ * @author Tomas
+ *
+ */
 public class ChunkRequestPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 2;
 	private static final long serialVersionUID = 2088638661829275185L;

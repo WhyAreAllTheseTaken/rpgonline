@@ -7,6 +7,11 @@ import java.io.IOException;
 import rpgonline.entity.Entity;
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used to remove entities.
+ * @author Tomas
+ *
+ */
 public class EntityRemovePacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 3;
 	

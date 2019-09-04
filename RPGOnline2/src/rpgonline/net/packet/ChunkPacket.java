@@ -3,6 +3,11 @@ package rpgonline.net.packet;
 import rpgonline.abt.TagGroup;
 import rpgonline.world.chunk.Chunk;
 
+/**
+ * Packet used for chunk data.
+ * @author Tomas
+ *
+ */
 public class ChunkPacket implements NetPacket {
 	private static final long serialVersionUID = 968047869315854575L;
 	private final TagGroup tg;

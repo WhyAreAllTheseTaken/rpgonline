@@ -4,6 +4,11 @@ import rpgonline.abt.TagGroup;
 import rpgonline.entity.Entity;
 import rpgonline.entity.EntityManager;
 
+/**
+ * Packet used to add entities.
+ * @author Tomas
+ *
+ */
 public class EntityAddPacket implements NetPacket {
 	private static final long serialVersionUID = 1972178890606910609L;
 	private final TagGroup tg;

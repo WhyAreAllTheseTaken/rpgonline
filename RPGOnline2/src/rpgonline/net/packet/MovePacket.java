@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for movement control data.
+ * @author Tomas
+ *
+ */
 public class MovePacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 6;
 	

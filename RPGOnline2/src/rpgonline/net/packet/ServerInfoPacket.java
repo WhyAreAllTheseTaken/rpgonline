@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for server info communication.
+ * @author Tomas
+ *
+ */
 public class ServerInfoPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 8;
 	

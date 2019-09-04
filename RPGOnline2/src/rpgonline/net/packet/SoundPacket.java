@@ -7,6 +7,11 @@ import java.io.IOException;
 import rpgonline.audio.AudioManager;
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for sound data.
+ * @author Tomas
+ *
+ */
 public class SoundPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 9;
 

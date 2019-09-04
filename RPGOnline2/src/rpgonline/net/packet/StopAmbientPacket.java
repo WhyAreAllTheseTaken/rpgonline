@@ -7,6 +7,11 @@ import java.io.IOException;
 import rpgonline.audio.AudioManager;
 import rpgonline.net.PacketType;
 
+/**
+ * Packet with a command to stop all ambient sounds.
+ * @author Tomas
+ *
+ */
 public class StopAmbientPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 10;
 	

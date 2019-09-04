@@ -7,6 +7,11 @@ import java.io.IOException;
 import rpgonline.audio.AudioManager;
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for ambient sound events.
+ * @author Tomas
+ *
+ */
 public class AmbientPacket implements NetPacket {
 	public static final byte PACKET_AMBIENT = (byte) 0xFF - 1;
 	private static final long serialVersionUID = -6976795378405555984L;

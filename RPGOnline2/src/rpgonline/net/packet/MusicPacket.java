@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for music data.
+ * @author Tomas
+ *
+ */
 public class MusicPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 7;
 	

@@ -7,6 +7,11 @@ import java.security.PublicKey;
 
 import rpgonline.net.PacketType;
 
+/**
+ * Packet used for the sending of public encryption keys.
+ * @author Tomas
+ *
+ */
 public class KeyPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 4;
 	

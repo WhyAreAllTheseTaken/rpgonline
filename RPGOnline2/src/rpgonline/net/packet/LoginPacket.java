@@ -7,6 +7,11 @@ import java.io.IOException;
 import rpgonline.net.PacketType;
 import rpgonline.net.ServerManager;
 
+/**
+ * Packet used for login data.
+ * @author Tomas
+ *
+ */
 public class LoginPacket implements NetPacket {
 	public static final byte PACKET_ID = (byte) 0xFF - 5;
 	
