@@ -10,6 +10,7 @@ import rpgonline.world.World;
  * An interface representing a system for drawing tiles.
  * @author Tomas
  *
+ * @see rpgonline.texture.entity.EntityTexture
  */
 public interface TileTexture {
 	/**
@@ -50,7 +51,7 @@ public interface TileTexture {
 	 * @param w The world the tile is in.
 	 * @param state The state of the tile.
 	 * @param t The tile to render.
-	 * @return
+	 * @return A texture array.
 	 */
 	public default TileTexture[] getTextures(long x, long y, long z, World w, String state, Tile t) {
 		return new TileTexture[] {this};

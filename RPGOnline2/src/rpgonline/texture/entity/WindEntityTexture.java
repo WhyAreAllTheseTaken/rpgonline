@@ -6,12 +6,36 @@ import rpgonline.entity.Entity;
 import rpgonline.texture.TextureMap;
 import rpgonline.world.World;
 
+/**
+ * An entity texture that changes depending on wind.
+ * @author Tomas
+ *
+ */
 public class WindEntityTexture implements EntityTexture {
+	/**
+	 * The textures to use.
+	 */
 	private final int[] t;
+	/**
+	 * The points at which the texture should be changed.
+	 */
 	private final float[] b;
+	/**
+	 * The X offset for this texture.
+	 */
 	private final float x;
+	/**
+	 * The Y offset for this texture.
+	 */
 	private final float y;
 	
+	/**
+	 * Constructs a new WindEntityTexture.
+	 * @param s The textures to use.
+	 * @param b The values to change the texture at.
+	 * @param x The X offset for this texture.
+	 * @param y The Y offset for this texture.
+	 */
 	public WindEntityTexture(String[] s, float[] b, float x, float y) {
 		t = new int[s.length];
 		
@@ -25,10 +49,18 @@ public class WindEntityTexture implements EntityTexture {
 		this.b = b;
 	}
 	
+	/**
+	 * Constructs a new WindEntityTexture.
+	 * @param s The textures to use.
+	 * @param b The values to change the texture at.
+	 */
 	public WindEntityTexture(String[] s, float[] b) {
 		this(s, b, 0, 0);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getTexture(double x, double y, double z, World w, Entity e, float wind) {
 		if(wind == 0) {
@@ -46,11 +78,17 @@ public class WindEntityTexture implements EntityTexture {
 		return texture;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public float getX() {
 		return x;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public float getY() {
 		return y;
