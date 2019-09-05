@@ -8,16 +8,35 @@ import org.newdawn.slick.Image;
 import rpgonline.texture.TextureMap;
 import rpgonline.world.World;
 
+/**
+ * A sky layer made of a grid of images.
+ * @author Tomas
+ *
+ */
 public abstract class ImageMeshLayer implements SkyLayer {
+	/**
+	 * The width of one image.
+	 */
 	private final int imageWidth;
+	/**
+	 * The height of one image.
+	 */
 	private final int imageHeight;
 	
+	/**
+	 * Constructs a new ImageMeshLayer.
+	 * @param imageWidth The width of one image.
+	 * @param imageHeight The height of one image.
+	 */
 	public ImageMeshLayer(int imageWidth, int imageHeight) {
 		super();
 		this.imageWidth = imageWidth;
 		this.imageHeight = imageHeight;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
 		g.pushTransform();
@@ -48,5 +67,11 @@ public abstract class ImageMeshLayer implements SkyLayer {
 		g.popTransform();
 	}
 	
+	/**
+	 * Gets the image at the specified position.
+	 * @param x The X position of the image.
+	 * @param y The Y position of the image.
+	 * @return An image object.
+	 */
 	public abstract Image getImageAt(long x, long y);
 }
