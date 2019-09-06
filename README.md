@@ -13,6 +13,7 @@ All dependencies are included in the release zip file.
   - LWJGL2 http://legacy.lwjgl.org [BSD 3-Clause](http://legacy.lwjgl.org/license.php.html)
   - tinylinepp
 - JNA https://github.com/java-native-access/jna [Apache 2.0 or LGPL 2.1](https://github.com/java-native-access/jna/blob/master/LICENSE)
+- JSR-305 [BSD 2-Clause](https://github.com/findbugsproject/findbugs/blob/master/findbugs/licenses/LICENSE-jsr305.txt)
 - Sound System http://www.paulscode.com/forum/index.php?topic=4.0 [Sound System License](http://www.paulscode.com/forum/index.php?topic=4.0)
   - CodecWAV http://www.paulscode.com/forum/index.php?topic=4.0
   - CodecIBXM http://www.paulscode.com/forum/index.php?topic=4.0
