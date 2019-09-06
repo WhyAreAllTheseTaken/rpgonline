@@ -1,5 +1,5 @@
 # RPGOnline
-A game engine for 2D top-down tile-based games with multiplayer support.
+A game engine for 2D top-down tile-based games with multiplayer support. The library also provides a format for storing binary data as a series of hierachal tags.
 
 RPGOnline is licensed under the 3-Clause BSD Licence.
 
@@ -31,3 +31,25 @@ All dependencies are included in the release.zip file.
 
 # Notes
 This library was created to help with the development of certain games and to avoid having to rewrite code.
+
+# Slick2D Replacement Progress
+- Audio Engine - LWJGL
+- World Engine - Slick2D
+- Collision - Slick2D
+- Net Engine - Java
+- ABT - Java
+- Atmosphere - Slick2D
+- Bullet Hell - Slick2D
+- Cutscene - Slick2D
+- Debug - Java
+- Entity - Slick2D
+- Input - Slick2D + LWJGL
+- Lang - Java
+- Low Level - JNA
+- Noise - Simplex Noise by Stefan Gustavson
+- Particles - Slick2D
+- Shaders - SlickShader
+- Sky - Slick2D
+- Version - Java
+- Rendering - Slick2D
+- World - Slick2D
