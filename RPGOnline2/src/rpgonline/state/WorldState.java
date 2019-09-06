@@ -56,12 +56,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * The cached {@code y} position of the player.
 	 */
 	protected double y;
-	
+
 	/**
 	 * Previous X position of the player used for velocity calculations.
 	 */
 	protected double px;
-	
+
 	/**
 	 * Previous Y position of the player used for velocity calculations.
 	 */
@@ -94,7 +94,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * A buffer for shader effects.
 	 */
 	protected Image buffer;
-	
+
 	/**
 	 * A second (smaller) buffer for pixel perfect effects.
 	 */
@@ -119,17 +119,17 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * Cooldown for GUI buttons.
 	 */
 	protected float gui_cooldown = 0.25f;
-	
+
 	/**
 	 * The background for this world.
 	 */
 	protected SkyLayer sky;
-	
+
 	/**
 	 * Currently displaying particles.
 	 */
 	protected List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>(128));
-	
+
 	/**
 	 * If shaders are enabled.
 	 */
@@ -149,7 +149,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
+
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		Debugger.stop("game-render");
 
 		g.resetTransform();
-		
+
 		if (RPGConfig.isSnapToPixel() && post_enable) {
 			Debugger.start("snap");
 			if (buffer == null) {
@@ -175,36 +175,37 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			}
 			if (buffer2 == null) {
 				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
-			} else if (container.getWidth() / (int) (zoom) != buffer2.getWidth() || container.getHeight() / (int) (zoom) != buffer2.getHeight()) {
+			} else if (container.getWidth() / (int) (zoom) != buffer2.getWidth()
+					|| container.getHeight() / (int) (zoom) != buffer2.getHeight()) {
 				buffer2.destroy();
 				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
 			}
-			
+
 			buffer.setFilter(Image.FILTER_NEAREST);
 			buffer2.setFilter(Image.FILTER_NEAREST);
-			
+
 			g.copyArea(buffer, 0, 0);
 			g.drawImage(buffer.getScaledCopy(buffer2.getWidth(), buffer2.getHeight()), 0, 0);
 			g.copyArea(buffer2, 0, 0);
 			g.drawImage(buffer2.getScaledCopy(buffer.getWidth(), buffer.getHeight()), 0, 0);
-			
+
 			buffer.setFilter(Image.FILTER_LINEAR);
-			
+
 			Debugger.stop("snap");
 		}
 
 		if (post != null && post_enable) {
 			Debugger.start("effects");
-			
+
 			if (buffer == null) {
 				buffer = new Image(container.getWidth(), container.getHeight());
 			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
 				buffer = new Image(container.getWidth(), container.getHeight());
 			}
-			
+
 			g.copyArea(buffer, 0, 0);
-			
+
 			if (!(post instanceof MultiEffect)) {
 				Debugger.start("post-" + post.getClass());
 			}
@@ -212,13 +213,13 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			if (!(post instanceof MultiEffect)) {
 				Debugger.stop("post-" + post.getClass());
 			}
-			
+
 			Debugger.stop("effects");
 		}
 
 		if (gui) {
 			Debugger.start("gui");
-			
+
 			Rectangle world_clip = g.getWorldClip();
 			Rectangle clip = g.getClip();
 			for (GUIItem gui : guis) {
@@ -234,12 +235,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				g.setWorldClip(world_clip);
 				g.setClip(clip);
 			}
-			
+
 			Debugger.stop("gui");
 		}
-		
+
 		g.flush();
-		
+
 		Debugger.stop("render");
 	}
 
@@ -251,17 +252,17 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * A reusable list of entity textures for faster rendering.
 	 */
 	protected List<EntityTexture> entityTextures = new ArrayList<>();
-	
+
 	/**
 	 * A method that renders the world.
 	 */
 	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		List<LightSource> lights = null;
-		if(RPGConfig.isLighting()) {
+		if (RPGConfig.isLighting()) {
 			Debugger.start("light-compute");
-			
+
 			lights = ServerManager.getClient().getWorld().getLights();
-			
+
 			if (lights.size() != 0) {
 				lights.sort(new Comparator<LightSource>() {
 					@Override
@@ -296,12 +297,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 					lights.remove(lights.size() - 1);
 				}
 			}
-			
+
 			Debugger.stop("light-compute");
 		}
-		
+
 		World world = ServerManager.getClient().getWorld();
-		
+
 		Debugger.start("sky");
 		if (sky != null) {
 			sky.render(g, container, x, y, 0, world, world.getLightColor());
@@ -322,7 +323,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
 		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
-		
+
 		Debugger.start("entity-compute");
 		List<Entity> entities1 = ServerManager.getClient().getWorld().getEntities();
 		List<Entity> entities = new ArrayList<Entity>();
@@ -338,18 +339,18 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			}
 		}
 		Debugger.stop("entity-compute");
-		
+
 		List<Particle> particles_light = null;
 		List<Particle> particles_nolight = null;
-		
+
 		if (RPGConfig.isParticles()) {
 			Debugger.start("particle-compute");
 			particles_light = new ArrayList<Particle>(particles.size());
 			particles_nolight = new ArrayList<Particle>(32);
-			
+
 			for (int i = 0; i < particles.size(); i++) {
 				Particle p = particles.get(i);
-				
+
 				if (screen_bounds.contains(p.getX(), p.getY())) {
 					if (p.isLightAffected()) {
 						particles_light.add(p);
@@ -368,81 +369,115 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		long may = (long) (y + dist_y);
 		long miz = world.getMinZ();
 		long maz = world.getMaxZ();
-		
+
 		float wind = ServerManager.getClient().getWind();
 
 		Image current = null;
 
+		boolean hitbox = RPGConfig.isHitbox();
 		for (long z = maz; z >= FastMath.min(-1, miz); z--) {
 			for (long y = miy; y <= may; y++) {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, z);
 					String state = world.getTileState(x, y, z);
 					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
-					
-					for(TileTexture tex : textures) {
+
+					for (TileTexture tex : textures) {
 						if (tex.isCustom()) {
 							Debugger.start("custom-tile");
-							if (current != null) current.endUse();
-							
-							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
-							
-							if (current != null) current.startUse();
+							if (current != null)
+								current.endUse();
+
+							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+
+							if (current != null)
+								current.startUse();
 							Debugger.stop("custom-tile");
 						} else {
 							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-							
+
 							if (img != null) {
-								if(TextureMap.getSheet(img) != current) {
-									if (current != null) current.endUse();
+								if (TextureMap.getSheet(img) != current) {
+									if (current != null)
+										current.endUse();
 									current = TextureMap.getSheet(img);
 									current.startUse();
 								}
-								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx, y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx,
+										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 							}
 						}
 					}
-					
+
 					textures.clear();
-					
+
+					if (hitbox && z == -1 && t.isSolid(state)) {
+						if (((x - this.x) * (x - this.x) + (y - this.y) * (y - this.y)) <= (4 * 4)) {
+							if (current != null)
+								current.endUse();
+
+							g.setColor(Color.orange);
+							g.draw(t.getHitBox()
+									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
+											RPGConfig.getTileSize()))
+									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
+											y * RPGConfig.getTileSize() - sy)));
+
+							if (current != null)
+								current.startUse();
+						}
+					}
+
 					if (z == -1) {
 						Debugger.start("entity");
 						for (Entity e : entities) {
-							if(!e.isFlying()) {
-								if (FastMath.round(e.getX() + 0.5f) == x
-										&& FastMath.floor(e.getY() - 0.25) == y) {
+							if (!e.isFlying()) {
+								if (FastMath.round(e.getX() + 0.5f) == x && FastMath.floor(e.getY() - 0.25) == y) {
 									entityTextures.clear();
-									
+
 									expandTexture(e.getTexture(), entityTextures, e.getX(), e.getY(), world, wind, e);
-									
-									for(EntityTexture tex : entityTextures) {
+
+									for (EntityTexture tex : entityTextures) {
 										if (tex.isCustom()) {
-											if (current != null) current.endUse();
-											
+											if (current != null)
+												current.endUse();
+
 											tex.render(g, x, y, -1, world, e, sx, sy, wind);
-											
-											if (current != null) current.startUse();
+
+											if (current != null)
+												current.startUse();
 										} else {
-											Image img = TextureMap.getTexture(tex.getTexture(e.getX(), e.getY(), -1, world, e, wind));
-											
+											Image img = TextureMap
+													.getTexture(tex.getTexture(e.getX(), e.getY(), -1, world, e, wind));
+
 											if (img != null) {
-												if(TextureMap.getSheet(img) != current) {
-													if (current != null) current.endUse();
+												if (TextureMap.getSheet(img) != current) {
+													if (current != null)
+														current.endUse();
 													current = TextureMap.getSheet(img);
 													current.startUse();
 												}
-												img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx, (float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+												img.drawEmbedded(
+														(float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
+														(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy,
+														img.getWidth(), img.getHeight());
 											}
 										}
 									}
-									
-									if (RPGConfig.isHitbox()) {
-										if (current != null) current.endUse();
-										
+
+									if (hitbox) {
+										if (current != null)
+											current.endUse();
+
 										g.setColor(Color.red);
-										g.draw(e.getHitBox().transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize())).transform(Transform.createTranslateTransform(-sx, -sy)));
-										
-										if (current != null) current.startUse();
+										g.draw(e.getHitBox()
+												.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
+														RPGConfig.getTileSize()))
+												.transform(Transform.createTranslateTransform(-sx, -sy)));
+
+										if (current != null)
+											current.startUse();
 									}
 								}
 							}
@@ -452,86 +487,101 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				}
 			}
 		}
-		
+
 		Debugger.start("entity");
 		for (Entity e : entities) {
-			if(e.isFlying()) {
+			if (e.isFlying()) {
 				entityTextures.clear();
-				
+
 				expandTexture(e.getTexture(), entityTextures, e.getX(), e.getY(), world, wind, e);
-				
-				for(EntityTexture tex : entityTextures) {
+
+				for (EntityTexture tex : entityTextures) {
 					if (tex.isCustom()) {
-						if (current != null) current.endUse();
-						
+						if (current != null)
+							current.endUse();
+
 						tex.render(g, x, y, -3, world, e, sx, sy, wind);
-						
-						if (current != null) current.startUse();
+
+						if (current != null)
+							current.startUse();
 					} else {
 						Image img = TextureMap.getTexture(tex.getTexture(e.getX(), e.getY(), -3, world, e, wind));
-						
+
 						if (img != null) {
-							if(TextureMap.getSheet(img) != current) {
-								if (current != null) current.endUse();
+							if (TextureMap.getSheet(img) != current) {
+								if (current != null)
+									current.endUse();
 								current = TextureMap.getSheet(img);
 								current.startUse();
 							}
-							img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx, (float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+							img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
+									(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
+									img.getHeight());
 						}
 					}
 				}
-				
+
 				if (RPGConfig.isHitbox()) {
-					if (current != null) current.endUse();
-					
+					if (current != null)
+						current.endUse();
+
 					g.setColor(Color.red);
-					g.draw(e.getHitBox().transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize())).transform(Transform.createTranslateTransform(-sx, -sy)));
-					
-					if (current != null) current.startUse();
+					g.draw(e.getHitBox()
+							.transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize()))
+							.transform(Transform.createTranslateTransform(-sx, -sy)));
+
+					if (current != null)
+						current.startUse();
 				}
 			}
 		}
 		Debugger.stop("entity");
-		
+
 		Debugger.stop("world");
-		
+
 		if (RPGConfig.isParticles()) {
 			Debugger.start("particles");
 			Debugger.start("particle-light");
 			for (Particle particle : particles_light) {
 				if (particle.isCustom()) {
-					if (current != null) current.endUse();
-					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
-					if (current != null) current.startUse();
+					if (current != null)
+						current.endUse();
+					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx,
+							particle.getY() * RPGConfig.getTileSize() - sy);
+					if (current != null)
+						current.startUse();
 				} else {
 					Image img = TextureMap.getTexture(particle.getTexture());
-					
+
 					if (img != null) {
-						if(TextureMap.getSheet(img) != current) {
-							if (current != null) current.endUse();
+						if (TextureMap.getSheet(img) != current) {
+							if (current != null)
+								current.endUse();
 							current = TextureMap.getSheet(img);
 							current.startUse();
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
-						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx,
+								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}
 			}
-			
+
 			Debugger.stop("particle-light");
 			Debugger.stop("particles");
 		}
-		
-		if (current != null) current.endUse();
+
+		if (current != null)
+			current.endUse();
 		current = null;
-		
+
 		g.flush();
-		
+
 		g.resetTransform();
-		
-		if(RPGConfig.isLighting()) {
+
+		if (RPGConfig.isLighting()) {
 			Debugger.start("lighting");
-			
+
 			if (lights.size() == 0) {
 				g.setColor(world.getLightColor());
 				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
@@ -539,80 +589,82 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				g.setDrawMode(Graphics.MODE_NORMAL);
 			} else {
 				Graphics sg = g;
-				
+
 				if (lightBuffer == null) {
 					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				} else if (container.getWidth() != lightBuffer.getWidth() || container.getHeight() != lightBuffer.getHeight()) {
+				} else if (container.getWidth() != lightBuffer.getWidth()
+						|| container.getHeight() != lightBuffer.getHeight()) {
 					lightBuffer.destroy();
 					lightBuffer = new Image(container.getWidth(), container.getHeight());
 				}
-		
+
 				g = lightBuffer.getGraphics();
-		
+
 				g.clear();
-		
+
 				g.setDrawMode(Graphics.MODE_NORMAL);
-		
+
 				Color wl = world.getLightColor();
-		
+
 				float red = wl.r;
 				float green = wl.g;
 				float blue = wl.b;
-		
+
 				float lum = (red + green + blue) / 3;
-		
+
 				float rscale = FastMath.max(lum * 10, 1);
 				float gscale = FastMath.max(lum * 10, 1);
 				float bscale = FastMath.max(lum * 10, 1);
-		
+
 				g.setColor(wl);
 				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-		
+
 				g.translate(container.getWidth() / 2, container.getHeight() / 2);
-		
+
 				g.scale(base_scale, base_scale);
 				g.pushTransform();
-		
+
 				g.scale(zoom, zoom);
 				if (shake > 0) {
 					g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 				}
-		
+
 				g.setDrawMode(Graphics.MODE_SCREEN);
-		
+
 				for (LightSource l : lights) {
 					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
-		
+
 					img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
-		
+
 					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2 - sx * RPGConfig.getTileSize(),
+							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
+									- sx * RPGConfig.getTileSize(),
 							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
 									- sy * RPGConfig.getTileSize());
 				}
-				
+
 				g.flush();
-		
+
 				sg.resetTransform();
-		
+
 				sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
 				sg.drawImage(lightBuffer, 0, 0);
 				sg.setDrawMode(Graphics.MODE_NORMAL);
-				
+
 				g = sg;
 			}
-			
+
 			g.flush();
-		
+
 			Debugger.stop("lighting");
 		}
-		
+
 		g.resetTransform();
-		
-		if(RPGConfig.isParticles()) {
+
+		if (RPGConfig.isParticles()) {
 			Debugger.start("particles");
 			Debugger.start("particles-nolight");
-			
+
 			g.translate(container.getWidth() / 2, container.getHeight() / 2);
 
 			g.scale(base_scale, base_scale);
@@ -622,75 +674,85 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			if (shake > 0) {
 				g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 			}
-			
+
 			for (Particle particle : particles_nolight) {
 				if (particle.isCustom()) {
-					if (current != null) current.endUse();
-					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
-					if (current != null) current.startUse();
+					if (current != null)
+						current.endUse();
+					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx,
+							particle.getY() * RPGConfig.getTileSize() - sy);
+					if (current != null)
+						current.startUse();
 				} else {
 					Image img = TextureMap.getTexture(particle.getTexture());
-					
+
 					if (img != null) {
-						if(TextureMap.getSheet(img) != current) {
-							if (current != null) current.endUse();
+						if (TextureMap.getSheet(img) != current) {
+							if (current != null)
+								current.endUse();
 							current = TextureMap.getSheet(img);
 							current.startUse();
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
-						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx,
+								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}
 			}
-			
-			if (current != null) current.endUse();
-			
+
+			if (current != null)
+				current.endUse();
+
 			g.resetTransform();
-			
+
 			Debugger.stop("particles-nolight");
 			Debugger.stop("particles");
 		}
 	}
-	
+
 	/**
 	 * Expands a single tile texture into all its subtextures.
-	 * @param t The texture to expand.
-	 * @param l The list to expand into.
-	 * @param x The tile X position.
-	 * @param y The tile Y position.
-	 * @param z The tile Z position.
+	 * 
+	 * @param t     The texture to expand.
+	 * @param l     The list to expand into.
+	 * @param x     The tile X position.
+	 * @param y     The tile Y position.
+	 * @param z     The tile Z position.
 	 * @param world The current world.
-	 * @param tile The current tile.
+	 * @param tile  The current tile.
 	 * @param state The tile's current state.
 	 */
-	protected void expandTexture(TileTexture t, List<TileTexture> l, long x, long y, long z, World world, Tile tile, String state) {
+	protected void expandTexture(TileTexture t, List<TileTexture> l, long x, long y, long z, World world, Tile tile,
+			String state) {
 		if (t.isPure()) {
 			l.add(t);
 		} else {
 			TileTexture[] ta = t.getTextures(x, y, z, world, state, tile);
-			
+
 			for (TileTexture t2 : ta) {
 				expandTexture(t2, l, x, y, z, world, tile, state);
 			}
 		}
 	}
-	
+
 	/**
 	 * Expands a single entity texture into all its subtextures.
-	 * @param t The texture to expand.
-	 * @param l The list to expand into.
-	 * @param x The entity X position.
-	 * @param y The entity Y position.
+	 * 
+	 * @param t     The texture to expand.
+	 * @param l     The list to expand into.
+	 * @param x     The entity X position.
+	 * @param y     The entity Y position.
 	 * @param world The current world.
-	 * @param wind The current wind.
-	 * @param e The current entity.
+	 * @param wind  The current wind.
+	 * @param e     The current entity.
 	 */
-	protected void expandTexture(EntityTexture t, List<EntityTexture> l, double x, double y, World world, float wind, Entity e) {
+	protected void expandTexture(EntityTexture t, List<EntityTexture> l, double x, double y, World world, float wind,
+			Entity e) {
 		if (t.isPure()) {
 			l.add(t);
 		} else {
 			EntityTexture[] ta = t.getTextures(x, y, -1, world, e, wind);
-			
+
 			for (EntityTexture t2 : ta) {
 				expandTexture(t2, l, x, y, world, wind, e);
 			}
@@ -703,13 +765,13 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		Debugger.initRender();
-		
+
 		this.last_delta = delta;
 
 		float delf = delta / 1000f;
 
 		Input in = container.getInput();
-		
+
 		double walk_x = 0;
 		double walk_y = 0;
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
@@ -718,17 +780,17 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
 			walk_y += 1;
 		}
-		
+
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
 			walk_x += 1;
 		}
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
 			walk_x -= 1;
 		}
-		
+
 		ServerManager.getClient().walkX(walk_x, delf);
 		ServerManager.getClient().walkY(walk_y, delf);
-		
+
 //		if (in.getControllerCount() > 0) {
 //			if(RPGConfig.getControllerInput().isLeftHanded()) {
 //				ServerManager.getClient().walkY(in.getAxisValue(0, 2));
@@ -739,7 +801,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 //			}
 //		}
 		ServerManager.getClient().setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
-		
+
 		x = ServerManager.getClient().getPlayerX();
 		y = ServerManager.getClient().getPlayerY();
 
@@ -769,32 +831,32 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			gui = !gui;
 			gui_cooldown = 0.25f;
 		}
-		
+
 		AudioManager.setPlayerPos((float) x, 0, (float) y);
 		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
-		
+
 		px = x;
 		py = y;
-		
+
 		float wind = ServerManager.getClient().getWind();
 		World world = ServerManager.getClient().getWorld();
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).doBehaviour(world, wind, particles, delta / 1000f);
 		}
-		
+
 		particles.sort(new Comparator<Particle>() {
 			@Override
 			public int compare(Particle o1, Particle o2) {
 				int a = o1.getClass().equals(o2.getClass()) ? 0 : 1;
-				
+
 				if (!o1.isLightAffected()) {
 					a += 2;
 				}
-				
+
 				return a;
 			}
 		});
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			post_enable = false;
 		} else {
@@ -897,6 +959,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 	/**
 	 * Determines if the GUI is currently displayed.
+	 * 
 	 * @return {@code true} if the GUI is enabled, {@code false} otherwise.
 	 */
 	public boolean isGuiShown() {
@@ -905,7 +968,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 	/**
 	 * Sets if the GUI is currently displayed.
-	 * @param gui {@code true} if the GUI should be enabled, {@code false} otherwise.
+	 * 
+	 * @param gui {@code true} if the GUI should be enabled, {@code false}
+	 *            otherwise.
 	 */
 	public void setGuiShown(boolean gui) {
 		this.gui = gui;
@@ -913,6 +978,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 	/**
 	 * Gets the current sky.
+	 * 
 	 * @return A {@code SkyLayer} or {@code null} if no sky is set.
 	 */
 	public SkyLayer getSky() {
@@ -921,28 +987,31 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 	/**
 	 * Sets the current sky.
+	 * 
 	 * @param sky A {@code SkyLayer} or {@code null} to disable sky rendering.
 	 */
 	public void setSky(SkyLayer sky) {
 		this.sky = sky;
 	}
-	
+
 	/**
 	 * Adds a particle to this state.
+	 * 
 	 * @param p The particle to add.
 	 */
 	public void addParticle(Particle p) {
 		particles.add(p);
 	}
-	
+
 	/**
 	 * Adds a collection of particles to this state.
+	 * 
 	 * @param p The particles to add.
 	 */
 	public void addParticles(Collection<? extends Particle> p) {
 		particles.addAll(p);
 	}
-	
+
 	/**
 	 * Clears all particles.
 	 */

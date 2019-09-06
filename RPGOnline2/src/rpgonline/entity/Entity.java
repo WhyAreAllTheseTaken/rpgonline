@@ -211,10 +211,12 @@ public class Entity {
 	 *                  {@code true} to enabled, {@code false otherwise}.
 	 */
 	public Entity(EntityManager m, String entity_id, boolean packet) {
+		this.packet = false;
 		setString("id", m.getNextID());
 		setString("entity_id", entity_id);
 		setBoolean("solid", true);
 		setBoolean("flying", false);
+		setDouble("hitbox_a", 0);
 		
 		setX(0);
 		setY(0);
@@ -226,6 +228,8 @@ public class Entity {
 		setHitBox(new Rectangle(0, 0, 0, 0));
 
 		m.getAI(entity_id).init(this);
+		
+		this.packet = packet;
 	}
 
 	/**
@@ -237,6 +241,7 @@ public class Entity {
 	 *               {@code true} to enabled, {@code false otherwise}.
 	 */
 	public Entity(EntityManager m, TagGroup g, boolean packet) {
+		this.packet = false;
 		for (Tag t : g.getTags()) {
 			if (t instanceof TagDouble) {
 				doubles.put(t.getName(), ((TagDouble) t).getData());
@@ -291,6 +296,8 @@ public class Entity {
 
 		setHitBox(new Rectangle((float) getDouble("hitbox_x"), (float) getDouble("hitbox_y"),
 				(float) getDouble("hitbox_w"), (float) getDouble("hitbox_h")));
+		
+		this.packet = packet;
 	}
 
 	/**
