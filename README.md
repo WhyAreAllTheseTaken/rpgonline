@@ -35,22 +35,22 @@ This library was created to help with the development of certain games and to av
 
 # Slick2D Replacement Progress
 - Audio Engine - LWJGL &#x2611;
-- World Engine - Slick2D
-- Collision - Slick2D
+- World Engine - Slick2D &#x2612;
+- Collision - Slick2D &#x2612;
 - Net Engine - Java &#x2611;
 - ABT - Java &#x2611;
-- Atmosphere - Slick2D
-- Bullet Hell - Slick2D
-- Cutscene - Slick2D
+- Atmosphere - Slick2D &#x2612;
+- Bullet Hell - Slick2D &#x2612;
+- Cutscene - Slick2D &#x2612;
 - Debug - Java &#x2611;
-- Entity - Slick2D
-- Input - Slick2D + LWJGL
+- Entity - Slick2D &#x2612;
+- Input - Slick2D + LWJGL &#x2612;
 - Lang - Java &#x2611;
 - Low Level - JNA &#x2611;
 - Noise - Simplex Noise by Stefan Gustavson &#x2611;
-- Particles - Slick2D
-- Shaders - SlickShader
-- Sky - Slick2D
+- Particles - Slick2D &#x2612;
+- Shaders - SlickShader &#x2612;
+- Sky - Slick2D &#x2612;
 - Version - Java &#x2611;
-- Rendering - Slick2D
-- World - Slick2D
+- Rendering - Slick2D &#x2612;
+- World - Slick2D &#x2612;
