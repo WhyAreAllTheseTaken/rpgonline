@@ -10,7 +10,7 @@ All dependencies are included in the release zip file.
 - Slick2D (and related depenencies) http://slick.ninjacave.com [Slick2D Licence](http://slick.ninjacave.com/license/)
   - IBXM [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
   - JInput https://github.com/jinput/jinput [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
-  - LWJGL https://github.com/LWJGL/lwjgl3 [LWJGL Licence](https://www.lwjgl.org/license)
+  - LWJGL2 http://legacy.lwjgl.org [BSD 3-Clause](http://legacy.lwjgl.org/license.php.html)
   - tinylinepp
 - JNA https://github.com/java-native-access/jna [Apache 2.0 or LGPL 2.1](https://github.com/java-native-access/jna/blob/master/LICENSE)
 - Sound System http://www.paulscode.com/forum/index.php?topic=4.0 [Sound System License](http://www.paulscode.com/forum/index.php?topic=4.0)
