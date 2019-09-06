@@ -3,7 +3,7 @@ A game engine for 2D top-down tile-based games with multiplayer support.
 
 RPGOnline is licensed under the 3-Clause BSD Licence.
 
-This library is written on top of slick2d to provide more specific features. Eventually, the project is planned to move to LWJGL2 and later LWJGL3. Currently using slick2d are: the rendering engine, collision system, some of the input system, atmosphere system, cutscene system, some of the entity system and some of the world system.
+This library is written on top of slick2d to provide more specific features. Eventually, the project is planned to move to LWJGL2 and later LWJGL3. Currently using Slick2d are: the rendering engine, collision system, some of the input system, atmosphere system, cutscene system, some of the entity system and some of the world system.
 
 # Dependencies
 All dependencies are included in the release.zip file.
@@ -28,3 +28,6 @@ All dependencies are included in the release.zip file.
 2. Extract the contents of the folder.
 3. Add the JAR files to your project classpath.
 4. Add the folder as a folder containing native files.
+
+# Notes
+This library was created to help with the development of certain games and to avoid having to rewrite code.
