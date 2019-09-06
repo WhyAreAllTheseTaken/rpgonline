@@ -9,6 +9,7 @@ rpgonline.entity
 rpgonline.example.chat
 rpgonline.input
 rpgonline.lang
+rpgonline.lowlevel
 rpgonline.net
 rpgonline.net.login
 rpgonline.net.packet
