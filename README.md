@@ -34,23 +34,23 @@ All dependencies are included in the release.zip file.
 This library was created to help with the development of certain games and to avoid having to rewrite code.
 
 # Slick2D Replacement Progress
-- Audio Engine - LWJGL
+- Audio Engine - LWJGL &#x2611;
 - World Engine - Slick2D
 - Collision - Slick2D
-- Net Engine - Java
-- ABT - Java
+- Net Engine - Java &#x2611;
+- ABT - Java &#x2611;
 - Atmosphere - Slick2D
 - Bullet Hell - Slick2D
 - Cutscene - Slick2D
-- Debug - Java
+- Debug - Java &#x2611;
 - Entity - Slick2D
 - Input - Slick2D + LWJGL
-- Lang - Java
-- Low Level - JNA
-- Noise - Simplex Noise by Stefan Gustavson
+- Lang - Java &#x2611;
+- Low Level - JNA &#x2611;
+- Noise - Simplex Noise by Stefan Gustavson &#x2611;
 - Particles - Slick2D
 - Shaders - SlickShader
 - Sky - Slick2D
-- Version - Java
+- Version - Java &#x2611;
 - Rendering - Slick2D
 - World - Slick2D
