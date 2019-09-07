@@ -1,5 +1,6 @@
 package rpgonline.input;
 
+import org.lwjgl.input.Controllers;
 import org.newdawn.slick.Input;
 
 import rpgonline.RPGConfig;
@@ -216,6 +217,13 @@ public interface ControllerInputProvider {
 		if((key & 0xf0000000) == 0xf0000000) {
 			return false;
 		}
+		
+		boolean found = false;
+		for (int i = 0; i < Controllers.getControllerCount(); i++) {
+//			Controller c = Controllers.getController(i);
+			//TODO Find compatible controllers.
+		}
+		if (!found) return false;
 		
 		int c = key & 0x0f000000 >> 24;
 		if(c == 0xf) {
