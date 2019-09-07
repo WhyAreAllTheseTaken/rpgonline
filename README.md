@@ -5,7 +5,11 @@ RPGOnline is licensed under the 3-Clause BSD Licence.
 
 This library is written on top of slick2d to provide more specific features. Eventually, the project is planned to move to LWJGL2 and later LWJGL3. Currently using Slick2d are: the rendering engine, collision system, some of the input system, atmosphere system, cutscene system, some of the entity system and some of the world system. In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
 
-# Dependencies
+## Documentation
+Docs: https://tomaso2468.github.io/rpgonline
+Wiki: https://github.com/Tomaso2468/rpgonline/wiki
+
+## Dependencies
 All dependencies are included in the release.zip file.
 - Apache Commons Lang https://commons.apache.org/proper/commons-lang/ [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 - Apache Commons Math http://commons.apache.org/proper/commons-math/ [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
@@ -24,16 +28,16 @@ All dependencies are included in the release.zip file.
   - CodecJOrbis http://www.paulscode.com/forum/index.php?topic=4.0
     - JOrbis http://www.jcraft.com/jorbis [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html)
     
-# Installation
+## Installation
 1. Download the rpgonline.zip folder of the latest stable release.
 2. Extract the contents of the folder.
 3. Add the JAR files to your project classpath.
 4. Add the folder as a folder containing native files.
 
-# Notes
+## Notes
 This library was created to help with the development of certain games and to avoid having to rewrite code.
 
-# Slick2D Replacement Progress
+## Slick2D Replacement Progress
 - Audio Engine - LWJGL &#x2611;
 - World Engine - Slick2D &#x2612;
 - Collision - Slick2D &#x2612;
