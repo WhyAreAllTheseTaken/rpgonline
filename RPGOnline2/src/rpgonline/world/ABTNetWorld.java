@@ -57,7 +57,7 @@ public class ABTNetWorld extends ChunkWorld {
 			
 			Color color = new Color(lr, lg, lb);
 			
-			addLight(new LightSource(x, y, color, b));
+			addLight(new LightSource(x, y, color, b, false));
 		}
 		
 		new Thread(toString()) {
