@@ -10,9 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.Color;
 
-import rpgonline.atmosphere.Atmosphere;
-import rpgonline.atmosphere.EarthAtmosphere;
-import rpgonline.atmosphere.MoonAtmosphere;
 import rpgonline.debug.Debugger;
 
 /**
@@ -515,56 +512,6 @@ public final class ColorUtils {
 	}
 
 	/**
-	 * A basic simulation of light scattering.
-	 * 
-	 * @param c The color to scatter.
-	 * @param v The amount to scatter by.
-	 * @return A new scattered color.
-	 * @deprecated This method causes more problems than it solves and overall
-	 *             doesn't create a good effect.
-	 */
-	@Deprecated
-	public static Color scatter(Color c, float v) {
-		float bv = v * 2 + 1;
-		float gv = v + 1;
-		float rv = v / 10 + 1;
-
-		return new Color(c.r / rv, c.g / gv, c.b / bv);
-	}
-
-	/**
-	 * <p>
-	 * Brightens the color if it is darker than a factor.
-	 * </p>
-	 * <p>
-	 * The brightness is given by {@code (r + g + b) / 3}.
-	 * </p>
-	 * 
-	 * @param c      The color to brighten.
-	 * @param factor The minimum brightness.
-	 * @return A new color instance.
-	 * @deprecated This method can make colors appear strange and isn't reliable.
-	 */
-	@Deprecated
-	public static Color dynamicBrighten(Color c, float factor) {
-		float r = c.r;
-		float g = c.g;
-		float b = c.b;
-
-		float m = r + g + b;
-		m /= 3;
-
-		if (m < factor) {
-			float f = factor / m;
-			r *= f;
-			g *= f;
-			b *= f;
-		}
-
-		return new Color(r, g, b);
-	}
-
-	/**
 	 * A system for generating sun colors at a specific time.
 	 * 
 	 * @author Tomas
@@ -614,140 +561,6 @@ public final class ColorUtils {
 		 * The scale factor for the size of the sun.
 		 */
 		private float sunSize;
-
-		@Deprecated
-		public static final float SUN_TEMP_SUPERNOVA = 100000000000f;
-		@Deprecated
-		public static final float SUN_TEMP_O = (40000f + 30000f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_B = (10000f + 30000f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_A = (7500f + 10000f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_F = (6000f + 7500f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_G = (5200f + 6000f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_K = (3700f + 5200f) / 2f;
-		@Deprecated
-		public static final float SUN_TEMP_M = (2400f + 3700f) / 2f;
-
-		/**
-		 * Creates a generator based on various factors.
-		 * 
-		 * @param kelvin The temperature of the sun.
-		 * @param min    The minimum brightness.
-		 * @param mul    The brightness multiplier for the distance from the sun.
-		 * @deprecated This uses scattering.
-		 */
-		@Deprecated
-		public SunColorGenerator(float kelvin, float min, float mul) {
-			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, 1);
-		}
-
-		/**
-		 * Creates a generator based on various factors.
-		 * 
-		 * @param kelvin The temperature of the sun.
-		 * @param min    The minimum brightness.
-		 * @param mul    The brightness multiplier for the distance from the sun.
-		 * @param dist   The distance from the sun.
-		 * @deprecated This uses scattering.
-		 */
-		@Deprecated
-		public SunColorGenerator(float kelvin, float min, float mul, float dist) {
-			this(kelvin, min, new EarthAtmosphere(), new MoonAtmosphere(), mul, dist);
-		}
-
-		/**
-		 * Creates a generator based on various factors.
-		 * 
-		 * @param kelvin The temperature of the sun.
-		 * @param min    The minimum brightness.
-		 * @param mul    The brightness multiplier for the distance from the sun.
-		 * @param dist   The distance from the sun.
-		 * @param a      The atmospheric parameters for the surface of this world.
-		 * @deprecated This uses scattering.
-		 */
-		@Deprecated
-		public SunColorGenerator(float kelvin, float min, float mul, Atmosphere a, float dist) {
-			this(kelvin, min, a, new MoonAtmosphere(), mul, dist);
-		}
-
-		/**
-		 * Creates a generator based on various factors.
-		 * 
-		 * @param kelvin The temperature of the sun.
-		 * @param min    The minimum brightness.
-		 * @param mul    The brightness multiplier for the distance from the sun.
-		 * @param dist   The distance from the sun.
-		 * @param a      The atmospheric parameters for the surface of this world.
-		 * @param ma     The atmospheric parameters for the surface of the moon.
-		 * @deprecated This uses scattering.
-		 */
-		@Deprecated
-		public SunColorGenerator(float kelvin, float min, Atmosphere a, Atmosphere ma, float mul, float dist) {
-			this(kelvin, new Color(0x898383), min, a, ma, mul, dist);
-		}
-
-		/**
-		 * Creates a generator based on various factors.
-		 * 
-		 * @param kelvin The temperature of the sun.
-		 * @param min    The minimum brightness.
-		 * @param mul    The brightness multiplier for the distance from the sun.
-		 * @param dist   The distance from the sun.
-		 * @param a      The atmospheric parameters for the surface of this world.
-		 * @param ma     The atmospheric parameters for the surface of the moon.
-		 * @param moon   The color of the moon.
-		 * @deprecated This uses scattering.
-		 */
-		@Deprecated
-		public SunColorGenerator(float kelvin, Color moon, float min, Atmosphere a, Atmosphere ma, float mul,
-				float dist) {
-			Color sunlight = ColorUtils.kelvinToColor(kelvin).multiply(new Color(1 / dist, 1 / dist, 1 / dist));
-			Color moonlight = ma.scatter(
-					ma.scatter(sunlight, 2).multiply(moon).multiply(new Color(1f / 400000, 1f / 400000, 1f / 400000)),
-					2);
-			float starBrightness = 1f / 12473835142f;
-			Color starlight = ColorUtils.kelvinToColor(9940)
-					.multiply(new Color(starBrightness, starBrightness, starBrightness));
-
-			Color mulC = new Color(mul, mul, mul);
-
-			Color sunlight2 = a.scatter(sunlight, 1f).multiply(mulC);
-			Color sundown1 = a.scatter(sunlight, 4f).multiply(mulC);
-			Color sundown2 = a.scatter(sunlight, 7f).multiply(mulC);
-
-			Color moonlight2 = a.scatter(moonlight, 1f).multiply(mulC);
-			Color starlight2 = a.scatter(starlight, 2f).multiply(mulC);
-			moonlight2.b *= 2;
-			starlight2.b *= 1;
-
-			Color daySky = a.skyScatter(sunlight, 1f).multiply(mulC);
-			Color sundown1Sky = a.skyScatter(sunlight, 4f).multiply(mulC);
-			Color sundown2Sky = a.skyScatter(sunlight, 7f).multiply(mulC);
-			Color moonlightSky = a.skyScatter(moonlight, 1f).multiply(mulC);
-			Color starlightSky = a.skyScatter(starlight, 2f).multiply(mulC);
-			if (a.getDensity() > 0) {
-				daySky = saturationAdjust(daySky, 0.75f / a.getDensity());
-				sundown1Sky = saturationAdjust(sundown1Sky, 0.8f / a.getDensity());
-				sundown2Sky = saturationAdjust(sundown2Sky, 0.7f / a.getDensity());
-				moonlightSky = saturationAdjust(moonlightSky, 0.6f / a.getDensity());
-				starlightSky = saturationAdjust(starlightSky, 0.5f / a.getDensity());
-			} else {
-				daySky = Color.black;
-				sundown1Sky = Color.black;
-				sundown2Sky = Color.black;
-				moonlightSky = Color.black;
-				starlightSky = Color.black;
-			}
-
-			sunSize = 1 / dist;
-
-			init(sunlight2, dynamicBrighten(moonlight2, min), sundown1, sundown2, dynamicBrighten(starlight2, min),
-					daySky, sundown1Sky, sundown2Sky, moonlightSky, starlightSky);
-		}
 
 		/**
 		 * Creates a generator based on a set of colors.
