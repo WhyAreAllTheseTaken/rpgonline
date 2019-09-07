@@ -37,13 +37,13 @@ public class LightsPacket implements NetPacket {
 		out.write(PACKET_ID);
 		out.writeInt(lights.size());
 		for (LightSource l : lights) {
-			out.writeDouble(l.x);
-			out.writeDouble(l.y);
-			out.writeFloat(l.c.r);
-			out.writeFloat(l.c.g);
-			out.writeFloat(l.c.b);
-			out.writeFloat(l.c.a);
-			out.writeFloat(l.brightness);
+			out.writeDouble(l.getLX());
+			out.writeDouble(l.getLY());
+			out.writeFloat(l.getR());
+			out.writeFloat(l.getG());
+			out.writeFloat(l.getB());
+			out.writeFloat(l.getColor().a);
+			out.writeFloat(l.getBrightness());
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class LightsPacket implements NetPacket {
 				float b = in.readFloat();
 				float a = in.readFloat();
 				float brightness = in.readFloat();
-				lights.add(new LightSource(x, y, new Color(r, g, b, a), brightness));
+				lights.add(new LightSource(x, y, new Color(r, g, b, a), brightness, false));
 			}
 			
 			return new LightsPacket(lights);

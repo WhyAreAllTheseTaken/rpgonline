@@ -82,7 +82,7 @@ public class ABTWorld extends ChunkWorld {
 					
 					Color color = new Color(lr, lg, lb);
 					
-					addLight(new LightSource(x, y, color, b));
+					addLight(new LightSource(x, y, color, b, server));
 				}
 				
 				TagGroup entities = (TagGroup) d.getTags().getTag("entities");

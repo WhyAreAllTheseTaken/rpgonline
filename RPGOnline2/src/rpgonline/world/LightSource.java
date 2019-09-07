@@ -1,53 +1,68 @@
 package rpgonline.world;
 
-import java.io.Serializable;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 import org.newdawn.slick.Color;
 
+import rpgonline.net.PacketType;
+import rpgonline.net.ServerManager;
+import rpgonline.net.packet.NetPacket;
+
 /**
  * A class for storing point light data.
+ * 
  * @author Tomas
  */
-public class LightSource implements Serializable {
-	/**
-	 * Used for storage in older versions.
-	 */
-	@Deprecated
-	private static final long serialVersionUID = 3084200355976862821L;
+public final class LightSource {
 	/**
 	 * The X position of the light.
 	 */
-	public double x;
+	private double x;
 	/**
 	 * The Y position of the light.
 	 */
-	public double y;
+	private double y;
 	/**
 	 * The color of the light.
 	 */
-	public Color c;
+	private Color c;
 	/**
 	 * The brightness of the light.
 	 */
-	public float brightness;
-	
+	private float brightness;
+	/**
+	 * Determines if updates to this light cause updates to be sent to the server.
+	 */
+	private boolean packet;
+
 	/**
 	 * Constructs a new light source.
-	 * @param x The X position of the light.
-	 * @param y The Y position of the light.
-	 * @param c The color of the light.
+	 * 
+	 * @param x          The X position of the light.
+	 * @param y          The Y position of the light.
+	 * @param c          The color of the light.
 	 * @param brightness The brightness of the light.
 	 */
-	public LightSource(double x, double y, Color c, float brightness) {
+	public LightSource(double x, double y, Color c, float brightness, boolean packet) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.c = c;
 		this.brightness = brightness;
+		this.packet = packet;
+	}
+
+	private void doUpdate() {
+		if (packet) {
+			ServerManager.getServer().updateLight(new LightUpdate(this));
+		}
 	}
 
 	/**
 	 * Gets the X position of the light.
+	 * 
 	 * @return A double value.
 	 */
 	public double getLX() {
@@ -55,7 +70,18 @@ public class LightSource implements Serializable {
 	}
 
 	/**
+	 * Sets the X position of the light.
+	 * 
+	 * @param x A double value.
+	 */
+	public void setLX(double x) {
+		this.x = x;
+		doUpdate();
+	}
+
+	/**
 	 * Gets the Y position of the light.
+	 * 
 	 * @return A double value.
 	 */
 	public double getLY() {
@@ -63,7 +89,18 @@ public class LightSource implements Serializable {
 	}
 
 	/**
+	 * Sets the Y position of the light.
+	 * 
+	 * @param y A double value.
+	 */
+	public void setLY(double y) {
+		this.y = y;
+		doUpdate();
+	}
+
+	/**
 	 * Gets the red channel of this light.
+	 * 
 	 * @return A float value in the range 0..1.
 	 */
 	public float getR() {
@@ -72,6 +109,7 @@ public class LightSource implements Serializable {
 
 	/**
 	 * Gets the green channel of this light.
+	 * 
 	 * @return A float value in the range 0..1.
 	 */
 	public float getG() {
@@ -80,6 +118,7 @@ public class LightSource implements Serializable {
 
 	/**
 	 * Gets the blue channel of this light.
+	 * 
 	 * @return A float value in the range 0..1.
 	 */
 	public float getB() {
@@ -88,6 +127,7 @@ public class LightSource implements Serializable {
 
 	/**
 	 * Gets the color of this light.
+	 * 
 	 * @return A color object.
 	 */
 	public Color getColor() {
@@ -95,10 +135,127 @@ public class LightSource implements Serializable {
 	}
 
 	/**
+	 * Sets the color of this light.
+	 * 
+	 * @param c A color object.
+	 */
+	public void setColor(Color c) {
+		this.c = c;
+		doUpdate();
+	}
+
+	/**
 	 * Gets the brightness of this light.
+	 * 
 	 * @return A float value in the range 0..Infinity.
 	 */
 	public float getBrightness() {
 		return brightness;
+	}
+
+	/**
+	 * Sets the brightness of this light.
+	 * 
+	 * @param brightness A float value in the range 0..Infinity.
+	 */
+	public void setBrightness(float brightness) {
+		this.brightness = brightness;
+		doUpdate();
+	}
+
+	/**
+	 * A packet for lighting data.
+	 * 
+	 * @author Tomas
+	 *
+	 */
+	public static class LightUpdate implements NetPacket {
+		/**
+		 * ID for serialisation.
+		 */
+		private static final long serialVersionUID = 8886589051797002820L;
+
+		/**
+		 * The ID of this packet.
+		 */
+		public static final byte PACKET_ID = (byte) 0xFF - 14;
+
+		/**
+		 * The color of the light.
+		 */
+		public final Color c;
+		/**
+		 * The X position of the light.
+		 */
+		public final double x;
+		/**
+		 * The Y position of the light.
+		 */
+		public final double y;
+		/**
+		 * The brightness of the light.
+		 */
+		public final float brightness;
+
+		/**
+		 * Constructs a new LightUpdate.
+		 * @param l The light to update.
+		 */
+		public LightUpdate(LightSource l) {
+			this(l.getColor(), l.getLX(), l.getLY(), l.getBrightness());
+		}
+		
+		/**
+		 * Constructs a new LightUpdate
+		 * @param c The color of the light.
+		 * @param x The X position of the light.
+		 * @param y The Y position of the light.
+		 * @param brightness The brightness of the light.
+		 */
+		public LightUpdate(Color c, double x, double y, float brightness) {
+			super();
+			this.c = c;
+			this.x = x;
+			this.y = y;
+			this.brightness = brightness;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void write(DataOutputStream out) throws IOException {
+			out.write(PACKET_ID);
+			out.writeDouble(x);
+			out.writeDouble(y);
+			out.writeFloat(c.r);
+			out.writeFloat(c.g);
+			out.writeFloat(c.b);
+			out.writeFloat(c.a);
+			out.writeFloat(brightness);
+		}
+
+		/**
+		 * The packet type of this packet.
+		 * @author Tomas
+		 *
+		 */
+		public static class Type implements PacketType {
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
+				double x = in.readDouble();
+				double y = in.readDouble();
+				float r = in.readFloat();
+				float g = in.readFloat();
+				float b = in.readFloat();
+				float a = in.readFloat();
+				float brightness = in.readFloat();
+
+				return new LightUpdate(new Color(r, g, b, a), x, y, brightness);
+			}
+		}
 	}
 }

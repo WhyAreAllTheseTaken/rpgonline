@@ -25,6 +25,7 @@ import rpgonline.net.packet.SoundPacket;
 import rpgonline.net.packet.StopAmbientPacket;
 import rpgonline.net.packet.TextPacket;
 import rpgonline.net.packet.WindPacket;
+import rpgonline.world.LightSource;
 
 /**
  * A connection that uses TCP over IP to send data. The data is sent as one or
@@ -76,6 +77,7 @@ public class BasicPacketConnection implements Connection {
 		types[WindPacket.PACKET_ID & 0xFF] = new WindPacket.Type();
 		types[TextPacket.PACKET_ID & 0xFF] = new TextPacket.Type();
 		types[LightsPacket.PACKET_ID & 0xFF] = new LightsPacket.Type();
+		types[LightSource.LightUpdate.PACKET_ID & 0xFF] = new LightSource.LightUpdate.Type();
 
 		return types;
 	}

@@ -2,6 +2,7 @@ package rpgonline.net;
 
 import rpgonline.entity.Entity;
 import rpgonline.net.packet.UpdatePacket;
+import rpgonline.world.LightSource.LightUpdate;
 
 /**
  * An interface representing a server.
@@ -100,4 +101,10 @@ public interface Server extends TickBased {
 	public default void playAmbient(String name, float v, float p, float x, float y, float z) {
 		playAmbient(name, v, p, x, y, z, false);
 	}
+
+	/**
+	 * Called to indicate an update to a light has occurred.
+	 * @param lightUpdate the update packet.
+	 */ 
+	public void updateLight(LightUpdate lightUpdate);
 }
