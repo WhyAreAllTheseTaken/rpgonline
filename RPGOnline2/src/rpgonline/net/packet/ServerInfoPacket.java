@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import rpgonline.Version;
 import rpgonline.net.PacketType;
 
 /**
@@ -16,22 +17,34 @@ public class ServerInfoPacket implements NetPacket {
 	
 	private static final long serialVersionUID = -5803480872418619141L;
 	public final String type;
-	
-	public ServerInfoPacket(String type) {
+	public final String name;
+	public final String desc;
+	public final int players;
+	public final Version gameVersion;
+
+	public ServerInfoPacket(String type, String name, String desc, int players, Version gameVersion) {
 		super();
 		this.type = type;
+		this.name = name;
+		this.desc = desc;
+		this.players = players;
+		this.gameVersion = gameVersion;
 	}
-	
+
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
 		out.writeUTF(type);
+		out.writeUTF(name);
+		out.writeUTF(desc);
+		out.writeInt(players);
+		out.writeUTF(gameVersion.toString());
 	}
 	
 	public static class Type implements PacketType {
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			return new ServerInfoPacket(in.readUTF());
+			return new ServerInfoPacket(in.readUTF(), in.readUTF(), in.readUTF(), in.readInt(), new Version(in.readUTF()));
 		}
 	}
 	
