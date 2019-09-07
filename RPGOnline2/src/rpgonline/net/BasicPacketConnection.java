@@ -17,6 +17,7 @@ import rpgonline.net.packet.EntityRemovePacket;
 import rpgonline.net.packet.KeyPacket;
 import rpgonline.net.packet.LightsPacket;
 import rpgonline.net.packet.LoginPacket;
+import rpgonline.net.packet.ModePacket;
 import rpgonline.net.packet.MovePacket;
 import rpgonline.net.packet.MusicPacket;
 import rpgonline.net.packet.NetPacket;
@@ -78,6 +79,7 @@ public class BasicPacketConnection implements Connection {
 		types[TextPacket.PACKET_ID & 0xFF] = new TextPacket.Type();
 		types[LightsPacket.PACKET_ID & 0xFF] = new LightsPacket.Type();
 		types[LightSource.LightUpdate.PACKET_ID & 0xFF] = new LightSource.LightUpdate.Type();
+		types[ModePacket.PACKET_ID & 0xFF] = new ModePacket.Type();
 
 		return types;
 	}
