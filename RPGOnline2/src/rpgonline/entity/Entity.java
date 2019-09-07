@@ -600,8 +600,7 @@ public class Entity {
 	 * loaded from disk but not if the entity was loaded from the network.</strong>
 	 */
 	public final void reloadID() {
-		// XXX This should probably push without an update.
-		setString("id", m.getNewID(getID()));
+		strings.put("id", m.getNewID(getID()));
 	}
 
 	/**
