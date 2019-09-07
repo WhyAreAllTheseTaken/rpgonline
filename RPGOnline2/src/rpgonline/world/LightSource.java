@@ -1,19 +1,12 @@
 package rpgonline.world;
 
-import java.io.Serializable;
-
 import org.newdawn.slick.Color;
 
 /**
  * A class for storing point light data.
  * @author Tomas
  */
-public class LightSource implements Serializable {
-	/**
-	 * Used for storage in older versions.
-	 */
-	@Deprecated
-	private static final long serialVersionUID = 3084200355976862821L;
+public class LightSource {
 	/**
 	 * The X position of the light.
 	 */
