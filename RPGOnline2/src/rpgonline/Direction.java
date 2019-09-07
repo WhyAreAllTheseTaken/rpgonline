@@ -2,8 +2,6 @@ package rpgonline;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.math3.util.FastMath;
-
 /**
  * An enum used to represent NESW directions. This class also provides based
  * geometry control for directions.
@@ -71,53 +69,6 @@ public enum Direction {
 		case SOUTH:
 			return Direction.NORTH;
 		case WEST:
-			return Direction.EAST;
-		default:
-			return Direction.NORTH;
-		}
-	}
-
-	/**
-	 * Returns the inverse of this direction 90% of the time. May also return a
-	 * direction perpendicular to this direction. e.g. {@code EAST.flip() ~= WEST}.
-	 * 
-	 * @deprecated This method is mostly useless.
-	 * @return A direction.
-	 */
-	@Deprecated
-	public Direction bounce() {
-		switch (this) {
-		case EAST:
-			if (FastMath.random() < 0.05) {
-				return Direction.NORTH;
-			}
-			if (FastMath.random() < 0.1) {
-				return Direction.SOUTH;
-			}
-			return Direction.WEST;
-		case NORTH:
-			if (FastMath.random() < 0.05) {
-				return Direction.EAST;
-			}
-			if (FastMath.random() < 0.1) {
-				return Direction.WEST;
-			}
-			return Direction.SOUTH;
-		case SOUTH:
-			if (FastMath.random() < 0.05) {
-				return Direction.EAST;
-			}
-			if (FastMath.random() < 0.1) {
-				return Direction.WEST;
-			}
-			return Direction.NORTH;
-		case WEST:
-			if (FastMath.random() < 0.05) {
-				return Direction.NORTH;
-			}
-			if (FastMath.random() < 0.1) {
-				return Direction.SOUTH;
-			}
 			return Direction.EAST;
 		default:
 			return Direction.NORTH;

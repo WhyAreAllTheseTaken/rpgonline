@@ -70,29 +70,6 @@ public class UpdatePacket implements Serializable, NetPacket {
 		}
 	}
 
-	@Deprecated
-	public static final class UObject extends UpdatePacket {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 8893507148086866389L;
-		private final Object value;
-
-		public UObject(String id, String key, Object value) {
-			super(id, key);
-			this.value = value;
-		}
-
-		@Override
-		public void apply(List<Entity> entities) {
-			Entity e = find(id, entities);
-
-			if (e != null) {
-				e.setObject(key, value);
-			}
-		}
-	}
-
 	public static final class ULong extends UpdatePacket {
 		/**
 		 * 

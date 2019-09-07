@@ -1,10 +1,5 @@
 package rpgonline.entity;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,7 +7,6 @@ import java.util.Map.Entry;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
-import org.newdawn.slick.util.Log;
 
 import rpgonline.Direction;
 import rpgonline.abt.Tag;
@@ -25,7 +19,6 @@ import rpgonline.abt.TagLong;
 import rpgonline.abt.TagString;
 import rpgonline.abt.TagStringShort;
 import rpgonline.net.ServerManager;
-import rpgonline.net.packet.UpdatePacket;
 import rpgonline.net.packet.UpdatePacket.UBoolean;
 import rpgonline.net.packet.UpdatePacket.UDouble;
 import rpgonline.net.packet.UpdatePacket.UFloat;
@@ -153,10 +146,6 @@ public class Entity {
 	 */
 	public static final int VERSION = 10;
 	/**
-	 * A map of object values stored in this entity.
-	 */
-	private final Map<String, Object> objects = new HashMap<String, Object>();
-	/**
 	 * A map of int values stored in this entity.
 	 */
 	private final Map<String, Integer> ints = new HashMap<String, Integer>();
@@ -269,25 +258,6 @@ public class Entity {
 			}
 			if (t instanceof TagLong) {
 				longs.put(t.getName(), ((TagLong) t).getData());
-				continue;
-			}
-			if (t instanceof TagGroup) {
-				if (t.getName().startsWith("bin:")) {
-					try {
-						ByteArrayInputStream in = new ByteArrayInputStream(((TagGroup) t).asByteArray());
-						ObjectInputStream ois = new ObjectInputStream(in);
-
-						Object o = ois.readObject();
-
-						ois.close();
-
-						objects.put(t.getName().replace("bin:", ""), o);
-					} catch (IOException | ClassNotFoundException e) {
-						Log.error("Error reading object from entity data.", e);
-					}
-				} else {
-					tags.put(t.getName(), (TagGroup) t);
-				}
 				continue;
 			}
 		}
@@ -576,27 +546,6 @@ public class Entity {
 		}
 	}
 
-	@Deprecated
-	public final void setObject(String name, Object value) {
-		if (getObject(name) == value) {
-			return;
-		}
-		if (packet)
-			ServerManager.getServer().updateEntity(new UpdatePacket.UObject(getID(), name, value));
-		objects.put(name, value);
-	}
-
-	@Deprecated
-	public final Object getObject(String name) {
-		return objects.get(name);
-	}
-
-	@Deprecated
-	public final void pushObject(String name) {
-		if (packet)
-			ServerManager.getServer().updateEntity(new UpdatePacket.UObject(getID(), name, getObject(name)));
-	}
-
 	/**
 	 * Sets a tag value stored in this entity.
 	 * 
@@ -703,21 +652,6 @@ public class Entity {
 		}
 		for (Entry<String, Boolean> e : bools.entrySet()) {
 			g.add(new TagBoolean(e.getKey(), e.getValue()));
-		}
-		for (Entry<String, Object> e : objects.entrySet()) {
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				ObjectOutputStream oos = new ObjectOutputStream(out);
-
-				oos.writeObject(e.getValue());
-
-				oos.flush();
-				oos.close();
-
-				g.add(new TagGroup(e.getKey(), out.toByteArray()));
-			} catch (IOException e1) {
-				Log.error("Error writing object to entity data.", e1);
-			}
 		}
 		for (Entry<String, TagGroup> e : tags.entrySet()) {
 			g.add(e.getValue().clone());
