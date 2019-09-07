@@ -1,13 +1,24 @@
 package rpgonline.net;
 
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 
 import org.newdawn.slick.util.Log;
 
@@ -36,7 +47,7 @@ import rpgonline.world.LightSource;
  * @author Tomas
  *
  */
-public class BasicPacketConnection implements Connection {
+public class BasicPacketConnection extends AESSecurityCap implements Connection {
 	/**
 	 * The list of packets to send.
 	 */
@@ -49,6 +60,22 @@ public class BasicPacketConnection implements Connection {
 	 * Determines if the system should be stopped.
 	 */
 	private boolean stopped = false;
+	/**
+	 * The cipher to encrypt with.
+	 */
+	private Cipher encryptCipher;
+	/**
+	 * The cipher to decrypt with.
+	 */
+	private Cipher decryptCipher;
+	/**
+	 * Determines if packets should be logged. This is set to true for encryption setup.
+	 */
+	private boolean logPackets = false;
+	/**
+	 * Determines if encyption is complete.
+	 */
+	private boolean encyptComplete = false;
 	/**
 	 * Constructs a new BasicPacketConnection.
 	 * @param s The socket to connect to.
@@ -96,17 +123,30 @@ public class BasicPacketConnection implements Connection {
 		new Thread(toString()) {
 			public void run() {
 				try {
-					DataOutputStream out = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
+					OutputStream buffer = s.getOutputStream();
+					DataOutputStream out = new DataOutputStream(buffer);
 					DataInputStream in = new DataInputStream(s.getInputStream());
 
 					while (!stopped) {
+						if (encryptCipher != null && !encyptComplete) {
+							Log.debug("Finalising encyption");
+							out = new DataOutputStream(new CipherOutputStream(buffer, encryptCipher));
+							in = new DataInputStream(new CipherInputStream(s.getInputStream(), decryptCipher));
+							Log.info("Encryption complete.");
+							encyptComplete = true;
+						}
+						
 						while (toSend.size() > 0) {
 							try {
+								if(logPackets) {
+									Log.debug("Writing: " + toSend.get(0));
+								}
 								toSend.get(0).write(out);
 								toSend.remove(0);
 							} catch (IOException e) {
 								Log.error("Error writing packet.", e);
 							}
+							if(logPackets) Log.debug("Write complete.");
 						}
 						out.flush();
 
@@ -122,11 +162,12 @@ public class BasicPacketConnection implements Connection {
 							} catch (ClassNotFoundException e) {
 								Log.error("Error reading packet.", e);
 							}
+							if(logPackets) Log.debug("Reading.");
 						}
 
 						if (s.isClosed()) {
 							stopped = true;
-						}
+						}	
 
 						Thread.yield();
 					}
@@ -152,6 +193,9 @@ public class BasicPacketConnection implements Connection {
 	 */
 	@Override
 	public void send(NetPacket p) throws IOException {
+		if (logPackets) {
+			Log.debug("Sending " + p);
+		}
 		toSend.add(p);
 	}
 
@@ -178,7 +222,50 @@ public class BasicPacketConnection implements Connection {
 	 */
 	@Override
 	public void encrypt() throws IOException {
-		throw new UnsupportedOperationException("Encrypting is not supported");
+		Log.info("Encrypting");
+		
+		logPackets = true;
+		// Send public key.
+		Log.debug("Sending key");
+		send(new KeyPacket(getPublickey()));
+		Log.debug("Sent key");
+		
+		// Wait for other public key.
+		Log.debug("Waiting");
+		while (true) {
+			while (!isAvaliable()) {
+				Thread.yield();
+			}
+			NetPacket next = getNext();
+			if (next instanceof KeyPacket) {
+				Log.debug("Packet recieved");
+				PublicKey k;
+				try {
+					k = KeyFactory.getInstance("EC").generatePublic(new X509EncodedKeySpec(((KeyPacket) next).key));
+					setReceiverPublicKey(k);
+					
+					decryptCipher = Cipher.getInstance("AES");
+					decryptCipher.init(Cipher.DECRYPT_MODE, generateKey());
+					
+					encryptCipher = Cipher.getInstance("AES");
+					encryptCipher.init(Cipher.ENCRYPT_MODE, generateKey());
+					Log.debug("Cipher generated");
+				} catch (InvalidKeySpecException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
+					Log.error("Error encypting connection", e);
+					close();
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				logPackets = true;
+				Log.debug("Exiting");
+				return;
+			} else {
+				Log.warn("Discarding unencypted packet: " + next);
+			}
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 
 /**
- * An chat server implemented through the network API.
+ * A chat server implemented through the network API.
  * @author Tomas
  *
  */
