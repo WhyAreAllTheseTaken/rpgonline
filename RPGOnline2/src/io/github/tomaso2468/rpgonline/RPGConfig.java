@@ -159,7 +159,7 @@ public final class RPGConfig {
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
 	 */
-	private static int pathfindingThreads = Math.min(2, Runtime.getRuntime().availableProcessors() - 3);
+	private static int pathfindingThreads = Math.min(Math.max(2, Runtime.getRuntime().availableProcessors() - 3), 6);
 	
 	/**
 	 * The time to wait before entering sleep in a pathfinding thread.

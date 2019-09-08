@@ -1,9 +1,11 @@
 package io.github.tomaso2468.rpgonline;
 
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +21,7 @@ import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
+import io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager;
 
 /**
  * <p>
@@ -271,6 +274,15 @@ public abstract class RPGGame extends StateBasedGame {
 	 * The debug frame from the previous rendering frame.
 	 */
 	private DebugFrame lastFrame;
+	
+	/**
+	 * Rounds the value to 1 decimal place.
+	 * @param value The value to round.
+	 * @return A rounded value.
+	 */
+	private double round1DP(double value) {
+		return FastMath.round(value * 10) / 10.0;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -281,6 +293,8 @@ public abstract class RPGGame extends StateBasedGame {
 
 		if (RPGConfig.isDebug()) {
 			Debugger.start("debug-screen");
+			
+			long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
 
 			float y = 4;
 			g.setColor(Color.white);
@@ -320,6 +334,22 @@ public abstract class RPGGame extends StateBasedGame {
 					(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000.0,
 					Runtime.getRuntime().maxMemory() / 1000000.0, Runtime.getRuntime().maxMemory() * 0.75 / 1000000.0,
 					Runtime.getRuntime().maxMemory() / 1000000.0, y, false);
+			
+			if (uptime < 1000) {
+				y = drawDebugLineLabel(g, "Uptime", uptime + " millis", y, false);
+			} else if (uptime < 1000 * 60) {
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0) + " secs", y, false);
+			} else if (uptime < 1000 * 60 * 60) {
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0) + " mins", y, false);
+			} else if (uptime < 1000 * 60 * 60 * 24) {
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0) + " hours", y, false);
+			} else if (uptime < 1000 * 60 * 60 * 24 * 365.25) {
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0 / 24.0) + " days", y, false);
+			} else {
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0 / 24.0 / 365.24) + " years", y, false);
+			}
+			
+			y = drawDebugLineLabel(g, "Pathfinding Ops/s", PathFindingManager.getPathfindingOperations() / (uptime / 1000) + "", y, false);
 
 			y = drawDebugLeft(g, y);
 
@@ -363,7 +393,14 @@ public abstract class RPGGame extends StateBasedGame {
 			y = drawDebugLineLabel(g, "Game Size", container.getWidth() + "x" + container.getHeight(), y, true);
 			y = drawDebugLineLabel(g, "CPU", LowLevelUtils.LLU.getCPUModel(), y, true);
 			y = drawDebugLineLabel(g, "CPU Threads", Runtime.getRuntime().availableProcessors() + "", y, true);
+			y = drawDebugLineLabel(g, "OS Name",
+					System.getProperty("os.name") + " " + "(" + System.getProperty("os.arch") + ")", y, true);
+			y = drawDebugLineLabel(g, "OS Version", System.getProperty("os.version"), y, true);
 			y = drawDebugLineLabel(g, "Java Version", RPGOnline.JAVA_VERSION.toSimpleString(), y, true);
+			y = drawDebugLineLabel(g, "Current VM", ManagementFactory.getRuntimeMXBean().getName(), y, true);
+			y = drawDebugLineLabel(g, "Java VM", ManagementFactory.getRuntimeMXBean().getVmName(), y, true);
+			y = drawDebugLineLabel(g, "Java VM Version", ManagementFactory.getRuntimeMXBean().getVmVersion(), y, true);
+			y = drawDebugLineLabel(g, "Java VM Vendor", ManagementFactory.getRuntimeMXBean().getVmVendor(), y, true);
 			y = drawDebugLineLabel(g, "LWJGL Version", RPGOnline.LWJGL_VERSION.toSimpleString(), y, true);
 			y = drawDebugLineLabel(g, "OpenGL Version", GL11.glGetString(GL11.GL_VERSION), y, true);
 			y = drawDebugLineLabel(g, "OpenGL Vendor", GL11.glGetString(GL11.GL_VENDOR), y, true);
@@ -371,10 +408,20 @@ public abstract class RPGGame extends StateBasedGame {
 			y = drawDebugLineLabel(g, "OpenAL Vendor", AL10.alGetString(AL10.AL_VENDOR), y, true);
 			y = drawDebugLineLabel(g, "Slick2D Version", RPGOnline.SLICK_VERSION.toSimpleString(), y, true);
 			y = drawDebugLineLabel(g, "SlickShader Version", RPGOnline.SHADER_VERSION.toSimpleString(), y, true);
-			y = drawDebugLineLabel(g, "OS Name",
-					System.getProperty("os.name") + " " + "(" + System.getProperty("os.arch") + ")", y, true);
-			y = drawDebugLineLabel(g, "OS Version", System.getProperty("os.version"), y, true);
-
+			y = drawDebugLineLabel(g, "SpriteMap Size", RPGConfig.getAutoSpriteMapSize() + "", y, true);
+			y = drawDebugLineLabel(g, "SpriteMap Enabled", RPGConfig.isMapped() + "", y, true);
+			y = drawDebugLineLabel(g, "Controller Actuation", RPGConfig.getControllerActuation() + "", y, true);
+			y = drawDebugLineLabel(g, "Texture Mode", RPGConfig.getFilterMode() + "", y, true);
+			y = drawDebugLineLabel(g, "Path Sleep Delay", RPGConfig.getPathfindingSleepDelay() + "", y, true);
+			y = drawDebugLineLabel(g, "Path Sleep Time", RPGConfig.getPathfindingSleepTime() + "", y, true);
+			y = drawDebugLineLabel(g, "Path Threads", RPGConfig.getPathfindingThreads() + "", y, true);
+			y = drawDebugLineLabel(g, "Tile Size", RPGConfig.getTileSize() + "", y, true);
+			y = drawDebugLineLabel(g, "Hitbox Rendering", RPGConfig.isHitbox() + "", y, true);
+			y = drawDebugLineLabel(g, "Lighting", RPGConfig.isLighting() + "", y, true);
+			y = drawDebugLineLabel(g, "Particles", RPGConfig.isParticles() + "", y, true);
+			y = drawDebugLineLabel(g, "Pixel Snap", RPGConfig.isSnapToPixel() + "", y, true);
+			y = drawDebugLineLabel(g, "Wind", RPGConfig.isWind() + "", y, true);
+			
 			y = drawDebugRight(g, y);
 
 			Debugger.stop("debug-screen");

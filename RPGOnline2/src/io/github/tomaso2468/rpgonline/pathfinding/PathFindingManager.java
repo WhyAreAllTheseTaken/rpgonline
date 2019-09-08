@@ -54,8 +54,8 @@ public final class PathFindingManager {
 	 * Gets the number of pathfinding operations that have occurred.
 	 * @return A string representing a decimal value.
 	 */
-	public static synchronized String getPathfindingOperations() {
-		return lastID.toString();
+	public static synchronized long getPathfindingOperations() {
+		return Long.parseLong(lastID.toString());
 	}
 	
 	/**
