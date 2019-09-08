@@ -15,6 +15,7 @@ import io.github.tomaso2468.rpgonline.abt.TagGroup;
 import io.github.tomaso2468.rpgonline.abt.TagInt;
 import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
+import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.chunk.CacheEntry;
@@ -63,7 +64,7 @@ public class ABTNetWorld extends ChunkWorld {
 		new Thread(toString()) {
 			public void run() {
 				while (!stop) {
-					List<TagGroup> requested = new ArrayList<TagGroup>(ServerManager.getClient().getRequestedChunks());
+					List<TagGroup> requested = new ArrayList<TagGroup>(((Client2D) ServerManager.getClient()).getRequestedChunks());
 					
 					for (TagGroup tg : requested) {
 						long x = ((TagLong) tg.getTag("x")).getData();
@@ -115,7 +116,7 @@ public class ABTNetWorld extends ChunkWorld {
 			}
 		}
 		
-		ServerManager.getClient().requestChunk(cx, cy, cz);
+		((Client2D) ServerManager.getClient()).requestChunk(cx, cy, cz);
 
 		Chunk chunk = new Chunk(registry, cx, cy, cz);
 		chunks.add(chunk);

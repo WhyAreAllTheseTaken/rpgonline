@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.newdawn.slick.Color;
 
+import io.github.tomaso2468.rpgonline.net.Server2D;
 import io.github.tomaso2468.rpgonline.net.PacketType;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
@@ -56,7 +57,7 @@ public final class LightSource {
 
 	private void doUpdate() {
 		if (packet) {
-			ServerManager.getServer().updateLight(new LightUpdate(this));
+			((Server2D) ServerManager.getServer()).updateLight(new LightUpdate(this));
 		}
 	}
 

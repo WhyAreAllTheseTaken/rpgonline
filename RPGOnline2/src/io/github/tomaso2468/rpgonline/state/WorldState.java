@@ -25,6 +25,7 @@ import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.entity.Entity;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
+import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.part.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
@@ -261,7 +262,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		if (RPGConfig.isLighting()) {
 			Debugger.start("light-compute");
 
-			lights = ServerManager.getClient().getWorld().getLights();
+			lights = ((Client2D) ServerManager.getClient()).getWorld().getLights();
 
 			if (lights.size() != 0) {
 				lights.sort(new Comparator<LightSource>() {
@@ -301,7 +302,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			Debugger.stop("light-compute");
 		}
 
-		World world = ServerManager.getClient().getWorld();
+		World world = ((Client2D) ServerManager.getClient()).getWorld();
 
 		Debugger.start("sky");
 		if (sky != null) {
@@ -325,7 +326,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
 
 		Debugger.start("entity-compute");
-		List<Entity> entities1 = ServerManager.getClient().getWorld().getEntities();
+		List<Entity> entities1 = ((Client2D) ServerManager.getClient()).getWorld().getEntities();
 		List<Entity> entities = new ArrayList<Entity>();
 
 		Rectangle screen_bounds = new Rectangle((float) (x - dist_x), (float) (y - dist_y), (float) (dist_x * 2),
@@ -370,7 +371,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		long miz = world.getMinZ();
 		long maz = world.getMaxZ();
 
-		float wind = ServerManager.getClient().getWind();
+		float wind = ((Client2D) ServerManager.getClient()).getWind();
 
 		Image current = null;
 
@@ -788,8 +789,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			walk_x -= 1;
 		}
 
-		ServerManager.getClient().walkX(walk_x, delf);
-		ServerManager.getClient().walkY(walk_y, delf);
+		((Client2D) ServerManager.getClient()).walkX(walk_x, delf);
+		((Client2D) ServerManager.getClient()).walkY(walk_y, delf);
 
 //		if (in.getControllerCount() > 0) {
 //			if(RPGConfig.getControllerInput().isLeftHanded()) {
@@ -800,12 +801,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 //				ServerManager.getClient().walkX(in.getAxisValue(0, 1));
 //			}
 //		}
-		ServerManager.getClient().setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
+		((Client2D) ServerManager.getClient()).setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
 
-		x = ServerManager.getClient().getPlayerX();
-		y = ServerManager.getClient().getPlayerY();
+		x = ((Client2D) ServerManager.getClient()).getPlayerX();
+		y = ((Client2D) ServerManager.getClient()).getPlayerY();
 
-		ServerManager.getClient().getWorld().doUpdateClient();
+		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
 
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
 			exit();
@@ -838,8 +839,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		px = x;
 		py = y;
 
-		float wind = ServerManager.getClient().getWind();
-		World world = ServerManager.getClient().getWorld();
+		float wind = ((Client2D) ServerManager.getClient()).getWind();
+		World world = ((Client2D) ServerManager.getClient()).getWorld();
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).doBehaviour(world, wind, particles, delta / 1000f);
 		}

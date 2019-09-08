@@ -1,32 +1,10 @@
 package io.github.tomaso2468.rpgonline.net;
 
-import io.github.tomaso2468.rpgonline.entity.Entity;
-import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket;
-import io.github.tomaso2468.rpgonline.world.LightSource.LightUpdate;
-
 /**
  * An interface representing a server.
  * @author Tomas
  */
 public interface Server extends TickBased {
-	/**
-	 * Called to indicate an update to an entity has occurred.
-	 * @param up The entity information to update.
-	 */ 
-	public void updateEntity(UpdatePacket up);
-
-	/**
-	 * Adds an entity to the server.
-	 * @param e The entity to add.
-	 */
-	public void addEntity(Entity e);
-
-	/**
-	 * Removes an entity from the server.
-	 * @param e The entity to remove.
-	 */
-	public void removeEntity(Entity e);
-
 	/**
 	 * Plays a sound at the specified location.
 	 * @param id The ID of the sound to play.
@@ -101,10 +79,4 @@ public interface Server extends TickBased {
 	public default void playAmbient(String name, float v, float p, float x, float y, float z) {
 		playAmbient(name, v, p, x, y, z, false);
 	}
-
-	/**
-	 * Called to indicate an update to a light has occurred.
-	 * @param lightUpdate the update packet.
-	 */ 
-	public void updateLight(LightUpdate lightUpdate);
 }

@@ -18,6 +18,7 @@ import io.github.tomaso2468.rpgonline.abt.TagInt;
 import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
 import io.github.tomaso2468.rpgonline.abt.TagStringShort;
+import io.github.tomaso2468.rpgonline.net.Server2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UBoolean;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UDouble;
@@ -381,7 +382,7 @@ public class Entity {
 			value = "null";
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UString(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UString(getID(), name, value));
 		strings.put(name, value);
 	}
 
@@ -407,7 +408,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UInt(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UInt(getID(), name, value));
 		ints.put(name, value);
 	}
 
@@ -437,7 +438,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new ULong(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new ULong(getID(), name, value));
 		longs.put(name, value);
 	}
 
@@ -467,7 +468,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UFloat(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UFloat(getID(), name, value));
 		floats.put(name, value);
 	}
 
@@ -497,7 +498,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UBoolean(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UBoolean(getID(), name, value));
 		bools.put(name, value);
 	}
 
@@ -527,7 +528,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UDouble(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UDouble(getID(), name, value));
 		doubles.put(name, value);
 	}
 
@@ -557,7 +558,7 @@ public class Entity {
 			return;
 		}
 		if (packet)
-			ServerManager.getServer().updateEntity(new UTag(getID(), name, value));
+			((Server2D) ServerManager.getServer()).updateEntity(new UTag(getID(), name, value));
 		tags.put(name, value);
 	}
 
@@ -579,7 +580,7 @@ public class Entity {
 	 */
 	public final void pushtag(String name) {
 		if (packet)
-			ServerManager.getServer().updateEntity(new UTag(getID(), name, getTag(name)));
+			((Server2D) ServerManager.getServer()).updateEntity(new UTag(getID(), name, getTag(name)));
 	}
 
 	/**
