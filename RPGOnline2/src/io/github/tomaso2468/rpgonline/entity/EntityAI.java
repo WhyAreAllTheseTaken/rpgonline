@@ -3,14 +3,15 @@ package io.github.tomaso2468.rpgonline.entity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.Path;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager;
 import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
@@ -39,25 +40,28 @@ public interface EntityAI {
 
 	/**
 	 * A method used to find a path between tiles.
-	 * @param e The entity to run pathfinding for.
-	 * @param w The current world.
-	 * @param tx The target X position.
-	 * @param ty The target Y position.
+	 * 
+	 * @param e              The entity to run pathfinding for.
+	 * @param w              The current world.
+	 * @param tx             The target X position.
+	 * @param ty             The target Y position.
 	 * @param searchDistance The distance in tiles to search.
-	 * @param entities A list of all entities in the world.
-	 * @param brave Determines how the entity reacts to danger.
-	 * @param tileRegistry The tile registry for the world.
-	 * @param em The current entity manager.
-	 * @return A path from the entities location to the target location or null if no path could be found.
+	 * @param entities       A list of all entities in the world.
+	 * @param brave          Determines how the entity reacts to danger.
+	 * @param tileRegistry   The tile registry for the world.
+	 * @param em             The current entity manager.
+	 * @return A path from the entities location to the target location or null if
+	 *         no path could be found.
 	 */
-	public default Path pathfind(Entity e, World w, double tx, double ty, int searchDistance, List<Entity> entities,
-			boolean brave, Map<String, Tile> tileRegistry, EntityManager em) {
-		//XXX Apologies to any sane being that tries to read this.
-		return new AStarPathFinder(
-				constructMapFromWorld(e, (int) e.getX(), (int) e.getY(), w, searchDistance + 5, getValuedTiles(tileRegistry),
-						getDislikedTiles(tileRegistry), getDangerousTiles(tileRegistry), brave, entities, getScaredEntities(em)),
-				searchDistance, false).findPath(new Mover() {
-				}, (int) e.getX(), (int) e.getY(), (int) tx, (int) ty);
+	public default Future<Path> pathfind(Entity e, World w, double tx, double ty, int searchDistance,
+			List<Entity> entities, boolean brave, Map<String, Tile> tileRegistry, EntityManager em) {
+		// XXX Apologies to any sane being that tries to read this.
+		return PathFindingManager
+				.pathfind(new AStarPathFinder(
+						constructMapFromWorld(e, (int) e.getX(), (int) e.getY(), w, searchDistance + 5,
+								getValuedTiles(tileRegistry), getDislikedTiles(tileRegistry),
+								getDangerousTiles(tileRegistry), brave, entities, getScaredEntities(em)),
+						searchDistance, false), (int) e.getX(), (int) e.getY(), (int) tx, (int) ty);
 	}
 	
 	/**
