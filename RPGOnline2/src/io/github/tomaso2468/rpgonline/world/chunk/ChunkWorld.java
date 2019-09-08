@@ -1,7 +1,6 @@
 package io.github.tomaso2468.rpgonline.world.chunk;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ public class ChunkWorld implements World {
 	/**
 	 * The list of more frequently used cached chunks.
 	 */
-	protected final List<CacheEntry> cache = Collections.synchronizedList(new ArrayList<CacheEntry>());
+	protected final List<CacheEntry> cache = new ArrayList<CacheEntry>();
 	/**
 	 * The most recently accessed chunk.
 	 */

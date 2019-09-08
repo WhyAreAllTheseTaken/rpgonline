@@ -52,14 +52,6 @@ public class Chunk {
 	 * The biome data in this chunk.
 	 */
 	private int[][][] biome = new int[1][SIZE][SIZE];
-	/**
-	 * Signifies that a change has been made to this chunk.
-	 */
-	private boolean change = false;
-	/**
-	 * The last usage of this chunk in milliseconds.
-	 */
-	private long lastUsed = System.currentTimeMillis();
 
 	/**
 	 * Constructs a new chunk.
@@ -93,7 +85,6 @@ public class Chunk {
 	 * @return A non-null tile instance.
 	 */
 	public Tile getTile(long x, long y, long z) {
-		lastUsed = System.currentTimeMillis();
 		return tiles[(int) z][(int) x][(int) y];
 	}
 
@@ -106,8 +97,6 @@ public class Chunk {
 	 * @param tile A non-null tile instance.
 	 */
 	public void setTile(long x, long y, long z, Tile tile) {
-		lastUsed = System.currentTimeMillis();
-		change = true;
 		tiles[(int) z][(int) x][(int) y] = tile;
 	}
 
@@ -120,7 +109,6 @@ public class Chunk {
 	 * @return A non-null string.
 	 */
 	public String getState(long x, long y, long z) {
-		lastUsed = System.currentTimeMillis();
 		return states[(int) z][(int) x][(int) y];
 	}
 
@@ -133,8 +121,6 @@ public class Chunk {
 	 * @param state A non-null string.
 	 */
 	public void setState(long x, long y, long z, String state) {
-		lastUsed = System.currentTimeMillis();
-		change = true;
 		states[(int) z][(int) x][(int) y] = state;
 	}
 
@@ -147,7 +133,6 @@ public class Chunk {
 	 * @return A boolean flag.
 	 */
 	public boolean getFlag(long x, long y, long z) {
-		lastUsed = System.currentTimeMillis();
 		return flag[(int) z][(int) x][(int) y];
 	}
 
@@ -160,8 +145,6 @@ public class Chunk {
 	 * @param f A boolean flag.
 	 */
 	public void setFlag(long x, long y, long z, boolean f) {
-		lastUsed = System.currentTimeMillis();
-		change = true;
 		flag[(int) z][(int) x][(int) y] = f;
 	}
 
@@ -174,7 +157,6 @@ public class Chunk {
 	 * @return A string or null to indicate no area.
 	 */
 	public String getArea(long x, long y, long z) {
-		lastUsed = System.currentTimeMillis();
 		return area[(int) z][(int) x][(int) y];
 	}
 
@@ -187,8 +169,6 @@ public class Chunk {
 	 * @param id A string or null to indicate no area.
 	 */
 	public void setArea(long x, long y, long z, String id) {
-		lastUsed = System.currentTimeMillis();
-		change = true;
 		area[(int) z][(int) x][(int) y] = id;
 	}
 
@@ -201,7 +181,6 @@ public class Chunk {
 	 * @return A int biome index.
 	 */
 	public int getBiome(long x, long y, long z) {
-		lastUsed = System.currentTimeMillis();
 		return biome[(int) z][(int) x][(int) y];
 	}
 
@@ -214,8 +193,6 @@ public class Chunk {
 	 * @param id A int biome index.
 	 */
 	public void setBiome(long x, long y, long z, int id) {
-		lastUsed = System.currentTimeMillis();
-		change = true;
 		biome[(int) z][(int) x][(int) y] = id;
 	}
 
@@ -257,36 +234,6 @@ public class Chunk {
 	 */
 	public boolean isAt(long cx, long cy, long cz) {
 		return x == cx && y == cy && z == cz;
-	}
-
-	/**
-	 * Determines if this chunk has been changed since it was loaded.
-	 * 
-	 * @return {@code true} if the chunk has been changed since it was loaded,
-	 *         {@code false} otherwise.
-	 */
-	public boolean isChanged() {
-		return change;
-	}
-
-	/**
-	 * Sets the changed state of this chunk. This isn't needed normally as changes
-	 * are automatically detected but it can be used to reset data if the chunk has
-	 * been saved.
-	 * 
-	 * @param change {@code true} if the chunk has been changed since it was loaded,
-	 *               {@code false} otherwise.
-	 */
-	public void setChanged(boolean change) {
-		this.change = change;
-	}
-
-	/**
-	 * Gets the last used time that this chunk was accessed.
-	 * @return A unix timestamp in milliseconds.
-	 */
-	public long getLastUsed() {
-		return lastUsed;
 	}
 
 	/**
