@@ -7,6 +7,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
@@ -95,6 +96,8 @@ public class VelocityAI implements EntityAI {
 		if (!e.isSolid()) {
 			return false;
 		}
+		
+		Debugger.start("collision");
 
 		List<Shape> hitboxes = new ArrayList<Shape>();
 		for (int tx = (int) (Math.round(x) - 1); tx <= (int) (Math.round(x) + 1); tx++) {
@@ -117,14 +120,17 @@ public class VelocityAI implements EntityAI {
 		
 		for (Shape s : hitboxes) {
 			if (s.contains(e.getHitBox()) || s.intersects(e.getHitBox())) {
+				Debugger.stop("collision");
 				return true;
 			}
 		}
 		
 		if (!w.getTile(wx, wy, 0).isSolid(w.getTileState(wx, wy, 0))) {
+			Debugger.stop("collision");
 			return true;
 		}
 
+		Debugger.stop("collision");
 		return false;
 	}
 
