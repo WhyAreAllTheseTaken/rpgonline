@@ -153,6 +153,26 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.state.WorldState
 	 */
 	private static boolean snapToPixel = false;
+	
+	/**
+	 * The number of threads to use for pathfinding.
+	 * 
+	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 */
+	private static int pathfindingThreads = Math.min(2, Runtime.getRuntime().availableProcessors() - 3);
+	
+	/**
+	 * The time to wait before entering sleep in a pathfinding thread.
+	 * 
+	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 */
+	private static long pathfindingSleepDelay = 500;
+	/**
+	 * The time to sleep for in a pathfinding thread.
+	 * 
+	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 */
+	private static long pathfindingSleepTime = 1000 / 30;
 
 	/**
 	 * Determines how language settings are computed. This defaults to returning the
@@ -675,6 +695,57 @@ public final class RPGConfig {
 	 */
 	public static void setSnapToPixel(boolean snapToPixel) {
 		RPGConfig.snapToPixel = snapToPixel;
+	}
+
+	/**
+	 * Gets the number of pathfinding threads to use.
+	 * @return An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
+	 */
+	public static int getPathfindingThreads() {
+		return pathfindingThreads;
+	}
+
+	/**
+	 * Gets the number of pathfinding threads to use.
+	 * @param pathfindingThreads An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
+	 */
+	public static void setPathfindingThreads(int pathfindingThreads) {
+		if (pathfindingThreads < 0) {
+			throw new IllegalArgumentException("At least one pathfinding thread is required.");
+		}
+		RPGConfig.pathfindingThreads = pathfindingThreads;
+	}
+
+	/**
+	 * Gets the time to wait before entering sleep in a pathfinding thread.
+	 * @return A long value.
+	 */
+	public static long getPathfindingSleepDelay() {
+		return pathfindingSleepDelay;
+	}
+
+	/**
+	 * Sets the time to wait before entering sleep in a pathfinding thread.
+	 * @param pathfindingSleepDelay A long value.
+	 */
+	public static void setPathfindingSleepDelay(long pathfindingSleepDelay) {
+		RPGConfig.pathfindingSleepDelay = pathfindingSleepDelay;
+	}
+
+	/**
+	 * Gets the time to sleep for in a pathfinding thread.
+	 * @return A long value.
+	 */
+	public static long getPathfindingSleepTime() {
+		return pathfindingSleepTime;
+	}
+
+	/**
+	 * Sets the time to sleep for in a pathfinding thread.
+	 * @param pathfindingSleepTime A long value.
+	 */
+	public static void setPathfindingSleepTime(long pathfindingSleepTime) {
+		RPGConfig.pathfindingSleepTime = pathfindingSleepTime;
 	}
 
 }

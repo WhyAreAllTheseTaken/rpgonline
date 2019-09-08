@@ -99,10 +99,6 @@ public class ContinuousPool implements ExecutorService {
 	@Override
 	public synchronized void shutdown() {
 		shutdown = true;
-		
-		for (Thread t : threads) {
-			t.interrupt();
-		}
 	}
 
 	/**
