@@ -414,7 +414,18 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 					textures.clear();
 
 					if (hitbox && z == -1 && t.isSolid(state)) {
-						if (((x - this.x) * (x - this.x) + (y - this.y) * (y - this.y)) <= (4 * 4)) {
+						Debugger.start("hitbox");
+						boolean collision = false;
+						for (Entity e : entities) {
+							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
+								if(e.isSolid()) {
+									collision = true;
+									break;
+								}
+								
+							}
+						}
+						if (collision) {
 							if (current != null)
 								current.endUse();
 
@@ -428,6 +439,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 							if (current != null)
 								current.startUse();
 						}
+						Debugger.stop("hitbox");
 					}
 
 					if (z == -1) {
@@ -773,8 +785,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 		Input in = container.getInput();
 
+		Debugger.start("input");
+		
 		double walk_x = 0;
 		double walk_y = 0;
+		
+		Debugger.start("keyboard");
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
 			walk_y += -1;
 		}
@@ -788,10 +804,12 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
 			walk_x -= 1;
 		}
+		Debugger.stop("keyboard");
 
 		((Client2D) ServerManager.getClient()).walkX(walk_x, delf);
 		((Client2D) ServerManager.getClient()).walkY(walk_y, delf);
 
+		Debugger.start("controller");
 //		if (in.getControllerCount() > 0) {
 //			if(RPGConfig.getControllerInput().isLeftHanded()) {
 //				ServerManager.getClient().walkY(in.getAxisValue(0, 2));
@@ -802,20 +820,26 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 //			}
 //		}
 		((Client2D) ServerManager.getClient()).setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
+		Debugger.stop("controller");
 
 		x = ((Client2D) ServerManager.getClient()).getPlayerX();
 		y = ((Client2D) ServerManager.getClient()).getPlayerY();
-
-		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
-
+		
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
 			exit();
 		}
+		
+		Debugger.stop("input");
+		
+		Debugger.start("world");
+		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
+		Debugger.stop("world");
 
 		if (shake > 0) {
 			shake -= delf;
 		}
 
+		Debugger.start("gui");
 		for (GUIItem gui : guis) {
 			gui.update(container, game, delta);
 		}
@@ -823,7 +847,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		for (UpdateHook hook : hooks) {
 			hook.update(container, game, delta);
 		}
+		Debugger.stop("gui");
 
+		Debugger.start("audio");
 		AmbientMusic music = ServerManager.getClient().getMusic();
 		AudioManager.setMusic(music);
 
@@ -835,7 +861,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 		AudioManager.setPlayerPos((float) x, 0, (float) y);
 		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
+		Debugger.stop("audio");
 
+		Debugger.start("particles");
 		px = x;
 		py = y;
 
@@ -857,6 +885,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				return a;
 			}
 		});
+		Debugger.stop("particles");
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			post_enable = false;

@@ -276,6 +276,11 @@ public abstract class RPGGame extends StateBasedGame {
 	private DebugFrame lastFrame;
 	
 	/**
+	 * The debug frame from the previous game update.
+	 */
+	private DebugFrame lastUpdate;
+	
+	/**
 	 * Rounds the value to 1 decimal place.
 	 * @param value The value to round.
 	 * @return A rounded value.
@@ -360,6 +365,13 @@ public abstract class RPGGame extends StateBasedGame {
 					y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
 				}
 			}
+			
+			if (lastUpdate != null) {
+				y = drawDebugTitle(g, "Main Thread Updates", y, false);
+				for (Entry<String, Long> t : lastUpdate.getTimes()) {
+					y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
+				}
+			}
 
 			if (ServerManager.getClient() != null) {
 				DebugFrame client = ServerManager.getClient().getDebugFrame();
@@ -429,6 +441,19 @@ public abstract class RPGGame extends StateBasedGame {
 
 		Debugger.stop();
 		lastFrame = Debugger.getRenderFrame();
+	}
+	
+	@Override
+	protected void preUpdateState(GameContainer container, int delta) throws SlickException {
+		Debugger.start();
+		super.preUpdateState(container, delta);
+	}
+	
+	@Override
+	protected void postUpdateState(GameContainer container, int delta) throws SlickException {
+		super.postUpdateState(container, delta);
+		Debugger.stop();
+		lastUpdate = Debugger.getRenderFrame();
 	}
 
 	/**
