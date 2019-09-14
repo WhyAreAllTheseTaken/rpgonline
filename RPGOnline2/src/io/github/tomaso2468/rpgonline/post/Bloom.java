@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline.post;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -60,9 +61,11 @@ public class Bloom extends MultiEffect {
 		
 		super.doPostProcess(container, game, buffer, g);
 		
-		g.setDrawMode(Graphics.MODE_ADD);
-		g.drawImage(buffer2, 0, 0);
-		g.setDrawMode(Graphics.MODE_NORMAL);
+		if (!Keyboard.isKeyDown(Keyboard.KEY_F10)) {
+			g.setDrawMode(Graphics.MODE_ADD);
+			g.drawImage(buffer2, 0, 0);
+			g.setDrawMode(Graphics.MODE_NORMAL);
+		}
 	}
 	
 	/**

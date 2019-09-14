@@ -62,10 +62,11 @@ public class ShaderEffect implements PostEffect {
 
 		if (shader == null) {
 			shader = Shader.makeShader(vertex, fragment);
+			shader.startShader();
 			initShader(shader, container);
+		} else {
+			shader.startShader();
 		}
-
-		shader.startShader();
 
 		updateShader(shader, container);
 

@@ -28,6 +28,7 @@ import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.part.Particle;
+import io.github.tomaso2468.rpgonline.post.MDRMap;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
@@ -152,6 +153,11 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
 	}
+	
+	/**
+	 * The MDR map for this world state.
+	 */
+	public static MDRMap mdr;
 
 	/**
 	 * {@inheritDoc}
@@ -195,28 +201,39 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			Debugger.stop("snap");
 		}
 
-		if (post != null && post_enable) {
+		if (post_enable) {
 			Debugger.start("effects");
-
 			if (buffer == null) {
 				buffer = new Image(container.getWidth(), container.getHeight());
 			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
 				buffer = new Image(container.getWidth(), container.getHeight());
 			}
+			
+			if (post != null) {
+				g.copyArea(buffer, 0, 0);
 
-			g.copyArea(buffer, 0, 0);
-
-			if (!(post instanceof MultiEffect)) {
-				Debugger.start("post-" + post.getClass());
+				if (!(post instanceof MultiEffect)) {
+					Debugger.start("post-" + post.getClass());
+				}
+				post.doPostProcess(container, game, buffer, g);
+				if (!(post instanceof MultiEffect)) {
+					Debugger.stop("post-" + post.getClass());
+				}
 			}
-			post.doPostProcess(container, game, buffer, g);
-			if (!(post instanceof MultiEffect)) {
-				Debugger.stop("post-" + post.getClass());
+			if(RPGConfig.isMDR()) {
+				Debugger.start("mdr");
+				g.copyArea(buffer, 0, 0);
+				
+				if (mdr == null) {
+					mdr = new MDRMap();
+				}
+				mdr.doPostProcess(container, game, buffer, g);
+				Debugger.stop("mdr");
 			}
-
 			Debugger.stop("effects");
 		}
+		
 
 		if (gui) {
 			Debugger.start("gui");
@@ -596,7 +613,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			Debugger.start("lighting");
 
 			if (lights.size() == 0) {
-				g.setColor(world.getLightColor());
+				Color light = world.getLightColor();
+				g.setColor(RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
 				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
 				g.fillRect(0, 0, container.getWidth(), container.getHeight());
 				g.setDrawMode(Graphics.MODE_NORMAL);
@@ -618,16 +636,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				g.setDrawMode(Graphics.MODE_NORMAL);
 
 				Color wl = world.getLightColor();
-
-				float red = wl.r;
-				float green = wl.g;
-				float blue = wl.b;
-
-				float lum = (red + green + blue) / 3;
-
-				float rscale = FastMath.max(lum * 10, 1);
-				float gscale = FastMath.max(lum * 10, 1);
-				float bscale = FastMath.max(lum * 10, 1);
+				if (RPGConfig.isMDR() && post_enable) {
+					wl = wl.darker(0.5f);
+				}
 
 				g.setColor(wl);
 				g.fillRect(0, 0, container.getWidth(), container.getHeight());
@@ -642,18 +653,16 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 					g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 				}
 
-				g.setDrawMode(Graphics.MODE_SCREEN);
+				g.setDrawMode(Graphics.MODE_ADD);
 
 				for (LightSource l : lights) {
-					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
+					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
 
-					img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
+					img.setImageColor(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(), l.getB() * 50 * l.getBrightness());
 
 					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sx * RPGConfig.getTileSize(),
-							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sy * RPGConfig.getTileSize());
+							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
+							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy);
 				}
 
 				g.flush();
@@ -670,6 +679,17 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			g.flush();
 
 			Debugger.stop("lighting");
+		} else if (post_enable && RPGConfig.isMDR()) {
+			Debugger.start("mdr");
+			Debugger.start("mdr-lightoverride");
+			
+			g.setColor(RPGConfig.isMDR() && post_enable ? Color.gray : Color.white);
+			g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
+			g.fillRect(0, 0, container.getWidth(), container.getHeight());
+			g.setDrawMode(Graphics.MODE_NORMAL);
+			
+			Debugger.stop("mdr-lightoverride");
+			Debugger.stop("mdr");
 		}
 
 		g.resetTransform();

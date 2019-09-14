@@ -173,6 +173,11 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
 	 */
 	private static long pathfindingSleepTime = 1000 / 30;
+	
+	/**
+	 * Determines if MDR is enabled.
+	 */
+	private static boolean mdr = false;
 
 	/**
 	 * Determines how language settings are computed. This defaults to returning the
@@ -746,6 +751,22 @@ public final class RPGConfig {
 	 */
 	public static void setPathfindingSleepTime(long pathfindingSleepTime) {
 		RPGConfig.pathfindingSleepTime = pathfindingSleepTime;
+	}
+
+	/**
+	 * Determines if the MDR effect is enabled.
+	 * @return {@code true} if MDR is enabled, {@code false} otherwise.
+	 */
+	public static boolean isMDR() {
+		return mdr;
+	}
+
+	/**
+	 * Sets if the MDR effect is enabled.
+	 * @param mdr {@code true} if MDR is enabled, {@code false} otherwise.
+	 */
+	public static void setMDR(boolean mdr) {
+		RPGConfig.mdr = mdr;
 	}
 
 }
