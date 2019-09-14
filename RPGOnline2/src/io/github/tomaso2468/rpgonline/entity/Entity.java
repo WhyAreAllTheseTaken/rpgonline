@@ -207,7 +207,7 @@ public class Entity {
 		setBoolean("solid", true);
 		setBoolean("flying", false);
 		setDouble("hitbox_a", 0);
-		
+
 		setX(0);
 		setY(0);
 		setDX(0);
@@ -218,7 +218,7 @@ public class Entity {
 		setHitBox(new Rectangle(0, 0, 0, 0));
 
 		m.getAI(entity_id).init(this);
-		
+
 		this.packet = packet;
 	}
 
@@ -267,7 +267,7 @@ public class Entity {
 
 		setHitBox(new Rectangle((float) getDouble("hitbox_x"), (float) getDouble("hitbox_y"),
 				(float) getDouble("hitbox_w"), (float) getDouble("hitbox_h")));
-		
+
 		this.packet = packet;
 	}
 
@@ -364,6 +364,17 @@ public class Entity {
 	 */
 	public void setFlying(boolean flying) {
 		setBoolean("flying", flying);
+	}
+
+	/**
+	 * Checks if a variable with the specified name exists.
+	 * @param name The name of the variable.
+	 * @return {@code true} if the variable exists, {@code false} otherwise.
+	 */
+	public final boolean isVariable(String name) {
+		return doubles.containsKey(name) || floats.containsKey(name) || ints.containsKey(name)
+				|| longs.containsKey(name) || strings.containsKey(name) || bools.containsKey(name)
+				|| tags.containsKey(name);
 	}
 
 	/**
@@ -481,7 +492,7 @@ public class Entity {
 	public final float getFloat(String name) {
 		Float i = floats.get(name);
 		if (i == null) {
-			return Float.NaN;
+			return 0;
 		} else {
 			return i;
 		}
@@ -541,7 +552,7 @@ public class Entity {
 	public final double getDouble(String name) {
 		Double i = doubles.get(name);
 		if (i == null) {
-			return Double.NaN;
+			return 0;
 		} else {
 			return i;
 		}
@@ -682,18 +693,31 @@ public class Entity {
 	}
 
 	/**
-	 * <p>Determines if the entity should be involved in collision calculations.</p>
-	 * <p>For small projectiles, it is best to disable this to remove them from entity collisions.</p>
+	 * <p>
+	 * Determines if the entity should be involved in collision calculations.
+	 * </p>
+	 * <p>
+	 * For small projectiles, it is best to disable this to remove them from entity
+	 * collisions.
+	 * </p>
+	 * 
 	 * @return {@code true} if this entity has collision, {@code false} otherwise.
 	 */
 	public boolean isSolid() {
 		return getBoolean("solid");
 	}
-	
+
 	/**
-	 * <p>Sets if the entity should be involved in collision calculations.</p>
-	 * <p>For small projectiles, it is best to disable this to remove them from entity collisions.</p>
-	 * @param solid {@code true} if this entity has collision, {@code false} otherwise.
+	 * <p>
+	 * Sets if the entity should be involved in collision calculations.
+	 * </p>
+	 * <p>
+	 * For small projectiles, it is best to disable this to remove them from entity
+	 * collisions.
+	 * </p>
+	 * 
+	 * @param solid {@code true} if this entity has collision, {@code false}
+	 *              otherwise.
 	 */
 	public void setSolid(boolean solid) {
 		setBoolean("solid", solid);
@@ -701,6 +725,7 @@ public class Entity {
 
 	/**
 	 * Gets the ID of this entity.
+	 * 
 	 * @return A entity ID.
 	 */
 	public String getEntityID() {
@@ -709,6 +734,7 @@ public class Entity {
 
 	/**
 	 * Gets the AI of this entity.
+	 * 
 	 * @return A entity AI or null if this entity has no AI.
 	 */
 	public EntityAI getAI() {
@@ -717,6 +743,7 @@ public class Entity {
 
 	/**
 	 * Sets the hitbox of this entity.
+	 * 
 	 * @param r A rectangle.
 	 */
 	public void setHitBox(Rectangle r) {
@@ -730,6 +757,7 @@ public class Entity {
 
 	/**
 	 * Sets the angle to rotate this entity's hitbox by.
+	 * 
 	 * @param a A float angle in radians.
 	 */
 	public void setHitBoxAngle(float a) {
@@ -738,6 +766,7 @@ public class Entity {
 
 	/**
 	 * Gets the angle to rotate this entity's hitbox by.
+	 * 
 	 * @return A float angle in radians.
 	 */
 	public float getHitBoxAngle() {
@@ -746,6 +775,7 @@ public class Entity {
 
 	/**
 	 * Gets the transformed hitbox of this entity.
+	 * 
 	 * @return A shape.
 	 */
 	public Shape getHitBox() {
@@ -755,6 +785,7 @@ public class Entity {
 
 	/**
 	 * Gets the direction this entity is facing (this does not effect hitboxes).
+	 * 
 	 * @return A direction constant.
 	 * 
 	 * @see #getHitBoxAngle()
@@ -765,6 +796,7 @@ public class Entity {
 
 	/**
 	 * Sets the direction this entity is facing (this does not effect hitboxes).
+	 * 
 	 * @param d A direction constant.
 	 * 
 	 * @see #setHitBoxAngle(float)

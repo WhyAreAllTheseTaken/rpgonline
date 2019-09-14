@@ -586,8 +586,8 @@ public final class AudioManager {
 	 * @param rf The roll-off factor
 	 */
 	public static void setDistanceFactor(float rf) {
-		//XXX Does this even work.
 		AudioManager.rf = rf;
+		SoundSystemConfig.setDefaultRolloff(rf);
 	}
 
 	/**
