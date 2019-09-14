@@ -119,7 +119,7 @@ public class VelocityAI implements EntityAI {
 		}
 		
 		for (Shape s : hitboxes) {
-			if (s.contains(e.getHitBox()) || s.intersects(e.getHitBox())) {
+			if (s.contains(e.getHitBox()) || s.intersects(e.getHitBox()) || e.getHitBox().contains(s)) {
 				Debugger.stop("collision");
 				return true;
 			}
