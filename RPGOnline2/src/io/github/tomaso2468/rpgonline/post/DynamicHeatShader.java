@@ -6,7 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import io.github.tomaso2468.rpgonline.net.Client2D;
+import io.github.tomaso2468.rpgonline.net.HeatAffected;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import slickshader.Shader;
 
@@ -36,7 +36,7 @@ public class DynamicHeatShader extends ShaderEffect {
 	@Override
 	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
 			throws SlickException {
-		heat = ((Client2D) ServerManager.getClient()).getHeatEffect();
+		heat = ((HeatAffected) ServerManager.getClient()).getHeatEffect();
 		super.doPostProcess(container, game, buffer, g);
 	}
 

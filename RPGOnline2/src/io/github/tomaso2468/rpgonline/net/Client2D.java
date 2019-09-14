@@ -22,11 +22,6 @@ public interface Client2D extends Client {
 	 */
 	public double getPlayerY();
 	/**
-	 * Gets the strength of the heat effect.
-	 * @return A float value.
-	 */
-	public float getHeatEffect();
-	/**
 	 * Gets the strength of the wind effect. A negative number will reverse the wind.
 	 * @return A float value.
 	 */
