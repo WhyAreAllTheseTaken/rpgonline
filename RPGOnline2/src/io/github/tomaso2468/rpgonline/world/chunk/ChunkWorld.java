@@ -409,4 +409,12 @@ public class ChunkWorld implements World {
 	public synchronized List<Entity> getEntities() {
 		return entities;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setState(long x, long y, long z, String state) {
+		getChunk(x, y, z).setState(x, y, z, state);
+	}
 }

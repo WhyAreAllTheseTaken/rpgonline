@@ -41,6 +41,15 @@ public interface World {
 	 * @param state a string representing a state or an empty string (null may not be set).
 	 */
 	public void setTile(long x, long y, long z, Tile tile, String state);
+	
+	/**
+	 * Sets the state of a tile.
+	 * @param x The X position to write to.
+	 * @param y The Y position to write to.
+	 * @param z The Z (layer) position to write to.
+	 * @param state a string representing a state or an empty string (null may not be set).
+	 */
+	public void setState(long x, long y, long z, String state);
 
 	/**
 	 * Sets the area ID at a specified position. This can be used to determine music for specified areas in open world games.

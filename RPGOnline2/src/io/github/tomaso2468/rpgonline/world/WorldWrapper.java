@@ -202,4 +202,12 @@ public class WorldWrapper implements World {
 	public List<Entity> getEntities() {
 		return world.getEntities();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setState(long x, long y, long z, String state) {
+		world.setState(x, y, z, state);
+	}
 }
