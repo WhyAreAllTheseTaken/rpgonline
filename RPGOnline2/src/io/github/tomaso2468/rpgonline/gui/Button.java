@@ -48,6 +48,6 @@ public class Button extends Component {
 	
 	@Override
 	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateButtonBounds(this);
+		return ThemeManager.getTheme().calculateButtonBounds(c, this);
 	}
 }

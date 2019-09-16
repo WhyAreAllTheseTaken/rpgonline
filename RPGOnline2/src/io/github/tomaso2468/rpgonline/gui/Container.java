@@ -53,8 +53,8 @@ public class Container extends Component {
 
 	@Override
 	public void onResize(float x, float y, float w, float h) {
-		for (Component component : components) {
-			component.setBounds(0, 0, w, h);
+		for (Component c : components) {
+			c.setBounds(0, 0, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
 		}
 	}
 

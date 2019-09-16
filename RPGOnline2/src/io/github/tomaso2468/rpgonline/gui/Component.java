@@ -7,10 +7,10 @@ import org.newdawn.slick.geom.Rectangle;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 public abstract class Component {
-	private float x;
-	private float y;
-	private float w;
-	private float h;
+	private float x = 0;
+	private float y = 0;
+	private float w = 360;
+	private float h = 360;
 	
 	public void paint(Graphics g, float scaling) throws SlickException {
 		ThemeManager.getTheme().paintComponent(g, scaling, this);
@@ -76,6 +76,10 @@ public abstract class Component {
 		
 	}
 
+	public void setBounds(Rectangle r) {
+		setBounds(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	}
+	
 	public void setBounds(float x, float y, float w, float h) {
 		this.x = x;
 		this.y = y;
