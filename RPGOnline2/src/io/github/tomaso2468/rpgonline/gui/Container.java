@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 public class Container extends Component {
-	protected List<Component> components = new ArrayList<>();
+	protected final List<Component> components = new ArrayList<>();
 
 	public Component getSelected(float x, float y) {
 		Component selected = this;
