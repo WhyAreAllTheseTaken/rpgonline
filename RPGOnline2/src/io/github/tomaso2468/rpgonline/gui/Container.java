@@ -8,9 +8,23 @@ import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
+/**
+ * A component that can hold other components.
+ * @author Tomas
+ *
+ */
 public class Container extends Component {
+	/**
+	 * The list of components in this container.
+	 */
 	protected final List<Component> components = new ArrayList<>();
 
+	/**
+	 * Gets the component at the specified mouse position. This function will also check containers held within this container so children of the returned component should not be containers.
+	 * @param x The X position of the mouse.
+	 * @param y The Y position of the mouse.
+	 * @return A component held in this component or this component if no it is the only visible component.
+	 */
 	public Component getSelected(float x, float y) {
 		Component selected = this;
 
@@ -27,12 +41,21 @@ public class Container extends Component {
 		return selected;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void paint(Graphics g, float scaling) throws SlickException {
 		ThemeManager.getTheme().paintContainer(g, scaling, this);
 		paintComponents(g, scaling);
 	}
 
+	/**
+	 * Paints all components in this container.
+	 * @param g The graphics context.
+	 * @param scaling The scaling factor for rendering.
+	 * @throws SlickException If an error occurs rendering the components.
+	 */
 	public void paintComponents(Graphics g, float scaling) throws SlickException {
 		for (Component component : components) {
 			g.pushTransform();
@@ -42,15 +65,26 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * Adds a component to this container.. This may trigger a layout change.
+	 * @param c The component to add.
+	 */
 	public void add(Component c) {
 		components.add(c);
 		c.setBounds(0, 0, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
 	}
 
+	/**
+	 * Removes a component from this container.
+	 * @param c The component to remove.
+	 */
 	public void remove(Component c) {
 		components.remove(c);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onResize(float x, float y, float w, float h) {
 		for (Component c : components) {
@@ -58,6 +92,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseClickedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
@@ -67,6 +104,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mousePressedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
@@ -76,6 +116,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseUnpressedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
@@ -85,6 +128,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseEntered(float x, float y) {
 		Component selected = getSelected(x, y);
@@ -94,6 +140,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseExited(float x, float y) {
 		Component selected = getSelected(x, y);
@@ -103,6 +152,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseMoved(float ox, float oy, float nx, float ny) {
 		Component selected = getSelected(nx, ny);
@@ -112,6 +164,9 @@ public class Container extends Component {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
 		Component selected = getSelected(nx, ny);
