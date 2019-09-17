@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -24,6 +25,7 @@ import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.entity.Entity;
+import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
@@ -81,9 +83,9 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	public float base_scale = 1f;
 	/**
-	 * A list of GUI elements.
+	 * The GUI to use.
 	 */
-	private List<GUIItem> guis = new ArrayList<GUIItem>();
+	private GUI guis = new GUI();
 	/**
 	 * A list of tasks to run on game update.
 	 */
@@ -136,6 +138,11 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * If shaders are enabled.
 	 */
 	protected boolean post_enable = true;
+	
+	/**
+	 * The game container.
+	 */
+	private GameContainer container;
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -151,7 +158,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+		guis.init(container.getWidth(), container.getHeight(), base_scale);
 	}
 	
 	/**
@@ -240,19 +247,10 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 			Rectangle world_clip = g.getWorldClip();
 			Rectangle clip = g.getClip();
-			for (GUIItem gui : guis) {
-				if (gui.isCentered()) {
-					g.translate(container.getWidth() / 2, container.getHeight() / 2);
-					g.scale(base_scale, base_scale);
-				} else {
-					g.scale(base_scale, base_scale);
-				}
-				gui.render(g, container, game, container.getWidth() / base_scale, container.getHeight() / base_scale);
-
-				g.resetTransform();
-				g.setWorldClip(world_clip);
-				g.setClip(clip);
-			}
+			guis.paint(g, base_scale);
+			g.setWorldClip(world_clip);
+			g.setClip(clip);
+			g.resetTransform();
 
 			Debugger.stop("gui");
 		}
@@ -791,7 +789,43 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			}
 		}
 	}
+	
+	private float mx, my = 0;
 
+	public void updateGUI(GameContainer container, StateBasedGame game, int delta) {
+		if (guis != null) {
+			Debugger.start("gui");
+			
+			Debugger.start("gui-mouse");
+			float ox = mx;
+			float oy = my;
+			
+			mx = Mouse.getX();
+			my = container.getHeight() - Mouse.getY();
+			
+			if (mx != ox || my != oy) {
+				guis.mouseMoved(mx, my);
+			}
+			if (Mouse.getButtonCount() >= 3) {
+				guis.mouseState(mx, my, Mouse.isButtonDown(0), Mouse.isButtonDown(1), Mouse.isButtonDown(2));
+			} else if (Mouse.getButtonCount() >= 2) {
+				guis.mouseState(mx, my, Mouse.isButtonDown(0), Mouse.isButtonDown(1), false);
+			} else if (Mouse.getButtonCount() >= 1) {
+				guis.mouseState(mx, my, Mouse.isButtonDown(0), false, false);
+			}
+			if (Mouse.hasWheel()) {
+				guis.mouseWheel(Mouse.getDWheel());
+			}
+			Debugger.stop("gui-mouse");
+			
+			Debugger.start("gui-update");
+			guis.update();
+			Debugger.stop("gui-update");
+			
+			Debugger.stop("gui");
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -859,15 +893,13 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			shake -= delf;
 		}
 
-		Debugger.start("gui");
-		for (GUIItem gui : guis) {
-			gui.update(container, game, delta);
-		}
-
+		updateGUI(container, game, delta);
+		
+		Debugger.start("hooks");
 		for (UpdateHook hook : hooks) {
 			hook.update(container, game, delta);
 		}
-		Debugger.stop("gui");
+		Debugger.stop("hooks");
 
 		Debugger.start("audio");
 		AmbientMusic music = ServerManager.getClient().getMusic();
@@ -931,31 +963,19 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	}
 
 	/**
-	 * Adds a GUI to the state.
-	 * 
-	 * @param e A GUI element.
+	 * Gets the current GUI.
+	 * @return A GUI object.
 	 */
-	public void addGUI(GUIItem e) {
-		guis.add(e);
+	public GUI getGUI() {
+		return guis;
 	}
-
+	
 	/**
-	 * Removes a GUI from the state.
-	 * 
-	 * @param o A GUI element.
+	 * Sets the current GUI.
+	 * @param gui a GUI object.
 	 */
-	public void removeGUI(GUIItem o) {
-		guis.remove(o);
-	}
-
-	/**
-	 * Adds a GUI element at a specific point.
-	 * 
-	 * @param index   The index of the element.
-	 * @param element A GUI element.
-	 */
-	public void addGUI(int index, GUIItem element) {
-		guis.add(index, element);
+	public void setGUI(GUI guis) {
+		this.guis = guis;
 	}
 
 	/**
@@ -1075,5 +1095,6 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	@Override
 	public void scale(float base) {
 		base_scale = base;
+		guis.init(container.getWidth(), container.getHeight(), base_scale);
 	}
 }

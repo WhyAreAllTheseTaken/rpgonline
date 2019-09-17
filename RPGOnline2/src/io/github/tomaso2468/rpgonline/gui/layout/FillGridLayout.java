@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
 public class FillGridLayout extends Layout {
@@ -22,6 +23,7 @@ public class FillGridLayout extends Layout {
 		this.x.put(c, x);
 		this.y.put(c, y);
 
+		Debugger.start("gui-layout");
 		float spacingX = getW() / (grid_x);
 		float spacingY = getW() / (grid_y);
 		
@@ -29,6 +31,7 @@ public class FillGridLayout extends Layout {
 				spacingY * y,
 				spacingX,
 				spacingY);
+		Debugger.stop("gui-layout");
 	}
 
 	public void add(Component c) {
@@ -37,6 +40,7 @@ public class FillGridLayout extends Layout {
 
 	@Override
 	public void onResize(float ox, float oy, float w, float h) {
+		Debugger.start("gui-layout");
 		for (Component c : components) {
 			int x = this.x.get(c);
 			int y = this.y.get(c);
@@ -49,5 +53,6 @@ public class FillGridLayout extends Layout {
 					spacingX,
 					spacingY);
 		}
+		Debugger.stop("gui-layout");
 	}
 }

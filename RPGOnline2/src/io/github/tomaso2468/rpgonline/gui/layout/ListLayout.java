@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline.gui.layout;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
 public class ListLayout extends Layout {
@@ -29,11 +30,13 @@ public class ListLayout extends Layout {
 	}
 	
 	protected void layout() {
+		Debugger.start("gui-layout");
 		float y = 0;
 		
 		for (Component c : components) {
 			c.setBounds(0, y, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
 			y += c.getDefaultBounds(this).getHeight() + spacing;
 		}
+		Debugger.stop("gui-layout");
 	}
 }

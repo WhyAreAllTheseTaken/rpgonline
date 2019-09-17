@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
 public class CornerLayout extends Layout {
@@ -12,6 +13,7 @@ public class CornerLayout extends Layout {
 		components.add(c);
 		map.put(c, corner);
 
+		Debugger.start("gui-layout");
 		switch (corner) {
 		case BOTTOM_LEFT:
 			c.setBounds(0, getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
@@ -32,6 +34,7 @@ public class CornerLayout extends Layout {
 		default:
 			break;
 		}
+		Debugger.stop("gui-layout");
 	}
 
 	public void add(Component c) {
@@ -40,6 +43,7 @@ public class CornerLayout extends Layout {
 	
 	@Override
 	public void onResize(float x, float y, float w, float h) {
+		Debugger.start("gui-layout");
 		for (Component c : components) {
 			Corner corner = map.get(c);
 
@@ -64,5 +68,6 @@ public class CornerLayout extends Layout {
 				break;
 			}
 		}
+		Debugger.stop("gui-layout");
 	}
 }

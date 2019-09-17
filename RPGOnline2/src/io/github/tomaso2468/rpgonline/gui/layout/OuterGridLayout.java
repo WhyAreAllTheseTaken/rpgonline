@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
 public class OuterGridLayout extends Layout {
@@ -22,6 +23,7 @@ public class OuterGridLayout extends Layout {
 		this.x.put(c, x);
 		this.y.put(c, y);
 
+		Debugger.start("gui-layout");
 		if (y == 0) {
 			float spacing = getW() / (grid_x + 1);
 
@@ -46,6 +48,7 @@ public class OuterGridLayout extends Layout {
 		} else {
 			throw new IllegalArgumentException("Grid locations can only be placed on the outside of the layout.");
 		}
+		Debugger.stop("gui-layout");
 	}
 
 	public void add(Component c) {
@@ -54,6 +57,7 @@ public class OuterGridLayout extends Layout {
 
 	@Override
 	public void onResize(float ox, float oy, float w, float h) {
+		Debugger.start("gui-layout");
 		for (Component c : components) {
 			int x = this.x.get(c);
 			int y = this.y.get(c);
@@ -83,5 +87,6 @@ public class OuterGridLayout extends Layout {
 				throw new IllegalArgumentException("Grid locations can only be placed on the outside of the layout.");
 			}
 		}
+		Debugger.stop("gui-layout");
 	}
 }

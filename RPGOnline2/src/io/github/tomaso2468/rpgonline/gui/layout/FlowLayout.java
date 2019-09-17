@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline.gui.layout;
 
+import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
 public class FlowLayout extends Layout {
@@ -29,6 +30,7 @@ public class FlowLayout extends Layout {
 	}
 	
 	protected void layout() {
+		Debugger.start("gui-layout");
 		float x = 0;
 		float y = 0;
 		float rh = 0;
@@ -44,5 +46,6 @@ public class FlowLayout extends Layout {
 			c.setBounds(x, y, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
 			x += c.getDefaultBounds(this).getWidth() + spacing;
 		}
+		Debugger.stop("gui-layout");
 	}
 }
