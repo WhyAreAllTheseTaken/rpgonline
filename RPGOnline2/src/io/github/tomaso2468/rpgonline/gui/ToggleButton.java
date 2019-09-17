@@ -13,12 +13,12 @@ public class ToggleButton extends Button {
 	}
 	
 	@Override
-	public void mouseUnpressedLeft(float x, float y) {
+	public void mouseExited(float x, float y) {
 		
 	}
 	
 	@Override
-	public void mouseExited(float x, float y) {
+	public void update() {
 		
 	}
 }

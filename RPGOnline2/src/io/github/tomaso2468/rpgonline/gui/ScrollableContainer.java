@@ -3,10 +3,24 @@ package io.github.tomaso2468.rpgonline.gui;
 import io.github.tomaso2468.rpgonline.gui.layout.Border;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
+/**
+ * A container that is scrollable.
+ * @author Tomas
+ *
+ */
 public class ScrollableContainer extends Container {
+	/**
+	 * The internal container of this component.
+	 */
 	private Container container;
+	/**
+	 * The scroll bar for this component.
+	 */
 	private ScrollBar bar;
 	
+	/**
+	 * Constructs a new scrollable container.
+	 */
 	public ScrollableContainer() {
 		Border border = new Border(ThemeManager.getTheme().getScrollableBorder());
 		components.add(border);

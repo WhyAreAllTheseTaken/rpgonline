@@ -2,7 +2,16 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import io.github.tomaso2468.rpgonline.gui.layout.FillGridLayout;
 
+/**
+ * A table component.
+ * @author Tomas
+ *
+ */
 public class Table extends FillGridLayout {
+	/**
+	 * Constructs a new Table.
+	 * @param data The data of the table with the first index being columns.
+	 */
 	public Table(String[][] data) {
 		super(data.length, data[0].length);
 		
@@ -13,6 +22,12 @@ public class Table extends FillGridLayout {
 		}
 	}
 	
+	/**
+	 * Sets the text at a specified position.
+	 * @param x The X position of the cell.
+	 * @param y The Y position of the cell.
+	 * @param s The text of the cell.
+	 */
 	public void setText(int x, int y, String s) {
 		for (Component c : components) {
 			if(this.x.get(c) == x && this.y.get(c) == y) {
