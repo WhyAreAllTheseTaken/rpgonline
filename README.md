@@ -43,7 +43,6 @@ This library was created to help with the development of certain games and to av
 - Collision - Slick2D &#x2612;
 - Net Engine - Java &#x2611;
 - ABT - Java &#x2611;
-- Atmosphere - Slick2D &#x2612;
 - Bullet Hell - Slick2D &#x2612;
 - Cutscene - Slick2D &#x2612;
 - Debug - Java &#x2611;
