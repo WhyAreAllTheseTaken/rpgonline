@@ -2,6 +2,7 @@ package io.github.tomaso2468.rpgonline.gui.theme;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -197,5 +198,10 @@ public class DefaultTheme implements Theme {
 	@Override
 	public void predraw(Graphics g) {
 		if (font == null) font = g.getFont();
+	}
+
+	@Override
+	public void init(GameContainer c) {
+		font = c.getDefaultFont();
 	}
 }

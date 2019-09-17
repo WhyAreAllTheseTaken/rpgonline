@@ -26,6 +26,7 @@ import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.entity.Entity;
 import io.github.tomaso2468.rpgonline.gui.GUI;
+import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
@@ -242,6 +243,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 			Rectangle world_clip = g.getWorldClip();
 			Rectangle clip = g.getClip();
+			ThemeManager.getTheme().predraw(g);
 			guis.paint(g, base_scale);
 			g.setWorldClip(world_clip);
 			g.setClip(clip);

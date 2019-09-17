@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline.gui.theme;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -46,4 +47,5 @@ public interface Theme {
 	public void paintTab(Graphics g, float scaling, TabButton tabButton);
 	public Rectangle calculateTabBounds(Container c, TabButton b);
 	public void predraw(Graphics g);
+	public void init(GameContainer c);
 }
