@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.tomaso2468.rpgonline.gui.Component;
-import io.github.tomaso2468.rpgonline.gui.Container;
 
-public class CornerLayout extends Container {
+public class CornerLayout extends Layout {
 	private final Map<Component, Corner> map = new HashMap<>();
 
 	public void add(Component c, Corner corner) {

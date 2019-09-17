@@ -1,9 +1,8 @@
 package io.github.tomaso2468.rpgonline.gui.layout;
 
 import io.github.tomaso2468.rpgonline.gui.Component;
-import io.github.tomaso2468.rpgonline.gui.Container;
 
-public class FlowLayout extends Container {
+public class FlowLayout extends Layout {
 	private final float spacing;
 	
 	public FlowLayout(float spacing) {
@@ -14,6 +13,12 @@ public class FlowLayout extends Container {
 	@Override
 	public void add(Component c) {
 		components.add(c);
+		layout();
+	}
+	
+	@Override
+	public void remove(Component c) {
+		super.remove(c);
 		layout();
 	}
 	

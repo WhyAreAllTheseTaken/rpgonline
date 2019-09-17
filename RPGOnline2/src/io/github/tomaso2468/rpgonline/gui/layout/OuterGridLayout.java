@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.tomaso2468.rpgonline.gui.Component;
-import io.github.tomaso2468.rpgonline.gui.Container;
 
-public class OuterGridLayout extends Container {
+public class OuterGridLayout extends Layout {
 	private final Map<Component, Integer> x = new HashMap<>();
 	private final Map<Component, Integer> y = new HashMap<>();
 	private final int grid_x;

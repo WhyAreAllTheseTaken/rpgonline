@@ -7,8 +7,18 @@ public class ToggleButton extends Button {
 	}
 
 	@Override
-	public void mouseClicked(float x, float y) {
+	public void mouseClickedLeft(float x, float y) {
 		setState(!isState());
 		onAction(x, y, isState());
+	}
+	
+	@Override
+	public void mouseUnpressedLeft(float x, float y) {
+		
+	}
+	
+	@Override
+	public void mouseExited(float x, float y) {
+		
 	}
 }

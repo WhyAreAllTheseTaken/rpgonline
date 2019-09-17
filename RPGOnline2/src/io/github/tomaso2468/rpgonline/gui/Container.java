@@ -59,29 +59,29 @@ public class Container extends Component {
 	}
 
 	@Override
-	public void mouseClicked(float x, float y) {
+	public void mouseClickedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
 
 		if (selected != this) {
-			selected.mouseClicked(x - selected.getX(), y - selected.getY());
+			selected.mouseClickedLeft(x - selected.getX(), y - selected.getY());
 		}
 	}
 
 	@Override
-	public void mousePressed(float x, float y) {
+	public void mousePressedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
 
 		if (selected != this) {
-			selected.mousePressed(x - selected.getX(), y - selected.getY());
+			selected.mousePressedLeft(x - selected.getX(), y - selected.getY());
 		}
 	}
 
 	@Override
-	public void mouseUnpressed(float x, float y) {
+	public void mouseUnpressedLeft(float x, float y) {
 		Component selected = getSelected(x, y);
 
 		if (selected != this) {
-			selected.mouseUnpressed(x - selected.getX(), y - selected.getY());
+			selected.mouseUnpressedLeft(x - selected.getX(), y - selected.getY());
 		}
 	}
 
@@ -113,11 +113,11 @@ public class Container extends Component {
 	}
 
 	@Override
-	public void mouseDragged(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
 		Component selected = getSelected(nx, ny);
 
 		if (selected != this) {
-			selected.mouseDragged(ox - selected.getX(), oy - selected.getY(), nx - selected.getX(),
+			selected.mouseDraggedLeft(ox - selected.getX(), oy - selected.getY(), nx - selected.getX(),
 					ny - selected.getY());
 		}
 	}

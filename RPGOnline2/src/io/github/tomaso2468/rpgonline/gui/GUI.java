@@ -9,8 +9,12 @@ import org.newdawn.slick.SlickException;
 public class GUI {
 	private final List<Screen> screens = new ArrayList<Screen>();
 	private Component selected = null;
-	private boolean mouseState = false;
+	private boolean mouseLeft = false;
 	private boolean mouseClick = false;
+	private boolean mouseRight = false;
+	private boolean mouseRightClick = false;
+	private boolean mouseMiddle = false;
+	private boolean mouseMiddleClick = false;
 	private float mx;
 	private float my;
 	private float scaling = 1;
@@ -35,28 +39,79 @@ public class GUI {
 		return screens.get(screens.size() - 1);
 	}
 
-	public void mouseState(float x, float y, boolean state) {
-		if (mouseState == state) {
+	public void mouseState(float x, float y, boolean left, boolean right, boolean middle) {
+		mouseStateLeft(x, y, left);
+		mouseStateRight(x, y, right);
+		mouseStateMiddle(x, y, middle);
+	}
+	
+	public void mouseStateLeft(float x, float y, boolean left) {
+		if (mouseLeft == left) {
 			return;
 		}
 
-		mouseState = state;
+		mouseLeft = left;
 
-		if (state) {
-			mousePressed(x / scaling, y / scaling);
+		if (left) {
+			mousePressedLeft(x / scaling, y / scaling);
 			mouseClick = true;
 		} else {
-			mouseUnpressed(x / scaling, y / scaling);
+			mouseUnpressedLeft(x / scaling, y / scaling);
 			if (mouseClick) {
 				mouseClick = false;
-				mouseClicked(x / scaling, y / scaling);
+				mouseClickedLeft(x / scaling, y / scaling);
+			}
+		}
+	}
+	
+	public void mouseStateRight(float x, float y, boolean right) {
+		if (mouseRight == right) {
+			return;
+		}
+
+		mouseRight = right;
+
+		if (right) {
+			mousePressedRight(x / scaling, y / scaling);
+			mouseRightClick = true;
+		} else {
+			mouseUnpressedRight(x / scaling, y / scaling);
+			if (mouseRightClick) {
+				mouseRightClick = false;
+				mouseClickedRight(x / scaling, y / scaling);
+			}
+		}
+	}
+	
+	public void mouseStateMiddle(float x, float y, boolean middle) {
+		if (mouseMiddle == middle) {
+			return;
+		}
+
+		mouseMiddle = middle;
+
+		if (middle) {
+			mousePressedMiddle(x / scaling, y / scaling);
+			mouseMiddleClick = true;
+		} else {
+			mouseUnpressedMiddle(x / scaling, y / scaling);
+			if (mouseMiddleClick) {
+				mouseMiddleClick = false;
+				mouseClickedMiddle(x / scaling, y / scaling);
 			}
 		}
 	}
 
 	public void mouseMoved(float x, float y) {
-		if (mouseState) {
-			mouseDragged(mx, my, x / scaling, y / scaling);
+		if (mouseLeft || mouseRight || mouseMiddle) {
+			if (mouseLeft) {
+				mouseDraggedLeft(mx, my, x / scaling, y / scaling);
+			} else if (mouseRight) {
+				mouseDraggedRight(mx, my, x / scaling, y / scaling);
+			} else if (mouseMiddle) {
+				mouseDraggedMiddle(mx, my, x / scaling, y / scaling);
+			} 
+			
 		} else {
 			mouseMoved(mx, my, x / scaling, y / scaling);
 
@@ -71,21 +126,57 @@ public class GUI {
 		}
 	}
 
-	public void mouseClicked(float x, float y) {
+	public void mouseClickedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseClicked(x / scaling, y / scaling);
+			getTopScreen().mouseClickedLeft(x / scaling, y / scaling);
 		}
 	}
 
-	public void mousePressed(float x, float y) {
+	public void mousePressedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mousePressed(x / scaling, y / scaling);
+			getTopScreen().mousePressedLeft(x / scaling, y / scaling);
 		}
 	}
 
-	public void mouseUnpressed(float x, float y) {
+	public void mouseUnpressedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseUnpressed(x / scaling, y / scaling);
+			getTopScreen().mouseUnpressedLeft(x / scaling, y / scaling);
+		}
+	}
+	
+	public void mouseClickedRight(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseClickedRight(x / scaling, y / scaling);
+		}
+	}
+
+	public void mousePressedRight(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mousePressedRight(x / scaling, y / scaling);
+		}
+	}
+
+	public void mouseUnpressedRight(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseUnpressedRight(x / scaling, y / scaling);
+		}
+	}
+	
+	public void mouseClickedMiddle(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseClickedMiddle(x / scaling, y / scaling);
+		}
+	}
+
+	public void mousePressedMiddle(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mousePressedMiddle(x / scaling, y / scaling);
+		}
+	}
+
+	public void mouseUnpressedMiddle(float x, float y) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseUnpressedMiddle(x / scaling, y / scaling);
 		}
 	}
 
@@ -95,9 +186,21 @@ public class GUI {
 		}
 	}
 
-	public void mouseDragged(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseDragged(ox / scaling, oy / scaling, nx / scaling, ny / scaling);
+			getTopScreen().mouseDraggedLeft(ox / scaling, oy / scaling, nx / scaling, ny / scaling);
+		}
+	}
+	
+	public void mouseDraggedRight(float ox, float oy, float nx, float ny) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseDraggedRight(ox / scaling, oy / scaling, nx / scaling, ny / scaling);
+		}
+	}
+	
+	public void mouseDraggedMiddle(float ox, float oy, float nx, float ny) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseDraggedMiddle(ox / scaling, oy / scaling, nx / scaling, ny / scaling);
 		}
 	}
 

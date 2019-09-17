@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.tomaso2468.rpgonline.gui.Component;
-import io.github.tomaso2468.rpgonline.gui.Container;
 
-public class GridLayout extends Container {
-	private final Map<Component, Integer> x = new HashMap<>();
-	private final Map<Component, Integer> y = new HashMap<>();
-	private final int grid_x;
-	private final int grid_y;
+public class GridLayout extends Layout {
+	protected final Map<Component, Integer> x = new HashMap<>();
+	protected final Map<Component, Integer> y = new HashMap<>();
+	protected int grid_x;
+	protected int grid_y;
 
 	public GridLayout(int grid_x, int grid_y) {
 		super();

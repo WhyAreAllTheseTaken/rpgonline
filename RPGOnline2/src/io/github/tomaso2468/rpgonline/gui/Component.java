@@ -40,15 +40,51 @@ public abstract class Component {
 		return c.getBounds();
 	}
 	
-	public void mouseClicked(float x, float y) {
+	public void mouseClickedLeft(float x, float y) {
 		
 	}
 	
-	public void mousePressed(float x, float y) {
+	public void mousePressedLeft(float x, float y) {
 		
 	}
 	
-	public void mouseUnpressed(float x, float y) {
+	public void mouseUnpressedLeft(float x, float y) {
+		
+	}
+	
+	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
+		
+	}
+	
+	public void mouseClickedRight(float x, float y) {
+		
+	}
+	
+	public void mousePressedRight(float x, float y) {
+		
+	}
+	
+	public void mouseUnpressedRight(float x, float y) {
+		
+	}
+	
+	public void mouseDraggedRight(float ox, float oy, float nx, float ny) {
+		
+	}
+	
+	public void mouseClickedMiddle(float x, float y) {
+		
+	}
+	
+	public void mousePressedMiddle(float x, float y) {
+		
+	}
+	
+	public void mouseUnpressedMiddle(float x, float y) {
+		
+	}
+	
+	public void mouseDraggedMiddle(float ox, float oy, float nx, float ny) {
 		
 	}
 	
@@ -61,10 +97,6 @@ public abstract class Component {
 	}
 	
 	public void mouseMoved(float ox, float oy, float nx, float ny) {
-		
-	}
-	
-	public void mouseDragged(float ox, float oy, float nx, float ny) {
 		
 	}
 	

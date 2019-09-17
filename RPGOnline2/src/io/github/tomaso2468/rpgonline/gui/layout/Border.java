@@ -1,9 +1,8 @@
 package io.github.tomaso2468.rpgonline.gui.layout;
 
 import io.github.tomaso2468.rpgonline.gui.Component;
-import io.github.tomaso2468.rpgonline.gui.Container;
 
-public class Border extends Container {
+public class Border extends Layout {
 	private float border;
 	public Border(float border) {
 		this.border = border;

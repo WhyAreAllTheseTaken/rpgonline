@@ -22,7 +22,7 @@ public class ScrollBar extends Component {
 	}
 	
 	@Override
-	public void mouseClicked(float x, float y) {
+	public void mouseClickedLeft(float x, float y) {
 		if (y < getH() / 20) {
 			setPos(0);
 		}
@@ -32,7 +32,7 @@ public class ScrollBar extends Component {
 	}
 	
 	@Override
-	public void mouseDragged(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
 		pos = ny / getH() * max;
 	}
 

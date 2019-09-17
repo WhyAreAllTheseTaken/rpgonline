@@ -21,9 +21,19 @@ public class Button extends Component {
 	}
 	
 	@Override
-	public void mouseClicked(float x, float y) {
-		state = true;
+	public void mouseClickedLeft(float x, float y) {
+		setState(true);
 		onAction(x, y, state);
+	}
+	
+	@Override
+	public void mouseUnpressedLeft(float x, float y) {
+		setState(false);
+	}
+	
+	@Override
+	public void mouseExited(float x, float y) {
+		setState(false);
 	}
 	
 	public boolean isState() {
