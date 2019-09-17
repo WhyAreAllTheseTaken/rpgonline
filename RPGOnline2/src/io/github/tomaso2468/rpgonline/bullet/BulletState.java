@@ -449,7 +449,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float base) {
+	public void scale(GameContainer container, float base) {
 		this.base_scale = base;
 	}
 	

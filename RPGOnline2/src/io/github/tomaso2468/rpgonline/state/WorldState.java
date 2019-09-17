@@ -138,11 +138,6 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * If shaders are enabled.
 	 */
 	protected boolean post_enable = true;
-	
-	/**
-	 * The game container.
-	 */
-	private GameContainer container;
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -1093,7 +1088,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float base) {
+	public void scale(GameContainer container, float base) {
 		base_scale = base;
 		guis.init(container.getWidth(), container.getHeight(), base_scale);
 	}
