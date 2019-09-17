@@ -45,4 +45,5 @@ public interface Theme {
 	public Rectangle calculateToolBarBounds(Container c, ToolBar toolBar);
 	public void paintTab(Graphics g, float scaling, TabButton tabButton);
 	public Rectangle calculateTabBounds(Container c, TabButton b);
+	public void predraw(Graphics g);
 }
