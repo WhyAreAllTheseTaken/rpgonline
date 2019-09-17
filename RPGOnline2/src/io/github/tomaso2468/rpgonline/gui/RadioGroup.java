@@ -4,6 +4,11 @@ import io.github.tomaso2468.rpgonline.gui.layout.ListLayout;
 
 public class RadioGroup extends ListLayout {
 	private int index = 0;
+	
+	public RadioGroup() {
+		super(0);
+	}
+	
 	@Override
 	public void add(Component c) {
 		if (!(c instanceof RadioButton)) {
