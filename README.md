@@ -58,3 +58,4 @@ This library was created to help with the development of certain games and to av
 - Version - Java &#x2611;
 - Rendering - Slick2D &#x2612;
 - World - Slick2D &#x2612;
+- GUI - Slick2D &#x2612;
