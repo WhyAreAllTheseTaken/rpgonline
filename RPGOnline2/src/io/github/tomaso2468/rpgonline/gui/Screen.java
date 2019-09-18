@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -46,6 +48,8 @@ public class Screen extends Container {
 	@Override
 	public void paint(Graphics g, float scaling) throws SlickException {
 		paintComponents(g, scaling);
+		g.setColor(Color.white);
+		g.drawRect(Mouse.getX(), getH() - Mouse.getY(), 8, 8);
 	}
 
 }

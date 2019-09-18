@@ -81,6 +81,30 @@ public class Container extends Component {
 		ThemeManager.getTheme().paintContainer(g, scaling, this);
 		paintComponents(g, scaling);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void debug(Graphics g, float scaling) {
+		super.debug(g, scaling);
+		debugComponents(g, scaling);
+	}
+	
+	/**
+	 * Debugs all components in this container.
+	 * @param g The graphics context.
+	 * @param scaling The scaling factor for rendering.
+	 * @throws SlickException If an error occurs rendering the components.
+	 */
+	public void debugComponents(Graphics g, float scaling) {
+		for (Component component : components) {
+			g.pushTransform();
+			g.translate(component.getX() * scaling, component.getY() * scaling);
+			component.debug(g, scaling);
+			g.popTransform();
+		}
+	}
 
 	/**
 	 * Paints all components in this container.
@@ -91,7 +115,7 @@ public class Container extends Component {
 	public void paintComponents(Graphics g, float scaling) throws SlickException {
 		for (Component component : components) {
 			g.pushTransform();
-			g.translate(-component.getX() * scaling, -component.getY() * scaling);
+			g.translate(component.getX() * scaling, component.getY() * scaling);
 			component.paint(g, scaling);
 			g.popTransform();
 		}

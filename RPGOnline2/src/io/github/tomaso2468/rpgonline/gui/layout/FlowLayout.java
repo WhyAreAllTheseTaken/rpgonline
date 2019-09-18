@@ -86,16 +86,16 @@ public class FlowLayout extends Layout {
 	 */
 	protected void layout() {
 		Debugger.start("gui-layout");
-		float x = 0;
-		float y = 0;
+		float x = spacing;
+		float y = spacing;
 		float rh = 0;
 		
 		for (Component c : components) {
 			rh = Math.max(rh, c.getDefaultBounds(this).getHeight());
 			
-			if (c.getDefaultBounds(this).getWidth() + x > getW()) {
+			if (c.getDefaultBounds(this).getWidth() + x + spacing > getW()) {
 				y += rh + spacing;
-				x = 0;
+				x = spacing;
 			}
 			
 			c.setBounds(x, y, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());

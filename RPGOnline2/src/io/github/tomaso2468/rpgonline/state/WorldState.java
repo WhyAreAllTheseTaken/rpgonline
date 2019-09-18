@@ -275,6 +275,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			Rectangle world_clip = g.getWorldClip();
 			Rectangle clip = g.getClip();
 			ThemeManager.getTheme().predraw(g);
+			g.resetTransform();
 			guis.paint(g, base_scale);
 			g.setWorldClip(world_clip);
 			g.setClip(clip);

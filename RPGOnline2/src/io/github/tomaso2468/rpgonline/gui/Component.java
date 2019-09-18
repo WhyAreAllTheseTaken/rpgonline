@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -69,6 +70,17 @@ public abstract class Component {
 	 */
 	public void paint(Graphics g, float scaling) throws SlickException {
 		ThemeManager.getTheme().paintComponent(g, scaling, this);
+	}
+	
+	/**
+	 * Paints a debug of the component.
+	 * @param g The graphics context.
+	 * @param scaling The scaling factor for rendering.
+	 * @throws SlickException If an error occurs rendering graphics.
+	 */
+	public void debug(Graphics g, float scaling) {
+		g.setColor(Color.white);
+		g.drawRect(0, 0, getW() * scaling, getH() * scaling);
 	}
 
 	/**
