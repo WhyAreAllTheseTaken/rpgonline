@@ -50,6 +50,10 @@ public class ProgressBar extends Component {
 	 * The value of this progress bar.
 	 */
 	private int value;
+	/**
+	 * Determines if the progress bar is in the intermediate mode.
+	 */
+	private boolean intermediate;
 	
 	/**
 	 * Constructs a new ProgressBar.
@@ -100,5 +104,21 @@ public class ProgressBar extends Component {
 	 */
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	/**
+	 * Determines if the progress bar is in the intermediate mode.
+	 * @return {@code true} if the progress bar is in intermediate mode, {@code false otherwise}.
+	 */
+	public boolean isIntermediate() {
+		return intermediate;
+	}
+
+	/**
+	 * Sets if the progress bar is in the intermediate mode.
+	 * @param intermediate {@code true} if the progress bar is in intermediate mode, {@code false otherwise}.
+	 */
+	public void setIntermediate(boolean intermediate) {
+		this.intermediate = intermediate;
 	}
 }

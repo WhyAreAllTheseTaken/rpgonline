@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.theme;
 
+import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -56,6 +57,7 @@ import io.github.tomaso2468.rpgonline.gui.ToolBar;
 
 /**
  * The default theme used for the GUI system.
+ * 
  * @author Tomas
  *
  */
@@ -68,6 +70,7 @@ public class DefaultTheme implements Theme {
 	 * The default spacing.
 	 */
 	private float spacing = 4;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -96,8 +99,16 @@ public class DefaultTheme implements Theme {
 	@Override
 	public void paintProgressBar(Graphics g, float scaling, ProgressBar c) {
 		paintComponent(g, scaling, c);
-		g.setColor(Color.gray);
-		g.fillRect(0, 0, c.getW() * scaling * (c.getValue() / (float) c.getMax()), c.getH() * scaling);
+		if (c.isIntermediate()) {
+			g.setColor(Color.gray);
+			g.fillRect(c.getW()
+					- (float) (c.getW() * scaling * (FastMath.sin(System.currentTimeMillis() / 1000.0) + 1) / 2) / 2, 0,
+					(float) (c.getW() * scaling * (FastMath.sin(System.currentTimeMillis() / 1000.0) + 1) / 2),
+					c.getH() * scaling);
+		} else {
+			g.setColor(Color.gray);
+			g.fillRect(0, 0, c.getW() * scaling * (c.getValue() / (float) c.getMax()), c.getH() * scaling);
+		}
 	}
 
 	/**
@@ -107,8 +118,7 @@ public class DefaultTheme implements Theme {
 	public void paintButton(Graphics g, float scaling, Button c) {
 		paintComponent(g, scaling, c);
 		g.setColor(Color.white);
-		g.drawString(c.getText(),
-				c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()),
+		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()),
 				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()));
 	}
 
@@ -149,8 +159,7 @@ public class DefaultTheme implements Theme {
 	@Override
 	public void paintLabel(Graphics g, float scaling, Label c) {
 		g.setColor(Color.white);
-		g.drawString(c.getText(),
-				c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
+		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
 				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
 	}
 
@@ -238,7 +247,8 @@ public class DefaultTheme implements Theme {
 		g.setColor(c.isState() ? Color.green : Color.red);
 		g.fillRect(0, 0, spacing * 4 * scaling, spacing * 4 * scaling);
 		g.setColor(Color.white);
-		g.drawString(c.getText(), spacing * 5 * scaling, c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
+		g.drawString(c.getText(), spacing * 5 * scaling,
+				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
 	}
 
 	/**
@@ -257,7 +267,8 @@ public class DefaultTheme implements Theme {
 		g.setColor(c.isState() ? Color.green : Color.red);
 		g.fillOval(0, 0, spacing * 4 * scaling, spacing * 4 * scaling);
 		g.setColor(Color.white);
-		g.drawString(c.getText(), spacing * 5 * scaling, c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
+		g.drawString(c.getText(), spacing * 5 * scaling,
+				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
 	}
 
 	/**
@@ -272,8 +283,7 @@ public class DefaultTheme implements Theme {
 		}
 		g.fillRect(0, 0, c.getW(), c.getH());
 		g.setColor(Color.white);
-		g.drawString(c.getText(),
-				c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
+		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
 				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
 	}
 
@@ -314,7 +324,8 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public void predraw(Graphics g) {
-		if (font == null) font = g.getFont();
+		if (font == null)
+			font = g.getFont();
 	}
 
 	/**
