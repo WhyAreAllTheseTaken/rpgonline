@@ -86,7 +86,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	/**
 	 * The GUI to use.
 	 */
-	private GUI guis = new GUI();
+	private GUI guis = null;
 	/**
 	 * A list of tasks to run on game update.
 	 */
