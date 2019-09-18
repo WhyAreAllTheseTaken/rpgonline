@@ -116,7 +116,10 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public void paintButton(Graphics g, float scaling, Button c) {
-		paintComponent(g, scaling, c);
+		g.setColor(c.isState() ? Color.darkGray : Color.black);
+		g.fillRect(0, 0, c.getW() * scaling, c.getH() * scaling);
+		g.setColor(Color.gray);
+		g.drawRect(0, 0, c.getW() * scaling, c.getH() * scaling);
 		g.setColor(Color.white);
 		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()),
 				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()));
@@ -178,7 +181,7 @@ public class DefaultTheme implements Theme {
 	public void paintText(Graphics g, float scaling, TextComponent tf) {
 		paintComponent(g, scaling, tf);
 		g.setColor(Color.white);
-		g.drawString(tf.getText(), spacing * scaling, spacing * scaling);
+		g.drawString(new StringBuilder(tf.getText()).insert(tf.getIndex(), "|").toString(), spacing * scaling, spacing * scaling);
 	}
 
 	/**
@@ -201,7 +204,7 @@ public class DefaultTheme implements Theme {
 	@Override
 	public void paintScrollBar(Graphics g, float scaling, ScrollBar c) {
 		paintComponent(g, scaling, c);
-		g.setColor(Color.white);
+		g.setColor(Color.gray);
 		g.fillRect(0, 0, c.getW() * scaling, c.getH() * scaling * (c.getPos() / (float) c.getMax()));
 	}
 
