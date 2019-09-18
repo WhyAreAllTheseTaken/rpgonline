@@ -793,6 +793,10 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		if (guis != null) {
 			Debugger.start("gui");
 			
+			Debugger.start("gui-container");
+			guis.containerUpdate(container);
+			Debugger.stop("gui-container");
+			
 			Debugger.start("gui-mouse");
 			float ox = mx;
 			float oy = my;

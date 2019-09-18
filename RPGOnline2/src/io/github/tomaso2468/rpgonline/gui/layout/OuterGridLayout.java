@@ -6,18 +6,46 @@ import java.util.Map;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
+/**
+ * A layout that spaces components on the outside grid of the screen. The components are pushed to the edge of the screen but the dimensions are not changed.
+ * @author Tomas
+ *
+ */
 public class OuterGridLayout extends Layout {
-	private final Map<Component, Integer> x = new HashMap<>();
-	private final Map<Component, Integer> y = new HashMap<>();
-	private final int grid_x;
-	private final int grid_y;
+	/**
+	 * The X position of the components.
+	 */
+	protected final Map<Component, Integer> x = new HashMap<>();
+	/**
+	 * The Y position of the components.
+	 */
+	protected final Map<Component, Integer> y = new HashMap<>();
+	/**
+	 * The grid width.
+	 */
+	protected int grid_x;
+	/**
+	 * The grid height.
+	 */
+	protected int grid_y;
 
+	/**
+	 * Constructs a new OuterGridLayout
+	 * @param grid_x The grid width.
+	 * @param grid_y The grid height.
+	 */
 	public OuterGridLayout(int grid_x, int grid_y) {
 		super();
 		this.grid_x = grid_x;
 		this.grid_y = grid_y;
 	}
 
+	/**
+	 * Adds a component to this container.
+	 * @param c The component to add.
+	 * @param x The X position of the component.
+	 * @param y The Y position of the component.
+	 */
 	public void add(Component c, int x, int y) {
 		components.add(c);
 		this.x.put(c, x);
@@ -51,10 +79,16 @@ public class OuterGridLayout extends Layout {
 		Debugger.stop("gui-layout");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void add(Component c) {
 		add(c, 0, 0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onResize(float ox, float oy, float w, float h) {
 		Debugger.start("gui-layout");

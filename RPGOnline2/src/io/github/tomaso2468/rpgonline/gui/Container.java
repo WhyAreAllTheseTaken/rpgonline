@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -174,6 +175,16 @@ public class Container extends Component {
 		if (selected != this) {
 			selected.mouseDraggedLeft(ox - selected.getX(), oy - selected.getY(), nx - selected.getX(),
 					ny - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void containerUpdate(GameContainer c) {
+		for (Component component : components) {
+			component.containerUpdate(c);
 		}
 	}
 }

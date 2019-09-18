@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline.gui;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -277,6 +278,14 @@ public abstract class Component {
 	 * @param h The height of this component.
 	 */
 	public void onResize(float x, float y, float w, float h) {
+		
+	}
+	
+	/**
+	 * Updates the game container.
+	 * @param c A game container object.
+	 */
+	public void containerUpdate(GameContainer c) {
 		
 	}
 }

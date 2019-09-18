@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -409,6 +410,16 @@ public class GUI {
 	public void update(float delta) {
 		if (selected != null) {
 			selected.update(delta);
+		}
+	}
+	
+	/**
+	 * Updates the game container.
+	 * @param c A game container object.
+	 */
+	public void containerUpdate(GameContainer c) {
+		for (Screen screen : screens) {
+			screen.containerUpdate(c);
 		}
 	}
 }
