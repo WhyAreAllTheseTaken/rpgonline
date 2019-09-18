@@ -43,7 +43,7 @@ import javax.imageio.ImageIO;
 
 import org.newdawn.slick.util.Log;
 
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.chunk.Chunk;
 import io.github.tomaso2468.rpgonline.world.chunk.ChunkWorld;
 

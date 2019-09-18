@@ -39,7 +39,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
 import io.github.tomaso2468.rpgonline.debug.Debugger;
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

@@ -55,8 +55,8 @@ import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.state.WorldState;
 import io.github.tomaso2468.rpgonline.texture.TextureMap;
 import io.github.tomaso2468.rpgonline.texture.TileTexture;
-import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.LightSource;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

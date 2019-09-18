@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.tomaso2468.rpgonline.entity.Entity;
-import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.LightSource;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

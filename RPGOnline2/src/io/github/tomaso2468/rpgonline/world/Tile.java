@@ -29,7 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.tile;
+package io.github.tomaso2468.rpgonline.world;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.texture.TileTexture;
-import io.github.tomaso2468.rpgonline.world.World;
 
 /**
  * A class for storing the properties of a single tile.

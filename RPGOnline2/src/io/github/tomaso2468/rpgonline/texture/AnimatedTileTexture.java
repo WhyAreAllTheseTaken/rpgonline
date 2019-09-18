@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.texture;
 
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

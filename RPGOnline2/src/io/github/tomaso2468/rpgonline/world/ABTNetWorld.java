@@ -48,7 +48,6 @@ import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
 import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
-import io.github.tomaso2468.rpgonline.tile.Tile;
 import io.github.tomaso2468.rpgonline.world.chunk.CacheEntry;
 import io.github.tomaso2468.rpgonline.world.chunk.Chunk;
 import io.github.tomaso2468.rpgonline.world.chunk.ChunkWorld;

@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.texture;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

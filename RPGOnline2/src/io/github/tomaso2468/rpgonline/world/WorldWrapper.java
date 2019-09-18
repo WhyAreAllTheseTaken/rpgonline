@@ -37,7 +37,6 @@ import java.util.List;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.entity.Entity;
-import io.github.tomaso2468.rpgonline.tile.Tile;
 
 /**
  * A class to allow overriding of one method of a world without subclassing.

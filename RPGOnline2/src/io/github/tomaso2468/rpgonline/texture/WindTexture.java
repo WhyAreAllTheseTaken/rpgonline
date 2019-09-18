@@ -35,7 +35,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Graphics;
 
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 import io.github.tomaso2468.rpgonline.world.World;
 
 /**

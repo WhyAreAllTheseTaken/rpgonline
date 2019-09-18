@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.abt.TagGroup;
 import io.github.tomaso2468.rpgonline.abt.TagInt;
 import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
-import io.github.tomaso2468.rpgonline.tile.Tile;
+import io.github.tomaso2468.rpgonline.world.Tile;
 
 /**
  * A class for holding world data in separate chunks.

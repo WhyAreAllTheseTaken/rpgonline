@@ -88,7 +88,7 @@ public final class RPGConfig {
 	/**
 	 * The size used by tiles as the grid size.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.tile.Tile
+	 * @see io.github.tomaso2468.rpgonline.world.Tile
 	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
 	 * @see io.github.tomaso2468.rpgonline.state.WorldState
 	 */
@@ -333,7 +333,7 @@ public final class RPGConfig {
 	 * 
 	 * @return an int that is greater that 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.tile.Tile
+	 * @see io.github.tomaso2468.rpgonline.world.Tile
 	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
 	 * @see io.github.tomaso2468.rpgonline.state.WorldState
 	 * @see #setTileSize(int)
@@ -348,7 +348,7 @@ public final class RPGConfig {
 	 * 
 	 * @param tileSize an int that is greater that 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.tile.Tile
+	 * @see io.github.tomaso2468.rpgonline.world.Tile
 	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
 	 * @see io.github.tomaso2468.rpgonline.state.WorldState
 	 * @see #getTileSize()
