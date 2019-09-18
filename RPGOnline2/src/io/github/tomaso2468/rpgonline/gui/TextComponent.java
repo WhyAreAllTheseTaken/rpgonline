@@ -6,35 +6,82 @@ import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
+/**
+ * The root class providing text input support.
+ * @author Tomas
+ *
+ */
 public abstract class TextComponent extends Component {
+	/**
+	 * The default cooldown for typing.
+	 */
+	public static final float DEFAULT_COOLDOWN = 0.05f;
+	/**
+	 * The text held in this component.
+	 */
 	private StringBuilder text;
+	/**
+	 * The index of the selected character.
+	 */
 	private int index;
+	/**
+	 * The cooldown for typing.
+	 */
+	private float cooldown = 0f;
 
+	/**
+	 * Constructs a new TextComponent.
+	 * @param text The default text for this component.
+	 */
 	public TextComponent(String text) {
 		super();
 		this.setText(text);
 	}
 	
+	/**
+	 * Constructs a new TextComponent.
+	 */
 	public TextComponent() {
 		super();
 	}
 
+	/**
+	 * Gets the text content of this component.
+	 * @return A string.
+	 */
 	public String getText() {
 		return text.toString();
 	}
 
+	/**
+	 * Sets the text content of this component.
+	 * @param text A string.
+	 */
 	public void setText(String text) {
 		this.text = new StringBuilder(text);
 		setIndex(text.length());
 	}
 	
+	/**
+	 * Determines if multiple lines should be allowed in this text component. This method should be overridden to set the value of this component.
+	 * @return {@code true} if multiple lines should be allowed, {@code false} otherwise.
+	 */
 	protected boolean isMultiLine() {
 		return false;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void update() {
-		super.update();
+	public void update(float delta) {
+		super.update(delta);
+		
+		cooldown -= delta;
+		
+		if (cooldown > 0) {
+			return;
+		}
 		
 		boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
@@ -43,15 +90,29 @@ public abstract class TextComponent extends Component {
 		processKeys(shift, ctrl, alt);
 	}
 	
+	/**
+	 * Inserts a string at the selected index.
+	 * @param s The string to insert.
+	 */
 	public void insert(String s) {
 		text.insert(index, s);
 		index += 1;
 	}
 	
+	/**
+	 * Inserts a character at the selected index.
+	 * @param s The character to insert.
+	 */
 	public void insert(char s) {
 		insert(s + "");
 	}
 	
+	/**
+	 * Processes the keyboard input for this component.
+	 * @param shift {@code true} if the SHIFT key is pressed, {@code false} otherwise.
+	 * @param ctrl {@code true} if the CTRL key is pressed, {@code false} otherwise.
+	 * @param alt {@code true} if the ALT key is pressed, {@code false} otherwise.
+	 */
 	protected void processKeys(boolean shift, boolean ctrl, boolean alt) {
 		int[] codes = {
 				Keyboard.KEY_0,
@@ -153,10 +214,17 @@ public abstract class TextComponent extends Component {
 		for (int c : codes) {
 			if (Keyboard.isKeyDown(c)) {
 				processKey(shift, ctrl, alt, c);
+				cooldown = DEFAULT_COOLDOWN;
 			}
 		}
 	}
 	
+	/**
+	 * Processes a single key.
+	 * @param shift {@code true} if the SHIFT key is pressed, {@code false} otherwise.
+	 * @param ctrl {@code true} if the CTRL key is pressed, {@code false} otherwise.
+	 * @param alt {@code true} if the ALT key is pressed, {@code false} otherwise.
+	 */
 	protected void processKey(boolean shift, boolean ctrl, boolean alt, int code) {
 		switch (code) {
 		case Keyboard.KEY_RETURN:
@@ -205,6 +273,12 @@ public abstract class TextComponent extends Component {
 		}
 	}
 	
+	/**
+	 * Processes a single character.
+	 * @param shift {@code true} if the SHIFT key is pressed, {@code false} otherwise.
+	 * @param ctrl {@code true} if the CTRL key is pressed, {@code false} otherwise.
+	 * @param alt {@code true} if the ALT key is pressed, {@code false} otherwise.
+	 */
 	protected String processChar(boolean shift, boolean ctrl, boolean alt, int code) {
 		switch (code) {
 		case Keyboard.KEY_ADD:
@@ -296,14 +370,25 @@ public abstract class TextComponent extends Component {
 		}
 	}
 
+	/**
+	 * Gets the index of the selected character.
+	 * @return An int value.
+	 */
 	public int getIndex() {
 		return index;
 	}
 
+	/**
+	 * Sets the index of the selected character.
+	 * @param index An int value.
+	 */
 	public void setIndex(int index) {
 		this.index = index;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void paint(Graphics g, float scaling) throws SlickException {
 		ThemeManager.getTheme().paintText(g, scaling, this);

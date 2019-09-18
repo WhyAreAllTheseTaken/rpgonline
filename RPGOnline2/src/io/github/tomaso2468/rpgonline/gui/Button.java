@@ -59,7 +59,7 @@ public class Button extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update() {
+	public void update(float delta) {
 		setState(false);
 	}
 	

@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 /**
- * A togglable switch.
+ * A toggleable switch.
  * @author Tomas
  *
  */

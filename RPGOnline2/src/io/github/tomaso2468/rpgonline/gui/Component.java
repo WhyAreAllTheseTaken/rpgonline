@@ -242,7 +242,7 @@ public abstract class Component {
 	/**
 	 * Component update (for keyboard profiling and real-time updates).
 	 */
-	public void update() {
+	public void update(float delta) {
 		
 	}
 
