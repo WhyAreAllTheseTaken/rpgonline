@@ -228,6 +228,7 @@ public interface Theme {
 	/**
 	 * Initialises the theme with the game container.
 	 * @param c The game container to use.
+	 * @param scaling The scaling factor for the display.
 	 */
-	public void init(GameContainer c);
+	public void init(GameContainer c, float scaling);
 }

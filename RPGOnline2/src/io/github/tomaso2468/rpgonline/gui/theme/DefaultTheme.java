@@ -70,6 +70,10 @@ public class DefaultTheme implements Theme {
 	 * The default spacing.
 	 */
 	private float spacing = 4;
+	/**
+	 * The display scaling.
+	 */
+	private float scaling = 1;
 
 	/**
 	 * {@inheritDoc}
@@ -130,7 +134,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateButtonBounds(Container c, Button b) {
-		return new Rectangle(0, 0, font.getWidth(b.getText()) + spacing * 2, font.getHeight(b.getText()) + spacing * 2);
+		return new Rectangle(0, 0, font.getWidth(b.getText()) / scaling + spacing * 2, font.getHeight(b.getText()) / scaling + spacing * 2);
 	}
 
 	/**
@@ -171,7 +175,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateLabelBounds(Container c, Label b) {
-		return new Rectangle(0, 0, font.getWidth(b.getText()) + spacing * 2, font.getHeight(b.getText()) + spacing * 2);
+		return new Rectangle(0, 0, font.getWidth(b.getText()) / scaling + spacing * 2, font.getHeight(b.getText()) / scaling + spacing * 2);
 	}
 
 	/**
@@ -213,7 +217,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateScrollBarBounds(Container c, ScrollBar sb) {
-		return new Rectangle(0, 0, spacing * 3, c.getH());
+		return new Rectangle(0, 0, spacing * 3, c.getH() / scaling);
 	}
 
 	/**
@@ -259,7 +263,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateCheckBoxBounds(Container c, CheckBox checkBox) {
-		return new Rectangle(0, 0, spacing * 4, spacing * 5 + font.getWidth(checkBox.getText()));
+		return new Rectangle(0, 0, spacing * 4, spacing * 5 + font.getWidth(checkBox.getText()) / scaling);
 	}
 
 	/**
@@ -303,7 +307,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateToolBarBounds(Container c, ToolBar toolBar) {
-		return new Rectangle(0, 0, c.getW(), font.getHeight("Q"));
+		return new Rectangle(0, 0, c.getW(), font.getHeight("Q") / scaling);
 	}
 
 	/**
@@ -335,7 +339,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer c) {
+	public void init(GameContainer c, float scaling) {
 		font = c.getDefaultFont();
+		this.scaling = scaling;
 	}
 }
