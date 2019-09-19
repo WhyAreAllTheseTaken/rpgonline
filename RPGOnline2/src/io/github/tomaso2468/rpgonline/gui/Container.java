@@ -100,7 +100,7 @@ public class Container extends Component {
 	public void debugComponents(Graphics g, float scaling) {
 		for (Component component : components) {
 			g.pushTransform();
-			g.translate(component.getX() * scaling, component.getY() * scaling);
+			g.translate(component.getX(), component.getY());
 			component.debug(g, scaling);
 			g.popTransform();
 		}
@@ -115,7 +115,7 @@ public class Container extends Component {
 	public void paintComponents(Graphics g, float scaling) throws SlickException {
 		for (Component component : components) {
 			g.pushTransform();
-			g.translate(component.getX() * scaling, component.getY() * scaling);
+			g.translate(component.getX(), component.getY());
 			component.paint(g, scaling);
 			g.popTransform();
 		}

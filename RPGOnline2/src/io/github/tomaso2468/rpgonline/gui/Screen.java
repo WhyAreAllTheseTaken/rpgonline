@@ -49,7 +49,7 @@ public class Screen extends Container {
 	public void paint(Graphics g, float scaling) throws SlickException {
 		paintComponents(g, scaling);
 		g.setColor(Color.white);
-		g.drawRect(Mouse.getX(), getH() - Mouse.getY(), 8, 8);
+		g.drawRect(Mouse.getX() / scaling, getH() - Mouse.getY() / scaling, 8, 8);
 	}
 
 }

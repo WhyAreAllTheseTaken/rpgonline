@@ -73,7 +73,7 @@ public abstract class TextComponent extends Component {
 	 * Constructs a new TextComponent.
 	 */
 	public TextComponent() {
-		super();
+		this("");
 	}
 
 	/**

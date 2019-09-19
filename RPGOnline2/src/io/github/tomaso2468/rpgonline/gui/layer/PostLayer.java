@@ -71,6 +71,7 @@ public class PostLayer extends Layer {
 	 */
 	@Override
 	public void paint(Graphics g, float scaling) throws SlickException {
+		g.scale(1 / scaling, 1 / scaling);
 		if (buffer == null) {
 			buffer = new Image(c.getWidth(), c.getHeight());
 		}
@@ -84,6 +85,7 @@ public class PostLayer extends Layer {
 		g.pushTransform();
 		post.doPostProcess(null, null, buffer, g);
 		g.popTransform();
+		g.scale(scaling, scaling);
 	}
 	
 	/**

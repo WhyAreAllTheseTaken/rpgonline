@@ -508,6 +508,7 @@ public class GUI {
 	 */
 	public void paint(Graphics g, float scaling) throws SlickException {
 		this.scaling = scaling;
+		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
 			g.pushTransform();
 			screen.paint(g, scaling);
@@ -523,6 +524,7 @@ public class GUI {
 	 */
 	public void debug(Graphics g, float scaling) throws SlickException {
 		this.scaling = scaling;
+		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
 			g.pushTransform();
 			screen.debug(g, scaling);
