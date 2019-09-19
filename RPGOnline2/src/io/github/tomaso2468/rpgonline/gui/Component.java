@@ -236,6 +236,36 @@ public abstract class Component {
 	}
 	
 	/**
+	 * Mouse click event for button 3 and above.
+	 * @param x The X position of the mouse with scaling.
+	 * @param y The Y position of the mouse with scaling.
+	 * @param button The button that was pressed.
+	 */
+	public void mouseClickedAdditional(float x, float y, int button) {
+		
+	}
+	
+	/**
+	 * Mouse press event for button 3 and above.
+	 * @param x The X position of the mouse with scaling.
+	 * @param y The Y position of the mouse with scaling.
+	 * @param button The button that was pressed.
+	 */
+	public void mousePressedAdditional(float x, float y, int button) {
+		
+	}
+	
+	/**
+	 * Mouse unpress event for button 3 and above.
+	 * @param x The X position of the mouse with scaling.
+	 * @param y The Y position of the mouse with scaling.
+	 * @param button The button that was pressed.
+	 */
+	public void mouseUnpressedAdditional(float x, float y, int button) {
+		
+	}
+	
+	/**
 	 * Mouse drag event for button 2 (middle click).
 	 * @param ox The previous X position of the mouse with scaling.
 	 * @param oy The previous Y position of the mouse with scaling.

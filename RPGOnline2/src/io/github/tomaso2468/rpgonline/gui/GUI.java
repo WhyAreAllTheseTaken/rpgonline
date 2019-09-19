@@ -56,6 +56,7 @@ public class GUI {
 	 * The state of the left mouse button.
 	 */
 	private boolean mouseLeft = false;
+	
 	/**
 	 * Click data for the left mouse button.
 	 */
@@ -76,6 +77,14 @@ public class GUI {
 	 * Click data for the middle mouse button.
 	 */
 	private boolean mouseMiddleClick = false;
+	/**
+	 * The state of the additional mouse buttons.
+	 */
+	private boolean[] mouseAdditional;
+	/**
+	 * Click data for the additional mouse buttons.
+	 */
+	private boolean[] mouseAdditionalClick;
 	/**
 	 * The X position of the mouse.
 	 */
@@ -125,14 +134,50 @@ public class GUI {
 	 * Updates the state of the mouse. This method does not calculate motion.
 	 * @param x The X position of the mouse.
 	 * @param y The Y position of the mouse.
-	 * @param left The state of the left mouse button.
-	 * @param right The state of the right mouse button.
-	 * @param middle The state of the middle mouse button.
+	 * @param button The state of each mouse button.
 	 */
-	public void mouseState(float x, float y, boolean left, boolean right, boolean middle) {
-		mouseStateLeft(x, y, left);
-		mouseStateRight(x, y, right);
-		mouseStateMiddle(x, y, middle);
+	public void mouseState(float x, float y, boolean[] buttons) {
+		mouseStateLeft(x, y, buttons[0]);
+		mouseStateRight(x, y, buttons[1]);
+		mouseStateMiddle(x, y, buttons[2]);
+		
+		if (mouseAdditional == null) {
+			mouseAdditional = new boolean[buttons.length];
+		}
+		if (mouseAdditional.length != buttons.length) {
+			mouseAdditional = new boolean[buttons.length];
+		}
+		
+		if (buttons.length > 3) {
+			for (int i = 3; i < buttons.length; i++) {
+				mouseStateAdditional(x, y, i, buttons[i]);
+			}
+		}
+	}
+	
+	/**
+	 * Updates the state of an additional mouse button.
+	 * @param x The X position of the mouse.
+	 * @param y The Y position of the mouse.
+	 * @param state the state of the mouse button.
+	 */
+	protected void mouseStateAdditional(float x, float y, int button, boolean state) {
+		if (mouseAdditional[button] == state) {
+			return;
+		}
+
+		mouseAdditional[button] = state;
+
+		if (state) {
+			mousePressedAdditional(x, y, button);
+			mouseAdditionalClick[button] = true;
+		} else {
+			mouseUnpressedAdditional(x, y, button);
+			if (mouseAdditionalClick[button]) {
+				mouseAdditionalClick[button] = false;
+				mouseClickedAdditional(x, y, button);
+			}
+		}
 	}
 	
 	/**
@@ -334,6 +379,42 @@ public class GUI {
 	protected void mouseUnpressedMiddle(float x, float y) {
 		if (screens.size() > 0) {
 			getTopScreen().mouseUnpressedMiddle(x, y);
+		}
+	}
+	
+	/**
+	 * Additional click event.
+	 * @param x The X position of the mouse.
+	 * @param y The Y position of the mouse.
+	 * @param button The button that was pressed.
+	 */
+	protected void mouseClickedAdditional(float x, float y, int button) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseClickedAdditional(x, y, button);
+		}
+	}
+
+	/**
+	 * Additional press event.
+	 * @param x The X position of the mouse.
+	 * @param y The Y position of the mouse.
+	 * @param button The button that was pressed.
+	 */
+	protected void mousePressedAdditional(float x, float y, int button) {
+		if (screens.size() > 0) {
+			getTopScreen().mousePressedAdditional(x, y, button);
+		}
+	}
+
+	/**
+	 * Additional unpress event.
+	 * @param x The X position of the mouse.
+	 * @param y The Y position of the mouse.
+	 * @param button The button that was pressed.
+	 */
+	protected void mouseUnpressedAdditional(float x, float y, int button) {
+		if (screens.size() > 0) {
+			getTopScreen().mouseUnpressedAdditional(x, y, button);
 		}
 	}
 

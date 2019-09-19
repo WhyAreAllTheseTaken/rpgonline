@@ -839,13 +839,13 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			if (mx != ox || my != oy) {
 				guis.mouseMoved(mx, my);
 			}
-			if (Mouse.getButtonCount() >= 3) {
-				guis.mouseState(mx, my, Mouse.isButtonDown(0), Mouse.isButtonDown(1), Mouse.isButtonDown(2));
-			} else if (Mouse.getButtonCount() >= 2) {
-				guis.mouseState(mx, my, Mouse.isButtonDown(0), Mouse.isButtonDown(1), false);
-			} else if (Mouse.getButtonCount() >= 1) {
-				guis.mouseState(mx, my, Mouse.isButtonDown(0), false, false);
+			
+			boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
+			for (int i = 0; i < Mouse.getButtonCount(); i++) {
+				data[i] = Mouse.isButtonDown(i);
 			}
+			guis.mouseState(mx, my, data);
+			
 			if (Mouse.hasWheel()) {
 				guis.mouseWheel(Mouse.getDWheel());
 			}
