@@ -1,3 +1,34 @@
+/*
+BSD 3-Clause License
+
+Copyright (c) 2019, Tomas
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 package io.github.tomaso2468.rpgonline.render;
 
 import java.lang.reflect.Field;
@@ -31,10 +62,27 @@ public class GL11Renderer implements Renderer {
 		GL11.glVertex3f(x + w, y, 0);
 	}
 	
+	/**
+	 * Calls a static method.
+	 * @param c The class to call.
+	 * @param method The method to call.
+	 * @param types The types of the method.
+	 * @param args The arguments for the method.
+	 * @return The return value of the method.
+	 */
 	protected Object callStatic(Class<?> c, String method, Class<?>[] types, Object... args) {
 		return callInstance(c, method, types, null, args);
 	}
 	
+	/**
+	 * Calls an instance method.
+	 * @param c The class to call.
+	 * @param method The method to call.
+	 * @param types The types of the method.
+	 * @param o The object to call.
+	 * @param args The arguments for the method.
+	 * @return The return value of the method.
+	 */
 	protected Object callInstance(Class<?> c, String method, Class<?>[] types, Object o, Object... args) {
 		try {
 			Method m = c.getDeclaredMethod(method, types);
@@ -48,6 +96,13 @@ public class GL11Renderer implements Renderer {
 		}
 	}
 	
+	/**
+	 * Gets an instance field.
+	 * @param c The class to get.
+	 * @param field The field to get.
+	 * @param o The instance to get.
+	 * @return The value of the field.
+	 */
 	protected Object getFieldInstance(Class<?> c, String field, Object o) {
 		try {
 			Field f = c.getDeclaredField(field);
@@ -59,6 +114,12 @@ public class GL11Renderer implements Renderer {
 		}
 	}
 	
+	/**
+	 * Gets an static field.
+	 * @param c The class to get.
+	 * @param field The field to get.
+	 * @return The value of the field.
+	 */
 	protected Object getFieldStatic(Class<?> c, String field) {
 		try {
 			Field f = c.getDeclaredField(field);
@@ -70,6 +131,13 @@ public class GL11Renderer implements Renderer {
 		}
 	}
 	
+	/**
+	 * Sets an instance field.
+	 * @param c The class to get.
+	 * @param field The field to get.
+	 * @param o The instance to get.
+	 * @param value The value of the field.
+	 */
 	protected void setFieldInstance(Class<?> c, String field, Object o, Object value) {
 		try {
 			Field f = c.getDeclaredField(field);
@@ -81,6 +149,12 @@ public class GL11Renderer implements Renderer {
 		}
 	}
 	
+	/**
+	 * Sets a static field.
+	 * @param c The class to get.
+	 * @param field The field to get.
+	 * @param value The value of the field.
+	 */
 	protected void setFieldStatic(Class<?> c, String field, Object value) {
 		try {
 			Field f = c.getDeclaredField(field);
@@ -161,6 +235,9 @@ public class GL11Renderer implements Renderer {
 		endUse(img);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear) {
 		startUse(img);
@@ -178,6 +255,9 @@ public class GL11Renderer implements Renderer {
 		endUse(img);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void translate(Graphics g, float x, float y) {
 		callInstance(g.getClass(), "checkPush", new Class<?>[0], g);
@@ -187,6 +267,9 @@ public class GL11Renderer implements Renderer {
 		callInstance(g.getClass(), "postdraw", new Class<?>[0], g);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void scale(Graphics g, float x, float y) {
 		callInstance(g.getClass(), "checkPush", new Class<?>[0], g);
@@ -196,6 +279,9 @@ public class GL11Renderer implements Renderer {
 		callInstance(g.getClass(), "postdraw", new Class<?>[0], g);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public io.github.tomaso2468.rpgonline.render.Graphics getGUIGraphics(Graphics g) {
 		return new SlickGraphics(g);
