@@ -40,6 +40,7 @@ import java.util.List;
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -298,9 +299,10 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	protected List<EntityTexture> entityTextures = new ArrayList<>();
 
 	/**
-	 * A method that renders the world.
+	 * Computes lighting.
+	 * @return A list of lights or null if lighting is off.
 	 */
-	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public List<LightSource> computerLights() {
 		List<LightSource> lights = null;
 		if (RPGConfig.isLighting()) {
 			Debugger.start("light-compute");
@@ -344,6 +346,35 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 			Debugger.stop("light-compute");
 		}
+		
+		return lights;
+	}
+	
+	/**
+	 * Renders a texture.
+	 * @param img The texture to render.
+	 * @param x The X position of the texture.
+	 * @param y The Y position of the texture.
+	 * @param w The width of the texture.
+	 * @param h The height of the texture.
+	 */
+	protected void renderEmbedded(Image img, float x, float y, float w, float h) {
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
+		GL11.glVertex3f(x, y, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
+		GL11.glVertex3f(x, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY()
+				+ img.getTextureHeight());
+		GL11.glVertex3f(x + w, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
+		GL11.glVertex3f(x + w, y, 0);
+	}
+	
+	/**
+	 * A method that renders the world.
+	 */
+	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+		List<LightSource> lights = computerLights();
 
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
 
@@ -448,42 +479,13 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 									current = TextureMap.getSheet(img);
 									current.startUse();
 								}
-								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx,
+								renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
 										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 							}
 						}
 					}
 
 					textures.clear();
-
-					if (hitbox && z == -1 && t.isSolid(state)) {
-						Debugger.start("hitbox");
-						boolean collision = false;
-						for (Entity e : entities) {
-							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
-								if(e.isSolid()) {
-									collision = true;
-									break;
-								}
-								
-							}
-						}
-						if (collision) {
-							if (current != null)
-								current.endUse();
-
-							g.setColor(Color.orange);
-							g.draw(t.getHitBox()
-									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
-											RPGConfig.getTileSize()))
-									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
-											y * RPGConfig.getTileSize() - sy)));
-
-							if (current != null)
-								current.startUse();
-						}
-						Debugger.stop("hitbox");
-					}
 
 					if (z == -1) {
 						Debugger.start("entity");
@@ -514,26 +516,11 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 													current = TextureMap.getSheet(img);
 													current.startUse();
 												}
-												img.drawEmbedded(
-														(float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
+												renderEmbedded(img, (float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
 														(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy,
 														img.getWidth(), img.getHeight());
 											}
 										}
-									}
-
-									if (hitbox) {
-										if (current != null)
-											current.endUse();
-
-										g.setColor(Color.red);
-										g.draw(e.getHitBox()
-												.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
-														RPGConfig.getTileSize()))
-												.transform(Transform.createTranslateTransform(-sx, -sy)));
-
-										if (current != null)
-											current.startUse();
 									}
 								}
 							}
@@ -570,29 +557,16 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 								current = TextureMap.getSheet(img);
 								current.startUse();
 							}
-							img.drawEmbedded((float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
-									(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
-									img.getHeight());
+							renderEmbedded(img, (float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
+									(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy,
+									img.getWidth(), img.getHeight());
 						}
 					}
-				}
-
-				if (RPGConfig.isHitbox()) {
-					if (current != null)
-						current.endUse();
-
-					g.setColor(Color.red);
-					g.draw(e.getHitBox()
-							.transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize()))
-							.transform(Transform.createTranslateTransform(-sx, -sy)));
-
-					if (current != null)
-						current.startUse();
 				}
 			}
 		}
 		Debugger.stop("entity");
-
+		
 		Debugger.stop("world");
 
 		if (RPGConfig.isParticles()) {
@@ -617,7 +591,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 							current.startUse();
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
-						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx,
+						renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
 								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}
@@ -753,7 +727,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 							current.startUse();
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
-						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx,
+						renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
 								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}
@@ -766,6 +740,56 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 			Debugger.stop("particles-nolight");
 			Debugger.stop("particles");
+		}
+		
+		if (hitbox) {
+			Debugger.start("hitbox");
+			
+			g.translate(container.getWidth() / 2, container.getHeight() / 2);
+
+			g.scale(base_scale, base_scale);
+
+			g.scale(zoom, zoom);
+
+			if (shake > 0) {
+				g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+			}
+			
+			for (long y = miy; y <= may; y++) {
+				for (long x = mix; x <= max; x++) {
+					Tile t = world.getTile(x, y, -1);
+					String state = world.getTileState(x, y, -1);
+					
+					if (hitbox && t.isSolid(state)) {
+						boolean collision = false;
+						for (Entity e : entities) {
+							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
+								if(e.isSolid()) {
+									collision = true;
+									break;
+								}
+								
+							}
+						}
+						if (collision) {
+							g.setColor(Color.orange);
+							g.draw(t.getHitBox()
+									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
+											RPGConfig.getTileSize()))
+									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
+											y * RPGConfig.getTileSize() - sy)));
+						}
+					}
+				}
+			}
+			
+			for (Entity e : entities) {
+				g.setColor(Color.red);
+				g.draw(e.getHitBox()
+						.transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize()))
+						.transform(Transform.createTranslateTransform(-sx, -sy)));
+			}
+			Debugger.stop("hitbox");
 		}
 	}
 
