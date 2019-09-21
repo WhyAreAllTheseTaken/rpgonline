@@ -38,6 +38,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.RenderManager;
+
 /**
  * A interface representing a bullet.
  * 
@@ -132,7 +135,11 @@ public interface Bullet {
 	 */
 	public default void render(float px, float py, float xv, float yv, BulletState state, Graphics g, float sx,
 			float sy) {
-
+		Image img = TextureMap.getTexture(getTexture());
+		
+		if (img != null) {
+			RenderManager.getRenderer().render(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+		}
 	}
 
 	/**
@@ -211,6 +218,18 @@ public interface Bullet {
 	 */
 	public default Image renderEmbedded(float px, float py, float xv, float yv, BulletState state, Graphics g,
 			Image current, float sx, float sy) {
+		Image img = TextureMap.getTexture(getTexture());
+		
+		if (img != null) {
+			if (TextureMap.getSheet(img) != current) {
+				if (current != null) current.endUse();
+				current = TextureMap.getSheet(img);
+				if (current != null) current.startUse();
+			}
+			
+			RenderManager.getRenderer().renderEmbedded(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+		}
+		
 		return current;
 	}
 }

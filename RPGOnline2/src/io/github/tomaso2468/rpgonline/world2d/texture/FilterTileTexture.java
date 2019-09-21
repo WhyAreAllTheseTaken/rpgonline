@@ -33,8 +33,10 @@ package io.github.tomaso2468.rpgonline.world2d.texture;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.RenderManager;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -75,8 +77,10 @@ public class FilterTileTexture extends BasicTileTexture {
 	@Override
 	public void render(Graphics g, long x, long y, long z, World w, String state, Tile t, float sx, float sy,
 			float wind) {
-		Graphics.setCurrent(g);
+		Image img = TextureMap.getTexture(getTexture(x, y, z, w, state, t));
 		
-		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).draw(sx, sy, new Color(Integer.parseUnsignedInt(state, 16)));
+		if (img != null) {
+			RenderManager.getRenderer().renderFiltered(img, sx, sy, img.getWidth(), img.getHeight(), new Color(Integer.parseUnsignedInt(state, 16)));
+		}
 	}
 }

@@ -33,8 +33,9 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A representation of a GUI screen.

@@ -33,9 +33,11 @@ package io.github.tomaso2468.rpgonline.world2d.texture;
 
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.RenderManager;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -87,7 +89,11 @@ public class WindTexture extends BasicTileTexture {
 		float amount = (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
 				* f;
 		
-		TextureMap.getTexture(getTexture(x, y, z, w, state, t)).drawSheared(sx - amount, sy, amount, 0);
+		Image img = TextureMap.getTexture(getTexture(x, y, z, w, state, t));
+		
+		if (img != null) {
+			RenderManager.getRenderer().renderSheared(img, sx - amount, sy, img.getWidth(), img.getHeight(), amount, 0);
+		}
 	}
 	
 	/**

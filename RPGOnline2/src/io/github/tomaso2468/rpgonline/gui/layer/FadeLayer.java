@@ -32,7 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.gui.layer;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
+
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A layer that applies a fade effect.

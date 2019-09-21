@@ -35,7 +35,6 @@ import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.gui.Button;
@@ -54,6 +53,7 @@ import io.github.tomaso2468.rpgonline.gui.Switch;
 import io.github.tomaso2468.rpgonline.gui.TabButton;
 import io.github.tomaso2468.rpgonline.gui.TextComponent;
 import io.github.tomaso2468.rpgonline.gui.ToolBar;
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The default theme used for the GUI system.

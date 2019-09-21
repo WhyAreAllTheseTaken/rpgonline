@@ -56,11 +56,14 @@ import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
+import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
+import io.github.tomaso2468.rpgonline.render.RenderManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.state.BaseScaleState;
 
@@ -209,11 +212,22 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		}
 
 		Debugger.start("gui");
-		
+
+		Rectangle world_clip = g.getWorldClip();
+		Rectangle clip = g.getClip();
 		g.resetTransform();
-		gui.paint(g, base_scale);
-		g.resetTransform();
 		
+		io.github.tomaso2468.rpgonline.render.Graphics g2 = RenderManager.getRenderer().getGUIGraphics(g);
+		g2.endSlick();
+		
+		ThemeManager.getTheme().predraw(g2);
+		gui.paint(g2, base_scale);
+		
+		g2.beginSlick();
+		g.setWorldClip(world_clip);
+		g.setClip(clip);
+		g.resetTransform();
+
 		Debugger.stop("gui");
 		
 		g.flush();
@@ -229,6 +243,8 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @throws SlickException If a rendering error occurs.
 	 */
 	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+		Renderer renderer = RenderManager.getRenderer();
+		
 		List<Particle> particles = new ArrayList<Particle>(this.particles);
 		
 		Debugger.start("sky");
@@ -275,7 +291,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 						if (current != null) current.startUse();
 					}
 					
-					img.drawEmbedded(b.getX() - sx - img.getWidth() / 2, b.getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+					renderer.renderEmbedded(img, b.getX() - sx - img.getWidth() / 2, b.getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
 				} else {
 					if (current != null) current.endUse();
 					g.setColor(Color.white);
@@ -303,7 +319,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 							current.startUse();
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
-						img.drawEmbedded(particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}
 			}

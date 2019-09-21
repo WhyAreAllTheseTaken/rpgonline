@@ -31,10 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A text field that displays a password without showing text.

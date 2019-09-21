@@ -32,7 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.gui.theme;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.gui.Button;
@@ -51,6 +50,7 @@ import io.github.tomaso2468.rpgonline.gui.Switch;
 import io.github.tomaso2468.rpgonline.gui.TabButton;
 import io.github.tomaso2468.rpgonline.gui.TextComponent;
 import io.github.tomaso2468.rpgonline.gui.ToolBar;
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The interface for defining a theme for the GUI system. Scaling must be done when rendering a component with this interface.

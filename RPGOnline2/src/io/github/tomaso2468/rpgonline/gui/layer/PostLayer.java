@@ -32,11 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.gui.layer;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.post.PostEffect;
+import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A layer that applies a post-processing effect.
@@ -81,10 +81,15 @@ public class PostLayer extends Layer {
 			buffer = new Image(c.getWidth(), c.getHeight());
 		}
 		
-		g.copyArea(buffer, 0, 0);
-		g.pushTransform();
-		post.doPostProcess(null, null, buffer, g);
-		g.popTransform();
+		org.newdawn.slick.Graphics g2 = g.beginSlick();
+		
+		g2.copyArea(buffer, 0, 0);
+		g2.pushTransform();
+		post.doPostProcess(null, null, buffer, g2);
+		g2.popTransform();
+		
+		g.endSlick();
+		
 		g.scale(scaling, scaling);
 	}
 	
