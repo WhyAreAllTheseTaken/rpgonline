@@ -35,8 +35,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.github.tomaso2468.rpgonline.entity.Entity;
 import io.github.tomaso2468.rpgonline.net.PacketType;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * Packet used to remove entities.

@@ -37,7 +37,7 @@ import java.util.List;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.entity.Entity;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * Packet used for sending entity updates.

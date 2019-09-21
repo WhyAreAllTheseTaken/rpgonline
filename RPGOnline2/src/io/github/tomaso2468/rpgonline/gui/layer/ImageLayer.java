@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.gui.layer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import io.github.tomaso2468.rpgonline.texture.TextureMap;
+import io.github.tomaso2468.rpgonline.TextureMap;
 
 /**
  * A layer with a single image.

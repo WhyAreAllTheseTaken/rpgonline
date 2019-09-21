@@ -36,7 +36,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import io.github.tomaso2468.rpgonline.world.World;
+import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A sky layer with a static image.

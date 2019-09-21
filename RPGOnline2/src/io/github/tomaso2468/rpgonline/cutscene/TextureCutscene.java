@@ -35,9 +35,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
-import io.github.tomaso2468.rpgonline.texture.TextureMap;
 
 /**
  * A cutscene that displays a static texture.

@@ -100,8 +100,8 @@ public interface Bullet {
 	 * Gets the texture of this bullet.
 	 * 
 	 * @return A texture ID.
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#getTexture(int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#getTextureIndex(String)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#getTexture(int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#getTextureIndex(String)
 	 */
 	public int getTexture();
 
@@ -203,8 +203,8 @@ public interface Bullet {
 	 * @param sy The Y position of the bullet on the screen.
 	 * @return This should return {@code current} including any changes made to the bound texture.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#getSheet(Image)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#getSheet(Image)
 	 * @see #render(float, float, float, float, BulletState, Graphics, float, float)
 	 * @see #isCombined()
 	 * @see #isCustom()

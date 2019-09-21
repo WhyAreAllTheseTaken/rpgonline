@@ -61,15 +61,15 @@ public final class RPGConfig {
 	 * initialised.</b> This setting will not surpass the maximum texture size of
 	 * the graphics card.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #mapped
 	 */
@@ -79,18 +79,18 @@ public final class RPGConfig {
 	 * {@code false} any information provided by the game engine about wind will be
 	 * set to 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.WindTexture
-	 * @see io.github.tomaso2468.rpgonline.texture.entity.WindEntityTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.WindTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.entity.WindEntityTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.net.Client
 	 */
 	private static boolean wind = false;
 	/**
 	 * The size used by tiles as the grid size.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.Tile
-	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.Tile
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.TileTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	private static int tileSize = 16;
 	/**
@@ -123,15 +123,15 @@ public final class RPGConfig {
 	 * Determines if textures should be mapped/atlases. <b>This must be set before
 	 * textures are initialised.</b>
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #autoSpriteMapSize
 	 */
@@ -147,24 +147,24 @@ public final class RPGConfig {
 	/**
 	 * Determines if lighting should be used.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.LightSource
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	private static boolean lighting = false;
 
 	/**
 	 * Determines if particles should be used.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.bullet.BulletState
-	 * @see io.github.tomaso2468.rpgonline.part.Particle
+	 * @see io.github.tomaso2468.rpgonline.particle.Particle
 	 */
 	private static boolean particles = false;
 
 	/**
 	 * Determines if hitboxes should be rendered.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	private static boolean hitbox = false;
 
@@ -173,7 +173,7 @@ public final class RPGConfig {
 	 * textures are initialised.</b>
 	 * 
 	 * @see org.newdawn.slick.Image#setFilter(int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	private static int filterMode = Image.FILTER_NEAREST;
 
@@ -181,27 +181,27 @@ public final class RPGConfig {
 	 * Determines if rendering should snap graphics to the pixel size of the game or
 	 * allow subpixel rendering.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	private static boolean snapToPixel = false;
 	
 	/**
 	 * The number of threads to use for pathfinding.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 * @see io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager
 	 */
 	private static int pathfindingThreads = Math.min(Math.max(2, Runtime.getRuntime().availableProcessors() - 3), 6);
 	
 	/**
 	 * The time to wait before entering sleep in a pathfinding thread.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 * @see io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager
 	 */
 	private static long pathfindingSleepDelay = 500;
 	/**
 	 * The time to sleep for in a pathfinding thread.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager
+	 * @see io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager
 	 */
 	private static long pathfindingSleepTime = 1000 / 30;
 	
@@ -245,15 +245,15 @@ public final class RPGConfig {
 	 * 
 	 * @return An int that is greater than 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #isMapped()
 	 * @see #setMapped(boolean)
@@ -273,15 +273,15 @@ public final class RPGConfig {
 	 * 
 	 * @return An int that is greater than 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #isMapped()
 	 * @see #setMapped(boolean)
@@ -301,9 +301,9 @@ public final class RPGConfig {
 	 * 
 	 * @return true if the wind effect is enabled. false otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.WindTexture
-	 * @see io.github.tomaso2468.rpgonline.texture.entity.WindEntityTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.WindTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.entity.WindEntityTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.net.Client
 	 * @see #setWind(boolean)
 	 */
@@ -318,9 +318,9 @@ public final class RPGConfig {
 	 * 
 	 * @param wind true if the wind effect is enabled. false otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.WindTexture
-	 * @see io.github.tomaso2468.rpgonline.texture.entity.WindEntityTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.WindTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.entity.WindEntityTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.net.Client
 	 * @see #isWind()
 	 */
@@ -333,9 +333,9 @@ public final class RPGConfig {
 	 * 
 	 * @return an int that is greater that 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.Tile
-	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.Tile
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.TileTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #setTileSize(int)
 	 */
 	@Nonnegative
@@ -348,9 +348,9 @@ public final class RPGConfig {
 	 * 
 	 * @param tileSize an int that is greater that 0.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.Tile
-	 * @see io.github.tomaso2468.rpgonline.texture.TileTexture
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.Tile
+	 * @see io.github.tomaso2468.rpgonline.world2d.texture.TileTexture
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #getTileSize()
 	 */
 	@Nonnegative
@@ -471,15 +471,15 @@ public final class RPGConfig {
 	 * 
 	 * @return {@code true} if mapping is enabled, {@code false} otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #setMapped(boolean)
 	 * @see #getAutoSpriteMapSize()
@@ -496,15 +496,15 @@ public final class RPGConfig {
 	 * @param mapped {@code true} if mapping should be enabled, {@code false}
 	 *               otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addMappedTexture(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addMappedTexture(String,
 	 *      java.awt.image.BufferedImage)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#addSpriteMapMapped(String,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#addSpriteMapMapped(String,
 	 *      java.awt.image.BufferedImage, int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#generateAllMaps()
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#loadSpriteMapMapped(String, java.net.URL,
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
 	 *      int, int)
 	 * @see #isMapped()
 	 * @see #getAutoSpriteMapSize()
@@ -606,8 +606,8 @@ public final class RPGConfig {
 	 * 
 	 * @return {@code true} if lighting is enabled, {@code false} otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.LightSource
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static boolean isLighting() {
 		return lighting;
@@ -619,8 +619,8 @@ public final class RPGConfig {
 	 * @param lighting {@code true} if lighting should be enabled, {@code false}
 	 *                 otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.LightSource
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static void setLighting(boolean lighting) {
 		RPGConfig.lighting = lighting;
@@ -631,9 +631,9 @@ public final class RPGConfig {
 	 * 
 	 * @return {@code true} if particles are enabled, {@code false} otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.bullet.BulletState
-	 * @see io.github.tomaso2468.rpgonline.part.Particle
+	 * @see io.github.tomaso2468.rpgonline.particle.Particle
 	 */
 	public static boolean isParticles() {
 		return particles;
@@ -645,9 +645,9 @@ public final class RPGConfig {
 	 * @param particles {@code true} if particles should be enabled, {@code false}
 	 *                  otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see io.github.tomaso2468.rpgonline.bullet.BulletState
-	 * @see io.github.tomaso2468.rpgonline.part.Particle
+	 * @see io.github.tomaso2468.rpgonline.particle.Particle
 	 */
 	public static void setParticles(boolean particles) {
 		RPGConfig.particles = particles;
@@ -658,7 +658,7 @@ public final class RPGConfig {
 	 * 
 	 * @param {@code true} if hitboxes are rendered, {@code false} otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static boolean isHitbox() {
 		return hitbox;
@@ -669,7 +669,7 @@ public final class RPGConfig {
 	 * 
 	 * @param {@code true} if hitboxes should be rendered, {@code false} otherwise.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static void setHitbox(boolean hitbox) {
 		RPGConfig.hitbox = hitbox;
@@ -686,7 +686,7 @@ public final class RPGConfig {
 	 *         if bilinear filtering is used.
 	 * 
 	 * @see org.newdawn.slick.Image#setFilter(int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	public static int getFilterMode() {
 		return filterMode;
@@ -703,7 +703,7 @@ public final class RPGConfig {
 	 *         if bilinear filtering is used.
 	 * 
 	 * @see org.newdawn.slick.Image#setFilter(int)
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap
+	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	public static void setFilterMode(int filterMode) {
 		RPGConfig.filterMode = filterMode;
@@ -715,7 +715,7 @@ public final class RPGConfig {
 	 * 
 	 * @return {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static boolean isSnapToPixel() {
 		return snapToPixel;
@@ -727,7 +727,7 @@ public final class RPGConfig {
 	 * 
 	 * @param snapToPixel {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.state.WorldState
+	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
 	public static void setSnapToPixel(boolean snapToPixel) {
 		RPGConfig.snapToPixel = snapToPixel;

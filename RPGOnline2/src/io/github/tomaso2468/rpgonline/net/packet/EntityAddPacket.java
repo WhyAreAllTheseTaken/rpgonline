@@ -32,8 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.net.packet;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.entity.Entity;
-import io.github.tomaso2468.rpgonline.entity.EntityManager;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
+import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
 
 /**
  * Packet used to add entities.

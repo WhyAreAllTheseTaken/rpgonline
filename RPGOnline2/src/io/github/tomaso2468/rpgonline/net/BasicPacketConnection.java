@@ -68,7 +68,7 @@ import io.github.tomaso2468.rpgonline.net.packet.SoundPacket;
 import io.github.tomaso2468.rpgonline.net.packet.StopAmbientPacket;
 import io.github.tomaso2468.rpgonline.net.packet.TextPacket;
 import io.github.tomaso2468.rpgonline.net.packet.WindPacket;
-import io.github.tomaso2468.rpgonline.world.LightSource;
+import io.github.tomaso2468.rpgonline.world2d.LightSource;
 
 /**
  * A connection that uses TCP over IP to send data. The data is sent as one or

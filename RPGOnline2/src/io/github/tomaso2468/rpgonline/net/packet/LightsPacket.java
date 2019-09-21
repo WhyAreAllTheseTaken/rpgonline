@@ -40,7 +40,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.net.PacketType;
-import io.github.tomaso2468.rpgonline.world.LightSource;
+import io.github.tomaso2468.rpgonline.world2d.LightSource;
 
 /**
  * Packet used for sending light data.

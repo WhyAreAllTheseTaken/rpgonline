@@ -31,9 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.net;
 
-import io.github.tomaso2468.rpgonline.entity.Entity;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket;
-import io.github.tomaso2468.rpgonline.world.LightSource.LightUpdate;
+import io.github.tomaso2468.rpgonline.world2d.LightSource.LightUpdate;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 public interface Server2D extends Server {
 	/**

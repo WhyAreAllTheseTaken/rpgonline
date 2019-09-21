@@ -35,7 +35,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import io.github.tomaso2468.rpgonline.world.World;
+import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An interface for classes that allow a sky to be rendered.

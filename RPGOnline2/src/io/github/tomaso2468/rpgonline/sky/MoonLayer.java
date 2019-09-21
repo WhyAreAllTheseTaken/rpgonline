@@ -36,9 +36,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.ColorUtils.SunColorGenerator;
-import io.github.tomaso2468.rpgonline.texture.TextureMap;
-import io.github.tomaso2468.rpgonline.world.World;
+import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A layer that renders a moon.

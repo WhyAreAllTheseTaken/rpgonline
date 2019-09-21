@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.net;
 import java.util.List;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.world.World;
+import io.github.tomaso2468.rpgonline.world2d.World;
 
 public interface Client2D extends Client {
 	/**
@@ -75,8 +75,8 @@ public interface Client2D extends Client {
 	 * @param y The Y position of the chunk
 	 * @param z The Z position of the chunk
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.world.ABTWorld
-	 * @see io.github.tomaso2468.rpgonline.world.ABTNetWorld
+	 * @see io.github.tomaso2468.rpgonline.world2d.ABTWorld
+	 * @see io.github.tomaso2468.rpgonline.world2d.ABTNetWorld
 	 */
 	public void requestChunk(long x, long y, long z);
 	/**

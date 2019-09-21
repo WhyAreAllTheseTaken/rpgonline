@@ -52,7 +52,7 @@ import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
-import io.github.tomaso2468.rpgonline.pathfinding.PathFindingManager;
+import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 
 /**
  * <p>

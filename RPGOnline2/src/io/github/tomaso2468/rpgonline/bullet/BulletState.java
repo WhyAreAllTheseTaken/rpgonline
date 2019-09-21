@@ -50,18 +50,18 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.tomaso2468.rpgonline.RPGConfig;
+import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
-import io.github.tomaso2468.rpgonline.part.Particle;
+import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.state.BaseScaleState;
 import io.github.tomaso2468.rpgonline.state.GUIItem;
-import io.github.tomaso2468.rpgonline.texture.TextureMap;
 
 /**
  * A state for bullet based games.

@@ -36,7 +36,7 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import io.github.tomaso2468.rpgonline.texture.TextureMap;
+import io.github.tomaso2468.rpgonline.TextureMap;
 
 /**
  * A bullet with a single texture and constant velocity.
@@ -72,7 +72,7 @@ public class BasicBullet implements Bullet {
 	 * @param yv The Y velocity of the bullet.
 	 * @param texture The bullet texture.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.texture.TextureMap#getTextureIndex(String)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#getTextureIndex(String)
 	 */
 	public BasicBullet(float x, float y, float xv, float yv, String texture) {
 		super();

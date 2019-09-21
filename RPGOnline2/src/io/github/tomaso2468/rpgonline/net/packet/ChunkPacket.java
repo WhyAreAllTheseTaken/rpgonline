@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.net.packet;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.world.chunk.Chunk;
+import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
 
 /**
  * Packet used for chunk data.
