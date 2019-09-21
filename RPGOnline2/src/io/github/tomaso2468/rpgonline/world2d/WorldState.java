@@ -93,12 +93,10 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * The cached {@code y} position of the player.
 	 */
 	protected double y;
-
 	/**
 	 * Previous X position of the player used for velocity calculations.
 	 */
 	protected double px;
-
 	/**
 	 * Previous Y position of the player used for velocity calculations.
 	 */
@@ -874,6 +872,14 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			gui_cooldown -= delta / 1000f;
 			if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
 				gui = !gui;
+				gui_cooldown = 0.25f;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_F3) && gui_cooldown <= 0) {
+				RPGConfig.setDebug(!RPGConfig.isDebug());
+				gui_cooldown = 0.25f;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_F4) && gui_cooldown <= 0) {
+				RPGConfig.setHitbox(!RPGConfig.isHitbox());
 				gui_cooldown = 0.25f;
 			}
 			
