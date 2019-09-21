@@ -39,6 +39,7 @@ import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -54,6 +55,7 @@ import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
@@ -61,7 +63,6 @@ import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.state.BaseScaleState;
-import io.github.tomaso2468.rpgonline.state.GUIItem;
 
 /**
  * A state for bullet based games.
@@ -145,7 +146,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	/**
 	 * A list of GUIs used in this state.
 	 */
-	private List<GUIItem> guis = new ArrayList<GUIItem>();
+	private GUI gui;
 	/**
 	 * A list of particles to display.
 	 */
@@ -209,21 +210,9 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 
 		Debugger.start("gui");
 		
-		Rectangle world_clip = g.getWorldClip();
-		Rectangle clip = g.getClip();
-		for (GUIItem gui : guis) {
-			if (gui.isCentered()) {
-				g.translate(container.getWidth() / 2, container.getHeight() / 2);
-				g.scale(base_scale, base_scale);
-			} else {
-				g.scale(base_scale, base_scale);
-			}
-			gui.render(g, container, game, container.getWidth() / base_scale, container.getHeight() / base_scale);
-
-			g.resetTransform();
-			g.setWorldClip(world_clip);
-			g.setClip(clip);
-		}
+		g.resetTransform();
+		gui.paint(g, base_scale);
+		g.resetTransform();
 		
 		Debugger.stop("gui");
 		
@@ -344,6 +333,11 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	public abstract void renderPlayer(GameContainer container, StateBasedGame game, Graphics g, float sx, float sy);
 
 	/**
+	 * The mouse data.
+	 */
+	private float mx, my = 0;
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -373,9 +367,39 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		x += walk_x * speed * delf;
 		y += walk_y * speed * delf;
 		
-		for (GUIItem gui : guis) {
-			gui.update(container, game, delta);
+		Debugger.start("gui");
+		
+		Debugger.start("gui-container");
+		gui.containerUpdate(container);
+		Debugger.stop("gui-container");
+		
+		Debugger.start("gui-mouse");
+		float ox = mx;
+		float oy = my;
+		
+		mx = Mouse.getX();
+		my = container.getHeight() - Mouse.getY();
+		
+		if (mx != ox || my != oy) {
+			gui.mouseMoved(mx / base_scale, my / base_scale);
 		}
+		
+		boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
+		for (int i = 0; i < Mouse.getButtonCount(); i++) {
+			data[i] = Mouse.isButtonDown(i);
+		}
+		gui.mouseState(mx / base_scale, my / base_scale, data);
+		
+		if (Mouse.hasWheel()) {
+			gui.mouseWheel(Mouse.getDWheel());
+		}
+		Debugger.stop("gui-mouse");
+		
+		Debugger.start("gui-update");
+		gui.update(delta / 1000f);
+		Debugger.stop("gui-update");
+		
+		Debugger.stop("gui");
 		
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).doBehaviour(null, wind, particles, delta / 1000f);
@@ -543,28 +567,19 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	}
 	
 	/**
-	 * Adds a GUI to the state.
-	 * @param e A {@code GUIItem} object.
+	 * Gets the current GUI.
+	 * @return A GUI object.
 	 */
-	public void addGUI(GUIItem e) {
-		guis.add(e);
+	public GUI getGUI() {
+		return gui;
 	}
-
+	
 	/**
-	 * Removes a GUI.
-	 * @param o The GUI to remove.
+	 * Sets the current GUI.
+	 * @param gui a GUI object.
 	 */
-	public void removeGUI(GUIItem o) {
-		guis.remove(o);
-	}
-
-	/**
-	 * Adds a GUI to the state at a specified index.
-	 * @param index The index to add the GUI at.
-	 * @param element The GUI to add.
-	 */
-	public void addGUI(int index, GUIItem element) {
-		guis.add(index, element);
+	public void setGUI(GUI gui) {
+		this.gui = gui;
 	}
 	
 	/**

@@ -818,8 +818,18 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 		}
 	}
 	
+	/**
+	 * Mouse positions.
+	 */
 	private float mx, my = 0;
 
+	/**
+	 * Updates the GUI.
+	 * @param in The current input.
+	 * @param container The current game container.
+	 * @param game The game.
+	 * @param delta The delta value.
+	 */
 	public void updateGUI(Input in, GameContainer container, StateBasedGame game, int delta) {
 		if (guis != null) {
 			Debugger.start("gui");
@@ -1075,8 +1085,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * Sets the current GUI.
 	 * @param gui a GUI object.
 	 */
-	public void setGUI(GUI guis) {
-		this.guis = guis;
+	public void setGUI(GUI gui) {
+		this.guis = gui;
 	}
 
 	/**
