@@ -44,10 +44,19 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class StopAmbientPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 10;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 3184792895522235066L;
 	
+	/**
+	 * Apply the packet.
+	 */
 	public void apply() {
 		AudioManager.stopAmbient();
 	}

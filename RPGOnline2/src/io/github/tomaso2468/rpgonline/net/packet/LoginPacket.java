@@ -44,8 +44,14 @@ import io.github.tomaso2468.rpgonline.net.ServerManager;
  *
  */
 public class LoginPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 5;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 246722656302089465L;
 	private final String token;
 	private final long id;

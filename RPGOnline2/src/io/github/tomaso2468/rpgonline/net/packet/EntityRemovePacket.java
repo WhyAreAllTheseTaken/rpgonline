@@ -44,8 +44,14 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
  *
  */
 public class EntityRemovePacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 3;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = -5857037228284495985L;
 	private final String id;
 

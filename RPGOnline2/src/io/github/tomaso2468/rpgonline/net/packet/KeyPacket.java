@@ -44,8 +44,14 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class KeyPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 4;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = -3131656449111362838L;
 	public final byte[] key;
 

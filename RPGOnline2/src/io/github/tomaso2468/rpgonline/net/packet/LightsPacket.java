@@ -48,8 +48,14 @@ import io.github.tomaso2468.rpgonline.world2d.LightSource;
  *
  */
 public class LightsPacket implements NetPacket {
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = -3648467862338726913L;
 	
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 13;
 	
 	private final List<LightSource> lights;

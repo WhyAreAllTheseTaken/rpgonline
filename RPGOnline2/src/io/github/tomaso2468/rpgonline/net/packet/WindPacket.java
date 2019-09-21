@@ -43,8 +43,14 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class WindPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 11;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 6681502216787431450L;
 	private final float wind;
 

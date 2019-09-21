@@ -46,7 +46,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
  */
 public class UpdatePacket implements Serializable, NetPacket {
 	/**
-	 * 
+	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = -5002558159873982231L;
 	protected final String id;
@@ -65,6 +65,9 @@ public class UpdatePacket implements Serializable, NetPacket {
 		return key;
 	}
 
+	/**
+	 * Apply the packet.
+	 */
 	public void apply(List<Entity> entities) {
 
 	}

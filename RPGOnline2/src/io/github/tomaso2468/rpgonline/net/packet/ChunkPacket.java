@@ -40,6 +40,9 @@ import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
  *
  */
 public class ChunkPacket implements NetPacket {
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 968047869315854575L;
 	private final TagGroup tg;
 

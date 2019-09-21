@@ -43,8 +43,14 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class MovePacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 6;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 3538606078927907705L;
 	public final double x, y;
 	public final boolean sprint;

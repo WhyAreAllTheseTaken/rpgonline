@@ -43,8 +43,14 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class MusicPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 7;
 	
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 2441590535347918982L;
 	private final String music;
 

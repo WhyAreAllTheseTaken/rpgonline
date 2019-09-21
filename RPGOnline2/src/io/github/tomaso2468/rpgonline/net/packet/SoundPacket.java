@@ -44,8 +44,14 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class SoundPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 9;
 
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 1589226011832111169L;
 	private final String id;
 	private final float v;
@@ -70,6 +76,9 @@ public class SoundPacket implements NetPacket {
 		this.dz = dz;
 	}
 
+	/**
+	 * Apply the packet.
+	 */
 	public void apply() {
 		AudioManager.playSound(id, v, p, x, y, z, false, dx, dy, dz);
 	}

@@ -44,7 +44,13 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class AmbientPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_AMBIENT = (byte) 0xFF - 1;
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = -6976795378405555984L;
 	private final String id;
 	private final float v;
@@ -65,6 +71,9 @@ public class AmbientPacket implements NetPacket {
 		this.loop = loop;
 	}
 
+	/**
+	 * Apply the packet.
+	 */
 	public void apply() {
 		AudioManager.playAmbient(id, v, p, x, y, z, loop);
 	}

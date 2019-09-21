@@ -41,6 +41,9 @@ import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
  *
  */
 public class EntityAddPacket implements NetPacket {
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 1972178890606910609L;
 	private final TagGroup tg;
 

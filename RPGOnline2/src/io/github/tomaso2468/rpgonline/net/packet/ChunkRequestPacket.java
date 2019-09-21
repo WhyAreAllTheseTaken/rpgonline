@@ -43,7 +43,13 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  *
  */
 public class ChunkRequestPacket implements NetPacket {
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 2;
+	/**
+	 * The serialisation ID.
+	 */
 	private static final long serialVersionUID = 2088638661829275185L;
 	public final long x, y, z;
 	public ChunkRequestPacket(long x, long y, long z) {

@@ -44,10 +44,13 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
  */
 public class TextPacket implements NetPacket {
 	/**
-	 * 
+	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = -3045769783056355431L;
 
+	/**
+	 * The packet ID.
+	 */
 	public static final byte PACKET_ID = (byte) 0xFF - 12;
 	
 	private final String text;
