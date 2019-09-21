@@ -29,8 +29,9 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net;
+package io.github.tomaso2468.rpgonline.world2d.net;
 
+import io.github.tomaso2468.rpgonline.net.Server;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket;
 import io.github.tomaso2468.rpgonline.world2d.LightSource.LightUpdate;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;

@@ -49,7 +49,6 @@ import io.github.tomaso2468.rpgonline.abt.TagInt;
 import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
 import io.github.tomaso2468.rpgonline.abt.TagStringShort;
-import io.github.tomaso2468.rpgonline.net.Server2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UBoolean;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UDouble;
@@ -58,6 +57,7 @@ import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UInt;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.ULong;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UString;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UTag;
+import io.github.tomaso2468.rpgonline.world2d.net.Server2D;
 import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
 
 /**

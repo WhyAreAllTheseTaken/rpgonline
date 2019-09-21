@@ -29,11 +29,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net;
+package io.github.tomaso2468.rpgonline.world2d.net;
 
 import java.util.List;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.rpgonline.net.Client;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 public interface Client2D extends Client {

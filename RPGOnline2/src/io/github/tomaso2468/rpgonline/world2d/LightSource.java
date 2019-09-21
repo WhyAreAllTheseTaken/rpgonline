@@ -37,10 +37,10 @@ import java.io.IOException;
 
 import org.newdawn.slick.Color;
 
-import io.github.tomaso2468.rpgonline.net.Server2D;
 import io.github.tomaso2468.rpgonline.net.PacketType;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
+import io.github.tomaso2468.rpgonline.world2d.net.Server2D;
 
 /**
  * A class for storing point light data.

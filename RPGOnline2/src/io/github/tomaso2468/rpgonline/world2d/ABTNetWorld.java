@@ -46,11 +46,11 @@ import io.github.tomaso2468.rpgonline.abt.TagGroup;
 import io.github.tomaso2468.rpgonline.abt.TagInt;
 import io.github.tomaso2468.rpgonline.abt.TagLong;
 import io.github.tomaso2468.rpgonline.abt.TagString;
-import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.world2d.chunk.CacheEntry;
 import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
 import io.github.tomaso2468.rpgonline.world2d.chunk.ChunkWorld;
+import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 
 /**
  * A world that stores ABT data received from the server on the client side.

@@ -59,7 +59,6 @@ import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
-import io.github.tomaso2468.rpgonline.net.Client2D;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MDRMap;
@@ -70,6 +69,7 @@ import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.state.BaseScaleState;
 import io.github.tomaso2468.rpgonline.state.UpdateHook;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
+import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
 
