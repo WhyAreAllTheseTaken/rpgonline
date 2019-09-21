@@ -821,7 +821,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	
 	private float mx, my = 0;
 
-	public void updateGUI(GameContainer container, StateBasedGame game, int delta) {
+	public void updateGUI(Input in, GameContainer container, StateBasedGame game, int delta) {
 		if (guis != null) {
 			Debugger.start("gui");
 			
@@ -855,23 +855,25 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			guis.update(delta / 1000f);
 			Debugger.stop("gui-update");
 			
+			gui_cooldown -= delta / 1000f;
+			if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
+				gui = !gui;
+				gui_cooldown = 0.25f;
+			}
+			
 			Debugger.stop("gui");
 		}
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Updates the GUI controls.
+	 * @param in 
+	 * @param container The game container.
+	 * @param game The game.
+	 * @param delf The delta value in seconds.
+	 * @throws SlickException If an error occurs.
 	 */
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		Debugger.initRender();
-
-		this.last_delta = delta;
-
-		float delf = delta / 1000f;
-
-		Input in = container.getInput();
-
+	public void updateControls(Input in, GameContainer container, StateBasedGame game, float delf) throws SlickException {
 		Debugger.start("input");
 		
 		double walk_x = 0;
@@ -892,22 +894,38 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			walk_x -= 1;
 		}
 		Debugger.stop("keyboard");
-
+		
+		Debugger.start("controller");
+		if (in.getControllerCount() > 0) {
+			if(in.getAxisCount(0) >= 2) {
+				if(RPGConfig.getControllerInput().isLeftHanded()) {
+					walk_y += in.getAxisValue(0, 2);
+					walk_x += in.getAxisValue(0, 3);
+				} else {
+					walk_y += in.getAxisValue(0, 0);
+					walk_x += in.getAxisValue(0, 1);
+				}
+			}
+		}
+		Debugger.stop("controller");
+		
+		if (walk_x > 1) {
+			walk_x = 1;
+		}
+		if (walk_x < -1) {
+			walk_x = -1;
+		}
+		if (walk_y > 1) {
+			walk_y = 1;
+		}
+		if (walk_y < -1) {
+			walk_y = -1;
+		}
+		
 		((Client2D) ServerManager.getClient()).walkX(walk_x, delf);
 		((Client2D) ServerManager.getClient()).walkY(walk_y, delf);
-
-		Debugger.start("controller");
-//		if (in.getControllerCount() > 0) {
-//			if(RPGConfig.getControllerInput().isLeftHanded()) {
-//				ServerManager.getClient().walkY(in.getAxisValue(0, 2));
-//				ServerManager.getClient().walkX(in.getAxisValue(0, 3));
-//			} else {
-//				ServerManager.getClient().walkY(in.getAxisValue(0, 0));
-//				ServerManager.getClient().walkX(in.getAxisValue(0, 1));
-//			}
-//		}
+		
 		((Client2D) ServerManager.getClient()).setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
-		Debugger.stop("controller");
 
 		x = ((Client2D) ServerManager.getClient()).getPlayerX();
 		y = ((Client2D) ServerManager.getClient()).getPlayerY();
@@ -916,46 +934,35 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			exit();
 		}
 		
-		Debugger.stop("input");
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			post_enable = false;
+		} else {
+			post_enable = true;
+		}
 		
-		Debugger.start("world");
-		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
-		Debugger.stop("world");
-
+		Debugger.stop("input");
+	}
+	
+	/**
+	 * Updates the graphical effects.
+	 * @param delf The delta value in seconds.
+	 * @throws SlickException If an error occurs.
+	 */
+	public void updateEffects(float delf) throws SlickException {
+		Debugger.start("effects");
+		
+		Debugger.start("effects-shake");
 		if (shake > 0) {
 			shake -= delf;
 		}
-
-		updateGUI(container, game, delta);
+		Debugger.stop("effects-shake");
 		
-		Debugger.start("hooks");
-		for (UpdateHook hook : hooks) {
-			hook.update(container, game, delta);
-		}
-		Debugger.stop("hooks");
-
-		Debugger.start("audio");
-		AmbientMusic music = ServerManager.getClient().getMusic();
-		AudioManager.setMusic(music);
-
-		gui_cooldown -= delf;
-		if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
-			gui = !gui;
-			gui_cooldown = 0.25f;
-		}
-
-		AudioManager.setPlayerPos((float) x, 0, (float) y);
-		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
-		Debugger.stop("audio");
-
+		
 		Debugger.start("particles");
-		px = x;
-		py = y;
-
 		float wind = ((Client2D) ServerManager.getClient()).getWind();
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
 		for (int i = 0; i < particles.size(); i++) {
-			particles.get(i).doBehaviour(world, wind, particles, delta / 1000f);
+			particles.get(i).doBehaviour(world, wind, particles, delf);
 		}
 
 		particles.sort(new Comparator<Particle>() {
@@ -971,12 +978,74 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			}
 		});
 		Debugger.stop("particles");
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			post_enable = false;
-		} else {
-			post_enable = true;
+		
+		Debugger.stop("effects");
+	}
+	
+	/**
+	 * Updates the world.
+	 * @param delf The delta value in seconds.
+	 */
+	public void updateWorld(float delf) {
+		Debugger.start("world");
+		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
+		Debugger.stop("world");
+	}
+	
+	/**
+	 * Updates the state hooks.
+	 * @param container The game container.
+	 * @param game The game.
+	 * @param delta The delta value.
+	 * @throws SlickException If an error occurs.
+	 */
+	public void updateHooks(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		Debugger.start("hooks");
+		for (UpdateHook hook : hooks) {
+			hook.update(container, game, delta);
 		}
+		Debugger.stop("hooks");
+	}
+	
+	/**
+	 * Updates the audio engine.
+	 * @param container The game container.
+	 * @param game The game.
+	 * @param delta The delta value.
+	 * @throws SlickException If an error occurs.
+	 */
+	public void updateAudio(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		float delf = delta / 1000f;
+		Debugger.start("audio");
+		AmbientMusic music = ServerManager.getClient().getMusic();
+		AudioManager.setMusic(music);
+
+		AudioManager.setPlayerPos((float) x, 0, (float) y);
+		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
+		Debugger.stop("audio");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		Debugger.initRender();
+
+		this.last_delta = delta;
+		float delf = delta / 1000f;
+		
+		Input in = container.getInput();
+
+		updateControls(in, container, game, delf);
+		updateWorld(delf);
+		updateGUI(in, container, game, delta);
+		updateHooks(container, game, delta);
+		updateAudio(container, game, delta);
+		updateEffects(delf);
+		
+		px = x;
+		py = y;
 	}
 
 	/**
