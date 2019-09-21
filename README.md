@@ -39,7 +39,7 @@ This library was created to help with the development of certain games and to av
 
 ## Slick2D Replacement Progress
 - Audio Engine - LWJGL &#x2611;
-- World Engine - Slick2D &#x2612;
+- World Engine - Renderer &#x2612;
 - Collision - Slick2D &#x2612;
 - Net Engine - Java &#x2611;
 - ABT - Java &#x2611;
@@ -51,9 +51,9 @@ This library was created to help with the development of certain games and to av
 - Lang - Java &#x2611;
 - Low Level - JNA &#x2611;
 - Noise - Simplex Noise by Stefan Gustavson &#x2611;
-- Particles - Slick2D &#x2612;
+- Particles - Renderer &#x2612;
 - Shaders - SlickShader &#x2612;
 - Sky - Slick2D &#x2612;
 - Version - Java &#x2611;
-- Rendering - Slick2D &#x2612;
-- GUI - Slick2D &#x2612;
+- Rendering - Interface-Based (Slick2D) &#x2612;
+- GUI - Interface-Based &#x2612;
