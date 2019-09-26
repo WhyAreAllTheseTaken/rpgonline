@@ -838,52 +838,52 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	public void updateGUI(Input in, GameContainer container, StateBasedGame game, int delta) {
 		if (guis != null) {
 			Debugger.start("gui");
-			
-			Debugger.start("gui-container");
-			guis.containerUpdate(container);
-			Debugger.stop("gui-container");
-			
-			Debugger.start("gui-mouse");
-			float ox = mx;
-			float oy = my;
-			
-			mx = Mouse.getX();
-			my = container.getHeight() - Mouse.getY();
-			
-			if (mx != ox || my != oy) {
-				guis.mouseMoved(mx / base_scale, my / base_scale);
+			if (gui) {
+				Debugger.start("gui-container");
+				guis.containerUpdate(container);
+				Debugger.stop("gui-container");
+				
+				Debugger.start("gui-mouse");
+				float ox = mx;
+				float oy = my;
+				
+				mx = Mouse.getX();
+				my = container.getHeight() - Mouse.getY();
+				
+				if (mx != ox || my != oy) {
+					guis.mouseMoved(mx / base_scale, my / base_scale);
+				}
+				
+				boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
+				for (int i = 0; i < Mouse.getButtonCount(); i++) {
+					data[i] = Mouse.isButtonDown(i);
+				}
+				guis.mouseState(mx / base_scale, my / base_scale, data);
+				
+				if (Mouse.hasWheel()) {
+					guis.mouseWheel(Mouse.getDWheel());
+				}
+				Debugger.stop("gui-mouse");
+				
+				Debugger.start("gui-update");
+				guis.update(delta / 1000f);
+				Debugger.stop("gui-update");
 			}
-			
-			boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
-			for (int i = 0; i < Mouse.getButtonCount(); i++) {
-				data[i] = Mouse.isButtonDown(i);
-			}
-			guis.mouseState(mx / base_scale, my / base_scale, data);
-			
-			if (Mouse.hasWheel()) {
-				guis.mouseWheel(Mouse.getDWheel());
-			}
-			Debugger.stop("gui-mouse");
-			
-			Debugger.start("gui-update");
-			guis.update(delta / 1000f);
-			Debugger.stop("gui-update");
-			
-			gui_cooldown -= delta / 1000f;
-			if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
-				gui = !gui;
-				gui_cooldown = 0.25f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_F3) && gui_cooldown <= 0) {
-				RPGConfig.setDebug(!RPGConfig.isDebug());
-				gui_cooldown = 0.25f;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_F4) && gui_cooldown <= 0) {
-				RPGConfig.setHitbox(!RPGConfig.isHitbox());
-				gui_cooldown = 0.25f;
-			}
-			
 			Debugger.stop("gui");
+		}
+		
+		gui_cooldown -= delta / 1000f;
+		if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
+			gui = !gui;
+			gui_cooldown = 0.25f;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_F3) && gui_cooldown <= 0) {
+			RPGConfig.setDebug(!RPGConfig.isDebug());
+			gui_cooldown = 0.25f;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_F4) && gui_cooldown <= 0) {
+			RPGConfig.setHitbox(!RPGConfig.isHitbox());
+			gui_cooldown = 0.25f;
 		}
 	}
 	
