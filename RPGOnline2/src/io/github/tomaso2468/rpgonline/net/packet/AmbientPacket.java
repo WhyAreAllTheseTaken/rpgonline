@@ -52,10 +52,25 @@ public class AmbientPacket implements NetPacket {
 	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = -6976795378405555984L;
+	/**
+	 * The ID of the sound.
+	 */
 	private final String id;
+	/**
+	 * The volume of the sound.
+	 */
 	private final float v;
+	/**
+	 * The pitch of the sound.
+	 */
 	private final float p;
+	/**
+	 * The X position of the sound.
+	 */
 	private final float x;
+	/**
+	 * The Y position of the sound.
+	 */
 	private final float y;
 	private final float z;
 	private final boolean loop;
