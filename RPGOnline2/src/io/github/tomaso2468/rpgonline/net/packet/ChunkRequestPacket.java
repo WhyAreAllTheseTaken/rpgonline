@@ -51,13 +51,25 @@ public class ChunkRequestPacket implements NetPacket {
 	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = 2088638661829275185L;
+	/**
+	 * The position of the chunk.
+	 */
 	public final long x, y, z;
+	/**
+	 * Constructs a new chunk request packet.
+	 * @param x The X position of the chunk.
+	 * @param y The Y position of the chunk.
+	 * @param z The Z position of the chunk.
+	 */
 	public ChunkRequestPacket(long x, long y, long z) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
@@ -66,7 +78,14 @@ public class ChunkRequestPacket implements NetPacket {
 		out.writeLong(z);
 	}
 	
+	/**
+	 * The type data for this packet.
+	 * @author Tomas
+	 */
 	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
 			return new ChunkRequestPacket(in.readLong(), in.readLong(), in.readLong());

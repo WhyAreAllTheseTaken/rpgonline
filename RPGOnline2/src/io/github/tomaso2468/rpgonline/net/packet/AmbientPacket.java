@@ -72,9 +72,25 @@ public class AmbientPacket implements NetPacket {
 	 * The Y position of the sound.
 	 */
 	private final float y;
+	/**
+	 * The Z position of the sound.
+	 */
 	private final float z;
+	/**
+	 * Determines if the sound should loop.
+	 */
 	private final boolean loop;
 
+	/**
+	 * Constructs a new Ambient Packet.
+	 * @param id The ID of the sound.
+	 * @param v The volume of the sound.
+	 * @param p The pitch of the sound.
+	 * @param x The X position of the sound.
+	 * @param y The Y position of the sound.
+	 * @param z The Z position of the sound.
+	 * @param loop Determines if the sound should loop.
+	 */
 	public AmbientPacket(String id, float v, float p, float x, float y, float z, boolean loop) {
 		super();
 		this.id = id;
@@ -93,6 +109,9 @@ public class AmbientPacket implements NetPacket {
 		AudioManager.playAmbient(id, v, p, x, y, z, loop);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_AMBIENT);
@@ -105,7 +124,14 @@ public class AmbientPacket implements NetPacket {
 		out.writeBoolean(loop);
 	}
 	
+	/**
+	 * A class that is used to load the packet of this type.
+	 * @author Tomas
+	 */
 	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
 			return new AmbientPacket(in.readUTF(), in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat(), in.readFloat(), in.readBoolean());

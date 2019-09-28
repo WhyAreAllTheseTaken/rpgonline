@@ -44,12 +44,23 @@ public class ChunkPacket implements NetPacket {
 	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = 968047869315854575L;
+	/**
+	 * The chunk data.
+	 */
 	private final TagGroup tg;
 
+	/**
+	 * Constructs a new chunk packet.
+	 * @param c The chunk.
+	 */
 	public ChunkPacket(Chunk c) {
 		tg = c.save();
 	}
 
+	/**
+	 * Gets the chunk data.
+	 * @return An ABT tag group.
+	 */
 	public TagGroup getTg() {
 		return tg;
 	}
