@@ -29,66 +29,40 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net.packet;
+package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import io.github.tomaso2468.rpgonline.net.PacketType;
+import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
+import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
 
 /**
- * Packet used for requests for chunk data.
+ * Packet used for chunk data.
  * @author Tomas
  *
  */
-public class ChunkRequestPacket implements NetPacket {
-	/**
-	 * The packet ID.
-	 */
-	public static final byte PACKET_ID = (byte) 0xFF - 2;
+public class ChunkPacket implements NetPacket {
 	/**
 	 * The serialisation ID.
 	 */
-	private static final long serialVersionUID = 2088638661829275185L;
+	private static final long serialVersionUID = 968047869315854575L;
 	/**
-	 * The position of the chunk.
+	 * The chunk data.
 	 */
-	public final long x, y, z;
+	private final TagGroup tg;
+
 	/**
-	 * Constructs a new chunk request packet.
-	 * @param x The X position of the chunk.
-	 * @param y The Y position of the chunk.
-	 * @param z The Z position of the chunk.
+	 * Constructs a new chunk packet.
+	 * @param c The chunk.
 	 */
-	public ChunkRequestPacket(long x, long y, long z) {
-		super();
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public ChunkPacket(Chunk c) {
+		tg = c.save();
 	}
+
 	/**
-	 * {@inheritDoc}
+	 * Gets the chunk data.
+	 * @return An ABT tag group.
 	 */
-	@Override
-	public void write(DataOutputStream out) throws IOException {
-		out.write(PACKET_ID);
-		out.writeLong(x);
-		out.writeLong(y);
-		out.writeLong(z);
-	}
-	
-	/**
-	 * The type data for this packet.
-	 * @author Tomas
-	 */
-	public static class Type implements PacketType {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			return new ChunkRequestPacket(in.readLong(), in.readLong(), in.readLong());
-		}
+	public TagGroup getTg() {
+		return tg;
 	}
 }

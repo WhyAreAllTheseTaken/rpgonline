@@ -29,50 +29,67 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net.packet;
+package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.github.tomaso2468.rpgonline.net.PacketType;
+import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
- * Packet used for sending wind data.
+ * Packet used for requests for chunk data.
  * @author Tomas
  *
  */
-public class WindPacket implements NetPacket {
+public class ChunkRequestPacket implements NetPacket {
 	/**
 	 * The packet ID.
 	 */
-	public static final byte PACKET_ID = (byte) 0xFF - 11;
-	
+	public static final byte PACKET_ID = (byte) 0xFF - 2;
 	/**
 	 * The serialisation ID.
 	 */
-	private static final long serialVersionUID = 6681502216787431450L;
-	private final float wind;
-
-	public WindPacket(float wind) {
+	private static final long serialVersionUID = 2088638661829275185L;
+	/**
+	 * The position of the chunk.
+	 */
+	public final long x, y, z;
+	/**
+	 * Constructs a new chunk request packet.
+	 * @param x The X position of the chunk.
+	 * @param y The Y position of the chunk.
+	 * @param z The Z position of the chunk.
+	 */
+	public ChunkRequestPacket(long x, long y, long z) {
 		super();
-		this.wind = wind;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
-
-	public float getWind() {
-		return wind;
-	}
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
-		out.writeFloat(wind);
+		out.writeLong(x);
+		out.writeLong(y);
+		out.writeLong(z);
 	}
 	
+	/**
+	 * The type data for this packet.
+	 * @author Tomas
+	 */
 	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			return new WindPacket(in.readFloat());
+			return new ChunkRequestPacket(in.readLong(), in.readLong(), in.readLong());
 		}
 	}
 }

@@ -29,80 +29,55 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net.packet;
+package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.net.PacketType;
-import io.github.tomaso2468.rpgonline.world2d.LightSource;
+import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
- * Packet used for sending light data.
+ * Packet used to remove entities.
  * @author Tomas
  *
  */
-public class LightsPacket implements NetPacket {
-	/**
-	 * The serialisation ID.
-	 */
-	private static final long serialVersionUID = -3648467862338726913L;
-	
+public class EntityRemovePacket implements NetPacket {
 	/**
 	 * The packet ID.
 	 */
-	public static final byte PACKET_ID = (byte) 0xFF - 13;
+	public static final byte PACKET_ID = (byte) 0xFF - 3;
 	
-	private final List<LightSource> lights;
+	/**
+	 * The serialisation ID.
+	 */
+	private static final long serialVersionUID = -5857037228284495985L;
+	private final String id;
 
-	public LightsPacket(List<LightSource> lights) {
-		super();
-		this.lights = lights;
+	public EntityRemovePacket(Entity e) {
+		this.id = e.getID();
+	}
+	
+	public EntityRemovePacket(String id) {
+		this.id = id;
 	}
 
-	public List<LightSource> getLights() {
-		return lights;
+	public String getID() {
+		return id;
 	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
-		out.writeInt(lights.size());
-		for (LightSource l : lights) {
-			out.writeDouble(l.getLX());
-			out.writeDouble(l.getLY());
-			out.writeFloat(l.getR());
-			out.writeFloat(l.getG());
-			out.writeFloat(l.getB());
-			out.writeFloat(l.getColor().a);
-			out.writeFloat(l.getBrightness());
-		}
+		out.writeUTF(id);
 	}
 	
 	public static class Type implements PacketType {
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			int len = in.readInt();
-			
-			List<LightSource> lights = new ArrayList<>(len);
-			
-			for (int i = 0; i < len; i++) {
-				double x = in.readDouble();
-				double y = in.readDouble();
-				float r = in.readFloat();
-				float g = in.readFloat();
-				float b = in.readFloat();
-				float a = in.readFloat();
-				float brightness = in.readFloat();
-				lights.add(new LightSource(x, y, new Color(r, g, b, a), brightness, false));
-			}
-			
-			return new LightsPacket(lights);
+			return new EntityRemovePacket(in.readUTF());
 		}
 	}
 }

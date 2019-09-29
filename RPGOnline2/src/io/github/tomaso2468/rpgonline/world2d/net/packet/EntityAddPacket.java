@@ -29,39 +29,30 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net.packet;
+package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
+import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
+import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
 
 /**
- * Packet used for chunk data.
+ * Packet used to add entities.
  * @author Tomas
  *
  */
-public class ChunkPacket implements NetPacket {
+public class EntityAddPacket implements NetPacket {
 	/**
 	 * The serialisation ID.
 	 */
-	private static final long serialVersionUID = 968047869315854575L;
-	/**
-	 * The chunk data.
-	 */
+	private static final long serialVersionUID = 1972178890606910609L;
 	private final TagGroup tg;
 
-	/**
-	 * Constructs a new chunk packet.
-	 * @param c The chunk.
-	 */
-	public ChunkPacket(Chunk c) {
-		tg = c.save();
+	public EntityAddPacket(Entity e) {
+		tg = e.toABT("entity");
 	}
 
-	/**
-	 * Gets the chunk data.
-	 * @return An ABT tag group.
-	 */
-	public TagGroup getTg() {
-		return tg;
+	public Entity resolve(EntityManager m) {
+		return new Entity(m, tg, false);
 	}
 }

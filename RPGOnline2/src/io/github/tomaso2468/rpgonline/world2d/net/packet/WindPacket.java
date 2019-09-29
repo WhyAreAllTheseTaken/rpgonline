@@ -29,54 +29,51 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.net.packet;
+package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.github.tomaso2468.rpgonline.net.PacketType;
-import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
+import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
- * Packet used to remove entities.
+ * Packet used for sending wind data.
  * @author Tomas
  *
  */
-public class EntityRemovePacket implements NetPacket {
+public class WindPacket implements NetPacket {
 	/**
 	 * The packet ID.
 	 */
-	public static final byte PACKET_ID = (byte) 0xFF - 3;
+	public static final byte PACKET_ID = (byte) 0xFF - 11;
 	
 	/**
 	 * The serialisation ID.
 	 */
-	private static final long serialVersionUID = -5857037228284495985L;
-	private final String id;
+	private static final long serialVersionUID = 6681502216787431450L;
+	private final float wind;
 
-	public EntityRemovePacket(Entity e) {
-		this.id = e.getID();
-	}
-	
-	public EntityRemovePacket(String id) {
-		this.id = id;
+	public WindPacket(float wind) {
+		super();
+		this.wind = wind;
 	}
 
-	public String getID() {
-		return id;
+	public float getWind() {
+		return wind;
 	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
-		out.writeUTF(id);
+		out.writeFloat(wind);
 	}
 	
 	public static class Type implements PacketType {
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
-			return new EntityRemovePacket(in.readUTF());
+			return new WindPacket(in.readFloat());
 		}
 	}
 }

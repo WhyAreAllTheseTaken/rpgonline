@@ -54,21 +54,21 @@ import javax.crypto.NoSuchPaddingException;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.net.packet.AmbientPacket;
-import io.github.tomaso2468.rpgonline.net.packet.ChunkRequestPacket;
-import io.github.tomaso2468.rpgonline.net.packet.EntityRemovePacket;
 import io.github.tomaso2468.rpgonline.net.packet.KeyPacket;
-import io.github.tomaso2468.rpgonline.net.packet.LightsPacket;
 import io.github.tomaso2468.rpgonline.net.packet.LoginPacket;
 import io.github.tomaso2468.rpgonline.net.packet.ModePacket;
-import io.github.tomaso2468.rpgonline.net.packet.MovePacket;
 import io.github.tomaso2468.rpgonline.net.packet.MusicPacket;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 import io.github.tomaso2468.rpgonline.net.packet.ServerInfoPacket;
 import io.github.tomaso2468.rpgonline.net.packet.SoundPacket;
 import io.github.tomaso2468.rpgonline.net.packet.StopAmbientPacket;
 import io.github.tomaso2468.rpgonline.net.packet.TextPacket;
-import io.github.tomaso2468.rpgonline.net.packet.WindPacket;
 import io.github.tomaso2468.rpgonline.world2d.LightSource;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.ChunkRequestPacket;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.EntityRemovePacket;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.LightsPacket;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.MovePacket;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.WindPacket;
 
 /**
  * A connection that uses TCP over IP to send data. The data is sent as one or
