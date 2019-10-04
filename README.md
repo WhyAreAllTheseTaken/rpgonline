@@ -59,3 +59,6 @@ This library was created to help with the development of certain games and to av
 - Version - Java &#x2611;
 - Rendering - Interface-Based (Slick2D) &#x2612;
 - GUI - Interface-Based &#x2612;
+
+## Older Versions
+The intial versions of this engine can be found in an archived repository: https://github.com/Tomaso2468/rpgonline-old
