@@ -5,7 +5,7 @@ RPGOnline is licensed under the 3-Clause BSD Licence.
 
 This library is written on top of slick2d to provide more specific features. Eventually, the project is planned to move to LWJGL2 and later LWJGL3. Currently using Slick2d are: the rendering engine, collision system, some of the input system, atmosphere system, cutscene system, some of the entity system and some of the world system. In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
 
-(Contributing to RPGOnline)[/CONTRIBUTING.MD]
+(Contributing to RPGOnline)[/CONTRIBUTING.md]
 
 ## Documentation
 Docs: https://tomaso2468.github.io/rpgonline  
