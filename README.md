@@ -10,6 +10,7 @@ This library is written on top of slick2d to provide more specific features. Eve
 ## Documentation
 Docs: https://tomaso2468.github.io/rpgonline  
 Wiki: https://github.com/Tomaso2468/rpgonline/wiki
+Reddit: https://www.reddit.com/r/rpgonline/
 
 ## Dependencies
 All dependencies are included in the release.zip file.
