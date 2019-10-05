@@ -30,6 +30,7 @@ All dependencies are included in the release.zip file.
   - CodecJOrbis http://www.paulscode.com/forum/index.php?topic=4.0
     - JOrbis http://www.jcraft.com/jorbis [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 - Simplex Noise https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java Public Domain
+- ABT https://github.com/Tomaso2468/abt [BSD 3-Clause](https://github.com/Tomaso2468/abt/blob/master/LICENSE)
     
 ## Installation
 1. Download the rpgonline.zip folder of the latest stable release.
