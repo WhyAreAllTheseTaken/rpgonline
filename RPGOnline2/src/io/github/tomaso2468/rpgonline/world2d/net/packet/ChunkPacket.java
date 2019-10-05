@@ -31,7 +31,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import io.github.tomaso2468.rpgonline.abt.TagDoc;
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.rpgonline.net.PacketType;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
 
@@ -41,6 +47,10 @@ import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
  *
  */
 public class ChunkPacket implements NetPacket {
+	/**
+	 * The ID of this packet.
+	 */
+	public static final byte PACKET_ID = (byte) 0xFF - 16;
 	/**
 	 * The serialisation ID.
 	 */
@@ -57,6 +67,14 @@ public class ChunkPacket implements NetPacket {
 	public ChunkPacket(Chunk c) {
 		tg = c.save();
 	}
+	
+	/**
+	 * Constructs a new chunk packet.
+	 * @param tf The chunk data.
+	 */
+	public ChunkPacket(TagGroup c) {
+		tg = c;
+	}
 
 	/**
 	 * Gets the chunk data.
@@ -64,5 +82,32 @@ public class ChunkPacket implements NetPacket {
 	 */
 	public TagGroup getTg() {
 		return tg;
+	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void write(DataOutputStream out) throws IOException {
+		out.write(PACKET_ID);
+		TagDoc doc = new TagDoc("chunk", tg);
+		doc.write(out);
+	}
+	
+	/**
+	 * Packet type declaration.
+	 * @author Tomas
+	 *
+	 */
+	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
+			TagDoc doc = TagDoc.read(in, "chunk");
+			return new ChunkPacket(doc.getTags());
+		}
 	}
 }

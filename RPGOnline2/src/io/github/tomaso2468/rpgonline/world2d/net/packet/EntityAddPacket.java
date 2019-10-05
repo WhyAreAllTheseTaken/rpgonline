@@ -31,7 +31,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.net.packet;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import io.github.tomaso2468.rpgonline.abt.TagDoc;
 import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.rpgonline.net.PacketType;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
@@ -43,6 +49,10 @@ import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
  */
 public class EntityAddPacket implements NetPacket {
 	/**
+	 * The ID of this packet.
+	 */
+	public static final byte PACKET_ID = (byte) 0xFF - 17;
+	/**
 	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = 1972178890606910609L;
@@ -51,8 +61,37 @@ public class EntityAddPacket implements NetPacket {
 	public EntityAddPacket(Entity e) {
 		tg = e.toABT("entity");
 	}
+	public EntityAddPacket(TagGroup e) {
+		tg = e;
+	}
 
 	public Entity resolve(EntityManager m) {
 		return new Entity(m, tg, false);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void write(DataOutputStream out) throws IOException {
+		out.write(PACKET_ID);
+		TagDoc doc = new TagDoc("entity", tg);
+		doc.write(out);
+	}
+	
+	/**
+	 * Packet type declaration.
+	 * @author Tomas
+	 *
+	 */
+	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
+			TagDoc doc = TagDoc.read(in, "entity");
+			return new EntityAddPacket(doc.getTags());
+		}
 	}
 }

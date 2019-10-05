@@ -176,8 +176,6 @@ public class TagDoc {
 					
 					TagGroup g = readTagGroup(name, dis);
 					
-					dis.close();
-					
 					Debugger.stop("abt-decode");
 					return new TagDoc(version, app, g);
 				} else {
@@ -213,7 +211,6 @@ public class TagDoc {
 			writeTag(dos, tags);
 			
 			dos.flush();
-			dos.close();
 		} catch (IOException e) {
 			Debugger.stop("abt-encode");
 			throw e;

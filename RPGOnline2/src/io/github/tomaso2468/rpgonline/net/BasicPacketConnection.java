@@ -64,7 +64,9 @@ import io.github.tomaso2468.rpgonline.net.packet.SoundPacket;
 import io.github.tomaso2468.rpgonline.net.packet.StopAmbientPacket;
 import io.github.tomaso2468.rpgonline.net.packet.TextPacket;
 import io.github.tomaso2468.rpgonline.world2d.LightSource;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.ChunkPacket;
 import io.github.tomaso2468.rpgonline.world2d.net.packet.ChunkRequestPacket;
+import io.github.tomaso2468.rpgonline.world2d.net.packet.EntityAddPacket;
 import io.github.tomaso2468.rpgonline.world2d.net.packet.EntityRemovePacket;
 import io.github.tomaso2468.rpgonline.world2d.net.packet.LightsPacket;
 import io.github.tomaso2468.rpgonline.world2d.net.packet.MovePacket;
@@ -138,6 +140,8 @@ public class BasicPacketConnection extends AESSecurityCap implements Connection 
 		types[LightsPacket.PACKET_ID & 0xFF] = new LightsPacket.Type();
 		types[LightSource.LightUpdate.PACKET_ID & 0xFF] = new LightSource.LightUpdate.Type();
 		types[ModePacket.PACKET_ID & 0xFF] = new ModePacket.Type();
+		types[ChunkPacket.PACKET_ID & 0xFF] = new ChunkPacket.Type();
+		types[EntityAddPacket.PACKET_ID & 0xFF] = new EntityAddPacket.Type();
 
 		return types;
 	}
