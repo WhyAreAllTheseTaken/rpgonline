@@ -53,16 +53,30 @@ public class KeyPacket implements NetPacket {
 	 * The serialisation ID.
 	 */
 	private static final long serialVersionUID = -3131656449111362838L;
+	/**
+	 * The key data.
+	 */
 	public final byte[] key;
 
+	/**
+	 * Constructs a new key packet.
+	 * @param key The key data.
+	 */
 	public KeyPacket(byte[] key) {
 		this.key = key;
 	}
 
+	/**
+	 * Constructs a new key packet.
+	 * @param key The key.
+	 */
 	public KeyPacket(PublicKey key) {
 		this(key.getEncoded());
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void write(DataOutputStream out) throws IOException {
 		out.write(PACKET_ID);
@@ -70,7 +84,15 @@ public class KeyPacket implements NetPacket {
 		out.write(key);
 	}
 	
+	/**
+	 * Type declaration.
+	 * @author Tomas
+	 *
+	 */
 	public static class Type implements PacketType {
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public NetPacket readPacket(DataInputStream in) throws IOException, ClassNotFoundException {
 			byte[] data = new byte[in.readInt()];
