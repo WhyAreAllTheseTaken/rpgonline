@@ -22,13 +22,14 @@ All dependencies are included in the release.zip file.
   - tinylinepp
 - SlickShader https://github.com/Tomaso2468/slickshader [BSD 3-Clause](https://github.com/Tomaso2468/slickshader/blob/master/LICENSE)
 - JNA https://github.com/java-native-access/jna [Apache 2.0 or LGPL 2.1](https://github.com/java-native-access/jna/blob/master/LICENSE)
-- JSR-305 [BSD 2-Clause](https://github.com/findbugsproject/findbugs/blob/master/findbugs/licenses/LICENSE-jsr305.txt)
+- JSR-305 https://code.google.com/archive/p/jsr-305/ [BSD 2-Clause](https://opensource.org/licenses/BSD-3-Clause)
 - Sound System http://www.paulscode.com/forum/index.php?topic=4.0 [Sound System License](http://www.paulscode.com/forum/index.php?topic=4.0)
   - CodecWAV http://www.paulscode.com/forum/index.php?topic=4.0
   - CodecIBXM http://www.paulscode.com/forum/index.php?topic=4.0
     - IBXM [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
   - CodecJOrbis http://www.paulscode.com/forum/index.php?topic=4.0
     - JOrbis http://www.jcraft.com/jorbis [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html)
+- Simplex Noise https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java Public Domain
     
 ## Installation
 1. Download the rpgonline.zip folder of the latest stable release.
