@@ -35,7 +35,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * The root class for layers.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Layer extends Component {

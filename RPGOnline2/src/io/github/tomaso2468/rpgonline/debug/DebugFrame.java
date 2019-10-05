@@ -38,7 +38,7 @@ import java.util.Set;
 
 /**
  * A single frame of debug information.
- * @author Tomas
+ * @author Tomaso2468
  */
 public final class DebugFrame {
 	/**

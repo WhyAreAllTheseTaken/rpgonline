@@ -35,7 +35,7 @@ import org.apache.commons.math3.util.FastMath;
 
 /**
  * An implentation that creates noise wrapped around a sphere or circle (if in 1D).
- * @author Tomas
+ * @author Tomaso2468
  */
 public class SphereNoise extends SimplexNoise {
 	private final double radius;

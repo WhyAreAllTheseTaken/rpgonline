@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * An entity texture that changes depending on wind.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class WindEntityTexture implements EntityTexture {

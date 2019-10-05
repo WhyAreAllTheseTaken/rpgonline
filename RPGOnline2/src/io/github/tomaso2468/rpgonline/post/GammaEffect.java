@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect that modifies the gamma of the screen to convert from linear to SRGB values.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class GammaEffect extends ShaderEffect {
 	/**

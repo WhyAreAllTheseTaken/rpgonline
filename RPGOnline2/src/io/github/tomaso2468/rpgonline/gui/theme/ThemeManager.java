@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui.theme;
 
 /**
  * The manager for GUI themes.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ThemeManager {
 	/**

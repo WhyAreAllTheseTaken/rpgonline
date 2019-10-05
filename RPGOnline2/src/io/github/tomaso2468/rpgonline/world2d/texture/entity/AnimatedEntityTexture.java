@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * An animated entity texture.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class AnimatedEntityTexture implements EntityTexture {

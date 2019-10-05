@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A class representing a GUI component.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class Component {

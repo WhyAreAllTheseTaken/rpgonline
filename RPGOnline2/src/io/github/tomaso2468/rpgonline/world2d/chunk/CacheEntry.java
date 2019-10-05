@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.world2d.chunk;
 
 /**
  * A class storing a cache of a chunk.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class CacheEntry {
 	/**

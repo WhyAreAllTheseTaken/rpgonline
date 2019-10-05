@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.post;
 /**
  * A low quality but faster over exposure effect.
  * 
- * @author Tomas
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.post.FragmentExpose
  */
 public class LowExpose extends ShaderEffect {

@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.noise;
 
 /**
  * An API for 1D, 2D, 3D and 4D noise.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface Noise {

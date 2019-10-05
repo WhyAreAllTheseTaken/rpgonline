@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
  * Packet used for sending wind data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class WindPacket implements NetPacket {

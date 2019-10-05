@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 
 /**
  * A class for storing the properties of a single tile.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Tile {

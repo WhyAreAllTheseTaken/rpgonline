@@ -47,7 +47,7 @@ import org.newdawn.slick.util.Log;
 
 /**
  * A class that acts as a constantly running thread pool that tasks can be submitted to. This class will appear terminated until new tasks are submitted.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ContinuousPool implements ExecutorService {

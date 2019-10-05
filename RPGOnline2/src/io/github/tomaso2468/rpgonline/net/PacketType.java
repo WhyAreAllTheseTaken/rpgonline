@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
  * An interface defining a packet type for a packet.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface PacketType {

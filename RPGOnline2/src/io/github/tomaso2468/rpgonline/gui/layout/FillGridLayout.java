@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that splits a container into a grid. The components will be resized to fit each grid cell.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class FillGridLayout extends Layout {

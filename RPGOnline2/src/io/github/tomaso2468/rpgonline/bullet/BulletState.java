@@ -69,7 +69,7 @@ import io.github.tomaso2468.rpgonline.state.BaseScaleState;
 
 /**
  * A state for bullet based games.
- * @author Tomas
+ * @author Tomaso2468
  */
 public abstract class BulletState extends BasicGameState implements BaseScaleState {
 	/**

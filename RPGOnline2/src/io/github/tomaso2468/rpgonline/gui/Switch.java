@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A toggleable switch.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Switch extends ToggleButton {

@@ -53,7 +53,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
  * multiple packets.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface Connection extends Closeable {
 	/**

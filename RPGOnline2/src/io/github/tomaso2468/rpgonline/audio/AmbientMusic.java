@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
  * {@link io.github.tomaso2468.rpgonline.audio.AudioManager#setMusic(AmbientMusic)}
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class AmbientMusic {
 	/**

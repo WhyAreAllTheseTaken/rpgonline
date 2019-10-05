@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that places UI elements in the corner.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class CornerLayout extends Layout {

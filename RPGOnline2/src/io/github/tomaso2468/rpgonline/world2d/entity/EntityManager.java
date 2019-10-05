@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
 
 /**
  * A class used for managing entity IDs, types, textures and AIs.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class EntityManager {
 	/**

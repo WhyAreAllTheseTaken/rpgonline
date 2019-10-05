@@ -38,7 +38,7 @@ import slickshader.Shader;
 /**
  * A shader creating a heat effect.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class HeatShader extends ShaderEffect {
 	/**

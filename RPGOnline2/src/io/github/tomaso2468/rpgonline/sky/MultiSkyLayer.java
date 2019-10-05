@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * Multiple sky layers combined into one.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MultiSkyLayer implements SkyLayer {

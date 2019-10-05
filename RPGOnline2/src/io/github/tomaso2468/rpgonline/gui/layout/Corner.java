@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 
 /**
  * An enum for corners.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public enum Corner {

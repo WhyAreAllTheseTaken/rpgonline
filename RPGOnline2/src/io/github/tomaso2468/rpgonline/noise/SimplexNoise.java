@@ -35,7 +35,7 @@ import java.util.Random;
 
 /**
  * An implementation of simplex noise.
- * @author Tomas
+ * @author Tomaso2468
  * @see se.liu.itn.stegu.simplexnoise.SimplexNoise
  */
 public class SimplexNoise implements Noise {

@@ -37,7 +37,7 @@ import javax.annotation.Nonnull;
  * An enum used to represent NESW directions. This class also provides based
  * geometry control for directions.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public enum Direction {
 	SOUTH, NORTH, EAST, WEST,;

@@ -37,7 +37,7 @@ import org.newdawn.slick.Image;
 
 /**
  * Slick2D graphics.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 class SlickGraphics implements Graphics {

@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * A chat server implemented through the network API.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 package io.github.tomaso2468.rpgonline.example.chat;

@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;
 
 /**
  * Packet used for chunk data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ChunkPacket implements NetPacket {

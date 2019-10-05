@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect that changes the vibrance of the screen. This is different to saturation as it handles skin tones better than saturation.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class VibranceEffect extends ShaderEffect {
 	/**

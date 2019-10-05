@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * An editor for RPGOnline image worlds.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 package io.github.tomaso2468.rpgonline.world2d.editor;

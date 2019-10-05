@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A layer with a flat color.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class FlatColorLayer extends Layer {

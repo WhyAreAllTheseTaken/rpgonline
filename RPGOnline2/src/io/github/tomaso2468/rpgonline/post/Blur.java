@@ -42,7 +42,7 @@ import slickshader.Shader;
 /**
  * <p>A 2 pass gaussian blur effect.</p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class Blur implements PostEffect {
 	/**

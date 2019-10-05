@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that centres components with a border within another component.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Border extends Layout {

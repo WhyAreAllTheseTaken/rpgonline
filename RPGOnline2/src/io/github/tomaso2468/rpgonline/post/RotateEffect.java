@@ -36,7 +36,7 @@ import org.newdawn.slick.geom.Transform;
 
 /**
  * An effect that rotates the screen.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class RotateEffect extends TransformEffect {
 

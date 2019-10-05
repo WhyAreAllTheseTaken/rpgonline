@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 /**
  * <p>An interface for classes storing world data.</p>
  * <p>Layers are indexed by their z value with a lower z value being higher up</p>
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface World {
 	/**

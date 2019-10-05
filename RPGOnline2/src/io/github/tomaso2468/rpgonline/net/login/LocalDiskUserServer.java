@@ -53,7 +53,7 @@ import io.github.tomaso2468.rpgonline.FolderHelper;
 
 /**
  * A user server stored in appdata on the local disk.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class LocalDiskUserServer implements UserServer {
 	/**

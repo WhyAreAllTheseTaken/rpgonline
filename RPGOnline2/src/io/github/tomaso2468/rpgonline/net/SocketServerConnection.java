@@ -59,6 +59,10 @@ import org.newdawn.slick.util.Log;
 import io.github.tomaso2468.rpgonline.net.packet.KeyPacket;
 import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
+/**
+ * A server connection that connects to a client and uses java serialisation for IO.
+ * @author Tomaso2468
+ */
 public class SocketServerConnection extends AESSecurityCap implements Connection {
 	/**
 	 * The list of packets to send.

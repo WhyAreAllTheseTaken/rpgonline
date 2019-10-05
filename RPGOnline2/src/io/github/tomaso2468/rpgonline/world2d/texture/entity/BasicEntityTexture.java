@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * A basic static entity texture.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class BasicEntityTexture implements EntityTexture {

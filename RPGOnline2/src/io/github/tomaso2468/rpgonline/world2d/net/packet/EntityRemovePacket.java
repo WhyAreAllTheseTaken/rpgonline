@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * Packet used to remove entities.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class EntityRemovePacket implements NetPacket {

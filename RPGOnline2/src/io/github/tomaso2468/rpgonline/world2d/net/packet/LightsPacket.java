@@ -45,7 +45,7 @@ import io.github.tomaso2468.rpgonline.world2d.LightSource;
 
 /**
  * Packet used for sending light data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class LightsPacket implements NetPacket {

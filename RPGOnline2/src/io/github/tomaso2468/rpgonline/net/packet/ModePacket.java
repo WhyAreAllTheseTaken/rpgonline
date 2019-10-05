@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * A packet indicating the mode of the connection.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ModePacket implements NetPacket {

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A vertical scroll bar.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ScrollBar extends Component {

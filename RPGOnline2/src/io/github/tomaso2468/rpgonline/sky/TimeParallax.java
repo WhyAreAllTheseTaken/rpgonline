@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A sky layer that applies a movement effect based on time.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TimeParallax implements SkyLayer {

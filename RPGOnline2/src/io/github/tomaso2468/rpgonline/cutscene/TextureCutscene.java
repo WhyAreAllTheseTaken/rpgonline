@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.audio.AudioManager;
 
 /**
  * A cutscene that displays a static texture.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class TextureCutscene extends Cutscene {
 	/**

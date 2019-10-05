@@ -77,7 +77,7 @@ import io.github.tomaso2468.rpgonline.world2d.net.packet.WindPacket;
  * more packets and are read in the order they are sent. First, the ID of the
  * packet is sent as an 8bit integer. Next, the data of the packet is sent.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class BasicPacketConnection extends AESSecurityCap implements Connection {

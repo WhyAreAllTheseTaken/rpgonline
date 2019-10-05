@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 
 /**
  * An interface for systems based on a constant tick rate.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface TickBased {

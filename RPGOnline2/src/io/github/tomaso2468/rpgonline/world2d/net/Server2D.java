@@ -36,6 +36,11 @@ import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket;
 import io.github.tomaso2468.rpgonline.world2d.LightSource.LightUpdate;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
+/**
+ * The server for the world2d engine.
+ * @author Tomaso2468
+ *
+ */
 public interface Server2D extends Server {
 	/**
 	 * Called to indicate an update to an entity has occurred.

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that spaces components on the outside grid of the screen. The components are pushed to the edge of the screen but the dimensions are not changed.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class OuterGridLayout extends Layout {

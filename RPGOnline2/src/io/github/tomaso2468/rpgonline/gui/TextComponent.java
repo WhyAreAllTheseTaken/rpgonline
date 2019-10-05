@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The root class providing text input support.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class TextComponent extends Component {

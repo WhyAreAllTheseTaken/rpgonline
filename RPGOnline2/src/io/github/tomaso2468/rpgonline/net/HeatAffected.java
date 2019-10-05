@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.net;
 
 /**
  * Indicates that the heat effect is supported in this client.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface HeatAffected {

@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * A package for entity textures.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 package io.github.tomaso2468.rpgonline.world2d.texture.entity;

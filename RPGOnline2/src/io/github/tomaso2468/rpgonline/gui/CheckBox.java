@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A box that can be toggled.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class CheckBox extends ToggleButton {

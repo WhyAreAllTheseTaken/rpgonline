@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A layer with a flat color.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ColorLayer implements SkyLayer {

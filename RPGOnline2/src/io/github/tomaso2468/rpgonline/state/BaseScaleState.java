@@ -35,7 +35,7 @@ import org.newdawn.slick.GameContainer;
 
 /**
  * An interface allowing a state to except a float scaling value.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface BaseScaleState {

@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.TextureMap;
 
 /**
  * A bullet with a single texture and constant velocity.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class BasicBullet implements Bullet {
 	/**

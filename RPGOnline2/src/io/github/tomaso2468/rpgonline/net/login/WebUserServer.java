@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.net.login;
 
 /**
  * A user server that automatically picks the best protocol for a URL.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class WebUserServer implements UserServer {
 	/**

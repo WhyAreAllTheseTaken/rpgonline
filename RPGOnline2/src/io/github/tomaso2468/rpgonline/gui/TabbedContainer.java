@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * A container that separates various components into tabs.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TabbedContainer extends Container {

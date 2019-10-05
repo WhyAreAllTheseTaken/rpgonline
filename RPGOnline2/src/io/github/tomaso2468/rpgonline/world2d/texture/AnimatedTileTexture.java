@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An animated tile texture.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class AnimatedTileTexture implements TileTexture {

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A list of selectable values.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class List extends RadioGroup {

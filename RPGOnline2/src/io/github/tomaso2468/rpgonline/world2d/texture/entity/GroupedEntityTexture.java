@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * An entity texture made of multiple entity textures.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class GroupedEntityTexture implements EntityTexture {

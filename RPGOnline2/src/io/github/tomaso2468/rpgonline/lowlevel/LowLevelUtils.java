@@ -33,7 +33,16 @@ package io.github.tomaso2468.rpgonline.lowlevel;
 
 import org.apache.commons.lang3.SystemUtils;
 
+/**
+ * An interface for low level access.
+ * @author Tomaso2468
+ *
+ */
 public interface LowLevelUtils {
+	/**
+	 * Gets a utils instance.
+	 * @return A LowLevelUtils object.
+	 */
 	static LowLevelUtils getUtils() {
 		if (SystemUtils.IS_OS_WINDOWS) {
 			return new WindowsUtils();
@@ -46,7 +55,14 @@ public interface LowLevelUtils {
 		}
 		return new GenericUtils();
 	}
-	static final LowLevelUtils LLU = getUtils();
-	
+	/**
+	 * The low level instance.
+	 */
+	public static final LowLevelUtils LLU = getUtils();
+
+	/**
+	 * Gets the CPU model.
+	 * @return A CPU ID.
+	 */
 	public String getCPUModel();
 }

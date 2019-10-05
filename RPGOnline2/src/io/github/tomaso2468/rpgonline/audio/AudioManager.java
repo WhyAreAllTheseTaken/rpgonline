@@ -64,7 +64,7 @@ import paulscode.sound.libraries.LibraryLWJGLOpenAL;
  * <p>
  * For most audio settings (pitch & volume) the default value is 1 representing normal pitch and full volume. When sound positions are set they are assumed to be in real world coordinates.
  * </p> 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public final class AudioManager {

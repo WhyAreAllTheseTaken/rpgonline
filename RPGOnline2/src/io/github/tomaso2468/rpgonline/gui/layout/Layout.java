@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The base class for layouts.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Layout extends Container {

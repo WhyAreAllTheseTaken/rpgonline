@@ -38,7 +38,7 @@ import slickshader.Shader;
 /**
  * A shader that effects the colours on the screen.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  * @see io.github.tomaso2468.rpgonline.post.SaturateShader
  * @see io.github.tomaso2468.rpgonline.post.BrightnessEffect

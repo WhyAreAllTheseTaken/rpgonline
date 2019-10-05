@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * A texture for an entity walk cycle.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class WalkCycleTexture implements EntityTexture {

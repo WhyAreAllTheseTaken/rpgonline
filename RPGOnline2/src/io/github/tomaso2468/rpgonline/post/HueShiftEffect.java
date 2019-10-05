@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect that changes the hue of an image.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class HueShiftEffect extends ShaderEffect {
 	/**

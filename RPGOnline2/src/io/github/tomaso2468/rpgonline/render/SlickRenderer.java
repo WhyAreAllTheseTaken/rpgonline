@@ -37,7 +37,7 @@ import org.newdawn.slick.Image;
 
 /**
  * A Slick2D renderer.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class SlickRenderer implements Renderer {

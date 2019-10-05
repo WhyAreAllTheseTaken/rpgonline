@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * Packet used for music data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MusicPacket implements NetPacket {

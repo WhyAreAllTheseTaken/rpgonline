@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 /**
  * A button used to create a series of selectable options. This should be added to a RadioGroup.
- * @author Tomas
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.gui.RadioGroup
  */
 public class RadioButton extends CheckBox {

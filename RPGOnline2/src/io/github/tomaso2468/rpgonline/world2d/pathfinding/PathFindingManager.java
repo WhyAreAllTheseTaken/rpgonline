@@ -42,6 +42,11 @@ import org.newdawn.slick.util.pathfinding.PathFinder;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.threading.ContinuousPool;
 
+/**
+ * A class for managing pathfinding.
+ * @author Tomaso2468
+ *
+ */
 public final class PathFindingManager {
 	/**
 	 * Prevent instantiation

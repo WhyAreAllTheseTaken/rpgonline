@@ -57,11 +57,11 @@ import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 /**
  * <p>
  * A class with added support for RPGOnline games. This class is based on
- * {@code StateBasedGame}. In addtion, some parts of loading (e.g. Music) can be
- * defered by overriding the load method.
+ * {@code StateBasedGame}. In addition, some parts of loading (e.g. Music) can be
+ * deferred by overriding the load method.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public abstract class RPGGame extends StateBasedGame {
 	/**

@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 /**
  * A button that can be toggled on and off.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ToggleButton extends Button {

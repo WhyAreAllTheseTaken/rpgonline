@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A particle with a texture.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TextureParticle implements Particle {

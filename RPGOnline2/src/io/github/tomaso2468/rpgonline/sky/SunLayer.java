@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A sky layer with a sun.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class SunLayer implements SkyLayer {

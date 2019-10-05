@@ -48,7 +48,7 @@ import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 
 /**
  * A world that stores ABT data received from the server on the client side.
- * @author Tomas
+ * @author Tomaso2468
  * 
  * @see io.github.tomaso2468.rpgonline.net.Client#getRequestedChunks()
  */

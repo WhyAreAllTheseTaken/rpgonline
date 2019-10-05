@@ -40,8 +40,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An interface representing a particle.
- * @author Tomas
- *
+ * @author Tomaso2468
  */
 public interface Particle {
 	/**

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A non-editable label.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Label extends Component {

@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A layer that renders a moon.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class MoonLayer implements SkyLayer {

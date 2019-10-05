@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * Packet used for sending chat data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TextPacket implements NetPacket {

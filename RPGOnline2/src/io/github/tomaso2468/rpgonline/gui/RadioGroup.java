@@ -35,7 +35,7 @@ import io.github.tomaso2468.rpgonline.gui.layout.ListLayout;
 
 /**
  * A group of radio buttons.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class RadioGroup extends ListLayout {

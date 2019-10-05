@@ -34,9 +34,20 @@ package io.github.tomaso2468.rpgonline.lowlevel;
 import com.sun.jna.platform.win32.Advapi32Util;
 import static com.sun.jna.platform.win32.WinReg.HKEY_LOCAL_MACHINE;
 
+/**
+ * The utils for windows.
+ * @author Tomaso2468
+ *
+ */
 final class WindowsUtils implements LowLevelUtils {
+	/**
+	 * The CPU name.
+	 */
 	private String CPU = null;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getCPUModel() {
 		if (CPU == null) {

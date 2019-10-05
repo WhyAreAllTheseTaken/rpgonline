@@ -44,7 +44,7 @@ import slickshader.Shader;
 /**
  * A heat shader effect that changes over time.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class DynamicHeatShader extends ShaderEffect {
 	/**

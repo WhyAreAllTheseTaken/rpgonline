@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A slider component.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Slider extends Component {

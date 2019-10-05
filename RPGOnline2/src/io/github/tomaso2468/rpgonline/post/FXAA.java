@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An implementation of FXAA anti-aliasing.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class FXAA extends ShaderEffect {
 	/**

@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 
 /**
  * The primary class for the debugging API.
- * @author Tomas
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.RPGGame
  */
 public final class Debugger {

@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 
 /**
  * A cutscene type that allows multiple cutscenes to be combined.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MultiCutscene extends Cutscene {

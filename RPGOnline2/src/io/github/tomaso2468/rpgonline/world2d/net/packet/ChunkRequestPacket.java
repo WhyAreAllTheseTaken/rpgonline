@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
  * Packet used for requests for chunk data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ChunkRequestPacket implements NetPacket {

@@ -40,7 +40,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * An effect that does nothing.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class NullPostProcessEffect implements PostEffect {
 	/**

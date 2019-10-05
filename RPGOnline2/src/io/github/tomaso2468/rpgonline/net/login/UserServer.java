@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.net.login;
 /**
  * <p>An interface providing methods for accessing login servers.</p>
  * <p><b>Login Tokens should not be shared with other servers but a connect token may be.</b></p>
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface UserServer {
 	/**

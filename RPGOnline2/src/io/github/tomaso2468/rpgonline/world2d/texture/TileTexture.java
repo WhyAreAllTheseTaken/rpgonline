@@ -42,8 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An interface representing a system for drawing tiles.
- * @author Tomas
- *
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture
  */
 public interface TileTexture {

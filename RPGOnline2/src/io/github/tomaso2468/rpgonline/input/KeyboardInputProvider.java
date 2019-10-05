@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.input;
 
 /**
  * An interface for a provider for keyboard input.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface KeyboardInputProvider {

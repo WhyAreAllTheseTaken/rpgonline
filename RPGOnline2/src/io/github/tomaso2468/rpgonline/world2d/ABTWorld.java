@@ -54,7 +54,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
 
 /**
  * A world format that stores data as ABT.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ABTWorld extends ChunkWorld {
 	/**

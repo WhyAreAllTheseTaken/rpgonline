@@ -44,7 +44,7 @@ import io.github.tomaso2468.rpgonline.render.RenderManager;
 /**
  * A interface representing a bullet.
  * 
- * @author Tomas
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.bullet.BulletState
  */
 public interface Bullet {

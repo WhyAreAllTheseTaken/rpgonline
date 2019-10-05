@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * Packet used for sending entity updates.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class UpdatePacket implements Serializable, NetPacket {

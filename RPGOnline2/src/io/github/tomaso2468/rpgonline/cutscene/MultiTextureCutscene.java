@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.cutscene;
 
 /**
  * A cutscene made of a series of static images.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MultiTextureCutscene extends MultiCutscene {

@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * The API for movable entities in the world API.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 package io.github.tomaso2468.rpgonline.world2d.entity;

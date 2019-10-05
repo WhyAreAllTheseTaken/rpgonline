@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * A class for storing world data using many chunks.
- * @author Tomas
+ * @author Tomaso2468
  * 
  * @see io.github.tomaso2468.rpgonline.world2d.chunk.Chunk
  */

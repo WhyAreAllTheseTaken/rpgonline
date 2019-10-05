@@ -59,7 +59,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
  * set values.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class Entity {
 	/**

@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A component that can hold other components.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Container extends Component {

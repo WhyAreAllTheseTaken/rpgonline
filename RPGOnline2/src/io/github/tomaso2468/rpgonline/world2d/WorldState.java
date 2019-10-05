@@ -78,7 +78,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
 /**
  * A state for rendering worlds
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class WorldState extends BasicGameState implements BaseScaleState {
 	/**

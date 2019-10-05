@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline;
 /**
  * An interface to allow methods to reference any loading screen.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface LoadCounter {
 	/**

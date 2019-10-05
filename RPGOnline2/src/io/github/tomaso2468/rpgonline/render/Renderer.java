@@ -37,7 +37,7 @@ import org.newdawn.slick.Image;
 
 /**
  * An interface representing a renderer.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface Renderer {

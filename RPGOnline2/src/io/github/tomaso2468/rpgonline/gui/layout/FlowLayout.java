@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that fills components in the same way English text is written (left to right, going down to the next line when a line is full).
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class FlowLayout extends Layout {

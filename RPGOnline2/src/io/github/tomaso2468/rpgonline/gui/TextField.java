@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 /**
  * A single line text input component.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TextField extends TextComponent {

@@ -38,7 +38,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * A task to be run during a game update.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface UpdateHook {
 	/**

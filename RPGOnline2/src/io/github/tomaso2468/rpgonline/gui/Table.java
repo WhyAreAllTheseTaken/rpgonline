@@ -35,7 +35,7 @@ import io.github.tomaso2468.rpgonline.gui.layout.FillGridLayout;
 
 /**
  * A table component.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Table extends FillGridLayout {

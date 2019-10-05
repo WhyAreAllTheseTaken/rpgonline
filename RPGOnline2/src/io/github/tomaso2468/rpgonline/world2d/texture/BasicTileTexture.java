@@ -37,8 +37,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A basic static tile texture.
- * @author Tomas
- *
+ * @author Tomaso2468
  */
 public class BasicTileTexture implements TileTexture {
 	/**

@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A tile texture that is filtered through a color based upon the hex value of their game state.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class FilterTileTexture extends BasicTileTexture {
 	/**

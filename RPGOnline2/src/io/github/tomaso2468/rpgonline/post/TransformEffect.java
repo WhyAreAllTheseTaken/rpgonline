@@ -46,7 +46,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * An effect based on a transform.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class TransformEffect implements PostEffect {
 	/**

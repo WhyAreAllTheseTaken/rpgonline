@@ -54,7 +54,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The interface for defining a theme for the GUI system. Scaling must be done when rendering a component with this interface.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface Theme {

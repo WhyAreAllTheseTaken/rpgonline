@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An interface for classes that allow a sky to be rendered.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface SkyLayer {

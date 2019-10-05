@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * An interface for rendering entities. This is similar to {@code TileTexture}.
- * @author Tomas
+ * @author Tomaso2468
  *
  * @see io.github.tomaso2468.rpgonline.world2d.texture.TileTexture
  */

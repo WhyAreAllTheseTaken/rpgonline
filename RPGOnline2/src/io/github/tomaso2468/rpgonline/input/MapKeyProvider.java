@@ -38,7 +38,7 @@ import org.lwjgl.input.Keyboard;
 
 /**
  * An implementation of the KeyboardInputProvider based on a hash map.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MapKeyProvider implements KeyboardInputProvider {

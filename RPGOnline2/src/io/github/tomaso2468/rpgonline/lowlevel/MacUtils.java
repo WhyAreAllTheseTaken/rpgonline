@@ -37,9 +37,20 @@ import java.io.InputStreamReader;
 
 import org.newdawn.slick.util.Log;
 
+/**
+ * The utils for apple mac.
+ * @author Tomaso2468
+ *
+ */
 final class MacUtils implements LowLevelUtils {
+	/**
+	 * The CPU name.
+	 */
 	private String CPU = null;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getCPUModel() {
 		if (CPU == null) {

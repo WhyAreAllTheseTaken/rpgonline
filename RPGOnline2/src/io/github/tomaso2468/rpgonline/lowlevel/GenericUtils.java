@@ -31,7 +31,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.lowlevel;
 
+/**
+ * A set of generic utils for various processors.
+ * @author Tomaso2468
+ *
+ */
 final class GenericUtils implements LowLevelUtils {
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getCPUModel() {
 		return "Unknown " + Runtime.getRuntime().availableProcessors() + " Core CPU";

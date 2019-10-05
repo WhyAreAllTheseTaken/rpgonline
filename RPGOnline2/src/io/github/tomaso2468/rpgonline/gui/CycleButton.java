@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 /**
  * A button that, when pressed, cycles through a series of values.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class CycleButton extends Button {

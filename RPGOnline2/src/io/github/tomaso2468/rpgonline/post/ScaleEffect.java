@@ -40,7 +40,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * An effect that scales by a certain amount.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ScaleEffect implements PostEffect {
 	/**

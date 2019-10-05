@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * A user server that combines multiple servers in a priority list.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class MultiUserServer implements UserServer {
 	/**

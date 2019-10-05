@@ -31,5 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 /**
  * A package holding GUI layers.
+ * @author Tomaso2468
  */
 package io.github.tomaso2468.rpgonline.gui.layer;

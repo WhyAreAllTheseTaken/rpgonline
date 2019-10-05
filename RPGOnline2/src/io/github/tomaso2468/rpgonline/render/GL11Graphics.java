@@ -38,7 +38,7 @@ import org.newdawn.slick.Image;
 
 /**
  * OpenGL graphics.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 class GL11Graphics implements Graphics {

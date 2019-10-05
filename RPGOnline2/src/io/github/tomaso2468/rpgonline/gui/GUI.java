@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * The root of the GUI system.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class GUI {

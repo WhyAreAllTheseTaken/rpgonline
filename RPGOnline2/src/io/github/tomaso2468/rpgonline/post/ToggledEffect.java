@@ -39,7 +39,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * An effect that can be toggled on and off.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ToggledEffect extends MultiEffect {
 	/**

@@ -45,7 +45,7 @@ import io.github.tomaso2468.rpgonline.world2d.net.Server2D;
 /**
  * A class for storing point light data.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public final class LightSource {
 	/**

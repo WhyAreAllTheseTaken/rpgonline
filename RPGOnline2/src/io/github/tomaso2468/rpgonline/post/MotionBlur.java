@@ -40,7 +40,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * An effect that provides a motion blur.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class MotionBlur implements PostEffect {
 	/**

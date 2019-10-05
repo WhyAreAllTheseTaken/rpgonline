@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * Packet used for the sending of public encryption keys.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class KeyPacket implements NetPacket {

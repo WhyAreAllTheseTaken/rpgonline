@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.debug.Debugger;
 /**
  * Allows for the chaining of multiple effects together.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class MultiEffect implements PostEffect {
 	/**

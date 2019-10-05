@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A text field that displays a password without showing text.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class PasswordField extends TextField {

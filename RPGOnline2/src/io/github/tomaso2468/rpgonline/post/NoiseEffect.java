@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.post;
 /**
  * A film grain effect.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 @Deprecated
 public class NoiseEffect extends ShaderEffect {

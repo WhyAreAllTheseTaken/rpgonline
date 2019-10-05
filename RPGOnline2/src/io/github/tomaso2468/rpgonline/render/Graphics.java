@@ -37,7 +37,7 @@ import org.newdawn.slick.Image;
 
 /**
  * The interface for GUI graphics.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface Graphics {

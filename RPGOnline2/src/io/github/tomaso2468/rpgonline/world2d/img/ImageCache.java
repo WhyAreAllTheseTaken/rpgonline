@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * A class that stores an image for use in {@code WorldFromImage}.
- * @author Tomas
+ * @author Tomaso2468
  *
  * @see io.github.tomaso2468.rpgonline.world2d.img.WorldFromImage
  */

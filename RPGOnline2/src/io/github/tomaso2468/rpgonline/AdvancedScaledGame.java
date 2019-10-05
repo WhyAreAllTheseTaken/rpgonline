@@ -55,7 +55,7 @@ import org.newdawn.slick.util.Log;
  * wide screen game.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class AdvancedScaledGame implements Game {
 	/**

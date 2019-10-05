@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.ServerManager;
 
 /**
  * Packet used for login data.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class LoginPacket implements NetPacket {

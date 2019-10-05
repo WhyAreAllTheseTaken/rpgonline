@@ -61,8 +61,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 
 /**
  * A class that allows for the editing of game worlds.
- * @author Tomas
- * 
+ * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.world2d.WorldState
  */
 public class WorldEditor extends WorldState {

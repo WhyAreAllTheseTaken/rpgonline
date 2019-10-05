@@ -35,7 +35,7 @@ import org.newdawn.slick.Image;
 
 /**
  * A sky layer mesh made of a top, middle and bottom image.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ThreeImageMesh extends ImageMeshLayer {

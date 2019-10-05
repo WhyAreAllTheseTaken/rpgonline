@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 
 /**
  * A class providing basic translation support.
- * @author Tomas
+ * @author Tomaso2468
  */
 public final class Lang {
 	/**

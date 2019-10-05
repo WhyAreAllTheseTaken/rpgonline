@@ -35,7 +35,7 @@ import io.github.tomaso2468.rpgonline.net.login.UserServer;
 
 /**
  * A class for managing currently running server and client instances.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public final class ServerManager {

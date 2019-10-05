@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect that brightens the screen.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class BrightnessEffect extends ShaderEffect {

@@ -43,7 +43,7 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 /**
  * A class holding language data.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class LangPack {

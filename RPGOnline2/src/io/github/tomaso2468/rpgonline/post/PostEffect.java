@@ -40,7 +40,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * A class for managing graphical effects.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface PostEffect {

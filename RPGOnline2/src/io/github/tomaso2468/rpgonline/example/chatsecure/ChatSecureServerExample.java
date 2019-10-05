@@ -48,7 +48,7 @@ import io.github.tomaso2468.rpgonline.net.packet.TextPacket;
 /**
  * An example of a secure chat server.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ChatSecureServerExample {
 	/**

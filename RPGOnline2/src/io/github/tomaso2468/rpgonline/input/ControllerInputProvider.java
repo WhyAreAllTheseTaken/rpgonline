@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 
 /**
  * A system that provides binding controls for keyboards.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface ControllerInputProvider {

@@ -37,6 +37,11 @@ import io.github.tomaso2468.abt.*;
 import io.github.tomaso2468.rpgonline.net.Client;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
+/**
+ * The client for the world2d engine.
+ * @author Tomaso2468
+ *
+ */
 public interface Client2D extends Client {
 	/**
 	 * Gets the world that should be rendered.

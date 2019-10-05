@@ -43,7 +43,7 @@ import slickshader.Shader;
  * Improves the quality of edges. This class basically acts as a quick
  * antialias.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 @Deprecated
 public class EdgeResample extends ShaderEffect {

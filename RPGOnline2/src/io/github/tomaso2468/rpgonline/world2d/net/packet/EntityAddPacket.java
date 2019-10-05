@@ -43,7 +43,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.EntityManager;
 
 /**
  * Packet used to add entities.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class EntityAddPacket implements NetPacket {

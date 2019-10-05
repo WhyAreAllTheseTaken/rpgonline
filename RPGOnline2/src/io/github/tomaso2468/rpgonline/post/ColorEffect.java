@@ -41,7 +41,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * Multiplies the current image by a colour.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ColorEffect implements PostEffect {
 	/**

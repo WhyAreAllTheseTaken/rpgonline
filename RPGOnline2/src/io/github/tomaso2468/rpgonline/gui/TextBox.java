@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 /**
  * A mutliline unformatted text box.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class TextBox extends TextComponent {

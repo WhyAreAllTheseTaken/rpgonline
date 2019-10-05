@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.render;
 
 /**
  * A class for managing render systems.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public final class RenderManager {

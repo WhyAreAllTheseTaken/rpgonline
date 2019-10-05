@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.Tile;
 /**
  * A class for holding world data in separate chunks.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class Chunk {

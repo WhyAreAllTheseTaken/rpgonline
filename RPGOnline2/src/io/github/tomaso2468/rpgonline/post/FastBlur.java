@@ -39,7 +39,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * A fast (but very bad) blur algorithm.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class FastBlur implements PostEffect {
 	/**

@@ -35,7 +35,7 @@ package io.github.tomaso2468.rpgonline.lang;
  * An interface allowing the configuration of language settings to be managed by
  * the application.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface LangProvider {

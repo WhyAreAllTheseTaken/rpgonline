@@ -48,7 +48,7 @@ import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 
 /**
  * An interface representing an EntityAI. One instance of this is shared between all entities of this type.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface EntityAI {

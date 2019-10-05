@@ -52,7 +52,7 @@ import slickshader.Shader;
  * effects.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ThemeEffect extends ShaderEffect {
 	/**

@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * An interface representing a web connection.
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface ServerProtocol {
 	/**

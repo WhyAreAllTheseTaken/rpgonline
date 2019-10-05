@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 /**
  * A container that is scrollable.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ScrollableContainer extends Container {

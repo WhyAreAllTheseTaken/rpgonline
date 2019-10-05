@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.audio.AudioManager;
 
 /**
  * An abstract class representing a cutscene.
- * @author Tomas
+ * @author Tomaso2468
  */
 public abstract class Cutscene {
 	/**

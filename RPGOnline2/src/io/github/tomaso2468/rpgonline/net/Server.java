@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.net;
 
 /**
  * An interface representing a server.
- * @author Tomas
+ * @author Tomaso2468
  */
 public interface Server extends TickBased {
 	/**

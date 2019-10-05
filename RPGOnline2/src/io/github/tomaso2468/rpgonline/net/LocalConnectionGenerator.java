@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
  * A class for generating local connections for use without the need for an internet connection or IO.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class LocalConnectionGenerator {
 	/**

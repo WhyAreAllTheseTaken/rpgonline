@@ -43,7 +43,7 @@ import org.newdawn.slick.state.transition.Transition;
 
 /**
  * A state that holds cutscene information.
- * @author Tomas
+ * @author Tomaso2468
  */
 public abstract class CutsceneState extends BasicGameState {
 	/**

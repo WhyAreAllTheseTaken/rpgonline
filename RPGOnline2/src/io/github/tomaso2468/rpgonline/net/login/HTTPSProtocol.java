@@ -58,7 +58,7 @@ import org.newdawn.slick.util.Log;
  * closed for each request for data.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  * 
  * @see io.github.tomaso2468.rpgonline.net.login.HTTPProtocol
  * @see io.github.tomaso2468.rpgonline.net.login.WebUserServer

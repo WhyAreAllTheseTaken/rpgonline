@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * An implementation of ControllerInputProvider that uses a HashMap.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MapControllerProvider implements ControllerInputProvider {

@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.post;
 /**
  * An effect that boosts the appearance of colours.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 @Deprecated
 public class ColorBoostEffect extends ShaderEffect {

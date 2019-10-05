@@ -45,7 +45,7 @@ import io.github.tomaso2468.rpgonline.lang.LangProvider;
 /**
  * A class for storing configuration details about the game engine.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public final class RPGConfig {
 	/**

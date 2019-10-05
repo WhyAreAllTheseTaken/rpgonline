@@ -44,7 +44,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * An EntityAI extension based on velocity.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class VelocityAI implements EntityAI {

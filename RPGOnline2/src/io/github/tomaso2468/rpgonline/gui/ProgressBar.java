@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A progress bar.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ProgressBar extends Component {

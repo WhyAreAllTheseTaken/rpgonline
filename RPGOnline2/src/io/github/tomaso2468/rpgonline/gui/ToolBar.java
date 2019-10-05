@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 /**
  * A horizontal tool bar.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ToolBar extends FlowLayout {

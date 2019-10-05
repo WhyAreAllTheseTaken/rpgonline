@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.gui.Component;
 
 /**
  * A layout that places components in a vertical list.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ListLayout extends Layout {

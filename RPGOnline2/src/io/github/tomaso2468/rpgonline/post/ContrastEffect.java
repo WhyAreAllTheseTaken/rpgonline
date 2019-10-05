@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect that modifies the contrast of the screen.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ContrastEffect extends ShaderEffect {
 	/**

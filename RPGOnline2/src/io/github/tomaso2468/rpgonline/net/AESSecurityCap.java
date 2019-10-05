@@ -14,8 +14,7 @@ import sun.misc.BASE64Encoder;
 
 /**
  * A system for setting up key exchange for AES.
- * @author Jegan Babu
- * @author Wojciech Wirzbicki
+ * @author Jegan Babu, Wojciech Wirzbicki
  */
 class AESSecurityCap {
 	/**
@@ -62,7 +61,7 @@ class AESSecurityCap {
     }
 
     /**
-     * Recieve the public key from the other side of the connection.
+     * Receive the public key from the other side of the connection.
      * @param publickey
      */
     public void setReceiverPublicKey(PublicKey publickey) {

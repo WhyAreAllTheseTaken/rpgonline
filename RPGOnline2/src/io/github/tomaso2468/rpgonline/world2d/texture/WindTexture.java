@@ -43,7 +43,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A tile texture that is affected by wind.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class WindTexture extends BasicTileTexture {
 	/**

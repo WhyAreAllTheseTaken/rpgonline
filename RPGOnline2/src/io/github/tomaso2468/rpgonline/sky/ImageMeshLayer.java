@@ -41,7 +41,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A sky layer made of a grid of images.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class ImageMeshLayer implements SkyLayer {

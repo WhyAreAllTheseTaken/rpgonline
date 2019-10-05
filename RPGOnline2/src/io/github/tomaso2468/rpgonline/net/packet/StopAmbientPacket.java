@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * Packet with a command to stop all ambient sounds.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class StopAmbientPacket implements NetPacket {

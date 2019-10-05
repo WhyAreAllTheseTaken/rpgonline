@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * An effect for mapping tones in MDR rendering. <b>This is set automatically when MDR is enabled.</b>
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class MDRMap extends ShaderEffect {

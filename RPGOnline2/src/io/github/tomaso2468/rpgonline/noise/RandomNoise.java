@@ -35,7 +35,7 @@ import java.util.Random;
 
 /**
  * An implentation of seeded position based pseudo-random noise.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class RandomNoise implements Noise {

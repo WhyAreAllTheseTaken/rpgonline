@@ -40,7 +40,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * An effect that causes bright areas of the screen to bleed.
- * @author Tomas
+ * @author Tomaso2468
  * 
  * @see io.github.tomaso2468.rpgonline.post.Blur
  * @see io.github.tomaso2468.rpgonline.post.HighPass

@@ -37,7 +37,7 @@ import slickshader.Shader;
 
 /**
  * A filter that sets all values below a threshold to black.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class HighPass extends ShaderEffect {
 	/**

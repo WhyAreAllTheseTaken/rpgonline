@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A layer that applies a fade effect.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class FadeLayer extends Layer {

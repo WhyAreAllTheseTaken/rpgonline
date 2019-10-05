@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * Packet used for ambient sound events.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class AmbientPacket implements NetPacket {

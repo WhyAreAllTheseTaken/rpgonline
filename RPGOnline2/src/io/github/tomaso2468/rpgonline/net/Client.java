@@ -35,7 +35,7 @@ import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 
 /**
  * An interface representing an instance of the game client's connection with the server.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface Client extends TickBased {

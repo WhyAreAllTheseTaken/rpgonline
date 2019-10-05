@@ -31,5 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 /**
  * An API that deals with 2d worlds.
+ * @author Tomaso2468
  */
 package io.github.tomaso2468.rpgonline.world2d;

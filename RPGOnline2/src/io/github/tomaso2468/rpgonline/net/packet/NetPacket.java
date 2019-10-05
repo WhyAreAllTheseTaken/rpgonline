@@ -42,7 +42,7 @@ import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
  * A class used for representing and defining packet types.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public interface NetPacket extends Serializable {

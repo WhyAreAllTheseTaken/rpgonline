@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * @author Tomas
+ * @author Tomaso2468
  * An API for bullet hell levels in games. This is separate to the world system.
  */
 package io.github.tomaso2468.rpgonline.bullet;

@@ -53,10 +53,10 @@ import io.github.tomaso2468.rpgonline.world2d.chunk.ChunkWorld;
  * </p>
  * <p>
  * Colors in this class are interpreted including alpha. Any alpha value that
- * isn't {@code 0xFF} with be intepreted as nothing.
+ * isn't {@code 0xFF} with be interpreted as nothing.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class WorldFromImage extends ChunkWorld {
 	/**

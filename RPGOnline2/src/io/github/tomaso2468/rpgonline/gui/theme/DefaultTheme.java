@@ -58,7 +58,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 /**
  * The default theme used for the GUI system.
  * 
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class DefaultTheme implements Theme {

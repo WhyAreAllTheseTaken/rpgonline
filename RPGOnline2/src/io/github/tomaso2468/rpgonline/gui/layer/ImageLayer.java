@@ -38,7 +38,7 @@ import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
  * A layer with a single image.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class ImageLayer extends Layer {

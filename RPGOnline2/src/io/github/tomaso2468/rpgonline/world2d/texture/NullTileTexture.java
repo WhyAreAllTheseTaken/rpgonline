@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A texture that renders nothing.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class NullTileTexture implements TileTexture {

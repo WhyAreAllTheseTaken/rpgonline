@@ -38,7 +38,7 @@ import slickshader.Shader;
 /**
  * An effect that changes the saturation of the screen.
  * <strong>It may be best to use VibranceEffect instead as it offers better results for improving colours.</strong>
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class SaturateShader extends ShaderEffect {

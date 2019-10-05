@@ -61,7 +61,7 @@ import io.github.tomaso2468.rpgonline.net.packet.NetPacket;
 
 /**
  * A client connection that connects to a server and uses java serialisation for IO.
- * @author Tomas
+ * @author Tomaso2468
  */
 public class SocketClientConnection extends AESSecurityCap implements Connection {
 	/**

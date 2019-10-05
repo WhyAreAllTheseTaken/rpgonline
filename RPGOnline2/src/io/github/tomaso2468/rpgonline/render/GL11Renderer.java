@@ -42,7 +42,7 @@ import org.newdawn.slick.Image;
 
 /**
  * An OpenGL renderer for opengl 1.1.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class GL11Renderer implements Renderer {

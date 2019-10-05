@@ -37,9 +37,20 @@ import java.io.InputStreamReader;
 
 import org.newdawn.slick.util.Log;
 
+/**
+ * Utils for Linux.
+ * @author Tomaso2468
+ *
+ */
 final class LinuxUtils implements LowLevelUtils {
+	/**
+	 * The CPU name.
+	 */
 	private String CPU = null;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getCPUModel() {
 		if (CPU == null) {

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A sky layer with a changing color.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public abstract class ChangingColorLayer implements SkyLayer {

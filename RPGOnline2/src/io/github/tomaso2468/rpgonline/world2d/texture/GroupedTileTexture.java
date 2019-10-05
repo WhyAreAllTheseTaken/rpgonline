@@ -36,7 +36,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
  * A tile texture made of multiple textures.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class GroupedTileTexture implements TileTexture {

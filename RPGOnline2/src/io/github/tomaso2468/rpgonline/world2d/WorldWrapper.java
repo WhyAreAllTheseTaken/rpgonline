@@ -40,7 +40,7 @@ import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
  * A class to allow overriding of one method of a world without subclassing.
- * @author Tomas
+ * @author Tomaso2468
  *
  */
 public class WorldWrapper implements World {

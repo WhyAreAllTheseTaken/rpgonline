@@ -44,7 +44,7 @@ import slickshader.Shader;
 /**
  * An effect based on a shader.
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class ShaderEffect implements PostEffect {
 	/**

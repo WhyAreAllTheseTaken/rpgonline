@@ -79,7 +79,7 @@ import org.newdawn.slick.util.Log;
  * the same.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class Version implements Comparable<Version> {
 	/**

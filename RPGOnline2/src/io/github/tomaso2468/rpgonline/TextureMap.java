@@ -93,7 +93,7 @@ import org.newdawn.slick.util.Log;
  * {@code texture.index} (with indexes starting at 0). They can also be mapped.
  * </p>
  * 
- * @author Tomas
+ * @author Tomaso2468
  */
 public class TextureMap {
 	/**
