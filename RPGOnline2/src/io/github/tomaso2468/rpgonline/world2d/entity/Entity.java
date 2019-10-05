@@ -40,15 +40,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
 import io.github.tomaso2468.rpgonline.Direction;
-import io.github.tomaso2468.rpgonline.abt.Tag;
-import io.github.tomaso2468.rpgonline.abt.TagBoolean;
-import io.github.tomaso2468.rpgonline.abt.TagDouble;
-import io.github.tomaso2468.rpgonline.abt.TagFloat;
-import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.abt.TagInt;
-import io.github.tomaso2468.rpgonline.abt.TagLong;
-import io.github.tomaso2468.rpgonline.abt.TagString;
-import io.github.tomaso2468.rpgonline.abt.TagStringShort;
+import io.github.tomaso2468.abt.*;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UBoolean;
 import io.github.tomaso2468.rpgonline.net.packet.UpdatePacket.UDouble;

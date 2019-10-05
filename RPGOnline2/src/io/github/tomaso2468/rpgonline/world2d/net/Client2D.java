@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.world2d.net;
 
 import java.util.List;
 
-import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.abt.*;
 import io.github.tomaso2468.rpgonline.net.Client;
 import io.github.tomaso2468.rpgonline.world2d.World;
 

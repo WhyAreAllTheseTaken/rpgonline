@@ -39,13 +39,7 @@ import java.util.Map;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
 
-import io.github.tomaso2468.rpgonline.abt.TagBoolean;
-import io.github.tomaso2468.rpgonline.abt.TagDouble;
-import io.github.tomaso2468.rpgonline.abt.TagFloat;
-import io.github.tomaso2468.rpgonline.abt.TagGroup;
-import io.github.tomaso2468.rpgonline.abt.TagInt;
-import io.github.tomaso2468.rpgonline.abt.TagLong;
-import io.github.tomaso2468.rpgonline.abt.TagString;
+import io.github.tomaso2468.abt.*;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.world2d.chunk.CacheEntry;
 import io.github.tomaso2468.rpgonline.world2d.chunk.Chunk;

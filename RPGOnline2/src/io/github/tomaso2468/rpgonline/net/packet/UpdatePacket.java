@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.newdawn.slick.util.Log;
 
-import io.github.tomaso2468.rpgonline.abt.TagGroup;
+import io.github.tomaso2468.abt.TagGroup;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
 /**
