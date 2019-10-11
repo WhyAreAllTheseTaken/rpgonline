@@ -37,6 +37,7 @@ import org.newdawn.slick.Color;
  * A group of constants providing basic colors suitable for different backgrounds.
  * @author Tomaso2468
  */
+@Deprecated
 public final class TextColor {
 	/**
 	 * Prevent instantiation
