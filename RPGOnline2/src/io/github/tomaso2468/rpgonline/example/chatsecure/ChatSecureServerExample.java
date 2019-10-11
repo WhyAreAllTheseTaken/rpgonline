@@ -106,7 +106,6 @@ public class ChatSecureServerExample {
 					Log.debug("Starting Chat");
 					
 					while (!s.isClosed()) {
-						Log.debug("Looping");
 						try {
 							// Loop through all available packets.
 							while (c.isAvaliable()) {
