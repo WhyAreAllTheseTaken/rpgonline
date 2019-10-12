@@ -40,6 +40,8 @@ All dependencies are included in the release.zip file.
 3. Add the JAR files to your project classpath.
 4. Add the folder as a folder containing native files.
 
+[For a complete guide check the Wiki](https://github.com/Tomaso2468/rpgonline/wiki/Setting-up-RPGOnline-for-Eclipse)
+
 ## Notes
 This library was created to help with the development of certain games and to avoid having to rewrite code.
 
