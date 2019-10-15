@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render;
 
-import org.lwjgl.LWJGLException;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;

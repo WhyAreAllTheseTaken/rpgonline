@@ -11,7 +11,7 @@ import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 
-public class LWJGLRenderer implements Renderer {
+public class LWJGL2Renderer implements GLRenderer {
 	private int width = 640;
 	private int height = 480;
 	private boolean init = false;
