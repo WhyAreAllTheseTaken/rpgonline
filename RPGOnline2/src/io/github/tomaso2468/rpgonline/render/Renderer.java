@@ -31,10 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render;
 
+import org.lwjgl.LWJGLException;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
 
 /**
  * An interface representing a renderer.
@@ -124,11 +126,21 @@ public interface Renderer {
 	public int getWidth();
 	public int getHeight();
 
-	public void sync();
+	public void sync(float fps);
 
-	public void init(Game game);
+	public void init(Game game) throws RenderException;
 
 	public void exit(Game game);
 
-	public void setFullscreen(boolean fullscreen);
+	public void setFullscreen(boolean fullscreen) throws RenderException;
+	
+	public void setResolution(int width, int height) throws RenderException;
+
+	public void doUpdate();
+	
+	public void setVSync(boolean vsync);
+	
+	public boolean displayClosePressed();
+	
+	public void setWindowTitle(String title);
 }

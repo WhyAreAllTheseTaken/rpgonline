@@ -63,7 +63,7 @@ public class Game {
 		};
 	}
 
-	public void start() {
+	public void start() throws RenderException {
 		started = true;
 		
 		init(this);
@@ -106,6 +106,10 @@ public class Game {
 			}
 		}
 		
+		if (renderer.displayClosePressed()) {
+			exit(0);
+		}
+		
 		render(this, renderer);
 		if (leave != null) {
 			leave.render(this, currentState, nextState, renderer);
@@ -113,16 +117,15 @@ public class Game {
 			enter.render(this, previousState, nextState, renderer);
 		}
 		
+		renderer.doUpdate();
 		if (vsync) {
-			renderer.sync();
+			renderer.sync(fpsCap);
 		} else if (fpsCap > 0) {
-			while (System.nanoTime() - lastRenderTime < (1000000000 / fpsCap)) {
-				Thread.yield();
-			}
+			renderer.sync(fpsCap);
 		}
 	}
 
-	public void init(Game game) {
+	public void init(Game game) throws RenderException {
 		renderer.init(this);
 		for (Entry<Integer, GameState> state : getStates()) {
 			state.getValue().init(game);
@@ -646,7 +649,7 @@ public class Game {
 		return fps;
 	}
 	
-	public void setFullscreen(boolean fullscreen) {
+	public void setFullscreen(boolean fullscreen) throws RenderException {
 		if (isFullscreen() == fullscreen) {
 			return;
 		}
