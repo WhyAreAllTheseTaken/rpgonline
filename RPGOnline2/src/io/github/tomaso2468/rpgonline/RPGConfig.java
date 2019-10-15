@@ -34,8 +34,6 @@ package io.github.tomaso2468.rpgonline;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-import org.newdawn.slick.Image;
-
 import io.github.tomaso2468.rpgonline.input.ControllerInputProvider;
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
 import io.github.tomaso2468.rpgonline.input.MapControllerProvider;

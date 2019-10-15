@@ -33,7 +33,8 @@ package io.github.tomaso2468.rpgonline.render;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.Image;
+
+import io.github.tomaso2468.rpgonline.Image;
 
 /**
  * The interface for GUI graphics.
@@ -123,16 +124,6 @@ public interface Graphics {
 	 * @param y The Y position of the image.
 	 */
 	public void drawImage(Image img, float x, float y);
-	
-	/**
-	 * Begins Slick2D rendering.
-	 * @return A graphics object.
-	 */
-	public org.newdawn.slick.Graphics beginSlick();
-	/**
-	 * Ends Slick2D rendering.
-	 */
-	public void endSlick();
 	
 	/**
 	 * Gets the current font.

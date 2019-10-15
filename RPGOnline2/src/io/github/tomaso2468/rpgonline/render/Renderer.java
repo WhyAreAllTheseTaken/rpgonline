@@ -32,8 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.render;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+
+import io.github.tomaso2468.rpgonline.Image;
 
 /**
  * An interface representing a renderer.
@@ -114,8 +114,12 @@ public interface Renderer {
 	
 	/**
 	 * Gets the graphics context for the GUI.
-	 * @param g The graphics object.
 	 * @return A graphics context.
 	 */
-	public io.github.tomaso2468.rpgonline.render.Graphics getGUIGraphics(Graphics g);
+	public Graphics getGUIGraphics();
+
+	public int getScreenWidth();
+	public int getScreenHeight();
+	public int getWidth();
+	public int getHeight();
 }

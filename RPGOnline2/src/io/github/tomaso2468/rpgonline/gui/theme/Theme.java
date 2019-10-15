@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.theme;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.gui.Button;

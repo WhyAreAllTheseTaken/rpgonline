@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.render;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.Image;
 
 /**
  * OpenGL graphics.
@@ -43,22 +42,15 @@ import org.newdawn.slick.Image;
  */
 class GL11Graphics implements Graphics {
 	/**
-	 * Slick2D graphics.
-	 */
-	private org.newdawn.slick.Graphics g;
-	/**
 	 * The color of the graphics.
 	 */
 	private Color c;
 
 	/**
 	 * Constructs a new GL11Graphics context.
-	 * @param g A graphics object.
 	 */
-	public GL11Graphics(org.newdawn.slick.Graphics g) {
+	public GL11Graphics() {
 		super();
-		this.g = g;
-		this.c = g.getColor();
 	}
 
 	/**

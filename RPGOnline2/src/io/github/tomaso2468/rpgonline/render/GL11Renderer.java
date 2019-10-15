@@ -37,8 +37,8 @@ import java.lang.reflect.Method;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+
+import io.github.tomaso2468.rpgonline.Image;
 
 /**
  * An OpenGL renderer for opengl 1.1.
@@ -284,7 +284,7 @@ public class GL11Renderer implements Renderer {
 	 */
 	@Override
 	public io.github.tomaso2468.rpgonline.render.Graphics getGUIGraphics(Graphics g) {
-		return new SlickGraphics(g);
+		return new GL11Graphics();
 	}
 
 }

@@ -1,306 +1,97 @@
-/*
-BSD 3-Clause License
-
-Copyright (c) 2019, Tomas
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package io.github.tomaso2468.rpgonline;
 
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.openal.AL10;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
+import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.Renderer;
+import io.github.tomaso2468.rpgonline.transition.BlankTransition;
+import io.github.tomaso2468.rpgonline.transition.Transition;
 import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 
-/**
- * <p>
- * A class with added support for RPGOnline games. This class is based on
- * {@code StateBasedGame}. In addition, some parts of loading (e.g. Music) can be
- * deferred by overriding the load method.
- * </p>
- * 
- * @author Tomaso2468
- */
-public abstract class RPGGame extends StateBasedGame {
-	/**
-	 * The maximum value of the loading bar. This should be a long in the range
-	 * {@code 0} to {@code Long.MAX_VALUE}.
-	 */
-	private long max;
-	/**
-	 * The current value of the loading bar. This should be a long in the range
-	 * {@code 0} to {@code Long.MAX_VALUE}.
-	 */
-	private long value;
+public class Game {
+	private String title;
+	private Map<Integer, GameState> states = new HashMap<>();
+	private GameState currentState;
+	private GameState nextState;
+	private Transition enter;
+	private Transition leave;
+	private int fpsCap;
+	private Renderer renderer;
+	private boolean started = false;
+	private final Version version;
+	private boolean vsync = true;
+	private Font font;
+	private boolean antialias = false;
+	private boolean clearEveryFrame = true;
+	private String icon;
+	private boolean mouseGrabbed = false;
+	private int minDelta;
+	private int maxDelta;
 
-	/**
-	 * <p>
-	 * Create a new {@code RPGGame}.
-	 * </p>
-	 * <p>
-	 * The creation of this object will write some information to the log (via
-	 * {@code RPGOnline.queryVersionData()}).
-	 * </p>
-	 * 
-	 * @param title The name of the game.
-	 */
-	public RPGGame(String title) {
-		super(title);
-
-		addState(new BasicGameState() {
-
+	public Game(String title, Version version) {
+		this.title = title;
+		this.version = version;
+		
+		currentState = new GameState() {
 			@Override
-			public void init(GameContainer container, StateBasedGame game) throws SlickException {
-				RPGOnline.queryVersionData();
-				try {
-					textureLoad(container, RPGGame.this, new LoadCounter() {
-						@Override
-						public void setValue(long v) {
-							value = v;
-						}
-
-						@Override
-						public long getValue() {
-							return value;
-						}
-
-						@Override
-						public void setMax(long v) {
-							max = v;
-						}
-
-						@Override
-						public long getMax() {
-							return max;
-						}
-					});
-					new Thread("Load") {
-						public void run() {
-							try {
-								load(container, RPGGame.this, new LoadCounter() {
-									@Override
-									public void setValue(long v) {
-										value = v;
-									}
-
-									@Override
-									public long getValue() {
-										return value;
-									}
-
-									@Override
-									public void setMax(long v) {
-										max = v;
-									}
-
-									@Override
-									public long getMax() {
-										return max;
-									}
-								});
-							} catch (SlickException e) {
-								e.printStackTrace();
-							}
-							enterState(1);
-						}
-					}.start();
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-				g.setColor(Color.black);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-
-				String str = "Loading " + 100f / max * value + "%";
-
-				g.drawString(str, container.getWidth() / 2 - g.getFont().getWidth(str) / 2,
-						container.getHeight() / 2 - g.getFont().getHeight(str) / 2);
-			}
-
-			@Override
-			public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
+			public void render(Game game, Renderer renderer) {
+				
 			}
 
 			@Override
 			public int getID() {
-				return 0;
+				return Integer.MIN_VALUE;
 			}
-		});
+		};
 	}
 
-	/**
-	 * <p>
-	 * A method during which textures are loaded. This should be overridden with a
-	 * method to load the required textures.
-	 * </p>
-	 * 
-	 * @param container The container holding the game.
-	 * @param game      This game.
-	 * @param counter   An interface providing access to a loading screen.
-	 * @throws SlickException Indicates an internal error occurred in the game.
-	 */
-	public abstract void textureLoad(GameContainer container, RPGGame game, LoadCounter counter) throws SlickException;
-
-	/**
-	 * <p>
-	 * A method during which music and other things that do not require an OpenGL
-	 * context.
-	 * </p>
-	 * 
-	 * @param container The container holding the game.
-	 * @param game      This game.
-	 * @param counter   An interface providing access to a loading screen.
-	 * @throws SlickException Indicates an internal error occurred in the game.
-	 */
-	public abstract void load(GameContainer container, RPGGame game, LoadCounter counter) throws SlickException;
-
-	/**
-	 * A method that gets the hashmap containing all states in this game. This
-	 * method uses reflection to bypass slick2Ds restrictions.
-	 * 
-	 * @return A hashmap.
-	 * @throws SlickException If an error occurs trying to get all game states.
-	 */
-	@SuppressWarnings("rawtypes")
-	public HashMap getStates() throws SlickException {
-		Field f;
-		try {
-			f = StateBasedGame.class.getDeclaredField("states");
-			f.setAccessible(true);
-			return (HashMap) f.get(this);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			throw new SlickException(e.toString());
-		}
+	public void start() {
+		started = true;
+	}
+	
+	public void loop() {
+		
 	}
 
-	/**
-	 * Gets the target frame rate of the game.
-	 * 
-	 * @return A positive int value or -1 if no frame rate is set.
-	 * @throws SlickException If an error occurs getting the target frame rate.
-	 */
-	public int getTargetFrameRate() throws SlickException {
-		Field f;
-		try {
-			f = GameContainer.class.getDeclaredField("targetFPS");
-			f.setAccessible(true);
-			return f.getInt(getContainer());
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			throw new SlickException(e.toString());
-		}
+	public void init(Game game) {
+		
 	}
 
-	/**
-	 * Sets this game to fullscreen. This requires an AppGameContainer to be used.
-	 * 
-	 * @param fullscreen {@code true} if the game should be in fullscreen.,
-	 *                   {@code false} otherwise.
-	 * @throws SlickException If an error occurs setting the fullscreen settings.
-	 */
-	public void setFullscreen(boolean fullscreen) throws SlickException {
-		if (isFullscreen() == fullscreen) {
-			return;
-		}
-		if (fullscreen) {
-			((AppGameContainer) getContainer()).setDisplayMode(getContainer().getScreenWidth(),
-					getContainer().getScreenHeight(), true);
-		} else {
-			int[] size = getWindowedScreenSize();
-			((AppGameContainer) getContainer()).setDisplayMode(size[0], size[1], false);
-		}
+	public final void update(Game game, float delta) {
+		preUpdate(game, delta);
+		postUpdate(game, delta);
 	}
 
-	/**
-	 * Gets the size of the game when windowed.
-	 * 
-	 * @return An 2 int array containing width data at i=0 and height data at i=1.
-	 */
-	protected int[] getWindowedScreenSize() {
-		return new int[] { (int) (getContainer().getScreenWidth() / 1.5f),
-				(int) (getContainer().getScreenHeight() / 1.5f) };
-	}
-
-	/**
-	 * Checks if the game is in fullscreen.
-	 * 
-	 * @return {@code true} if the game is in fullscreen, {@code false} otherwise.
-	 */
-	public boolean isFullscreen() {
-		return Display.isFullscreen();
-	}
-
-	/**
-	 * Gets the version of this game.
-	 * 
-	 * @return A version object.
-	 */
-	public abstract Version getVersion();
-
-	/**
-	 * Gets the flavour of this game. (e.g. Release, Beta, Snapshot, Modded (include
-	 * client ID).
-	 * 
-	 * @return A non-null string.
-	 */
-	public String getVersionFlavour() {
-		return "Release";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void preRenderState(GameContainer container, Graphics g) throws SlickException {
-		super.preRenderState(container, g);
+	public void preUpdate(Game game, float delta) {
 		Debugger.start();
 	}
-
+	
+	public void postUpdate(Game game, float delta) {
+		Debugger.stop();
+	}
+	
+	public final void render(Game game, Renderer renderer) {
+		preRender(game, renderer);
+		postRender(game, renderer);
+	}
+	
+	public void preRender(Game game, Renderer renderer) {
+		Debugger.start();
+	}
+	
 	/**
 	 * The debug frame from the previous rendering frame.
 	 */
@@ -319,24 +110,19 @@ public abstract class RPGGame extends StateBasedGame {
 	private double round1DP(double value) {
 		return FastMath.round(value * 10) / 10.0;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void postRenderState(GameContainer container, Graphics g) throws SlickException {
-		super.postRenderState(container, g);
-
+	
+	public void postRender(Game game, Renderer renderer) {
 		if (RPGConfig.isDebug()) {
 			Debugger.start("debug-screen");
+			Graphics g = renderer.getGUIGraphics();
 			
 			long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
 
 			float y = 4;
 			g.setColor(Color.white);
 
-			y = drawDebugLineRYWHigh(g, "FPS", container.getFPS(),
-					(container.isVSyncRequested() ? 60 : getTargetFrameRate()) - 3, 30, y, false);
+			y = drawDebugLineRYWHigh(g, "FPS", getFPS(),
+					(vsync ? 60 : getFPSCap()) - 3, 30, y, false);
 			if (ServerManager.client_max_time != 0) {
 				if (ServerManager.client_time == 0) {
 					y = drawDebugLineRYWHigh(g, "Client TPS", 0, 1, 1, y, false);
@@ -431,9 +217,9 @@ public abstract class RPGGame extends StateBasedGame {
 			y = drawDebugLineLabel(g, "Game Version", getVersion().toSimpleString() + " (" + getVersionFlavour() + ")",
 					y, true);
 			y = drawDebugLineLabel(g, "GPU", GL11.glGetString(GL11.GL_RENDERER), y, true);
-			y = drawDebugLineLabel(g, "Display Size", container.getScreenWidth() + "x" + container.getScreenHeight(), y,
+			y = drawDebugLineLabel(g, "Display Size", renderer.getScreenWidth() + "x" + renderer.getScreenHeight(), y,
 					true);
-			y = drawDebugLineLabel(g, "Game Size", container.getWidth() + "x" + container.getHeight(), y, true);
+			y = drawDebugLineLabel(g, "Game Size", renderer.getWidth() + "x" + renderer.getHeight(), y, true);
 			y = drawDebugLineLabel(g, "CPU", LowLevelUtils.LLU.getCPUModel(), y, true);
 			y = drawDebugLineLabel(g, "CPU Threads", Runtime.getRuntime().availableProcessors() + "", y, true);
 			y = drawDebugLineLabel(g, "OS Name",
@@ -474,19 +260,6 @@ public abstract class RPGGame extends StateBasedGame {
 		lastFrame = Debugger.getRenderFrame();
 	}
 	
-	@Override
-	protected void preUpdateState(GameContainer container, int delta) throws SlickException {
-		Debugger.start();
-		super.preUpdateState(container, delta);
-	}
-	
-	@Override
-	protected void postUpdateState(GameContainer container, int delta) throws SlickException {
-		super.postUpdateState(container, delta);
-		Debugger.stop();
-		lastUpdate = Debugger.getRenderFrame();
-	}
-
 	/**
 	 * Draws additional information of the left side of the debug screen.
 	 * 
@@ -524,7 +297,7 @@ public abstract class RPGGame extends StateBasedGame {
 		if (!side) {
 			g.drawString(s, 4, y);
 		} else {
-			g.drawString(s, this.getContainer().getWidth() - 4 - g.getFont().getWidth(s), y);
+			g.drawString(s, renderer.getWidth() - 4 - g.getFont().getWidth(s), y);
 		}
 		return y + g.getFont().getHeight("[]") + 1;
 	}
@@ -543,7 +316,7 @@ public abstract class RPGGame extends StateBasedGame {
 		if (!side) {
 			g.drawString(s, 4, y);
 		} else {
-			g.drawString(s, this.getContainer().getWidth() - 4 - g.getFont().getWidth(s), y);
+			g.drawString(s, renderer.getWidth() - 4 - g.getFont().getWidth(s), y);
 		}
 		return y + g.getFont().getHeight("[]") + 1;
 	}
@@ -564,7 +337,7 @@ public abstract class RPGGame extends StateBasedGame {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
 			g.drawString(label + ": " + data,
-					this.getContainer().getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 		return y + g.getFont().getHeight("[]") + 1;
 	}
@@ -599,7 +372,7 @@ public abstract class RPGGame extends StateBasedGame {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
 			g.drawString(label + ": " + data,
-					this.getContainer().getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -636,7 +409,7 @@ public abstract class RPGGame extends StateBasedGame {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
 			g.drawString(label + ": " + data,
-					this.getContainer().getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -673,7 +446,7 @@ public abstract class RPGGame extends StateBasedGame {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
 			g.drawString(label + ": " + data,
-					this.getContainer().getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -710,7 +483,7 @@ public abstract class RPGGame extends StateBasedGame {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
 			g.drawString(label + ": " + data,
-					this.getContainer().getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -746,7 +519,7 @@ public abstract class RPGGame extends StateBasedGame {
 		if (!side) {
 			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", 4, y);
 		} else {
-			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", this.getContainer().getWidth()
+			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", renderer.getWidth()
 					- 4 - g.getFont().getWidth(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB"), y);
 		}
 
@@ -754,4 +527,159 @@ public abstract class RPGGame extends StateBasedGame {
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public int getStateCount() {
+		return states.size();
+	}
+	
+	public Set<Entry<Integer, GameState>> getStates() {
+		return states.entrySet();
+	}
+	
+	public Map<Integer, GameState> getStateMap() {
+		return states;
+	}
+	
+	public GameState getCurrentState() {
+		return currentState;
+	}
+	
+	public int getCurrentStateID() {
+		return currentState.getID();
+	}
+	
+	public void addState(GameState state) {
+		states.put(state.getID(), state);
+	}
+	
+	public GameState getStateByID(int id) {
+		return states.get(id);
+	}
+	
+	public void changeState(int id, Transition enter, Transition leave) {
+		nextState = getStateByID(id);
+		this.enter = enter;
+		this.leave = leave;
+	}
+	
+	public void changeState(int id) {
+		changeState(id, new BlankTransition(), new BlankTransition());
+	}
+
+	public int getFPSCap() {
+		return fpsCap;
+	}
+
+	public void setFPSCap(int fpsCap) {
+		// TODO Actually use this
+		this.fpsCap = fpsCap;
+	}
+	
+	public int getFPS() {
+		//TODO calculate
+		return 0;
+	}
+	
+	public void setFullscreen(boolean fullscreen) {
+		if (isFullscreen() == fullscreen) {
+			return;
+		}
+		// TODO Fullscreen
+	}
+	
+	public boolean isFullscreen() {
+		// TODO Fullscreen
+		return false;
+	}
+
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
+	}
+	
+	public Version getVersion() {
+		return version;
+	}
+	
+	public String getVersionFlavour() {
+		return "Release";
+	}
+
+	public boolean isVsync() {
+		return vsync;
+	}
+
+	public void setVsync(boolean vsync) {
+		this.vsync = vsync;
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+
+	public boolean isAntialias() {
+		return antialias;
+	}
+
+	public void setAntialias(boolean antialias) {
+		this.antialias = antialias;
+	}
+
+	public boolean isClearEveryFrame() {
+		return clearEveryFrame;
+	}
+
+	public void setClearEveryFrame(boolean clearEveryFrame) {
+		this.clearEveryFrame = clearEveryFrame;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public boolean isMouseGrabbed() {
+		return mouseGrabbed;
+	}
+
+	public void setMouseGrabbed(boolean mouseGrabbed) {
+		this.mouseGrabbed = mouseGrabbed;
+	}
+
+	public int getMinDelta() {
+		return minDelta;
+	}
+
+	public void setMinDelta(int minDelta) {
+		this.minDelta = minDelta;
+	}
+
+	public int getMaxDelta() {
+		return maxDelta;
+	}
+
+	public void setMaxDelta(int maxDelta) {
+		this.maxDelta = maxDelta;
+	}
+	
+	public void exit(int code) {
+		System.exit(code);
+	}
 }

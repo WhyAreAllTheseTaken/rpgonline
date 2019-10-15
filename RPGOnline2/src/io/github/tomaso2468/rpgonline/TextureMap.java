@@ -47,10 +47,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.imageout.ImageOut;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
@@ -500,7 +497,7 @@ public class TextureMap {
 					sheets.put(ss.getSubImage(textureX.get(s), textureY.get(s)), ss);
 				}
 
-				ImageOut.write(ss, "map" + sw + "-" + sh + "-" + i + ".png");
+				ss.write("map" + sw + "-" + sh + "-" + i + ".png");
 
 				i += 1;
 			}

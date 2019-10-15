@@ -33,8 +33,6 @@ package io.github.tomaso2468.rpgonline.particle;
 
 import java.util.List;
 
-import org.newdawn.slick.Graphics;
-
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
