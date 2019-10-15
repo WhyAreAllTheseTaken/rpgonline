@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Based on Public Source from FlipCode
  */
+@SuppressWarnings("serial")
 public class BasicTriangulator implements Triangulator {
 	/** The accepted error value */
 	private static final float EPSILON = 0.0000000001f;
@@ -212,6 +213,7 @@ public class BasicTriangulator implements Triangulator {
 	 * 
 	 * @return True if we succeeded in completing triangulation
 	 */
+	@SuppressWarnings("unused")
 	private boolean process(PointList contour, PointList result) {
 		result.clear();
 		
@@ -364,7 +366,7 @@ public class BasicTriangulator implements Triangulator {
 	 */
 	private class PointList {
 		/** The list of points */
-		private ArrayList points = new ArrayList();
+		private ArrayList<Point> points = new ArrayList<>();
 		
 		/**
 		 * Create a new empty list
@@ -396,6 +398,7 @@ public class BasicTriangulator implements Triangulator {
 		 * 
 		 * @param point The point to remove
 		 */
+		@SuppressWarnings("unused")
 		public void remove(Point point) {
 			points.remove(point);
 		}

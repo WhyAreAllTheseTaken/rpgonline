@@ -5,6 +5,7 @@ package org.newdawn.slick.geom;
  * 
  * @author Kevin Glass
  */
+@SuppressWarnings("serial")
 public strictfp class Circle extends Ellipse {
 	/** The radius of the circle */
 	public float radius;
@@ -137,7 +138,8 @@ public strictfp class Circle extends Ellipse {
      * @param line Line to check against 
      * @return True if line inside circle 
      */ 
-    private boolean contains(Line line) { 
+    @SuppressWarnings("unused")
+	private boolean contains(Line line) { 
          return contains(line.getX1(), line.getY1()) && contains(line.getX2(), line.getY2()); 
     }
     
@@ -201,7 +203,8 @@ public strictfp class Circle extends Ellipse {
      * @param other The line to check against 
      * @return True if they touch 
      */ 
-    private boolean intersects(Line other) { 
+    @SuppressWarnings("unused")
+	private boolean intersects(Line other) { 
         // put it nicely into vectors 
         Vector2f lineSegmentStart = new Vector2f(other.getX1(), other.getY1()); 
         Vector2f lineSegmentEnd = new Vector2f(other.getX2(), other.getY2()); 

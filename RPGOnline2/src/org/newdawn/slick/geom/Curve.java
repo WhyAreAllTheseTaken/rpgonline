@@ -7,6 +7,7 @@ package org.newdawn.slick.geom;
  *
  * @author kevin
  */
+@SuppressWarnings("serial")
 public class Curve extends Shape {
 	/** The start point of the curve */
 	private Vector2f p1;

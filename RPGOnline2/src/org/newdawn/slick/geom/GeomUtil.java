@@ -155,8 +155,8 @@ public class GeomUtil {
 	 */
 	private Shape[] combine(Shape target, Shape other, boolean subtract) {
 		if (subtract) {
-			ArrayList shapes = new ArrayList();
-			ArrayList used = new ArrayList();
+			ArrayList<Shape> shapes = new ArrayList<Shape>();
+			ArrayList<Vector2f> used = new ArrayList<Vector2f>();
 			
 			// remove any points that are contianed in the shape we're removing, these
 			// are implicitly used

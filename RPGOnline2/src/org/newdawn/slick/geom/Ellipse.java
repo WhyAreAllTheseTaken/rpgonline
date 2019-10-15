@@ -10,6 +10,7 @@ import org.apache.commons.math3.util.FastMath;
  * 
  * @author Mark
  */
+@SuppressWarnings("serial")
 public class Ellipse extends Shape {
     /**
      * Default number of segments to draw this ellipse with
@@ -117,7 +118,7 @@ public class Ellipse extends Shape {
      *
      */
     protected void createPoints() {
-        ArrayList tempPoints = new ArrayList();
+        ArrayList<Float> tempPoints = new ArrayList<>();
 
         maxX = -Float.MIN_VALUE;
         maxY = -Float.MIN_VALUE;
