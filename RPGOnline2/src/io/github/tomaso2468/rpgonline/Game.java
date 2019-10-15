@@ -28,9 +28,8 @@ public class Game {
 	private GameState nextState;
 	private Transition enter;
 	private Transition leave;
-	private int fpsCap;
+	private int fpsCap = 0;
 	private Renderer renderer;
-	private boolean started = false;
 	private final Version version;
 	private boolean vsync = true;
 	private Font font;
@@ -38,8 +37,13 @@ public class Game {
 	private boolean clearEveryFrame = true;
 	private String icon;
 	private boolean mouseGrabbed = false;
-	private int minDelta;
-	private int maxDelta;
+	private float minDelta;
+	private float maxDelta;
+	private long lastUpdateTime = System.nanoTime();
+	private long lastRenderTime = System.nanoTime();
+	private float fps;
+	private boolean started;
+	private boolean fullscreen;
 
 	public Game(String title, Version version) {
 		this.title = title;
@@ -60,18 +64,49 @@ public class Game {
 
 	public void start() {
 		started = true;
+		
+		init(this);
+		while (true) {
+			loop();
+		}
 	}
 	
-	public void loop() {
+	protected void loop() {
+		float delta = (System.nanoTime() - lastUpdateTime) / 1000000000f;
+		lastUpdateTime = System.nanoTime();
 		
+		fps = 1000000000f / (System.nanoTime() - lastRenderTime);
+		lastRenderTime = System.nanoTime();
+		
+		if (delta > maxDelta) {
+			delta = maxDelta;
+		}
+		if (delta < minDelta) {
+			delta = minDelta;
+		}
+		update(this, delta);
+		
+		render(this, renderer);
+		
+		if (vsync) {
+			renderer.sync();
+		} else if (fpsCap > 0) {
+			while (System.nanoTime() - lastRenderTime < (1000000000 / fpsCap)) {
+				Thread.yield();
+			}
+		}
 	}
 
 	public void init(Game game) {
-		
+		renderer.init(this);
+		for (Entry<Integer, GameState> state : getStates()) {
+			state.getValue().init(game);
+		}
 	}
 
 	public final void update(Game game, float delta) {
 		preUpdate(game, delta);
+		currentState.update(game, delta);
 		postUpdate(game, delta);
 	}
 
@@ -85,6 +120,7 @@ public class Game {
 	
 	public final void render(Game game, Renderer renderer) {
 		preRender(game, renderer);
+		currentState.render(game, renderer);
 		postRender(game, renderer);
 	}
 	
@@ -578,25 +614,25 @@ public class Game {
 	}
 
 	public void setFPSCap(int fpsCap) {
-		// TODO Actually use this
 		this.fpsCap = fpsCap;
 	}
 	
-	public int getFPS() {
-		//TODO calculate
-		return 0;
+	public float getFPS() {
+		return fps;
 	}
 	
 	public void setFullscreen(boolean fullscreen) {
 		if (isFullscreen() == fullscreen) {
 			return;
 		}
-		// TODO Fullscreen
+		this.fullscreen = fullscreen;
+		if (started) {
+			renderer.setFullscreen(fullscreen);
+		}
 	}
 	
 	public boolean isFullscreen() {
-		// TODO Fullscreen
-		return false;
+		return fullscreen;
 	}
 
 	public Renderer getRenderer() {
@@ -663,23 +699,24 @@ public class Game {
 		this.mouseGrabbed = mouseGrabbed;
 	}
 
-	public int getMinDelta() {
+	public float getMinDelta() {
 		return minDelta;
 	}
 
-	public void setMinDelta(int minDelta) {
+	public void setMinDelta(float minDelta) {
 		this.minDelta = minDelta;
 	}
 
-	public int getMaxDelta() {
+	public float getMaxDelta() {
 		return maxDelta;
 	}
 
-	public void setMaxDelta(int maxDelta) {
+	public void setMaxDelta(float maxDelta) {
 		this.maxDelta = maxDelta;
 	}
 	
 	public void exit(int code) {
+		renderer.exit(this);
 		System.exit(code);
 	}
 }

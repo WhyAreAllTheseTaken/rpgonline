@@ -33,6 +33,7 @@ package io.github.tomaso2468.rpgonline.render;
 
 import org.newdawn.slick.Color;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 
 /**
@@ -122,4 +123,12 @@ public interface Renderer {
 	public int getScreenHeight();
 	public int getWidth();
 	public int getHeight();
+
+	public void sync();
+
+	public void init(Game game);
+
+	public void exit(Game game);
+
+	public void setFullscreen(boolean fullscreen);
 }
