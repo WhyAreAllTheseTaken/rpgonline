@@ -24,6 +24,7 @@ import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 public class Game {
 	private String title;
 	private Map<Integer, GameState> states = new HashMap<>();
+	private GameState previousState;
 	private GameState currentState;
 	private GameState nextState;
 	private Transition enter;
@@ -84,9 +85,33 @@ public class Game {
 		if (delta < minDelta) {
 			delta = minDelta;
 		}
+		
 		update(this, delta);
+		if (leave != null) {
+			leave.update(this, currentState, nextState, delta);
+			
+			if (leave.isDone()) {
+				leave = null;
+				
+				previousState = currentState;
+				currentState.exitState(this);
+				currentState = nextState;
+				nextState.enterState(this);
+			}
+		} else if (enter != null) {
+			enter.update(this, previousState, nextState, delta);
+			
+			if (enter.isDone()) {
+				enter = null;
+			}
+		}
 		
 		render(this, renderer);
+		if (leave != null) {
+			leave.render(this, currentState, nextState, renderer);
+		} else if (enter != null) {
+			enter.render(this, previousState, nextState, renderer);
+		}
 		
 		if (vsync) {
 			renderer.sync();
