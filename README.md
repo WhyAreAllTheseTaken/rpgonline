@@ -3,7 +3,7 @@ A game engine for 2D top-down tile-based games with multiplayer support. The lib
 
 RPGOnline is licensed under the 3-Clause BSD Licence.
 
-This library is written on top of slick2d to provide more specific features. Eventually, the project is planned to move to LWJGL2 and later LWJGL3. Currently using Slick2d are: the rendering engine, collision system, some of the input system, atmosphere system, cutscene system, some of the entity system and some of the world system. In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
+In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
 
 [Contributing to RPGOnline](/CONTRIBUTING.md)
 
@@ -17,7 +17,7 @@ Discord Server: https://discord.gg/cxBZTwb
 All dependencies are included in the release.zip file.
 - Apache Commons Lang https://commons.apache.org/proper/commons-lang/ [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 - Apache Commons Math http://commons.apache.org/proper/commons-math/ [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-- Slick2D (and related depenencies) http://slick.ninjacave.com [Slick2D Licence](http://slick.ninjacave.com/license/)
+- SlickUtil (and related depenencies) http://slick.ninjacave.com [Slick2D Licence](http://slick.ninjacave.com/license/)
   - IBXM [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
   - JInput https://github.com/jinput/jinput [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
   - LWJGL2 http://legacy.lwjgl.org [BSD 3-Clause](http://legacy.lwjgl.org/license.php.html)
@@ -46,24 +46,24 @@ All dependencies are included in the release.zip file.
 This library was created to help with the development of certain games and to avoid having to rewrite code.
 
 ## Slick2D Replacement Progress
-- Audio Engine - LWJGL &#x2611;
-- World Engine - Renderer &#x2612;
-- Collision - Slick2D &#x2612;
+- Audio Engine - Sound System &#x2611;
+- World Engine - Renderer &#x2611;
+- Collision - SlickUtil &#x2611;
 - Net Engine - Java &#x2611;
-- Bullet Hell - Slick2D &#x2612;
-- Cutscene - Slick2D &#x2612;
+- Bullet Hell - Renderer &#x2611;
+- Cutscene - Renderer&#x2611;
 - Debug - Java &#x2611;
-- Entity - Slick2D &#x2612;
-- Input - Slick2D + LWJGL &#x2612;
+- Entity - Renderer &#x2611;
+- Input - LWJGL/Renderer &#x2611;
 - Lang - Java &#x2611;
 - Low Level - JNA &#x2611;
 - Noise - Simplex Noise by Stefan Gustavson &#x2611;
-- Particles - Renderer &#x2612;
-- Shaders - SlickShader &#x2612;
-- Sky - Slick2D &#x2612;
+- Particles - Renderer &#x2611;
+- Shaders - Renderer &#x2611;
+- Sky - Renderer &#x2611;
 - Version - Java &#x2611;
-- Rendering - Interface-Based (Slick2D) &#x2612;
-- GUI - Interface-Based &#x2612;
+- Rendering - Interface-Based (OpenGL) &#x2611;
+- GUI - Interface-Based &#x2611;
 
 ## Older Versions
 The intial versions of this engine can be found in an archived repository: https://github.com/Tomaso2468/rpgonline-old
