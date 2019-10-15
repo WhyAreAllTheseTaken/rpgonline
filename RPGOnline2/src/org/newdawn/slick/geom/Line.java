@@ -7,6 +7,7 @@ package org.newdawn.slick.geom;
  * 
  * @author Kevin Glass
  */
+@SuppressWarnings("serial")
 public class Line extends Shape {
 	/** The start point of the line */
 	private Vector2f start;
@@ -15,25 +16,32 @@ public class Line extends Shape {
 	/** The vector between the two points */
 	private Vector2f vec;
 	/** The length of the line squared */
+	@SuppressWarnings("unused")
 	private float lenSquared;
 
 	/** Temporary storage - declared globally to reduce GC */
 	private Vector2f loc = new Vector2f(0, 0);
 	/** Temporary storage - declared globally to reduce GC */
+	@SuppressWarnings("unused")
 	private Vector2f v = new Vector2f(0, 0);
 	/** Temporary storage - declared globally to reduce GC */
+	@SuppressWarnings("unused")
 	private Vector2f v2 = new Vector2f(0, 0);
 	/** Temporary storage - declared globally to reduce GC */
+	@SuppressWarnings("unused")
 	private Vector2f proj = new Vector2f(0, 0);
 
 	/** Temporary storage - declared globally to reduce GC */
 	private Vector2f closest = new Vector2f(0, 0);
 	/** Temporary storage - declared globally to reduce GC */
+	@SuppressWarnings("unused")
 	private Vector2f other = new Vector2f(0, 0);
 
 	/** True if this line blocks on the outer edge */
+	@SuppressWarnings("unused")
 	private boolean outerEdge = true;
 	/** True if this line blocks on the inner edge */
+	@SuppressWarnings("unused")
 	private boolean innerEdge = true;
 
 	/**

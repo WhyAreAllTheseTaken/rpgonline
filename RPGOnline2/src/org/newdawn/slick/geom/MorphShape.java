@@ -7,9 +7,10 @@ import java.util.ArrayList;
  *  
  * @author kevin
  */
+@SuppressWarnings("serial")
 public class MorphShape extends Shape {
 	/** The shapes to morph between */
-	private ArrayList shapes = new ArrayList();
+	private ArrayList<Shape> shapes = new ArrayList<>();
 	/** The offset between the shapes */
 	private float offset;
 	

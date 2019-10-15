@@ -5,6 +5,7 @@ package org.newdawn.slick.geom;
  * 
  * @author Kevin Glass
  */
+@SuppressWarnings("serial")
 public class Rectangle extends Shape {
 	/** The width of the box */
 	protected float width;

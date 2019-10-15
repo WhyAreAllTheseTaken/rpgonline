@@ -1,13 +1,13 @@
 package org.newdawn.slick.geom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A polygon implementation meeting the <code>Shape</code> contract. 
  * 
  * @author Mark
  */
+@SuppressWarnings("serial")
 public class Polygon extends Shape {
 	/** Allow duplicated points */
 	private boolean allowDups = false;
@@ -94,7 +94,7 @@ public class Polygon extends Shape {
     		return;
     	}
     	
-        ArrayList tempPoints = new ArrayList();
+        ArrayList<Float> tempPoints = new ArrayList<>();
         for(int i=0;i<points.length;i++) {
             tempPoints.add(new Float(points[i]));
         }

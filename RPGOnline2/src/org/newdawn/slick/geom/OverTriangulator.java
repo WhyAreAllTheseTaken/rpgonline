@@ -6,6 +6,7 @@ package org.newdawn.slick.geom;
  * 
  * @author kevin
  */
+@SuppressWarnings("serial")
 public class OverTriangulator implements Triangulator {
 	/** The triangles data */
 	private float[][] triangles;

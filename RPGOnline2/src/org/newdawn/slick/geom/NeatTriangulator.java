@@ -6,6 +6,7 @@ package org.newdawn.slick.geom;
  * 
  * @author Online examples
  */
+@SuppressWarnings("serial")
 public class NeatTriangulator implements Triangulator
 {
 	/** The error factor */
@@ -393,7 +394,8 @@ public class NeatTriangulator implements Triangulator
      * 
      * @throws InternalException Indicates an invalid polygon
      */
-    private void optimize() throws InternalException
+    @SuppressWarnings("unused")
+	private void optimize() throws InternalException
     {
         do
         {

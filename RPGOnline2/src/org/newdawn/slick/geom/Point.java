@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Transform;
  * 
  * @author Kova
  */
+@SuppressWarnings("serial")
 public class Point extends Shape 
 { 
 	/**

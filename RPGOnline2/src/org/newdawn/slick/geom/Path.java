@@ -8,8 +8,10 @@ import java.util.ArrayList;
  *
  * @author kevin
  */
+@SuppressWarnings("serial")
 public class Path extends Shape {
 	/** The local list of points */
+	@SuppressWarnings("rawtypes")
 	private ArrayList localPoints = new ArrayList();
 	/** The current x coordinate */
 	private float cx;
@@ -18,8 +20,10 @@ public class Path extends Shape {
 	/** True if the path has been closed */
 	private boolean closed;
 	/** The list of holes placed */
-	private ArrayList holes = new ArrayList();
+	@SuppressWarnings("rawtypes")
+	private ArrayList<ArrayList> holes = new ArrayList<>();
 	/** The current hole being built */
+	@SuppressWarnings("rawtypes")
 	private ArrayList hole;
 	
 	/**
@@ -28,6 +32,7 @@ public class Path extends Shape {
 	 * @param sx The start x coordinate of the path
  	 * @param sy The start y coordiante of the path
 	 */
+	@SuppressWarnings("unchecked")
 	public Path(float sx, float sy) {
 		localPoints.add(new float[] {sx,sy});
 		cx = sx;
@@ -41,6 +46,7 @@ public class Path extends Shape {
 	 * @param sx The start point of the hole
 	 * @param sy The start point of the hole
 	 */
+	@SuppressWarnings("rawtypes")
 	public void startHole(float sx, float sy) {
 		hole = new ArrayList();
 		holes.add(hole);
@@ -53,6 +59,7 @@ public class Path extends Shape {
 	 * @param x The x coordinate to draw the line to
 	 * @param y The y coordiante to draw the line to
 	 */
+	@SuppressWarnings("unchecked")
 	public void lineTo(float x, float y) {
 		if (hole != null) {
 			hole.add(new float[] {x,y});
@@ -96,6 +103,7 @@ public class Path extends Shape {
 	 * @param cy2 The y coordinate of the second control point
 	 * @param segments The number of segments to use for the new curve
 	 */
+	@SuppressWarnings("unchecked")
 	public void curveTo(float x, float y, float cx1, float cy1, float cx2, float cy2, int segments) {
 		// special case for zero movement
 		if ((cx == x) && (cy == y)) {
@@ -134,6 +142,7 @@ public class Path extends Shape {
 	/**
 	 * @see org.newdawn.slick.geom.Shape#transform(org.newdawn.slick.geom.Transform)
 	 */
+	@SuppressWarnings("rawtypes")
 	public Shape transform(Transform transform) {
 		Path p = new Path(cx,cy);
 		p.localPoints = transform(localPoints, transform);
@@ -152,6 +161,7 @@ public class Path extends Shape {
 	 * @param t The transform to apply
 	 * @return The transformed points
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private ArrayList transform(ArrayList pts, Transform t) {
 		float[] in = new float[pts.size()*2];
 		float[] out = new float[pts.size()*2];

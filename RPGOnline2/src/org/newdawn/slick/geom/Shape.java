@@ -8,6 +8,7 @@ import java.io.Serializable;
  * 
  * @author Mark
  */
+@SuppressWarnings("serial")
 public abstract class Shape implements Serializable {
     /** The points representing this polygon. */
     protected float points[];
@@ -606,7 +607,8 @@ public abstract class Shape implements Serializable {
     		return;
     	}
     	if (points.length >= 6) {
-    		boolean clockwise = true;
+    		@SuppressWarnings("unused")
+			boolean clockwise = true;
     		float area = 0;
     		for (int i=0;i<(points.length/2)-1;i++) {
     			float x1 = points[(i*2)];

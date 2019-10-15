@@ -63,7 +63,8 @@ public final class ShapeRenderer {
         Texture t = TextureImpl.getLastBind();
         TextureImpl.bindNone();
 
-        float center[] = shape.getCenter();
+        @SuppressWarnings("unused")
+		float center[] = shape.getCenter();
         GL.glBegin(SGL.GL_LINE_STRIP);
         for(int i=0;i<points.length;i+=2) {
             fill.colorAt(shape, points[i], points[i + 1]).bind();
@@ -205,7 +206,8 @@ public final class ShapeRenderer {
 			}
     	});
     	
-        float points[] = shape.getPoints();
+        @SuppressWarnings("unused")
+		float points[] = shape.getPoints();
         
         if (t == null) {
         	TextureImpl.bindNone();

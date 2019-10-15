@@ -10,6 +10,7 @@ import org.apache.commons.math3.util.FastMath;
  * 
  * @author Mark Bernard
  */
+@SuppressWarnings("serial")
 public class RoundedRectangle extends Rectangle {
 	/** Indicates the top left corner should be rounded */
 	public static final int TOP_LEFT  = 1;
@@ -185,7 +186,7 @@ public class RoundedRectangle extends Rectangle {
                 cornerRadius = doubleRadius / 2;
             }
             
-            ArrayList tempPoints = new ArrayList();
+            ArrayList<Float> tempPoints = new ArrayList<Float>();
             //the outer most set of points for each arc will also ac as the points that start the
             //straight sides, so the straight sides do not have to be added.
             
@@ -242,8 +243,8 @@ public class RoundedRectangle extends Rectangle {
      * @param end The end angle of the arc.
      * @return The points created.
      */
-    private List createPoints(int numberOfSegments, float radius, float cx, float cy, float start, float end) {
-        ArrayList tempPoints = new ArrayList();
+    private List<Float> createPoints(int numberOfSegments, float radius, float cx, float cy, float start, float end) {
+        ArrayList<Float> tempPoints = new ArrayList<Float>();
 
         int step = 360 / numberOfSegments;
         

@@ -36,6 +36,7 @@ import java.util.List;
  * 
  * @author Matthias Mann
  */
+@SuppressWarnings("serial")
 public class MannTriangulator implements Triangulator {
 	/** The allowed error value */
 	private static final double EPSILON = 1e-5;
@@ -49,7 +50,7 @@ public class MannTriangulator implements Triangulator {
 	/** The next available point */
 	private Point nextFreePoint;
 	/** The list of triangles created (or rather points in triangles, 3xn) */
-	private List triangles = new ArrayList();
+	private List<Vector2f> triangles = new ArrayList<>();
 	
 	/** Creates a new instance of Triangulator0 */
 	public MannTriangulator() {
@@ -308,6 +309,7 @@ public class MannTriangulator implements Triangulator {
 		/** The angle at this point in the path */
 		protected double angle;
 		/** The distance of this point from */
+		@SuppressWarnings("unused")
 		protected double dist;
 
 		/**
@@ -411,6 +413,7 @@ public class MannTriangulator implements Triangulator {
 		 * @param p The other point
 		 * @return The angle between this point and another
 		 */
+		@SuppressWarnings("unused")
 		public double getAngle(Point p) {
 			double dx = p.pt.x - pt.x;
 			double dy = p.pt.y - pt.y;
@@ -424,6 +427,7 @@ public class MannTriangulator implements Triangulator {
 		 * 
 		 * @return True if this point remains concave
 		 */
+		@SuppressWarnings("unused")
 		public boolean isConcave() {
 			return angle < 0;
 		}
