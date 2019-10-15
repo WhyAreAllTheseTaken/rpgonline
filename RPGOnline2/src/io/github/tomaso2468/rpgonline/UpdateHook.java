@@ -29,10 +29,19 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package io.github.tomaso2468.rpgonline;
 
 /**
- * A package for game states.
+ * A task to be run during a game update.
+ * 
  * @author Tomaso2468
- *
  */
-package io.github.tomaso2468.rpgonline.state;
+public interface UpdateHook {
+	/**
+	 * Update the game.
+	 * 
+	 * @param game      The game.
+	 * @param delta     The time in seconds since the last game update.
+	 */
+	public void update(Game game, float delta);
+}

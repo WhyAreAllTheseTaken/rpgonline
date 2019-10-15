@@ -50,6 +50,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.tomaso2468.rpgonline.BaseScaleState;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
@@ -65,7 +66,6 @@ import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.render.RenderManager;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
-import io.github.tomaso2468.rpgonline.state.BaseScaleState;
 
 /**
  * A state for bullet based games.

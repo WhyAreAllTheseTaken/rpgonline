@@ -29,9 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package io.github.tomaso2468.rpgonline.state;
-
-import org.newdawn.slick.GameContainer;
+package io.github.tomaso2468.rpgonline;
 
 /**
  * An interface allowing a state to except a float scaling value.
@@ -43,5 +41,5 @@ public interface BaseScaleState {
 	 * Scale the state to the specified scaling (1 == 100%).
 	 * @param base The scaling for the state.
 	 */
-	public void scale(GameContainer container, float base);
+	public void scale(Game container, float base);
 }
