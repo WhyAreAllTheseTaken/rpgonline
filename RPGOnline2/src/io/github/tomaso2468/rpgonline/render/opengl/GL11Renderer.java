@@ -21,12 +21,14 @@ import org.newdawn.slick.opengl.renderer.SGL;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
+import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public abstract class GL11Renderer implements Renderer {
 	private RenderMode mode = RenderMode.MODE_NONE;
+	private ColorMode colorMode = ColorMode.NORMAL;
 	private boolean pushed;
 	private List<FloatBuffer> stack = new ArrayList<>();
 	private int stackIndex;
@@ -315,5 +317,17 @@ public abstract class GL11Renderer implements Renderer {
 	@Override
 	public String getRendererGL() {
 		return "OpenGL";
+	}
+	
+	@Override
+	public void setColorMode(ColorMode mode) {
+		if (this.colorMode == mode) {
+			return;
+		}
+	}
+	
+	@Override
+	public ColorMode getColorMode(ColorMode mode) {
+		return mode;
 	}
 }

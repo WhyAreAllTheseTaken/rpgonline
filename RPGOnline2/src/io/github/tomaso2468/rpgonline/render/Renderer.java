@@ -132,6 +132,9 @@ public interface Renderer {
 	public void setMode(RenderMode mode);
 	public RenderMode getMode(RenderMode mode);
 	
+	public void setColorMode(ColorMode mode);
+	public ColorMode getColorMode(ColorMode mode);
+	
 	public TextureReference getPNG(URL url) throws RenderException, IOException;
 	public void copyArea(Image buffer, int x, int y);
 	public TextureReference createEmptyTexture(int width, int height) throws RenderException;
