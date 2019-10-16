@@ -324,6 +324,41 @@ public abstract class GL11Renderer implements Renderer {
 		if (this.colorMode == mode) {
 			return;
 		}
+		this.colorMode = mode;
+		
+		switch(mode) {
+		case ADD:
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColorMask(true, true, true, true);
+			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+			break;
+		case ALPHA_BLEND:
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColorMask(true, true, true, false);
+			GL11.glBlendFunc(GL11.GL_DST_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
+			break;
+		case ALPHA_MAP:
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glColorMask(false, false, false, true);
+			break;
+		case MULTIPLY:
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColorMask(true, true, true, true);
+			GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_SRC_COLOR);
+			break;
+		case NORMAL:
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColorMask(true, true, true, true);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			break;
+		case SCREEN:
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColorMask(true, true, true, true);
+			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_COLOR);
+			break;
+		default:
+			break;
+		}
 	}
 	
 	@Override
