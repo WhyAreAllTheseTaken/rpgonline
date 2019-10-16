@@ -5,70 +5,14 @@ import java.awt.Toolkit;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 
-public class LWJGL2Renderer implements GLRenderer {
+public class LWJGL2Renderer extends GL11Renderer {
 	private int width = 640;
 	private int height = 480;
 	private boolean init = false;
-
-	@Override
-	public void renderEmbedded(Image img, float x, float y, float w, float h) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void render(Image img, float x, float y, float w, float h) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void startUse(Image img) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void endUse(Image img) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void renderFiltered(Image img, float x, float y, float w, float h, Color c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void translate(Graphics g, float x, float y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void scale(Graphics g, float x, float y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Graphics getGUIGraphics() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int getScreenWidth() {
@@ -105,6 +49,8 @@ public class LWJGL2Renderer implements GLRenderer {
 		} catch (LWJGLException e) {
 			throw new RenderException("Error creating display.", e);
 		}
+		Display.setVSyncEnabled(game.isVsync());
+		Display.setTitle(game.getTitle());
 	}
 
 	/**

@@ -16,6 +16,7 @@ import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.transition.BlankTransition;
 import io.github.tomaso2468.rpgonline.transition.Transition;
@@ -49,11 +50,13 @@ public class Game {
 	public Game(String title, Version version) {
 		this.title = title;
 		this.version = version;
-		
+
 		currentState = new GameState() {
 			@Override
 			public void render(Game game, Renderer renderer) {
+				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				
+				renderer.drawQuad(100, 100, 200, 200, Color.orange);
 			}
 
 			@Override
@@ -65,34 +68,34 @@ public class Game {
 
 	public void start() throws RenderException {
 		started = true;
-		
+
 		init(this);
 		while (true) {
 			loop();
 		}
 	}
-	
+
 	protected void loop() {
 		float delta = (System.nanoTime() - lastUpdateTime) / 1000000000f;
 		lastUpdateTime = System.nanoTime();
-		
+
 		fps = 1000000000f / (System.nanoTime() - lastRenderTime);
 		lastRenderTime = System.nanoTime();
-		
+
 		if (delta > maxDelta) {
 			delta = maxDelta;
 		}
 		if (delta < minDelta) {
 			delta = minDelta;
 		}
-		
+
 		update(this, delta);
 		if (leave != null) {
 			leave.update(this, currentState, nextState, delta);
-			
+
 			if (leave.isDone()) {
 				leave = null;
-				
+
 				previousState = currentState;
 				currentState.exitState(this);
 				currentState = nextState;
@@ -100,23 +103,27 @@ public class Game {
 			}
 		} else if (enter != null) {
 			enter.update(this, previousState, nextState, delta);
-			
+
 			if (enter.isDone()) {
 				enter = null;
 			}
 		}
-		
+
 		if (renderer.displayClosePressed()) {
 			exit(0);
 		}
-		
+
+		if (clearEveryFrame) {
+			renderer.clear();
+		}
+
 		render(this, renderer);
 		if (leave != null) {
 			leave.render(this, currentState, nextState, renderer);
 		} else if (enter != null) {
 			enter.render(this, previousState, nextState, renderer);
 		}
-		
+
 		renderer.doUpdate();
 		if (vsync) {
 			renderer.sync(fpsCap);
@@ -141,52 +148,52 @@ public class Game {
 	public void preUpdate(Game game, float delta) {
 		Debugger.start();
 	}
-	
+
 	public void postUpdate(Game game, float delta) {
 		Debugger.stop();
 	}
-	
+
 	public final void render(Game game, Renderer renderer) {
 		preRender(game, renderer);
 		currentState.render(game, renderer);
 		postRender(game, renderer);
 	}
-	
+
 	public void preRender(Game game, Renderer renderer) {
 		Debugger.start();
 	}
-	
+
 	/**
 	 * The debug frame from the previous rendering frame.
 	 */
 	private DebugFrame lastFrame;
-	
+
 	/**
 	 * The debug frame from the previous game update.
 	 */
 	private DebugFrame lastUpdate;
-	
+
 	/**
 	 * Rounds the value to 1 decimal place.
+	 * 
 	 * @param value The value to round.
 	 * @return A rounded value.
 	 */
 	private double round1DP(double value) {
 		return FastMath.round(value * 10) / 10.0;
 	}
-	
+
 	public void postRender(Game game, Renderer renderer) {
 		if (RPGConfig.isDebug()) {
 			Debugger.start("debug-screen");
 			Graphics g = renderer.getGUIGraphics();
-			
+
 			long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
 
 			float y = 4;
 			g.setColor(Color.white);
 
-			y = drawDebugLineRYWHigh(g, "FPS", getFPS(),
-					(vsync ? 60 : getFPSCap()) - 3, 30, y, false);
+			y = drawDebugLineRYWHigh(g, "FPS", getFPS(), (vsync ? 60 : getFPSCap()) - 3, 30, y, false);
 			if (ServerManager.client_max_time != 0) {
 				if (ServerManager.client_time == 0) {
 					y = drawDebugLineRYWHigh(g, "Client TPS", 0, 1, 1, y, false);
@@ -220,7 +227,7 @@ public class Game {
 					(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000.0,
 					Runtime.getRuntime().maxMemory() / 1000000.0, Runtime.getRuntime().maxMemory() * 0.75 / 1000000.0,
 					Runtime.getRuntime().maxMemory() / 1000000.0, y, false);
-			
+
 			if (uptime < 1000) {
 				y = drawDebugLineLabel(g, "Uptime", uptime + " millis", y, false);
 			} else if (uptime < 1000 * 60) {
@@ -232,10 +239,12 @@ public class Game {
 			} else if (uptime < 1000 * 60 * 60 * 24 * 365.25) {
 				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0 / 24.0) + " days", y, false);
 			} else {
-				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0 / 24.0 / 365.24) + " years", y, false);
+				y = drawDebugLineLabel(g, "Uptime", round1DP(uptime / 1000.0 / 60.0 / 60.0 / 24.0 / 365.24) + " years",
+						y, false);
 			}
-			
-			y = drawDebugLineLabel(g, "Pathfinding Ops/s", PathFindingManager.getPathfindingOperations() / (uptime / 1000) + "", y, false);
+
+			y = drawDebugLineLabel(g, "Pathfinding Ops/s",
+					PathFindingManager.getPathfindingOperations() / (uptime / 1000) + "", y, false);
 
 			y = drawDebugLeft(g, y);
 
@@ -246,7 +255,7 @@ public class Game {
 					y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
 				}
 			}
-			
+
 			if (lastUpdate != null) {
 				y = drawDebugTitle(g, "Main Thread Updates", y, false);
 				for (Entry<String, Long> t : lastUpdate.getTimes()) {
@@ -314,7 +323,7 @@ public class Game {
 			y = drawDebugLineLabel(g, "Particles", RPGConfig.isParticles() + "", y, true);
 			y = drawDebugLineLabel(g, "Pixel Snap", RPGConfig.isSnapToPixel() + "", y, true);
 			y = drawDebugLineLabel(g, "Wind", RPGConfig.isWind() + "", y, true);
-			
+
 			y = drawDebugRight(g, y);
 
 			Debugger.stop("debug-screen");
@@ -323,7 +332,7 @@ public class Game {
 		Debugger.stop();
 		lastFrame = Debugger.getRenderFrame();
 	}
-	
+
 	/**
 	 * Draws additional information of the left side of the debug screen.
 	 * 
@@ -400,8 +409,7 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
-			g.drawString(label + ": " + data,
-					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 		return y + g.getFont().getHeight("[]") + 1;
 	}
@@ -435,8 +443,7 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
-			g.drawString(label + ": " + data,
-					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -472,8 +479,7 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
-			g.drawString(label + ": " + data,
-					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -509,8 +515,7 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
-			g.drawString(label + ": " + data,
-					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -546,8 +551,7 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + data, 4, y);
 		} else {
-			g.drawString(label + ": " + data,
-					renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
+			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
 		g.setColor(Color.white);
@@ -559,7 +563,8 @@ public class Game {
 	 * the value of the data. This method treats higher values as better so if the
 	 * value is below {@code red} the text is a pale red, if the value is below
 	 * {@code yellow} the text is a pale yellow and if the value is below both the
-	 * text is a pale red. This method treats the inputs as ram information in mebibytes (MiB).
+	 * text is a pale red. This method treats the inputs as ram information in
+	 * mebibytes (MiB).
 	 * 
 	 * @param g      The current graphics context.
 	 * @param label  The label of the data.
@@ -583,8 +588,8 @@ public class Game {
 		if (!side) {
 			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", 4, y);
 		} else {
-			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", renderer.getWidth()
-					- 4 - g.getFont().getWidth(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB"), y);
+			g.drawString(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB", renderer.getWidth() - 4
+					- g.getFont().getWidth(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB"), y);
 		}
 
 		g.setColor(Color.white);
@@ -598,41 +603,41 @@ public class Game {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public int getStateCount() {
 		return states.size();
 	}
-	
+
 	public Set<Entry<Integer, GameState>> getStates() {
 		return states.entrySet();
 	}
-	
+
 	public Map<Integer, GameState> getStateMap() {
 		return states;
 	}
-	
+
 	public GameState getCurrentState() {
 		return currentState;
 	}
-	
+
 	public int getCurrentStateID() {
 		return currentState.getID();
 	}
-	
+
 	public void addState(GameState state) {
 		states.put(state.getID(), state);
 	}
-	
+
 	public GameState getStateByID(int id) {
 		return states.get(id);
 	}
-	
+
 	public void changeState(int id, Transition enter, Transition leave) {
 		nextState = getStateByID(id);
 		this.enter = enter;
 		this.leave = leave;
 	}
-	
+
 	public void changeState(int id) {
 		changeState(id, new BlankTransition(), new BlankTransition());
 	}
@@ -644,11 +649,11 @@ public class Game {
 	public void setFPSCap(int fpsCap) {
 		this.fpsCap = fpsCap;
 	}
-	
+
 	public float getFPS() {
 		return fps;
 	}
-	
+
 	public void setFullscreen(boolean fullscreen) throws RenderException {
 		if (isFullscreen() == fullscreen) {
 			return;
@@ -658,7 +663,7 @@ public class Game {
 			renderer.setFullscreen(fullscreen);
 		}
 	}
-	
+
 	public boolean isFullscreen() {
 		return fullscreen;
 	}
@@ -670,11 +675,11 @@ public class Game {
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
-	
+
 	public Version getVersion() {
 		return version;
 	}
-	
+
 	public String getVersionFlavour() {
 		return "Release";
 	}
@@ -742,7 +747,7 @@ public class Game {
 	public void setMaxDelta(float maxDelta) {
 		this.maxDelta = maxDelta;
 	}
-	
+
 	public void exit(int code) {
 		renderer.exit(this);
 		System.exit(code);

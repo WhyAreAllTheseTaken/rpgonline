@@ -52,7 +52,6 @@ public interface Renderer {
 	 * @param h The height of the texture.
 	 */
 	public void renderEmbedded(Image img, float x, float y, float w, float h);
-
 	/**
 	 * Renders a texture in embedded mode.
 	 * @param img The texture to render.
@@ -62,19 +61,16 @@ public interface Renderer {
 	 * @param h The height of the texture.
 	 */
 	public void render(Image img, float x, float y, float w, float h);
-	
 	/**
 	 * Binds a texture.
 	 * @param img The texture to bind.
 	 */
 	public void startUse(Image img);
-	
 	/**
 	 * Unbinds a texture.
 	 * @param img The texture to unbind.
 	 */
 	public void endUse(Image img);
-
 	/**
 	 * Renders a texture with a color filter.
 	 * @param img The texture to render.
@@ -85,7 +81,6 @@ public interface Renderer {
 	 * @param c The color of the texture.
 	 */
 	public void renderFiltered(Image img, float x, float y, float w, float h, Color c);
-	
 	/**
 	 * Renders a texture sheared.
 	 * @param img The texture to render.
@@ -97,49 +92,33 @@ public interface Renderer {
 	 * @param vshear The vertical shear.
 	 */
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear);
+	public void drawQuad(float x, float y, float w, float h, Color c);
+	public void translate(float x, float y);
+	public void scale(float x, float y);
+	public void rotate(float x, float y, float a);
 	
-	/**
-	 * Translates the render.
-	 * @param g The graphics object.
-	 * @param x The X translation.
-	 * @param y The Y translation.
-	 */
-	public void translate(Graphics g, float x, float y);
+	public void clear();
 	
-	/**
-	 * Scales the render.
-	 * @param g The graphics object.
-	 * @param x The X scale.
-	 * @param y The Y scale.
-	 */
-	public void scale(Graphics g, float x, float y);
-	
-	/**
-	 * Gets the graphics context for the GUI.
-	 * @return A graphics context.
-	 */
 	public Graphics getGUIGraphics();
 
 	public int getScreenWidth();
 	public int getScreenHeight();
 	public int getWidth();
 	public int getHeight();
-
-	public void sync(float fps);
-
+	
 	public void init(Game game) throws RenderException;
-
 	public void exit(Game game);
 
 	public void setFullscreen(boolean fullscreen) throws RenderException;
-	
 	public void setResolution(int width, int height) throws RenderException;
-
-	public void doUpdate();
-	
 	public void setVSync(boolean vsync);
+	public void setWindowTitle(String title);
+	
+	public void doUpdate();
+	public void sync(float fps);
 	
 	public boolean displayClosePressed();
 	
-	public void setWindowTitle(String title);
+	public void setMode(RenderMode mode);
+	public RenderMode getMode(RenderMode mode);
 }
