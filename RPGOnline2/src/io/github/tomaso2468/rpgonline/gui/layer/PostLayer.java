@@ -31,8 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layer;
 
-import org.newdawn.slick.SlickException;
-
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
@@ -84,7 +82,7 @@ public class PostLayer extends Layer {
 		
 		g.copyArea(buffer, 0, 0);
 		g.pushTransform();
-		post.doPostProcess(null, null, buffer, g.getRenderer());
+		post.doPostProcess(null, buffer, g.getRenderer());
 		g.popTransform();
 		
 		g.scale(scaling, scaling);

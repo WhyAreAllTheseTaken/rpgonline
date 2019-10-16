@@ -140,5 +140,5 @@ public interface Graphics {
 
 	public void copyArea(Image buffer, int i, int j);
 
-	public Graphics getRenderer();
+	public Renderer getRenderer();
 }
