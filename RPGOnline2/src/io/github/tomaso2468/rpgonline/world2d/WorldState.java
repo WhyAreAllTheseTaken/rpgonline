@@ -41,18 +41,17 @@ import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
+
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.tomaso2468.rpgonline.BaseScaleState;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.GameState;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.UpdateHook;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
@@ -67,7 +66,7 @@ import io.github.tomaso2468.rpgonline.post.MDRMap;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
-import io.github.tomaso2468.rpgonline.render.RenderManager;
+import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
@@ -80,7 +79,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
  * 
  * @author Tomaso2468
  */
-public class WorldState extends BasicGameState implements BaseScaleState {
+public class WorldState implements GameState, BaseScaleState {
 	/**
 	 * This state's id.
 	 */
@@ -183,8 +182,8 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		guis.init(container.getWidth(), container.getHeight(), base_scale);
+	public void init(Game game) throws RenderException {
+		guis.init(game.getWidth(), game.getHeight(), base_scale);
 	}
 	
 	/**
@@ -196,72 +195,43 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
 
 		Debugger.start("game-render");
-		render2(container, game, g);
+		render2(game, renderer);
 		Debugger.stop("game-render");
 
-		g.resetTransform();
-
-		if (RPGConfig.isSnapToPixel() && post_enable) {
-			Debugger.start("snap");
-			if (buffer == null) {
-				buffer = new Image(container.getWidth(), container.getHeight());
-			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
-				buffer.destroy();
-				buffer = new Image(container.getWidth(), container.getHeight());
-			}
-			if (buffer2 == null) {
-				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
-			} else if (container.getWidth() / (int) (zoom) != buffer2.getWidth()
-					|| container.getHeight() / (int) (zoom) != buffer2.getHeight()) {
-				buffer2.destroy();
-				buffer2 = new Image((int) container.getWidth() / (int) (zoom), container.getHeight() / (int) (zoom));
-			}
-
-			buffer.setFilter(Image.FILTER_NEAREST);
-			buffer2.setFilter(Image.FILTER_NEAREST);
-
-			g.copyArea(buffer, 0, 0);
-			g.drawImage(buffer.getScaledCopy(buffer2.getWidth(), buffer2.getHeight()), 0, 0);
-			g.copyArea(buffer2, 0, 0);
-			g.drawImage(buffer2.getScaledCopy(buffer.getWidth(), buffer.getHeight()), 0, 0);
-
-			buffer.setFilter(Image.FILTER_LINEAR);
-
-			Debugger.stop("snap");
-		}
+		renderer.resetTransform();
 
 		if (post_enable) {
 			Debugger.start("effects");
 			if (buffer == null) {
-				buffer = new Image(container.getWidth(), container.getHeight());
-			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
-				buffer = new Image(container.getWidth(), container.getHeight());
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			}
 			
 			if (post != null) {
-				g.copyArea(buffer, 0, 0);
+				renderer.copyArea(buffer, 0, 0);
 
 				if (!(post instanceof MultiEffect)) {
 					Debugger.start("post-" + post.getClass());
 				}
-				post.doPostProcess(container, game, buffer, g);
+				post.doPostProcess(game, buffer, renderer);
 				if (!(post instanceof MultiEffect)) {
 					Debugger.stop("post-" + post.getClass());
 				}
 			}
 			if(RPGConfig.isMDR()) {
 				Debugger.start("mdr");
-				g.copyArea(buffer, 0, 0);
+				renderer.copyArea(buffer, 0, 0);
 				
 				if (mdr == null) {
 					mdr = new MDRMap();
 				}
-				mdr.doPostProcess(container, game, buffer, g);
+				mdr.doPostProcess(game, buffer, renderer);
 				Debugger.stop("mdr");
 			}
 			Debugger.stop("effects");
@@ -270,26 +240,16 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 
 		if (gui) {
 			Debugger.start("gui");
-
-			Rectangle world_clip = g.getWorldClip();
-			Rectangle clip = g.getClip();
-			g.resetTransform();
 			
-			io.github.tomaso2468.rpgonline.render.Graphics g2 = RenderManager.getRenderer().getGUIGraphics(g);
-			g2.endSlick();
+			renderer.resetTransform();
+			
+			Graphics g2 = renderer.getGUIGraphics();
 			
 			ThemeManager.getTheme().predraw(g2);
 			guis.paint(g2, base_scale);
-			
-			g2.beginSlick();
-			g.setWorldClip(world_clip);
-			g.setClip(clip);
-			g.resetTransform();
 
 			Debugger.stop("gui");
 		}
-
-		g.flush();
 
 		Debugger.stop("render");
 	}
@@ -358,31 +318,29 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 	/**
 	 * A method that renders the world.
 	 */
-	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		Renderer renderer = RenderManager.getRenderer();
-		
+	public void render2(Game game, Renderer renderer) throws RenderException {
 		List<LightSource> lights = computerLights();
 
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
 
 		Debugger.start("sky");
 		if (sky != null) {
-			sky.render(g, container, x, y, 0, world, world.getLightColor());
+			sky.render(renderer, game, x, y, 0, world, world.getLightColor());
 		}
 		Debugger.stop("sky");
 
-		RenderManager.getRenderer().translate(g, container.getWidth() / 2, container.getHeight() / 2);
+		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
 
-		RenderManager.getRenderer().scale(g, zoom * base_scale, zoom * base_scale);
+		renderer.scale2D(zoom * base_scale, zoom * base_scale);
 
 		if (shake > 0) {
-			RenderManager.getRenderer().translate(g, (float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+			renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 		}
 		float sx = (float) (x * RPGConfig.getTileSize());
 		float sy = (float) (y * RPGConfig.getTileSize());
 
-		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
-		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
+		long dist_x = (long) (game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
+		long dist_y = (long) (game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
 
 		Debugger.start("entity-compute");
 		List<Entity> entities1 = ((Client2D) ServerManager.getClient()).getWorld().getEntities();
@@ -448,7 +406,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 							if (current != null)
 								renderer.endUse(current);
 
-							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+							tex.render(renderer, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
 									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
 
 							if (current != null)
@@ -486,7 +444,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 											if (current != null)
 												renderer.endUse(current);
 
-											tex.render(g, x, y, -1, world, e, sx, sy, wind);
+											tex.render(renderer, x, y, -1, world, e, sx, sy, wind);
 
 											if (current != null)
 												renderer.startUse(current);
@@ -528,7 +486,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 						if (current != null)
 							renderer.endUse(current);
 
-						tex.render(g, x, y, -3, world, e, sx, sy, wind);
+						tex.render(renderer, x, y, -3, world, e, sx, sy, wind);
 
 						if (current != null)
 							renderer.startUse(current);
@@ -561,7 +519,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				if (particle.isCustom()) {
 					if (current != null)
 						renderer.endUse(current);
-					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx,
+					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
 							particle.getY() * RPGConfig.getTileSize() - sy);
 					if (current != null)
 						renderer.startUse(current);
@@ -590,9 +548,7 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 			renderer.endUse(current);
 		current = null;
 
-		g.flush();
-
-		g.resetTransform();
+		renderer.resetTransform();
 
 		if (RPGConfig.isLighting()) {
 			Debugger.start("lighting");

@@ -155,14 +155,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	private static int filterMode = Image.FILTER_NEAREST;
-
-	/**
-	 * Determines if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	private static boolean snapToPixel = false;
 	
 	/**
 	 * The number of threads to use for pathfinding.
@@ -616,31 +608,7 @@ public final class RPGConfig {
 	public static void setFilterMode(int filterMode) {
 		RPGConfig.filterMode = filterMode;
 	}
-
-	/**
-	 * Determines if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @return {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static boolean isSnapToPixel() {
-		return snapToPixel;
-	}
-
-	/**
-	 * Sets if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @param snapToPixel {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static void setSnapToPixel(boolean snapToPixel) {
-		RPGConfig.snapToPixel = snapToPixel;
-	}
-
+	
 	/**
 	 * Gets the number of pathfinding threads to use.
 	 * @return An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
