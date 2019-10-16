@@ -33,12 +33,12 @@ package io.github.tomaso2468.rpgonline.post;
 
 import java.net.URL;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import slickshader.Shader;
 
 /**
@@ -46,7 +46,7 @@ import slickshader.Shader;
  * 
  * @author Tomaso2468
  */
-public class ShaderEffect implements PostEffect {
+public class GLShaderEffect implements PostEffect {
 	/**
 	 * The vertex shader.
 	 */
@@ -65,9 +65,9 @@ public class ShaderEffect implements PostEffect {
 	 * 
 	 * @param fragment The fragment shader.
 	 */
-	public ShaderEffect(URL fragment) {
+	public GLShaderEffect(URL fragment) {
 		super();
-		this.vertex = ShaderEffect.class.getResource("/generic.vrt");
+		this.vertex = GLShaderEffect.class.getResource("/generic.vrt");
 		this.fragment = fragment;
 	}
 	
@@ -77,7 +77,7 @@ public class ShaderEffect implements PostEffect {
 	 * @param vertex   The vertex shader.
 	 * @param fragment The fragment shader.
 	 */
-	public ShaderEffect(URL vertex, URL fragment) {
+	public GLShaderEffect(URL vertex, URL fragment) {
 		super();
 		this.vertex = vertex;
 		this.fragment = fragment;
@@ -87,21 +87,25 @@ public class ShaderEffect implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
-		g.clear();
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
+		renderer.clear();
 
 		if (shader == null) {
-			shader = Shader.makeShader(vertex, fragment);
+			try {
+				shader = Shader.makeShader(vertex, fragment);
+			} catch (SlickException e) {
+				throw new RenderException("Error creating GL shader", e);
+			}
 			shader.startShader();
-			initShader(shader, container);
+			initShader(shader, game);
 		} else {
 			shader.startShader();
 		}
 
-		updateShader(shader, container);
+		updateShader(shader, game);
 
-		g.drawImage(buffer, 0, 0);
+		renderer.render(buffer, 0, 0, buffer.getWidth(), buffer.getHeight());
 
 		Shader.forceFixedShader(); // Return to the default fixed pipeline shader
 	}
@@ -112,7 +116,7 @@ public class ShaderEffect implements PostEffect {
 	 * @param shader The shader to update.
 	 * @param c The game container.
 	 */
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game game) {
 
 	}
 	
@@ -121,7 +125,7 @@ public class ShaderEffect implements PostEffect {
 	 * @param shader The shader to set up.
 	 * @param c The game container.
 	 */
-	protected void initShader(Shader shader, GameContainer c) {
+	protected void initShader(Shader shader, Game game) {
 		
 	}
 

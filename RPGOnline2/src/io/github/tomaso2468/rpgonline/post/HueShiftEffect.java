@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
  * An effect that changes the hue of an image.
  * @author Tomaso2468
  */
-public class HueShiftEffect extends ShaderEffect {
+public class HueShiftEffect extends GLShaderEffect {
 	/**
 	 * The change of the hue in degrees.
 	 */
@@ -57,7 +56,7 @@ public class HueShiftEffect extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		
 		shader.setUniformFloatVariable("hueShift", shift);

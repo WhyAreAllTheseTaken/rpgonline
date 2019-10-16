@@ -31,8 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
@@ -47,7 +46,7 @@ import slickshader.Shader;
  * @see io.github.tomaso2468.rpgonline.post.HueShiftEffect
  * @see io.github.tomaso2468.rpgonline.post.GammaEffect
  */
-public class ColorEffectsShader extends ShaderEffect {
+public class ColorEffectsShader extends GLShaderEffect {
 	/**
 	 * A value that increases the saturation of the image.
 	 * 
@@ -118,7 +117,7 @@ public class ColorEffectsShader extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		shader.setUniformFloatVariable("saturation", saturation);
 		shader.setUniformFloatVariable("brightness", brightness);
 		shader.setUniformFloatVariable("contrast", contrast);

@@ -3,6 +3,8 @@ package io.github.tomaso2468.rpgonline.render.opengl;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -163,6 +166,33 @@ public abstract class GL11Renderer implements Renderer {
 		GL11.glTranslatef(x, y, 0);
 		GL11.glRotatef(a, 0, 0, a);
 		GL11.glTranslatef(-x, -y, 0);
+	}
+	
+	@Override
+	public void transform2D(Transform trans) {
+		float[] tm = trans.getMatrixPosition(); // get the transform matrix
+
+		// pad the transform to get a 4x4 3d affine transform
+		float[] toBuffer = { tm[0], tm[3], 0, tm[6], tm[1], tm[4], 0, tm[7], 0, 0, 1, 0, tm[2], tm[5], 0, 1 };
+
+		// GL11 wants a "direct" FloatBuffer, but you can only get that by creating a
+		// direct ByteBuffer
+		// and then creating a FloatBuffer as a view of that ByteBuffer.
+		// the ByteBuffer is allocated 16*4 bytes, because there are 16 floats and each
+		// float needs 4 bytes
+		ByteBuffer bb = ByteBuffer.allocateDirect(16 * 4);
+
+		// this has something to do with the default byte order setting in Java being
+		// inappropriate
+		bb.order(ByteOrder.nativeOrder());
+
+		for (float f : toBuffer) {
+			bb.putFloat(f);
+		}
+		bb.rewind();
+		FloatBuffer transformBuffer = bb.asFloatBuffer();
+
+		GL11.glMultMatrix(transformBuffer);
 	}
 	
 	@Override

@@ -31,12 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * An effect that causes bright areas of the screen to bleed.
@@ -79,31 +77,25 @@ public class Bloom extends MultiEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
 		if (buffer2 == null) {
-			buffer2 = new Image(container.getWidth(), container.getHeight());
-		} else if (container.getWidth() != buffer2.getWidth() || container.getHeight() != buffer2.getHeight()) {
+			buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+		} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
 			buffer2.destroy();
-			buffer2 = new Image(container.getWidth(), container.getHeight());
+			buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 		}
 		
-		g.copyArea(buffer2, 0, 0);
+		renderer.copyArea(buffer2, 0, 0);
 		
-		super.doPostProcess(container, game, buffer, g);
-		
-		if (!Keyboard.isKeyDown(Keyboard.KEY_F10)) {
-			g.setDrawMode(Graphics.MODE_ADD);
-			g.drawImage(buffer2, 0, 0);
-			g.setDrawMode(Graphics.MODE_NORMAL);
-		}
+		super.doPostProcess(game, buffer, renderer);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws SlickException {
+	public void dispose() throws RenderException {
 		super.dispose();
 		buffer2.destroy();
 	}

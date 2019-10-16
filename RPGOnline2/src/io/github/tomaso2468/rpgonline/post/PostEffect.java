@@ -31,11 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * A class for managing graphical effects.
@@ -54,14 +53,14 @@ public interface PostEffect {
 	 * @param g         The screen graphics object.
 	 * @throws SlickException If an error occurs rendering the effect.
 	 */
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException;
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException;
 
 	/**
 	 * Disposes of and destroys all resources used by this effect.
 	 * @throws SlickException If an error occurs in the Slick2D library.
 	 */
-	public default void dispose() throws SlickException {
+	public default void dispose() throws RenderException {
 
 	}
 }

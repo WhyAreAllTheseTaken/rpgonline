@@ -31,11 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * An effect that can be toggled on and off.
@@ -74,12 +73,12 @@ public class ToggledEffect extends MultiEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
+	public void doPostProcess(Game game, Image buffer, Renderer renderer) 
+			throws RenderException {
 		if (state) {
-			super.doPostProcess(container, game, buffer, g);
+			super.doPostProcess(game, buffer, renderer);
 		} else {
-			NullPostProcessEffect.INSTANCE.doPostProcess(container, game, buffer, g);
+			NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
 		}
 	}
 

@@ -31,14 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.net.HeatAffected;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import slickshader.Shader;
 
 /**
@@ -46,7 +44,7 @@ import slickshader.Shader;
  * 
  * @author Tomaso2468
  */
-public class DynamicHeatShader extends ShaderEffect {
+public class DynamicHeatShader extends GLShaderEffect {
 	/**
 	 * The strength of the effect.
 	 */
@@ -65,17 +63,17 @@ public class DynamicHeatShader extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
 		heat = ((HeatAffected) ServerManager.getClient()).getHeatEffect();
-		super.doPostProcess(container, game, buffer, g);
+		super.doPostProcess(game, buffer, renderer);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 
 		shader.setUniformFloatVariable("u_time", System.currentTimeMillis() % 100000 / 50f);

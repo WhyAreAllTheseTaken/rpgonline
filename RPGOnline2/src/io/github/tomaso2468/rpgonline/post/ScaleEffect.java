@@ -31,11 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * An effect that scales by a certain amount.
@@ -62,15 +61,15 @@ public class ScaleEffect implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
-		g.clear();
-		g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
-		g.scale(scale, scale);
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
+		renderer.clear();
+		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+		renderer.scale2D(scale, scale);
 
-		g.drawImage(buffer, -buffer.getWidth() / 2, -buffer.getHeight() / 2);
+		renderer.drawImage(buffer, -buffer.getWidth() / 2, -buffer.getHeight() / 2);
 
-		g.resetTransform();
+		renderer.resetTransform();
 	}
 
 }

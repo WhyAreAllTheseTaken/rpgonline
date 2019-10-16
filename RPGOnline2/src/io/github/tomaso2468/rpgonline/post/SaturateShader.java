@@ -31,8 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
@@ -41,7 +40,7 @@ import slickshader.Shader;
  * @author Tomaso2468
  *
  */
-public class SaturateShader extends ShaderEffect {
+public class SaturateShader extends GLShaderEffect {
 	/**
 	 * The saturation effect factor.
 	 * <ul>
@@ -72,7 +71,7 @@ public class SaturateShader extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		shader.setUniformFloatVariable("saturation", sat);
 	}

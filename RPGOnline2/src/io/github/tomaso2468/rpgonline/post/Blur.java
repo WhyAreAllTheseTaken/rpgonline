@@ -31,12 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import slickshader.Shader;
 
 /**
@@ -77,16 +77,24 @@ public class Blur implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
 		buffer.setFilter(Image.FILTER_LINEAR);
 		
 		//XXX Two files needed because uniforms wouldn't change.
 		if (shader == null) {
-			shader = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
+			try {
+				shader = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
+			} catch (SlickException e) {
+				throw new RenderException(e);
+			}
 		}
 		if (shader2 == null) {
-			shader2 = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
+			try {
+				shader2 = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
+			} catch (SlickException e) {
+				throw new RenderException(e);
+			}
 		}
 		
 		shader.startShader();
@@ -94,13 +102,12 @@ public class Blur implements PostEffect {
 		shader.setUniformFloatVariable("sigma", sigma);
 		
 		// vertical pass
-		g.drawImage(buffer, 0, 0);
+		renderer.drawImage(buffer, 0, 0);
 		
 		//TODO Is this needed?
 		Shader.forceFixedShader();
 		
-		buffer.flushPixelData();
-		g.copyArea(buffer, 0, 0);
+		renderer.copyArea(buffer, 0, 0);
 		
 		shader2.startShader();
 		
@@ -108,7 +115,7 @@ public class Blur implements PostEffect {
 		shader2.setUniformFloatVariable("sigma", sigma);
 		
 		// horizontal pass
-		g.drawImage(buffer, 0, 0);
+		renderer.drawImage(buffer, 0, 0);
 		Shader.forceFixedShader();
 	}
 	
@@ -116,7 +123,7 @@ public class Blur implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws SlickException {
+	public void dispose() throws RenderException {
 		shader.deleteShader();
 		shader2.deleteShader();
 	}

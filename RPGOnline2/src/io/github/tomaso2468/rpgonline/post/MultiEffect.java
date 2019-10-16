@@ -31,13 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * Allows for the chaining of multiple effects together.
@@ -64,22 +62,20 @@ public class MultiEffect implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
-			throws SlickException {
+	public void doPostProcess(Game game, Image buffer, Renderer renderer)
+			throws RenderException {
 		if (effects.length == 0) {
-			NullPostProcessEffect.INSTANCE.doPostProcess(container, game, buffer, g);
+			NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
 		}
 		for (PostEffect e : effects) {
 			if (!(e instanceof MultiEffect)) {
 				Debugger.start("post-" + e.getClass());
 			}
-			e.doPostProcess(container, game, buffer, g);
+			e.doPostProcess(game, buffer, renderer);
 
-			buffer.flushPixelData();
+			renderer.resetTransform();
 
-			g.resetTransform();
-
-			g.copyArea(buffer, 0, 0);
+			renderer.copyArea(buffer, 0, 0);
 			if (!(e instanceof MultiEffect)) {
 				Debugger.stop("post-" + e.getClass());
 			}
@@ -90,7 +86,7 @@ public class MultiEffect implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws SlickException {
+	public void dispose() throws RenderException {
 		for (PostEffect e : effects) {
 			e.dispose();
 		}

@@ -32,8 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
@@ -54,7 +54,7 @@ import slickshader.Shader;
  * 
  * @author Tomaso2468
  */
-public class ThemeEffect extends ShaderEffect {
+public class ThemeEffect extends GLShaderEffect {
 	/**
 	 * The color used as the 1st point set to {@code 0} brightness. This should be
 	 * black or a fog color.
@@ -160,7 +160,7 @@ public class ThemeEffect extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 
 		shader.setUniformColor("bc", bc);

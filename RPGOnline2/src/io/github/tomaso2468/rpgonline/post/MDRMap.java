@@ -31,8 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
@@ -40,7 +39,7 @@ import slickshader.Shader;
  * @author Tomaso2468
  *
  */
-public class MDRMap extends ShaderEffect {
+public class MDRMap extends GLShaderEffect {
 	/**
 	 * The exposure of the MDR tone map.
 	 */
@@ -72,7 +71,7 @@ public class MDRMap extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void initShader(Shader shader, GameContainer c) {
+	protected void initShader(Shader shader, Game c) {
 		super.initShader(shader, c);
 		shader.setUniformFloatVariable("exposure", exposure);
 		shader.setUniformFloatVariable("gamma", gamma);

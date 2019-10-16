@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
  * An implementation of FXAA anti-aliasing.
  * @author Tomaso2468
  */
-public class FXAA extends ShaderEffect {
+public class FXAA extends GLShaderEffect {
 	/**
 	 * Constructs a new FXAA effect.
 	 */
@@ -51,7 +50,7 @@ public class FXAA extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		shader.setUniformFloatVariable("u_texelStep", 1f / c.getWidth(), 1f / c.getHeight());
 		shader.setUniformIntVariable("u_showEdges", 0);
 		shader.setUniformIntVariable("u_fxaaOn", 1);

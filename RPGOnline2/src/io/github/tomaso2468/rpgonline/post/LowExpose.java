@@ -37,7 +37,7 @@ package io.github.tomaso2468.rpgonline.post;
  * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.post.FragmentExpose
  */
-public class LowExpose extends ShaderEffect {
+public class LowExpose extends GLShaderEffect {
 	/**
 	 * Create a {@code LowExpose} effect.
 	 */

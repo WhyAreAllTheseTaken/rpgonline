@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
  * A filter that sets all values below a threshold to black.
  * @author Tomaso2468
  */
-public class HighPass extends ShaderEffect {
+public class HighPass extends GLShaderEffect {
 	/**
 	 * The threshold for the filter.
 	 */
@@ -58,7 +57,7 @@ public class HighPass extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		shader.setUniformFloatVariable("limit", value);
 	}

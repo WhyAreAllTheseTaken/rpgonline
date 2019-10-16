@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.GameContainer;
-
+import io.github.tomaso2468.rpgonline.Game;
 import slickshader.Shader;
 
 /**
  * An effect that modifies the gamma of the screen to convert from linear to SRGB values.
  * @author Tomaso2468
  */
-public class GammaEffect extends ShaderEffect {
+public class GammaEffect extends GLShaderEffect {
 	/**
 	 * The screen's gamma value.
 	 */
@@ -65,7 +64,7 @@ public class GammaEffect extends ShaderEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void updateShader(Shader shader, GameContainer c) {
+	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		
 		shader.setUniformFloatVariable("gamma", gamma);

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Transform;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
@@ -101,6 +102,7 @@ public interface Renderer {
 	public void translate2D(float x, float y);
 	public void scale2D(float x, float y);
 	public void rotate2D(float x, float y, float a);
+	public void transform2D(Transform transform);
 	public void resetTransform();
 	public void pushTransform();
 	public void popTransform();
@@ -140,4 +142,7 @@ public interface Renderer {
 		return getClass().getSimpleName();
 	}
 	public String getRendererGL();
+	public default void drawImage(Image img, float x, float y) {
+		render(img, x, y, img.getWidth(), img.getHeight());
+	}
 }
