@@ -93,9 +93,13 @@ public interface Renderer {
 	 */
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear);
 	public void drawQuad(float x, float y, float w, float h, Color c);
-	public void translate(float x, float y);
-	public void scale(float x, float y);
-	public void rotate(float x, float y, float a);
+	
+	public void translate2D(float x, float y);
+	public void scale2D(float x, float y);
+	public void rotate2D(float x, float y, float a);
+	public void resetTransform();
+	public void pushTransform();
+	public void popTransform();
 	
 	public void clear();
 	

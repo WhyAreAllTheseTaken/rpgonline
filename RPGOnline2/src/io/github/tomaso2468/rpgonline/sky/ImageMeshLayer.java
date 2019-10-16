@@ -72,8 +72,8 @@ public abstract class ImageMeshLayer implements SkyLayer {
 	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
 		g.pushTransform();
 		
-		g.translate(c.getWidth() / 2, c.getHeight() / 2);
-		g.translate((float) x % imageWidth, (float) y % imageHeight);
+		g.translate2d(c.getWidth() / 2, c.getHeight() / 2);
+		g.translate2d((float) x % imageWidth, (float) y % imageHeight);
 		
 		long dist_x = c.getWidth() / 2 / imageWidth + 1;
 		long dist_y = c.getHeight() / 2 / imageHeight + 1;

@@ -628,14 +628,14 @@ public class WorldState extends BasicGameState implements BaseScaleState {
 				g.setColor(wl);
 				g.fillRect(0, 0, container.getWidth(), container.getHeight());
 
-				g.translate(container.getWidth() / 2, container.getHeight() / 2);
+				g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
 
 				g.scale(base_scale, base_scale);
 				g.pushTransform();
 
 				g.scale(zoom, zoom);
 				if (shake > 0) {
-					g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+					g.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 				}
 
 				g.setDrawMode(Graphics.MODE_ADD);

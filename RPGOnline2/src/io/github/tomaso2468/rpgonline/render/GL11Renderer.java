@@ -1,5 +1,10 @@
 package io.github.tomaso2468.rpgonline.render;
 
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
@@ -7,17 +12,32 @@ import io.github.tomaso2468.rpgonline.Image;
 
 public abstract class GL11Renderer implements Renderer {
 	private RenderMode mode = RenderMode.MODE_NONE;
+	private boolean pushed;
+	private List<FloatBuffer> stack = new ArrayList<>();
+	private int stackIndex;
+	private float sx, sy;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void renderEmbedded(Image img, float x, float y, float w, float h) {
-		// TODO Auto-generated method stub
-
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
+		GL11.glVertex3f(x, y, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
+		GL11.glVertex3f(x, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY()
+				+ img.getTextureHeight());
+		GL11.glVertex3f(x + w, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
+		GL11.glVertex3f(x + w, y, 0);
 	}
 
 	@Override
 	public void render(Image img, float x, float y, float w, float h) {
-		// TODO Auto-generated method stub
-
+		startUse(img);
+		renderEmbedded(img, x, y, w, h);
+		endUse(img);
 	}
 
 	@Override
@@ -34,14 +54,38 @@ public abstract class GL11Renderer implements Renderer {
 
 	@Override
 	public void renderFiltered(Image img, float x, float y, float w, float h, Color c) {
-		// TODO Auto-generated method stub
-
+		startUse(img);
+		
+		GL11.glColor4f(c.r, c.g, c.b, c.a);
+		
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
+		GL11.glVertex3f(x, y, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
+		GL11.glVertex3f(x, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY()
+				+ img.getTextureHeight());
+		GL11.glVertex3f(x + w, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
+		GL11.glVertex3f(x + w, y, 0);
+		
+		endUse(img);
 	}
 
 	@Override
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear) {
-		// TODO Auto-generated method stub
-
+		startUse(img);
+		
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
+		GL11.glVertex3f(x, y, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
+		GL11.glVertex3f(x, y + h, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY()
+				+ img.getTextureHeight());
+		GL11.glVertex3f(x + w + hshear, y + h + vshear, 0);
+		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
+		GL11.glVertex3f(x + w, y, 0);
+		
+		endUse(img);
 	}
 	
 	@Override
@@ -51,8 +95,7 @@ public abstract class GL11Renderer implements Renderer {
 		case MODE_2D_COLOR_NOVBO:
 		case MODE_2D_LINES_NOVBO:
 		case MODE_2D_SPRITE_NOVBO:
-			c.bind();
-
+			GL11.glColor4f(c.r, c.g, c.b, c.a);
 			GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(x, y);
 			GL11.glVertex2f(x + w, y);
@@ -68,21 +111,70 @@ public abstract class GL11Renderer implements Renderer {
 	}
 
 	@Override
-	public void translate(float x, float y) {
-		// TODO Auto-generated method stub
-
+	public void translate2D(float x, float y) {
+		if (!pushed) {
+			GL11.glPushMatrix();
+			pushed = true;
+		}
+		GL11.glTranslatef(x, y, 0);
 	}
 
 	@Override
-	public void scale(float x, float y) {
-		// TODO Auto-generated method stub
-
+	public void scale2D(float x, float y) {
+		if (!pushed) {
+			GL11.glPushMatrix();
+			pushed = true;
+		}
+		GL11.glScalef(x, y, 1);
+		this.sx *= x;
+		this.sy *= y;
 	}
 	
 	@Override
-	public void rotate(float x, float y, float a) {
-		// TODO Auto-generated method stub
+	public void rotate2D(float x, float y, float a) {
+		if (!pushed) {
+			GL11.glPushMatrix();
+			pushed = true;
+		}
+		GL11.glTranslatef(x, y, 0);
+		GL11.glRotatef(a, 0, 0, a);
+		GL11.glTranslatef(-x, -y, 0);
+	}
+	
+	@Override
+	public void resetTransform() {
+		sx = 1;
+		sy = 1;
 		
+		if (pushed) {
+			GL11.glPopMatrix();
+			pushed = false;
+		}
+	}
+	
+	@Override
+	public void pushTransform() {
+		FloatBuffer buffer;
+		if (stackIndex >= stack.size()) {
+			buffer = BufferUtils.createFloatBuffer(18);
+			stack.add(buffer);
+		} else {
+			buffer = (FloatBuffer) stack.get(stackIndex);
+		}
+		
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, buffer);
+		buffer.put(16, sx);
+		buffer.put(17, sy);
+		stackIndex += 1;
+	}
+	
+	@Override
+	public void popTransform() {
+		stackIndex -= 1;
+		FloatBuffer oldBuffer = (FloatBuffer) stack.get(stackIndex);
+		GL11.glLoadMatrix(oldBuffer);
+		sx = oldBuffer.get(16);
+		sy = oldBuffer.get(17);
 	}
 
 	@Override
@@ -117,6 +209,19 @@ public abstract class GL11Renderer implements Renderer {
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		} else if (mode == RenderMode.MODE_NONE) {
 			//Do nothing
+		}
+		
+		if (mode == RenderMode.MODE_2D_SPRITE_NOVBO) {
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glShadeModel(GL11.GL_SMOOTH);        
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_LIGHTING);                    
+	        
+			GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);                
+	        GL11.glClearDepth(1);                                       
+	        
+	        GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 }

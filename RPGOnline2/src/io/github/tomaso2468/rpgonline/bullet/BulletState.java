@@ -253,14 +253,14 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		}
 		Debugger.stop("sky");
 		
-		g.translate(container.getWidth() / 2, container.getHeight() / 2);
+		g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
 
 		g.scale(base_scale, base_scale);
 
 		g.scale(zoom, zoom);
 		
 		if (shake > 0) {
-			g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+			g.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 		}
 		
 		float sx = center_camera ? x : 0;

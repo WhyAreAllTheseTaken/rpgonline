@@ -65,7 +65,7 @@ public class ScaleEffect implements PostEffect {
 	public void doPostProcess(GameContainer container, StateBasedGame game, Image buffer, Graphics g)
 			throws SlickException {
 		g.clear();
-		g.translate(container.getWidth() / 2, container.getHeight() / 2);
+		g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
 		g.scale(scale, scale);
 
 		g.drawImage(buffer, -buffer.getWidth() / 2, -buffer.getHeight() / 2);

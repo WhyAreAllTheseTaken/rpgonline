@@ -54,8 +54,9 @@ public class Game {
 		currentState = new GameState() {
 			@Override
 			public void render(Game game, Renderer renderer) {
-				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
+				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 				
+				renderer.scale2D(2, 2);
 				renderer.drawQuad(100, 100, 200, 200, Color.orange);
 			}
 
@@ -117,6 +118,7 @@ public class Game {
 			renderer.clear();
 		}
 
+		renderer.resetTransform();
 		render(this, renderer);
 		if (leave != null) {
 			leave.render(this, currentState, nextState, renderer);
@@ -141,8 +143,11 @@ public class Game {
 
 	public final void update(Game game, float delta) {
 		preUpdate(game, delta);
+		renderer.resetTransform();
 		currentState.update(game, delta);
+		renderer.resetTransform();
 		postUpdate(game, delta);
+		renderer.resetTransform();
 	}
 
 	public void preUpdate(Game game, float delta) {

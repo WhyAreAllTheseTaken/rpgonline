@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.RenderException;
@@ -46,6 +47,7 @@ public class LWJGL2Renderer extends GL11Renderer {
 		try {
 			setDisplayMode(width, height, game.isFullscreen());
 			Display.create();
+			GL11.glViewport(0, 0, width, height);
 		} catch (LWJGLException e) {
 			throw new RenderException("Error creating display.", e);
 		}
@@ -119,6 +121,7 @@ public class LWJGL2Renderer extends GL11Renderer {
 	public void setFullscreen(boolean fullscreen) throws RenderException {
 		try {
 			setDisplayMode(width, height, fullscreen);
+			GL11.glViewport(0, 0, width, height);
 		} catch (LWJGLException e) {
 			throw new RenderException("Error changing setting fullscreen status to " + fullscreen, e);
 		}
@@ -132,6 +135,7 @@ public class LWJGL2Renderer extends GL11Renderer {
 		if (init) {
 			try {
 				setDisplayMode(width, height, Display.isFullscreen());
+				GL11.glViewport(0, 0, width, height);
 			} catch (LWJGLException e) {
 				throw new RenderException("Error changing setting resolution", e);
 			}
