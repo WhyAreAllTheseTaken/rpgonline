@@ -10,12 +10,10 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.renderer.SGL;
-import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
@@ -272,5 +270,20 @@ public abstract class GL11Renderer implements Renderer {
 		} catch (IOException e) {
 			throw new RenderException("Failed to create empty image", e);
 		}
+	}
+	
+	@Override
+	public String getVendor() {
+		return GL11.glGetString(GL11.GL_VENDOR);
+	}
+	
+	@Override
+	public String getVersion() {
+		return GL11.glGetString(GL11.GL_VERSION);
+	}
+	
+	@Override
+	public String getRendererGL() {
+		return "OpenGL";
 	}
 }

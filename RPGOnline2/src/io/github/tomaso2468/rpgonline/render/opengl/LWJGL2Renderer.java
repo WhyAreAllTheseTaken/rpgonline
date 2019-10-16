@@ -6,10 +6,8 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.renderer.SGL;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 
 public class LWJGL2Renderer extends GL11Renderer {
