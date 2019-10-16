@@ -151,4 +151,6 @@ public interface Renderer {
 	public default void drawImage(Image img, float x, float y, Color light) {
 		renderFiltered(img, x, y, img.getWidth(), img.getHeight(), light);
 	}
+	
+	public void setRenderTarget(Image img) throws RenderException;
 }

@@ -125,4 +125,9 @@ public class Image implements Cloneable {
 			textureHeight = -textureHeight;
 		}
 	}
+
+	public int getFilter() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

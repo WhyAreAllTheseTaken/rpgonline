@@ -66,6 +66,7 @@ import io.github.tomaso2468.rpgonline.post.MDRMap;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
+import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
@@ -185,7 +186,7 @@ public class WorldState implements GameState, BaseScaleState {
 	public void init(Game game) throws RenderException {
 		guis.init(game.getWidth(), game.getHeight(), base_scale);
 	}
-	
+
 	/**
 	 * The MDR map for this world state.
 	 */
@@ -212,7 +213,7 @@ public class WorldState implements GameState, BaseScaleState {
 				buffer.destroy();
 				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			}
-			
+
 			if (post != null) {
 				renderer.copyArea(buffer, 0, 0);
 
@@ -224,10 +225,10 @@ public class WorldState implements GameState, BaseScaleState {
 					Debugger.stop("post-" + post.getClass());
 				}
 			}
-			if(RPGConfig.isMDR()) {
+			if (RPGConfig.isMDR()) {
 				Debugger.start("mdr");
 				renderer.copyArea(buffer, 0, 0);
-				
+
 				if (mdr == null) {
 					mdr = new MDRMap();
 				}
@@ -236,15 +237,14 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 			Debugger.stop("effects");
 		}
-		
 
 		if (gui) {
 			Debugger.start("gui");
-			
+
 			renderer.resetTransform();
-			
+
 			Graphics g2 = renderer.getGUIGraphics();
-			
+
 			ThemeManager.getTheme().predraw(g2);
 			guis.paint(g2, base_scale);
 
@@ -265,6 +265,7 @@ public class WorldState implements GameState, BaseScaleState {
 
 	/**
 	 * Computes lighting.
+	 * 
 	 * @return A list of lights or null if lighting is off.
 	 */
 	public List<LightSource> computerLights() {
@@ -311,10 +312,10 @@ public class WorldState implements GameState, BaseScaleState {
 
 			Debugger.stop("light-compute");
 		}
-		
+
 		return lights;
 	}
-	
+
 	/**
 	 * A method that renders the world.
 	 */
@@ -406,7 +407,8 @@ public class WorldState implements GameState, BaseScaleState {
 							if (current != null)
 								renderer.endUse(current);
 
-							tex.render(renderer, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+							tex.render(renderer, x, y, z, world, state, t,
+									x * RPGConfig.getTileSize() + tex.getX() - sx,
 									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
 
 							if (current != null)
@@ -459,7 +461,8 @@ public class WorldState implements GameState, BaseScaleState {
 													current = TextureMap.getSheet(img);
 													renderer.startUse(current);
 												}
-												renderer.renderEmbedded(img, (float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
+												renderer.renderEmbedded(img,
+														(float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
 														(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy,
 														img.getWidth(), img.getHeight());
 											}
@@ -501,15 +504,15 @@ public class WorldState implements GameState, BaseScaleState {
 								renderer.startUse(current);
 							}
 							renderer.renderEmbedded(img, (float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
-									(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy,
-									img.getWidth(), img.getHeight());
+									(float) e.getY() * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
+									img.getHeight());
 						}
 					}
 				}
 			}
 		}
 		Debugger.stop("entity");
-		
+
 		Debugger.stop("world");
 
 		if (RPGConfig.isParticles()) {
@@ -555,16 +558,14 @@ public class WorldState implements GameState, BaseScaleState {
 
 			if (lights.size() == 0) {
 				Color light = world.getLightColor();
-				g.setColor(RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
-				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-				g.setDrawMode(Graphics.MODE_NORMAL);
+				renderer.setColorMode(ColorMode.MULTIPLY);
+				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
+						RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+				renderer.setColorMode(ColorMode.NORMAL);
 			} else {
-				Graphics sg = g;
-
 				if (lightBuffer == null) {
-					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				} else if (container.getWidth() != lightBuffer.getWidth()
+					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
+				} else if (game.getWidth() != lightBuffer.getWidth()
 						|| container.getHeight() != lightBuffer.getHeight()) {
 					lightBuffer.destroy();
 					lightBuffer = new Image(container.getWidth(), container.getHeight());
@@ -599,10 +600,10 @@ public class WorldState implements GameState, BaseScaleState {
 				for (LightSource l : lights) {
 					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
 
-					img.setImageColor(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(), l.getB() * 50 * l.getBrightness());
+					img.setImageColor(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(),
+							l.getB() * 50 * l.getBrightness());
 
-					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
+					g.drawImage(img, (float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
 							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy);
 				}
 
@@ -623,12 +624,12 @@ public class WorldState implements GameState, BaseScaleState {
 		} else if (post_enable && RPGConfig.isMDR()) {
 			Debugger.start("mdr");
 			Debugger.start("mdr-lightoverride");
-			
+
 			g.setColor(RPGConfig.isMDR() && post_enable ? Color.gray : Color.white);
 			g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
 			g.fillRect(0, 0, container.getWidth(), container.getHeight());
 			g.setDrawMode(Graphics.MODE_NORMAL);
-			
+
 			Debugger.stop("mdr-lightoverride");
 			Debugger.stop("mdr");
 		}
@@ -644,7 +645,8 @@ public class WorldState implements GameState, BaseScaleState {
 			RenderManager.getRenderer().scale(g, zoom * base_scale, zoom * base_scale);
 
 			if (shake > 0) {
-				RenderManager.getRenderer().translate(g, (float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+				RenderManager.getRenderer().translate(g, (float) (FastMath.random() * shake * 5),
+						(float) (FastMath.random() * shake * 5));
 			}
 
 			for (Particle particle : particles_nolight) {
@@ -680,32 +682,33 @@ public class WorldState implements GameState, BaseScaleState {
 			Debugger.stop("particles-nolight");
 			Debugger.stop("particles");
 		}
-		
+
 		if (hitbox) {
 			Debugger.start("hitbox");
-			
+
 			RenderManager.getRenderer().translate(g, container.getWidth() / 2, container.getHeight() / 2);
 
 			RenderManager.getRenderer().scale(g, zoom * base_scale, zoom * base_scale);
 
 			if (shake > 0) {
-				RenderManager.getRenderer().translate(g, (float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+				RenderManager.getRenderer().translate(g, (float) (FastMath.random() * shake * 5),
+						(float) (FastMath.random() * shake * 5));
 			}
-			
+
 			for (long y = miy; y <= may; y++) {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, -1);
 					String state = world.getTileState(x, y, -1);
-					
+
 					if (hitbox && t.isSolid(state)) {
 						boolean collision = false;
 						for (Entity e : entities) {
 							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
-								if(e.isSolid()) {
+								if (e.isSolid()) {
 									collision = true;
 									break;
 								}
-								
+
 							}
 						}
 						if (collision) {
@@ -719,7 +722,7 @@ public class WorldState implements GameState, BaseScaleState {
 					}
 				}
 			}
-			
+
 			for (Entity e : entities) {
 				g.setColor(Color.red);
 				g.draw(e.getHitBox()
@@ -778,7 +781,7 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 		}
 	}
-	
+
 	/**
 	 * Mouse positions.
 	 */
@@ -786,10 +789,11 @@ public class WorldState implements GameState, BaseScaleState {
 
 	/**
 	 * Updates the GUI.
-	 * @param in The current input.
+	 * 
+	 * @param in        The current input.
 	 * @param container The current game container.
-	 * @param game The game.
-	 * @param delta The delta value.
+	 * @param game      The game.
+	 * @param delta     The delta value.
 	 */
 	public void updateGUI(Input in, GameContainer container, StateBasedGame game, int delta) {
 		if (guis != null) {
@@ -798,36 +802,36 @@ public class WorldState implements GameState, BaseScaleState {
 				Debugger.start("gui-container");
 				guis.containerUpdate(container);
 				Debugger.stop("gui-container");
-				
+
 				Debugger.start("gui-mouse");
 				float ox = mx;
 				float oy = my;
-				
+
 				mx = Mouse.getX();
 				my = container.getHeight() - Mouse.getY();
-				
+
 				if (mx != ox || my != oy) {
 					guis.mouseMoved(mx / base_scale, my / base_scale);
 				}
-				
+
 				boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
 				for (int i = 0; i < Mouse.getButtonCount(); i++) {
 					data[i] = Mouse.isButtonDown(i);
 				}
 				guis.mouseState(mx / base_scale, my / base_scale, data);
-				
+
 				if (Mouse.hasWheel()) {
 					guis.mouseWheel(Mouse.getDWheel());
 				}
 				Debugger.stop("gui-mouse");
-				
+
 				Debugger.start("gui-update");
 				guis.update(delta / 1000f);
 				Debugger.stop("gui-update");
 			}
 			Debugger.stop("gui");
 		}
-		
+
 		gui_cooldown -= delta / 1000f;
 		if (InputUtils.isActionPressed(in, InputUtils.GUI_TOGGLE) && gui_cooldown <= 0) {
 			gui = !gui;
@@ -842,21 +846,23 @@ public class WorldState implements GameState, BaseScaleState {
 			gui_cooldown = 0.25f;
 		}
 	}
-	
+
 	/**
 	 * Updates the GUI controls.
-	 * @param in 
+	 * 
+	 * @param in
 	 * @param container The game container.
-	 * @param game The game.
-	 * @param delf The delta value in seconds.
+	 * @param game      The game.
+	 * @param delf      The delta value in seconds.
 	 * @throws SlickException If an error occurs.
 	 */
-	public void updateControls(Input in, GameContainer container, StateBasedGame game, float delf) throws SlickException {
+	public void updateControls(Input in, GameContainer container, StateBasedGame game, float delf)
+			throws SlickException {
 		Debugger.start("input");
-		
+
 		double walk_x = 0;
 		double walk_y = 0;
-		
+
 		Debugger.start("keyboard");
 		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
 			walk_y += -1;
@@ -872,11 +878,11 @@ public class WorldState implements GameState, BaseScaleState {
 			walk_x -= 1;
 		}
 		Debugger.stop("keyboard");
-		
+
 		Debugger.start("controller");
 		if (in.getControllerCount() > 0) {
-			if(in.getAxisCount(0) >= 2) {
-				if(RPGConfig.getControllerInput().isLeftHanded()) {
+			if (in.getAxisCount(0) >= 2) {
+				if (RPGConfig.getControllerInput().isLeftHanded()) {
 					walk_y += in.getAxisValue(0, 2);
 					walk_x += in.getAxisValue(0, 3);
 				} else {
@@ -886,7 +892,7 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 		}
 		Debugger.stop("controller");
-		
+
 		if (walk_x > 1) {
 			walk_x = 1;
 		}
@@ -899,43 +905,43 @@ public class WorldState implements GameState, BaseScaleState {
 		if (walk_y < -1) {
 			walk_y = -1;
 		}
-		
+
 		((Client2D) ServerManager.getClient()).walkX(walk_x, delf);
 		((Client2D) ServerManager.getClient()).walkY(walk_y, delf);
-		
+
 		((Client2D) ServerManager.getClient()).setSprint(InputUtils.isActionPressed(in, InputUtils.SPRINT));
 
 		x = ((Client2D) ServerManager.getClient()).getPlayerX();
 		y = ((Client2D) ServerManager.getClient()).getPlayerY();
-		
+
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
 			exit();
 		}
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			post_enable = false;
 		} else {
 			post_enable = true;
 		}
-		
+
 		Debugger.stop("input");
 	}
-	
+
 	/**
 	 * Updates the graphical effects.
+	 * 
 	 * @param delf The delta value in seconds.
 	 * @throws SlickException If an error occurs.
 	 */
 	public void updateEffects(float delf) throws SlickException {
 		Debugger.start("effects");
-		
+
 		Debugger.start("effects-shake");
 		if (shake > 0) {
 			shake -= delf;
 		}
 		Debugger.stop("effects-shake");
-		
-		
+
 		Debugger.start("particles");
 		float wind = ((Client2D) ServerManager.getClient()).getWind();
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
@@ -956,12 +962,13 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 		});
 		Debugger.stop("particles");
-		
+
 		Debugger.stop("effects");
 	}
-	
+
 	/**
 	 * Updates the world.
+	 * 
 	 * @param delf The delta value in seconds.
 	 */
 	public void updateWorld(float delf) {
@@ -969,12 +976,13 @@ public class WorldState implements GameState, BaseScaleState {
 		((Client2D) ServerManager.getClient()).getWorld().doUpdateClient();
 		Debugger.stop("world");
 	}
-	
+
 	/**
 	 * Updates the state hooks.
+	 * 
 	 * @param container The game container.
-	 * @param game The game.
-	 * @param delta The delta value.
+	 * @param game      The game.
+	 * @param delta     The delta value.
 	 * @throws SlickException If an error occurs.
 	 */
 	public void updateHooks(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -984,12 +992,13 @@ public class WorldState implements GameState, BaseScaleState {
 		}
 		Debugger.stop("hooks");
 	}
-	
+
 	/**
 	 * Updates the audio engine.
+	 * 
 	 * @param container The game container.
-	 * @param game The game.
-	 * @param delta The delta value.
+	 * @param game      The game.
+	 * @param delta     The delta value.
 	 * @throws SlickException If an error occurs.
 	 */
 	public void updateAudio(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -1002,7 +1011,7 @@ public class WorldState implements GameState, BaseScaleState {
 		AudioManager.setPlayerVelocity((float) (x - px) / delf, 0, (float) (y - py) / delf);
 		Debugger.stop("audio");
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1012,7 +1021,7 @@ public class WorldState implements GameState, BaseScaleState {
 
 		this.last_delta = delta;
 		float delf = delta / 1000f;
-		
+
 		Input in = container.getInput();
 
 		updateControls(in, container, game, delf);
@@ -1021,7 +1030,7 @@ public class WorldState implements GameState, BaseScaleState {
 		updateHooks(container, game, delta);
 		updateAudio(container, game, delta);
 		updateEffects(delf);
-		
+
 		px = x;
 		py = y;
 	}
@@ -1044,14 +1053,16 @@ public class WorldState implements GameState, BaseScaleState {
 
 	/**
 	 * Gets the current GUI.
+	 * 
 	 * @return A GUI object.
 	 */
 	public GUI getGUI() {
 		return guis;
 	}
-	
+
 	/**
 	 * Sets the current GUI.
+	 * 
 	 * @param gui a GUI object.
 	 */
 	public void setGUI(GUI gui) {
