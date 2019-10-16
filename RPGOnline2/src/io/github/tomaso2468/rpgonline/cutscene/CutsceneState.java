@@ -32,12 +32,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.cutscene;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.GameState;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
+import io.github.tomaso2468.rpgonline.transition.FadeInTransition;
+import io.github.tomaso2468.rpgonline.transition.FadeOutTransition;
 import io.github.tomaso2468.rpgonline.transition.Transition;
 
 /**
@@ -89,7 +90,7 @@ public abstract class CutsceneState implements GameState {
 	 * @param c The color of the transition screen.
 	 */
 	public CutsceneState(int id, int nextState, Cutscene scene, Color c) {
-		this(id, nextState, scene, new FadeOutTransition(c, 500), new FadeInTransition(c, 50));
+		this(id, nextState, scene, new FadeOutTransition(c, 0.5f), new FadeInTransition(c, 0.05f));
 	}
 	/**
 	 * Constructs a new Cutscene state.
