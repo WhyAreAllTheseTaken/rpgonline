@@ -15,6 +15,11 @@ public class Image implements Cloneable {
 	private final float width;
 	private final float height;
 
+	public Image(Renderer renderer, int width, int height) {
+		this(renderer, (TextureReference) null);
+		//TODO Buffer support
+	}
+	
 	public Image(Renderer renderer, TextureReference texture, float texture_x, float texture_y, float texture_w,
 			float texture_h, float width, float height) {
 		super();
@@ -108,5 +113,10 @@ public class Image implements Cloneable {
 	
 	public Image clone() {
 		return new Image(renderer, texture, textureX, textureY, textureWidth, textureHeight, width, height);
+	}
+
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }

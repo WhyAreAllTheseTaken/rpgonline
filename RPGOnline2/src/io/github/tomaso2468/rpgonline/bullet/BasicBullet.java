@@ -33,9 +33,6 @@ package io.github.tomaso2468.rpgonline.bullet;
 
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.state.StateBasedGame;
-
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.TextureMap;
 

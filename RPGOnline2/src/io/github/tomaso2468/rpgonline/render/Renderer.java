@@ -131,4 +131,5 @@ public interface Renderer {
 	public RenderMode getMode(RenderMode mode);
 	
 	public TextureReference getPNG(URL url) throws RenderException, IOException;
+	public void copyArea(Image buffer, int x, int y);
 }

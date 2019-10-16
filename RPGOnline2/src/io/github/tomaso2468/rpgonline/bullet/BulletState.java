@@ -41,17 +41,15 @@ import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.tomaso2468.rpgonline.BaseScaleState;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.GameState;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
@@ -63,7 +61,8 @@ import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
-import io.github.tomaso2468.rpgonline.render.RenderManager;
+import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 
@@ -71,7 +70,7 @@ import io.github.tomaso2468.rpgonline.sky.SkyLayer;
  * A state for bullet based games.
  * @author Tomaso2468
  */
-public abstract class BulletState extends BasicGameState implements BaseScaleState {
+public abstract class BulletState implements GameState, BaseScaleState {
 	/**
 	 * The state ID.
 	 */
@@ -171,7 +170,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+	public void init(Game game) throws RenderException {
 		Debugger.initRender();
 	}
 
@@ -179,58 +178,49 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
+		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 
 		Debugger.start("game-render");
-		render2(container, game, g);
+		render2(game, renderer);
 		Debugger.stop("game-render");
 
-		g.resetTransform();
+		renderer.resetTransform();
 
-		if (post != null) {
-			Debugger.start("effects");
-			
-			if (buffer == null) {
-				buffer = new Image(container.getWidth(), container.getHeight());
-			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
-				buffer.destroy();
-				buffer = new Image(container.getWidth(), container.getHeight());
-			}
-			
-			g.copyArea(buffer, 0, 0);
-			
-			if (!(post instanceof MultiEffect)) {
-				Debugger.start("post-" + post.getClass());
-			}
-			post.doPostProcess(container, game, buffer, g);
-			if (!(post instanceof MultiEffect)) {
-				Debugger.stop("post-" + post.getClass());
-			}
-			
-			Debugger.stop("effects");
-		}
+//		if (post != null) {
+//			Debugger.start("effects");
+//			
+//			if (buffer == null) {
+//				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
+//			} else if (renderer.getWidth() != buffer.getWidth() || renderer.getHeight() != buffer.getHeight()) {
+//				buffer.destroy();
+//				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
+//			}
+//			
+//			renderer.copyArea(buffer, 0, 0);
+//			
+//			if (!(post instanceof MultiEffect)) {
+//				Debugger.start("post-" + post.getClass());
+//			}
+//			post.doPostProcess(renderer, game, buffer, g);
+//			if (!(post instanceof MultiEffect)) {
+//				Debugger.stop("post-" + post.getClass());
+//			}
+//			
+//			Debugger.stop("effects");
+//		}
 
 		Debugger.start("gui");
 
-		Rectangle world_clip = g.getWorldClip();
-		Rectangle clip = g.getClip();
-		g.resetTransform();
+		renderer.resetTransform();
 		
-		io.github.tomaso2468.rpgonline.render.Graphics g2 = RenderManager.getRenderer().getGUIGraphics(g);
-		g2.endSlick();
+		Graphics g2 = renderer.getGUIGraphics();
 		
 		ThemeManager.getTheme().predraw(g2);
 		gui.paint(g2, base_scale);
 		
-		g2.beginSlick();
-		g.setWorldClip(world_clip);
-		g.setClip(clip);
-		g.resetTransform();
-
 		Debugger.stop("gui");
-		
-		g.flush();
 		
 		Debugger.stop("render");
 	}
@@ -242,25 +232,23 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @param g The current graphics context.
 	 * @throws SlickException If a rendering error occurs.
 	 */
-	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		Renderer renderer = RenderManager.getRenderer();
-		
+	public void render2(Game game, Renderer renderer) throws SlickException {
 		List<Particle> particles = new ArrayList<Particle>(this.particles);
 		
 		Debugger.start("sky");
 		if (sky != null) {
-			sky.render(g, container, center_camera ? x : 0, center_camera ? x : 0, 0, null, Color.white);
+			sky.render(renderer, game, center_camera ? x : 0, center_camera ? x : 0, 0, null, Color.white);
 		}
 		Debugger.stop("sky");
 		
-		g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
+		renderer.translate2d(renderer.getWidth() / 2, renderer.getHeight() / 2);
 
-		g.scale(base_scale, base_scale);
+		renderer.scale(base_scale, base_scale);
 
-		g.scale(zoom, zoom);
+		renderer.scale(zoom, zoom);
 		
 		if (shake > 0) {
-			g.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+			renderer.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 		}
 		
 		float sx = center_camera ? x : 0;
@@ -268,7 +256,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		
 		if (!player_top) {
 			Debugger.start("player");
-			renderPlayer(container, game, g, sx, sy);
+			renderPlayer(game, renderer, sx, sy);
 			Debugger.stop("player");
 		}
 		
@@ -276,27 +264,26 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		Image current = null;
 		for (Bullet b : bullets) {
 			if (b.isCustom()) {
-				if (current != null) current.endUse();
-				b.render(x, y, xv, yv, this, g, sx, sy);
-				if (current != null) current.startUse();
+				if (current != null) renderer.endUse(current);
+				b.render(x, y, xv, yv, this, renderer, sx, sy);
+				if (current != null) renderer.startUse(current);
 			} else if (b.isCombined()) {
-				current = b.renderEmbedded(x, y, xv, yv, this, g, current, sx, sy);
+				current = b.renderEmbedded(x, y, xv, yv, this, renderer, current, sx, sy);
 			} else {
 				Image img = TextureMap.getTexture(b.getTexture());
 				
 				if (img != null) {
 					if (TextureMap.getSheet(img) != current) {
-						if (current != null) current.endUse();
+						if (current != null) renderer.endUse(current);
 						current = TextureMap.getSheet(img);
-						if (current != null) current.startUse();
+						if (current != null) renderer.startUse(current);
 					}
 					
 					renderer.renderEmbedded(img, b.getX() - sx - img.getWidth() / 2, b.getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
 				} else {
-					if (current != null) current.endUse();
-					g.setColor(Color.white);
-					g.fillRect(b.getX() - sx, b.getY() - sy, 8, 8);
-					if (current != null) current.startUse();
+					if (current != null) renderer.endUse(current);
+					renderer.drawQuad(b.getX() - sx, b.getY() - sy, 8, 8, Color.white);
+					if (current != null) renderer.startUse(current);
 				}
 			}
 		}
@@ -306,17 +293,17 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 			Debugger.start("particles");
 			for (Particle particle : particles) {
 				if (particle.isCustom()) {
-					if (current != null) current.endUse();
-					particle.render(g, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
-					if (current != null) current.startUse();
+					if (current != null) renderer.endUse(current);
+					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
+					if (current != null) renderer.startUse(current);
 				} else {
 					Image img = TextureMap.getTexture(particle.getTexture());
 					
 					if (img != null) {
 						if(TextureMap.getSheet(img) != current) {
-							if (current != null) current.endUse();
+							if (current != null) renderer.endUse(current);
 							current = TextureMap.getSheet(img);
-							current.startUse();
+							renderer.startUse(current);
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();
 						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
@@ -327,13 +314,11 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 			Debugger.stop("particles");
 		}
 		
-		if (current != null) current.endUse();
-		
-		g.flush();
+		if (current != null) renderer.endUse(current);
 		
 		if (player_top) {
 			Debugger.start("player");
-			renderPlayer(container, game, g, x - sx, y - sx);
+			renderPlayer(game, renderer, x - sx, y - sx);
 			Debugger.stop("player");
 		}
 	}
@@ -346,7 +331,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @param sx The x position of the player.
 	 * @param sy The y position of the player.
 	 */
-	public abstract void renderPlayer(GameContainer container, StateBasedGame game, Graphics g, float sx, float sy);
+	public abstract void renderPlayer(Game game, Renderer renderer, float sx, float sy);
 
 	/**
 	 * The mouse data.
@@ -357,12 +342,10 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		Input in = container.getInput();
+	public void update(Game game, float delta) throws SlickException {
+		Input in = game.getInput();
 		
-		float delf = delta / 1000f;
-		
-		preUpdate(container, game, delf, in);
+		preUpdate(game, delta, in);
 		
 		double walk_x = 0;
 		double walk_y = 0;
@@ -380,13 +363,13 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 			walk_x -= 1;
 		}
 
-		x += walk_x * speed * delf;
-		y += walk_y * speed * delf;
+		x += walk_x * speed * delta;
+		y += walk_y * speed * delta;
 		
 		Debugger.start("gui");
 		
 		Debugger.start("gui-container");
-		gui.containerUpdate(container);
+		gui.containerUpdate(game);
 		Debugger.stop("gui-container");
 		
 		Debugger.start("gui-mouse");
@@ -394,7 +377,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		float oy = my;
 		
 		mx = Mouse.getX();
-		my = container.getHeight() - Mouse.getY();
+		my = game.getHeight() - Mouse.getY();
 		
 		if (mx != ox || my != oy) {
 			gui.mouseMoved(mx / base_scale, my / base_scale);
@@ -434,12 +417,12 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		
 		xv = x - px;
 		yv = y - py;
-		xv /= delf;
-		yv /= delf;
+		xv /= delta;
+		yv /= delta;
 		
 		for (int i = 0; i < bullets.size(); i++) {
 			Bullet b = bullets.get(i);
-			b.update(container, game, delf, x, y, x - px, y - py, this, bullets);
+			b.update(game, delta, x, y, x - px, y - py, this, bullets);
 		}
 		
 		AudioManager.setPlayerPos(x, 0, y);
@@ -451,10 +434,10 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 		py = y;
 		
 		if (shake > 0) {
-			shake -= delf;
+			shake -= delta;
 		}
 		
-		postUpdate(container, game, delf, in);
+		postUpdate(game, delta, in);
 	}
 	
 	/**
@@ -464,7 +447,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @param delf A float value in seconds measuring the time since the last update.
 	 * @param in The current input
 	 */
-	public void preUpdate(GameContainer container, StateBasedGame game, float delf, Input in) {
+	public void preUpdate(Game game, float delta, Input in) {
 		
 	}
 	
@@ -475,7 +458,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @param delf A float value in seconds measuring the time since the last update.
 	 * @param in The current input
 	 */
-	public void postUpdate(GameContainer container, StateBasedGame game, float delf, Input in) {
+	public void postUpdate(Game game, float delf, Input in) {
 		
 	}
 	
@@ -504,8 +487,8 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * @param c The game container.
 	 * @return A rectangle based around the centre of the screen being at (0,0)
 	 */
-	public Rectangle getStateBounds(GameContainer c) {
-		return new Rectangle(-c.getWidth() / 2f / base_scale / zoom - 32, -c.getHeight() / 2f / base_scale / zoom - 32, c.getWidth() / base_scale / zoom + 64, c.getHeight() / base_scale / zoom + 64);
+	public Rectangle getStateBounds(Game game) {
+		return new Rectangle(-game.getWidth() / 2f / base_scale / zoom - 32, -game.getHeight() / 2f / base_scale / zoom - 32, game.getWidth() / base_scale / zoom + 64, game.getHeight() / base_scale / zoom + 64);
 	}
 
 	/**
@@ -520,7 +503,7 @@ public abstract class BulletState extends BasicGameState implements BaseScaleSta
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(GameContainer container, float base) {
+	public void scale(Game game, float base) {
 		this.base_scale = base;
 	}
 	
