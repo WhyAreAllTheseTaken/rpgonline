@@ -5,4 +5,5 @@ public interface TextureReference {
 	public int getHeight();
 	public float getLibraryWidth();
 	public float getLibraryHeight();
+	public void bind();
 }

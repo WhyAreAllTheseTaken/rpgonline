@@ -30,5 +30,10 @@ class SlickTexture implements TextureReference {
 	public float getLibraryHeight() {
 		return texture.getHeight();
 	}
+	
+	@Override
+	public void bind() {
+		texture.bind();
+	}
 
 }
