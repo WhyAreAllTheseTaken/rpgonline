@@ -1,5 +1,8 @@
-package io.github.tomaso2468.rpgonline.render;
+package io.github.tomaso2468.rpgonline.render.opengl;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +10,13 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.TextureReference;
+import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public abstract class GL11Renderer implements Renderer {
 	private RenderMode mode = RenderMode.MODE_NONE;
@@ -33,6 +41,9 @@ public abstract class GL11Renderer implements Renderer {
 		GL11.glVertex3f(x + w, y, 0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void render(Image img, float x, float y, float w, float h) {
 		startUse(img);
@@ -40,18 +51,27 @@ public abstract class GL11Renderer implements Renderer {
 		endUse(img);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void startUse(Image img) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void endUse(Image img) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void renderFiltered(Image img, float x, float y, float w, float h, Color c) {
 		startUse(img);
@@ -223,5 +243,10 @@ public abstract class GL11Renderer implements Renderer {
 	        GL11.glEnable(GL11.GL_BLEND);
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
+	}
+	
+	@Override
+	public TextureReference getPNG(URL url) throws IOException {
+		return new SlickTexture(TextureLoader.getTexture("PNG", new BufferedInputStream(url.openStream())));
 	}
 }

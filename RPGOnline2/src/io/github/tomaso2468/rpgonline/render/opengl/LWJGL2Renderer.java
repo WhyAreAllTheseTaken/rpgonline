@@ -1,4 +1,4 @@
-package io.github.tomaso2468.rpgonline.render;
+package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.awt.Toolkit;
 

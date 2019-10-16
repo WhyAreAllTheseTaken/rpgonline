@@ -33,7 +33,6 @@ package io.github.tomaso2468.rpgonline;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -48,9 +47,9 @@ import javax.imageio.ImageIO;
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
+
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * <p>
@@ -116,6 +115,8 @@ public class TextureMap {
 	 * A map of textures to their sprite sheet.
 	 */
 	private static Map<Image, Image> sheets = new HashMap<>();
+	
+	private static Renderer renderer;
 
 	/**
 	 * Adds a texture to the texture map.
@@ -133,19 +134,17 @@ public class TextureMap {
 	 * 
 	 * @param s   The texture ID.
 	 * @param loc The location of the texture file.
-	 * @throws SlickException If an error occurs loading a texture.
+	 * @throws RenderException 
 	 */
-	public static void loadTexture(String s, URL loc) throws SlickException {
+	public static void loadTexture(String s, URL loc) throws RenderException {
 		Log.debug("Loading texture " + s + " from " + loc);
 
-		// Load texture.
-		Texture tex;
+		Image img;
 		try {
-			tex = TextureLoader.getTexture("PNG", new BufferedInputStream(loc.openStream()));
-		} catch (IOException e) {
-			throw new SlickException(e.toString());
+			img = new Image(renderer, renderer.getPNG(loc));
+		} catch (RenderException | IOException e) {
+			throw new RenderException("Error loading texture.", e);
 		}
-		Image img = new Image(tex);
 
 		// Disabled interpolation.
 		img.setFilter(RPGConfig.getFilterMode());
@@ -167,7 +166,7 @@ public class TextureMap {
 	 * @param loc The location of the texture file.
 	 * @throws SlickException If an error occurs loading a texture.
 	 */
-	public static void loadMappedTexture(String s, URL loc) throws SlickException {
+	public static void loadMappedTexture(String s, URL loc) throws RenderException {
 		// Load the texture normally if mapping is disabled.
 		if (!RPGConfig.isMapped()) {
 			loadTexture(s, loc);
@@ -181,7 +180,7 @@ public class TextureMap {
 		try {
 			img = ImageIO.read(loc);
 		} catch (IOException e) {
-			throw new SlickException(e.toString());
+			throw new RenderException(e.toString());
 		}
 
 		// Add the texture to the texture map.
@@ -200,7 +199,7 @@ public class TextureMap {
 	 * @param img The image to map.
 	 * @throws SlickException If an error occurs adding the texture.
 	 */
-	public static void addMappedTexture(String s, BufferedImage img) throws SlickException {
+	public static void addMappedTexture(String s, BufferedImage img) throws RenderException {
 		// Store the texture in a file then reload if mapping is disabled.
 		if (!RPGConfig.isMapped()) {
 			try {
@@ -214,7 +213,7 @@ public class TextureMap {
 				// take effect but should not be too much of a concern.
 				f.deleteOnExit();
 			} catch (IOException e) {
-				throw new SlickException(e.toString());
+				throw new RenderException(e.toString());
 			}
 			return;
 		}
@@ -238,7 +237,7 @@ public class TextureMap {
 	 * @param th  The height of one sprite.
 	 */
 	public static void addSpriteMap(String s, Image img, int tw, int th) {
-		SpriteSheet map = new SpriteSheet(img, tw, th);
+		SpriteSheet map = new SpriteSheet(renderer, img, tw, th);
 		int id = 0;
 		Log.debug("Map size " + map.getHorizontalCount() + " x " + map.getVerticalCount());
 		for (int y = 0; y < map.getVerticalCount(); y++) {
@@ -265,16 +264,14 @@ public class TextureMap {
 	 * @param th  The height of one sprite.
 	 * @throws SlickException if an error occurs loading the sprite map.
 	 */
-	public static void loadSpriteMap(String s, URL loc, int tw, int th) throws SlickException {
+	public static void loadSpriteMap(String s, URL loc, int tw, int th) throws RenderException {
 		Log.debug("Loading sprite map texture " + s + " from " + loc);
-		Texture tex;
+		Image img;
 		try {
-			tex = TextureLoader.getTexture("PNG", new BufferedInputStream(loc.openStream()));
-		} catch (IOException e) {
-			Log.error(e);
-			throw new SlickException(e.toString());
+			img = new Image(renderer, renderer.getPNG(loc));
+		} catch (RenderException | IOException e) {
+			throw new RenderException("Error loading texture.", e);
 		}
-		Image img = new Image(tex);
 		img.setFilter(RPGConfig.getFilterMode());
 
 		addSpriteMap(s, img, tw, th);
@@ -295,7 +292,7 @@ public class TextureMap {
 	 * @param th  The height of one sprite.
 	 * @throws SlickException if an error occurs loading the sprite map.
 	 */
-	public static void loadSpriteMapMapped(String s, URL loc, int tw, int th) throws SlickException {
+	public static void loadSpriteMapMapped(String s, URL loc, int tw, int th) throws RenderException {
 		Log.debug("Loading sprite map texture " + s + " from " + loc);
 		BufferedImage img;
 		try {
@@ -303,7 +300,7 @@ public class TextureMap {
 
 			addSpriteMapMapped(s, img, tw, th);
 		} catch (IOException e) {
-			throw new SlickException(e.toString());
+			throw new RenderException(e.toString());
 		}
 	}
 
@@ -321,7 +318,7 @@ public class TextureMap {
 	 * @param tw  The width of one sprite.
 	 * @param th  The height of one sprite.
 	 */
-	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) throws SlickException {
+	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) throws RenderException {
 		int id = 0;
 		Log.debug("Map size " + img.getWidth() / tw + " x " + img.getHeight() / th);
 		for (int y = 0; y < img.getHeight() / th; y++) {
@@ -370,7 +367,7 @@ public class TextureMap {
 	 * @param sh The sprite height.
 	 * @throws SlickException If an error occurs mapping textures.
 	 */
-	public static void genTextureMap(int sw, int sh) throws SlickException {
+	public static void genTextureMap(int sw, int sh) throws RenderException {
 		if (!RPGConfig.isMapped()) {
 			return;
 		}
@@ -484,12 +481,11 @@ public class TextureMap {
 			for (Entry<BufferedImage, List<String>> e : textureImg.entrySet()) {
 				File f = textureFile.get(e.getKey());
 
-				Texture tex;
-				tex = TextureLoader.getTexture("PNG", new BufferedInputStream(f.toURI().toURL().openStream()));
-				Image img2 = new Image(tex);
+				Image img2;
+				img2 = new Image(renderer, renderer.getPNG(f.toURI().toURL()));
 				img2.setFilter(RPGConfig.getFilterMode());
 
-				SpriteSheet ss = new SpriteSheet(img2, sw, sh);
+				SpriteSheet ss = new SpriteSheet(renderer, img2, sw, sh);
 
 				for (String s : e.getValue()) {
 					addTexture(s, ss.getSubImage(textureX.get(s), textureY.get(s)));
@@ -505,7 +501,7 @@ public class TextureMap {
 			Log.debug("Mapping complete");
 		} catch (IOException e) {
 			Log.error(e);
-			throw new SlickException(e.toString());
+			throw new RenderException(e.toString());
 		}
 	}
 
@@ -513,7 +509,7 @@ public class TextureMap {
 	 * Generates all texture maps using {@link #genTextureMap(int, int)}
 	 * @throws SlickException If an error occurs mapping textures.
 	 */
-	public static void generateAllMaps() throws SlickException {
+	public static void generateAllMaps() throws RenderException {
 		Log.info("Generating all texture maps.");
 		while (!texturesMapped.isEmpty()) {
 			Entry<String, BufferedImage> e = texturesMapped.entrySet().iterator().next();
@@ -555,5 +551,9 @@ public class TextureMap {
 			sheet = img;
 		}
 		return sheet;
+	}
+
+	public static void setRenderer(Renderer renderer) {
+		TextureMap.renderer = renderer;
 	}
 }

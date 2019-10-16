@@ -31,11 +31,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render;
 
+import java.io.IOException;
+import java.net.URL;
+
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.TextureReference;
 
 /**
  * An interface representing a renderer.
@@ -125,4 +129,6 @@ public interface Renderer {
 	
 	public void setMode(RenderMode mode);
 	public RenderMode getMode(RenderMode mode);
+	
+	public TextureReference getPNG(URL url) throws RenderException, IOException;
 }

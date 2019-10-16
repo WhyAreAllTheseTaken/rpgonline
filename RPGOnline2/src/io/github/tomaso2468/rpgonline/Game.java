@@ -136,6 +136,7 @@ public class Game {
 
 	public void init(Game game) throws RenderException {
 		renderer.init(this);
+		TextureMap.setRenderer(renderer);
 		for (Entry<Integer, GameState> state : getStates()) {
 			state.getValue().init(game);
 		}
