@@ -145,4 +145,7 @@ public interface Renderer {
 	public default void drawImage(Image img, float x, float y) {
 		render(img, x, y, img.getWidth(), img.getHeight());
 	}
+	public default void drawImage(Image img, float x, float y, Color light) {
+		renderFiltered(img, x, y, img.getWidth(), img.getHeight(), light);
+	}
 }

@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -61,9 +61,9 @@ public class MultiSkyLayer implements SkyLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light) {
 		for (SkyLayer skyLayer : skys) {
-			skyLayer.render(g, c, x, y, z, world, light);
+			skyLayer.render(renderer, game, x, y, z, world, light);
 		}
 	}
 

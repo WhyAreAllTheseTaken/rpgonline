@@ -32,12 +32,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.ColorUtils.SunColorGenerator;
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -61,14 +61,14 @@ public abstract class SunLayer implements SkyLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light) {
 		double time = getTime();
-		float sx = (float) sg.getSunX(time) * c.getWidth() / 2 + c.getWidth() / 2;
-		float sy =  (float) sg.getSunY(time) * c.getHeight() / 2 + c.getHeight() / 2;
-		float size = sg.getSunSize() * 256 * (c.getHeight() / 1440f);
+		float sx = (float) sg.getSunX(time) * game.getWidth() / 2 + game.getWidth() / 2;
+		float sy =  (float) sg.getSunY(time) * game.getHeight() / 2 + game.getHeight() / 2;
+		float size = sg.getSunSize() * 256 * (game.getHeight() / 1440f);
 		
 		Image img = TextureMap.getTexture("sun").getScaledCopy((int) size, (int) size);
-		g.drawImage(img, sx - size / 2, sy - size / 2, sg.getSunLight(time).brighter(2));
+		renderer.drawImage(img, sx - size / 2, sy - size / 2, sg.getSunLight(time).brighter(2));
 	}
 	
 	/**

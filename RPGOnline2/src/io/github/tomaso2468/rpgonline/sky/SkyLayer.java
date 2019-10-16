@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -53,5 +53,5 @@ public interface SkyLayer {
 	 * @param world The current world.
 	 * @param light The current sky light.
 	 */
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light);
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light);
 }

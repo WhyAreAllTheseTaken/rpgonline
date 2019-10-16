@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.sky;
 
-import org.newdawn.slick.Image;
+import io.github.tomaso2468.rpgonline.Image;
 
 /**
  * A sky layer mesh made of a top, middle and bottom image.

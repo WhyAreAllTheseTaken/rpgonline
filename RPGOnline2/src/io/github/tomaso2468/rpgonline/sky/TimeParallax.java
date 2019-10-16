@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -73,8 +73,8 @@ public class TimeParallax implements SkyLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
-		l.render(g, c, x + ((System.currentTimeMillis() - 1561284966000L) * factorX), y + ((System.currentTimeMillis() - 1561284966000L) * factorY), z, world, light);
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light) {
+		l.render(renderer, game, x + ((System.currentTimeMillis() - 1561284966000L) * factorX), y + ((System.currentTimeMillis() - 1561284966000L) * factorY), z, world, light);
 	}
 
 } 
