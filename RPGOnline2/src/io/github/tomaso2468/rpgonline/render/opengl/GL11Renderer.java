@@ -10,9 +10,15 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.InternalTextureLoader;
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.opengl.renderer.SGL;
+import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
@@ -248,5 +254,23 @@ public abstract class GL11Renderer implements Renderer {
 	@Override
 	public TextureReference getPNG(URL url) throws IOException {
 		return new SlickTexture(TextureLoader.getTexture("PNG", new BufferedInputStream(url.openStream())));
+	}
+	
+	@Override
+	public void copyArea(Image buffer, int x, int y) {
+		Texture texture = ((SlickTexture) buffer.getTexture()).texture;
+		int format = texture.hasAlpha() ? GL11.GL_RGBA : GL11.GL_RGB;
+		texture.bind();
+		GL11.glCopyTexImage2D(SGL.GL_TEXTURE_2D, 0, format, x, getHeight() - (y + (int) buffer.getHeight()), texture.getTextureWidth(), texture.getTextureHeight(), 0);
+		buffer.ensureInverted();
+	}
+	
+	@Override
+	public TextureReference createEmptyTexture(int width, int height) throws RenderException {
+		try {
+			return new SlickTexture(InternalTextureLoader.get().createTexture(width, height, Image.FILTER_NEAREST));
+		} catch (IOException e) {
+			throw new RenderException("Failed to create empty image", e);
+		}
 	}
 }

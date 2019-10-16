@@ -11,7 +11,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
-import io.github.tomaso2468.rpgonline.bullet.Input;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
@@ -47,6 +47,7 @@ public class Game {
 	private float fps;
 	private boolean started;
 	private boolean fullscreen;
+	private Input input;
 
 	public Game(String title, Version version) {
 		this.title = title;
@@ -77,7 +78,7 @@ public class Game {
 		}
 	}
 
-	protected void loop() {
+	protected void loop() throws RenderException {
 		float delta = (System.nanoTime() - lastUpdateTime) / 1000000000f;
 		lastUpdateTime = System.nanoTime();
 
@@ -143,7 +144,7 @@ public class Game {
 		}
 	}
 
-	public final void update(Game game, float delta) {
+	public final void update(Game game, float delta) throws RenderException {
 		preUpdate(game, delta);
 		renderer.resetTransform();
 		currentState.update(game, delta);
@@ -152,21 +153,21 @@ public class Game {
 		renderer.resetTransform();
 	}
 
-	public void preUpdate(Game game, float delta) {
+	public void preUpdate(Game game, float delta) throws RenderException {
 		Debugger.start();
 	}
 
-	public void postUpdate(Game game, float delta) {
+	public void postUpdate(Game game, float delta) throws RenderException {
 		Debugger.stop();
 	}
 
-	public final void render(Game game, Renderer renderer) {
+	public final void render(Game game, Renderer renderer) throws RenderException {
 		preRender(game, renderer);
 		currentState.render(game, renderer);
 		postRender(game, renderer);
 	}
 
-	public void preRender(Game game, Renderer renderer) {
+	public void preRender(Game game, Renderer renderer) throws RenderException {
 		Debugger.start();
 	}
 
@@ -190,7 +191,7 @@ public class Game {
 		return FastMath.round(value * 10) / 10.0;
 	}
 
-	public void postRender(Game game, Renderer renderer) {
+	public void postRender(Game game, Renderer renderer) throws RenderException {
 		if (RPGConfig.isDebug()) {
 			Debugger.start("debug-screen");
 			Graphics g = renderer.getGUIGraphics();
@@ -762,7 +763,7 @@ public class Game {
 
 	public Input getInput() {
 		// TODO Auto-generated method stub
-		return null;
+		return input;
 	}
 
 	public int getHeight() {

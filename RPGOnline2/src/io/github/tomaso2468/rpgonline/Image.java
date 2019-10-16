@@ -8,16 +8,15 @@ public class Image implements Cloneable {
 
 	private Renderer renderer;
 	private TextureReference texture;
-	private final float textureX;
-	private final float textureY;
-	private final float textureWidth;
-	private final float textureHeight;
-	private final float width;
-	private final float height;
+	private float textureX;
+	private float textureY;
+	private float textureWidth;
+	private float textureHeight;
+	private float width;
+	private float height;
 
-	public Image(Renderer renderer, int width, int height) {
-		this(renderer, (TextureReference) null);
-		//TODO Buffer support
+	public Image(Renderer renderer, int width, int height) throws RenderException {
+		this(renderer, renderer.createEmptyTexture(width, height));
 	}
 	
 	public Image(Renderer renderer, TextureReference texture, float texture_x, float texture_y, float texture_w,
@@ -118,5 +117,12 @@ public class Image implements Cloneable {
 	public void destroy() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void ensureInverted() {
+		if (textureHeight > 0) {
+			textureY = textureY + textureHeight;
+			textureHeight = -textureHeight;
+		}
 	}
 }

@@ -31,10 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layer;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 
@@ -55,7 +56,7 @@ public class PostLayer extends Layer {
 	/**
 	 * The game container object.
 	 */
-	private GameContainer c;
+	private Game c;
 	
 	/**
 	 * Constructs a new PostLayer.
@@ -70,25 +71,21 @@ public class PostLayer extends Layer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		g.scale(1 / scaling, 1 / scaling);
 		if (buffer == null) {
-			buffer = new Image(c.getWidth(), c.getHeight());
+			buffer = new Image(c.getRenderer(), c.getWidth(), c.getHeight());
 		}
 		if (buffer.getWidth() != c.getWidth()
 				|| buffer.getHeight() != c.getHeight()) {
 			buffer.destroy();
-			buffer = new Image(c.getWidth(), c.getHeight());
+			buffer = new Image(c.getRenderer(), c.getWidth(), c.getHeight());
 		}
 		
-		org.newdawn.slick.Graphics g2 = g.beginSlick();
-		
-		g2.copyArea(buffer, 0, 0);
-		g2.pushTransform();
-		post.doPostProcess(null, null, buffer, g2);
-		g2.popTransform();
-		
-		g.endSlick();
+		g.copyArea(buffer, 0, 0);
+		g.pushTransform();
+		post.doPostProcess(null, null, buffer, g.getRenderer());
+		g.popTransform();
 		
 		g.scale(scaling, scaling);
 	}
@@ -97,7 +94,7 @@ public class PostLayer extends Layer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void containerUpdate(GameContainer c) {
+	public void containerUpdate(Game c) {
 		this.c = c;
 	}
 }

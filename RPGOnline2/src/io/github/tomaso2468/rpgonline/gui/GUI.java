@@ -34,9 +34,10 @@ package io.github.tomaso2468.rpgonline.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
@@ -507,7 +508,7 @@ public class GUI {
 	 * @param scaling The scaling of the screen.
 	 * @throws SlickException If an error occurs when rendering.
 	 */
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		this.scaling = scaling;
 		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
@@ -523,7 +524,7 @@ public class GUI {
 	 * @param scaling The scaling of the screen.
 	 * @throws SlickException If an error occurs when rendering.
 	 */
-	public void debug(Graphics g, float scaling) throws SlickException {
+	public void debug(Graphics g, float scaling) throws RenderException {
 		this.scaling = scaling;
 		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
@@ -547,7 +548,7 @@ public class GUI {
 	 * Updates the game container.
 	 * @param c A game container object.
 	 */
-	public void containerUpdate(GameContainer c) {
+	public void containerUpdate(Game c) {
 		for (Screen screen : screens) {
 			screen.containerUpdate(c);
 		}

@@ -31,8 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layer;
 
-import org.newdawn.slick.SlickException;
-
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 
@@ -60,7 +59,7 @@ public class ImageLayer extends Layer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		g.drawImage(TextureMap.getTexture(texture).getScaledCopy((int) getW(), (int) getH()), 0, 0);
 	}
 }

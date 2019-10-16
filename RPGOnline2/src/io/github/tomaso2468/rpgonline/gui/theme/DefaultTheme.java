@@ -33,10 +33,10 @@ package io.github.tomaso2468.rpgonline.gui.theme;
 
 import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.Font;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.Button;
 import io.github.tomaso2468.rpgonline.gui.CheckBox;
 import io.github.tomaso2468.rpgonline.gui.Component;
@@ -351,8 +351,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer c, float scaling) {
-		font = c.getDefaultFont();
+	public void init(Game c, float scaling) {
+		font = c.getFont();
 		this.scaling = scaling;
 	}
 }

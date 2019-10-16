@@ -32,8 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.render;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 
+import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
 
 /**
@@ -137,4 +137,8 @@ public interface Graphics {
 	 * @param y The Y position.
 	 */
 	public void drawString(String str, float x, float y);
+
+	public void copyArea(Image buffer, int i, int j);
+
+	public Graphics getRenderer();
 }

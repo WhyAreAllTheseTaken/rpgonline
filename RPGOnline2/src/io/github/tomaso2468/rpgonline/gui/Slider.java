@@ -31,9 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 
@@ -125,7 +125,7 @@ public class Slider extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		ThemeManager.getTheme().paintSlider(g, scaling, this);
 	}
 }

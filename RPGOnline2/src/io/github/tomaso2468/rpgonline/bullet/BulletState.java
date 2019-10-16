@@ -56,6 +56,7 @@ import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
@@ -188,28 +189,28 @@ public abstract class BulletState implements GameState, BaseScaleState {
 
 		renderer.resetTransform();
 
-//		if (post != null) {
-//			Debugger.start("effects");
-//			
-//			if (buffer == null) {
-//				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
-//			} else if (renderer.getWidth() != buffer.getWidth() || renderer.getHeight() != buffer.getHeight()) {
-//				buffer.destroy();
-//				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
-//			}
-//			
-//			renderer.copyArea(buffer, 0, 0);
-//			
-//			if (!(post instanceof MultiEffect)) {
-//				Debugger.start("post-" + post.getClass());
-//			}
-//			post.doPostProcess(renderer, game, buffer, g);
-//			if (!(post instanceof MultiEffect)) {
-//				Debugger.stop("post-" + post.getClass());
-//			}
-//			
-//			Debugger.stop("effects");
-//		}
+		if (post != null) {
+			Debugger.start("effects");
+			
+			if (buffer == null) {
+				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
+			} else if (renderer.getWidth() != buffer.getWidth() || renderer.getHeight() != buffer.getHeight()) {
+				buffer.destroy();
+				buffer = new Image(renderer, renderer.getWidth(), renderer.getHeight());
+			}
+			
+			renderer.copyArea(buffer, 0, 0);
+			
+			if (!(post instanceof MultiEffect)) {
+				Debugger.start("post-" + post.getClass());
+			}
+			post.doPostProcess(game, buffer, renderer);
+			if (!(post instanceof MultiEffect)) {
+				Debugger.stop("post-" + post.getClass());
+			}
+			
+			Debugger.stop("effects");
+		}
 
 		Debugger.start("gui");
 
@@ -232,7 +233,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * @param g The current graphics context.
 	 * @throws SlickException If a rendering error occurs.
 	 */
-	public void render2(Game game, Renderer renderer) throws SlickException {
+	public void render2(Game game, Renderer renderer) throws RenderException {
 		List<Particle> particles = new ArrayList<Particle>(this.particles);
 		
 		Debugger.start("sky");
@@ -241,14 +242,14 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		}
 		Debugger.stop("sky");
 		
-		renderer.translate2d(renderer.getWidth() / 2, renderer.getHeight() / 2);
+		renderer.translate2D(renderer.getWidth() / 2, renderer.getHeight() / 2);
 
-		renderer.scale(base_scale, base_scale);
+		renderer.scale2D(base_scale, base_scale);
 
-		renderer.scale(zoom, zoom);
+		renderer.scale2D(zoom, zoom);
 		
 		if (shake > 0) {
-			renderer.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+			renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 		}
 		
 		float sx = center_camera ? x : 0;
@@ -342,7 +343,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(Game game, float delta) throws SlickException {
+	public void update(Game game, float delta) throws RenderException {
 		Input in = game.getInput();
 		
 		preUpdate(game, delta, in);
@@ -376,21 +377,21 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		float ox = mx;
 		float oy = my;
 		
-		mx = Mouse.getX();
-		my = game.getHeight() - Mouse.getY();
+		mx = in.getMouseX();
+		my = in.getMouseY();
 		
 		if (mx != ox || my != oy) {
 			gui.mouseMoved(mx / base_scale, my / base_scale);
 		}
 		
 		boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
-		for (int i = 0; i < Mouse.getButtonCount(); i++) {
-			data[i] = Mouse.isButtonDown(i);
+		for (int i = 0; i < in.getButtonCount(); i++) {
+			data[i] = in.isButtonDown(i);
 		}
 		gui.mouseState(mx / base_scale, my / base_scale, data);
 		
-		if (Mouse.hasWheel()) {
-			gui.mouseWheel(Mouse.getDWheel());
+		if (in.hasWheel()) {
+			gui.mouseWheel(in.getDWheel());
 		}
 		Debugger.stop("gui-mouse");
 		

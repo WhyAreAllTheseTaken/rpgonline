@@ -132,4 +132,5 @@ public interface Renderer {
 	
 	public TextureReference getPNG(URL url) throws RenderException, IOException;
 	public void copyArea(Image buffer, int x, int y);
+	public TextureReference createEmptyTexture(int width, int height) throws RenderException;
 }
