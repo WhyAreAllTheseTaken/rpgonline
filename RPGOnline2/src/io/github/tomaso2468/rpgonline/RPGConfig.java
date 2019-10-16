@@ -34,9 +34,7 @@ package io.github.tomaso2468.rpgonline;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-import io.github.tomaso2468.rpgonline.input.ControllerInputProvider;
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
-import io.github.tomaso2468.rpgonline.input.MapControllerProvider;
 import io.github.tomaso2468.rpgonline.input.MapKeyProvider;
 import io.github.tomaso2468.rpgonline.lang.LangProvider;
 
@@ -99,23 +97,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 */
 	private static KeyboardInputProvider keyInput = new MapKeyProvider();
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 */
-	private static float controllerActuation = 0.5f;
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 */
-	private static ControllerInputProvider controllerInput = new MapControllerProvider();
 
 	/**
 	 * Determines if textures should be mapped/atlases. <b>This must be set before
@@ -390,77 +371,6 @@ public final class RPGConfig {
 			throw new NullPointerException("keyInput");
 		}
 		RPGConfig.keyInput = keyInput;
-	}
-
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @return A float that is equal to or greater than 0. A float value of Infinity
-	 *         or NaN may be used to disable axis that are used as buttons.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 * @see #setControllerActuation(float)
-	 */
-	@Nonnegative
-	public static float getControllerActuation() {
-		return controllerActuation;
-	}
-
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @param controllerActuation A float that is equal to or greater than 0. A
-	 *                            float value of Infinity or NaN may be used to
-	 *                            disable axis that are used as buttons.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 * @see #getControllerActuation()
-	 */
-	@Nonnegative
-	public static void setControllerActuation(float controllerActuation) {
-		if (controllerActuation < 0) {
-			throw new IllegalArgumentException("Actuation point cannot be less than 0.");
-		}
-		RPGConfig.controllerActuation = controllerActuation;
-	}
-
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @return A ControllerInputProvider.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see #setControllerInput(ControllerInputProvider)
-	 */
-	@Nonnull
-	public static ControllerInputProvider getControllerInput() {
-		return controllerInput;
-	}
-
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @param controllerInput A ControllerInputProvider. This cannot be null.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see #getControllerInput()
-	 */
-	@Nonnull
-	public static void setControllerInput(ControllerInputProvider controllerInput) {
-		if (controllerInput == null) {
-			throw new NullPointerException("controllerInput");
-		}
-		RPGConfig.controllerInput = controllerInput;
 	}
 
 	/**
