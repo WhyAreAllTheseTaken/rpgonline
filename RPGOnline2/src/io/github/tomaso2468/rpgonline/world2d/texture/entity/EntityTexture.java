@@ -31,10 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture.entity;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
@@ -99,14 +98,14 @@ public interface EntityTexture {
 	 * @param sy The Y position on the screen to render the entity at.
 	 * @param wind The current wind value.
 	 */
-	public default void render(Graphics g, double x, double y, double z, World w, Entity e, float sx, float sy, float wind) {
+	public default void render(Renderer renderer, double x, double y, double z, World w, Entity e, float sx, float sy, float wind) {
 		Image img = TextureMap.getTexture(getTexture(x, y, z, w, e, wind));
 		
 		if (img == null) {
 			return;
 		}
 		
-		g.drawImage(img, sx, sy);
+		renderer.render(img, sx, sy, img.getWidth(), img.getHeight());
 	}
 	
 	/**
