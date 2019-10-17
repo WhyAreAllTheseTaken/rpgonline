@@ -11,6 +11,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
+import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.input.Input;
@@ -145,6 +146,8 @@ public class Game {
 		TextureMap.setRenderer(renderer);
 		
 		this.input = renderer.getInput();
+		
+		AudioManager.getSystem();
 		
 		for (Entry<Integer, GameState> state : getStates()) {
 			state.getValue().init(game);
