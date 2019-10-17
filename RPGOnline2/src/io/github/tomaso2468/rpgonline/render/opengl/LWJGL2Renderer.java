@@ -1,13 +1,18 @@
 package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.imageout.ImageOut;
 
 import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.input.Input;
 
@@ -166,5 +171,16 @@ public class LWJGL2Renderer extends GL11Renderer {
 	@Override
 	public Input getInput() {
 		return new LWJGL2Input(this);
+	}
+
+	@Override
+	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException {
+		try {
+			ImageOut.write(
+					new org.newdawn.slick.Image(((SlickTexture) image.getTexture()).texture),
+					file.getAbsolutePath(), writeAlpha);
+		} catch (SlickException e) {
+			throw new RenderException(e);
+		}
 	}
 }

@@ -1,5 +1,10 @@
 package io.github.tomaso2468.rpgonline;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.newdawn.slick.imageout.ImageOut;
+
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public class Image implements Cloneable {
@@ -57,11 +62,11 @@ public class Image implements Cloneable {
 		return texture;
 	}
 
-	public void write(String dest, boolean writeAlpha) {
-
+	public void write(String dest, boolean writeAlpha) throws IOException, RenderException {
+		renderer.writeImage(this, new File(dest), writeAlpha);
 	}
 
-	public void write(String dest) {
+	public void write(String dest) throws IOException, RenderException {
 		write(dest, true);
 	}
 

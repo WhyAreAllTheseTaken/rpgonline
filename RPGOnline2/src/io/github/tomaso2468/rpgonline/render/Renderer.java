@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -176,4 +177,5 @@ public interface Renderer {
 	}
 	public Input getInput();
 	public void setFilter(TextureReference texture, int filterMode);
+	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException;
 }
