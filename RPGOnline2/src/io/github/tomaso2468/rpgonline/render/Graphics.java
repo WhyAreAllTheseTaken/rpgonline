@@ -130,6 +130,11 @@ public interface Graphics {
 	 * @return A font object.
 	 */
 	public Font getFont();
+	
+	/**
+	 * Sets the current font.
+	 */
+	public void setFont(Font font);
 	/**
 	 * Draws the string.
 	 * @param str The text to draw.
@@ -138,7 +143,7 @@ public interface Graphics {
 	 */
 	public void drawString(String str, float x, float y);
 
-	public void copyArea(Image buffer, int i, int j);
+	public void copyArea(Image buffer, int x, int y);
 
 	public Renderer getRenderer();
 

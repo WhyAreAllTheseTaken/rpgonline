@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.input.Input;
 
 public class LWJGL2Renderer extends GL11Renderer {
 	private int width = 640;
@@ -162,4 +163,8 @@ public class LWJGL2Renderer extends GL11Renderer {
 		Display.setTitle(title);
 	}
 
+	@Override
+	public Input getInput() {
+		return new LWJGL2Input(this);
+	}
 }

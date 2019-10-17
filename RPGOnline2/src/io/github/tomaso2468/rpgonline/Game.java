@@ -11,9 +11,9 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
-import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
@@ -56,7 +56,7 @@ public class Game {
 		currentState = new GameState() {
 			@Override
 			public void render(Game game, Renderer renderer) {
-				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				
 				renderer.scale2D(2, 2);
 				renderer.drawQuad(100, 100, 200, 200, Color.orange);
@@ -138,7 +138,14 @@ public class Game {
 
 	public void init(Game game) throws RenderException {
 		renderer.init(this);
+		if (font == null) {
+			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 14);
+		}
+		renderer.setFont(font);
 		TextureMap.setRenderer(renderer);
+		
+		this.input = renderer.getInput();
+		
 		for (Entry<Integer, GameState> state : getStates()) {
 			state.getValue().init(game);
 		}
@@ -163,7 +170,9 @@ public class Game {
 
 	public final void render(Game game, Renderer renderer) throws RenderException {
 		preRender(game, renderer);
+		renderer.resetTransform();
 		currentState.render(game, renderer);
+		renderer.resetTransform();
 		postRender(game, renderer);
 	}
 
@@ -197,6 +206,9 @@ public class Game {
 			Graphics g = renderer.getGUIGraphics();
 
 			long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
+			if (uptime < 1000) {
+				uptime = 1000;
+			}
 
 			float y = 4;
 			g.setColor(Color.white);
@@ -706,6 +718,7 @@ public class Game {
 
 	public void setFont(Font font) {
 		this.font = font;
+		if (started) renderer.setFont(font);
 	}
 
 	public boolean isAntialias() {
@@ -762,7 +775,6 @@ public class Game {
 	}
 
 	public Input getInput() {
-		// TODO Auto-generated method stub
 		return input;
 	}
 

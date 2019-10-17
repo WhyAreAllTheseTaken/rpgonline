@@ -212,16 +212,18 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			Debugger.stop("effects");
 		}
 
-		Debugger.start("gui");
+		
 
-		renderer.resetTransform();
-		
-		Graphics g2 = renderer.getGUIGraphics();
-		
-		ThemeManager.getTheme().predraw(g2);
-		gui.paint(g2, base_scale);
-		
-		Debugger.stop("gui");
+		if (gui != null) {
+			Debugger.start("gui");
+			renderer.resetTransform();
+			
+			Graphics g2 = renderer.getGUIGraphics();
+			
+			ThemeManager.getTheme().predraw(g2);
+			gui.paint(g2, base_scale);
+			Debugger.stop("gui");
+		}
 		
 		Debugger.stop("render");
 	}
@@ -367,39 +369,41 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		x += walk_x * speed * delta;
 		y += walk_y * speed * delta;
 		
-		Debugger.start("gui");
-		
-		Debugger.start("gui-container");
-		gui.containerUpdate(game);
-		Debugger.stop("gui-container");
-		
-		Debugger.start("gui-mouse");
-		float ox = mx;
-		float oy = my;
-		
-		mx = in.getMouseX();
-		my = in.getMouseY();
-		
-		if (mx != ox || my != oy) {
-			gui.mouseMoved(mx / base_scale, my / base_scale);
+		if (gui != null) {
+			Debugger.start("gui");
+			
+			Debugger.start("gui-container");
+			gui.containerUpdate(game);
+			Debugger.stop("gui-container");
+			
+			Debugger.start("gui-mouse");
+			float ox = mx;
+			float oy = my;
+			
+			mx = in.getMouseX();
+			my = in.getMouseY();
+			
+			if (mx != ox || my != oy) {
+				gui.mouseMoved(mx / base_scale, my / base_scale);
+			}
+			
+			boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
+			for (int i = 0; i < in.getButtonCount(); i++) {
+				data[i] = in.isButtonDown(i);
+			}
+			gui.mouseState(mx / base_scale, my / base_scale, data);
+			
+			if (in.hasWheel()) {
+				gui.mouseWheel(in.getDWheel());
+			}
+			Debugger.stop("gui-mouse");
+			
+			Debugger.start("gui-update");
+			gui.update(delta / 1000f);
+			Debugger.stop("gui-update");
+			
+			Debugger.stop("gui");
 		}
-		
-		boolean[] data = new boolean[Math.max(3, Mouse.getButtonCount())];
-		for (int i = 0; i < in.getButtonCount(); i++) {
-			data[i] = in.isButtonDown(i);
-		}
-		gui.mouseState(mx / base_scale, my / base_scale, data);
-		
-		if (in.hasWheel()) {
-			gui.mouseWheel(in.getDWheel());
-		}
-		Debugger.stop("gui-mouse");
-		
-		Debugger.start("gui-update");
-		gui.update(delta / 1000f);
-		Debugger.stop("gui-update");
-		
-		Debugger.stop("gui");
 		
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).doBehaviour(null, wind, particles, delta / 1000f);

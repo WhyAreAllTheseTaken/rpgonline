@@ -38,10 +38,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
+import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
+import io.github.tomaso2468.rpgonline.input.Input;
 
 /**
  * An interface representing a renderer.
@@ -131,10 +133,10 @@ public interface Renderer {
 	public boolean displayClosePressed();
 	
 	public void setMode(RenderMode mode);
-	public RenderMode getMode(RenderMode mode);
+	public RenderMode getMode();
 	
 	public void setColorMode(ColorMode mode);
-	public ColorMode getColorMode(ColorMode mode);
+	public ColorMode getColorMode();
 	
 	public TextureReference getPNG(URL url) throws RenderException, IOException;
 	public void copyArea(Image buffer, int x, int y);
@@ -154,5 +156,23 @@ public interface Renderer {
 	}
 	
 	public void setRenderTarget(Image img) throws RenderException;
+	
 	public void draw(Shape shape, Color color);
+	public void fill(Shape shape, Color color);
+	
+	public void setFont(Font font);
+	public Font getFont();
+	
+	public static final int FONT_NORMAL = java.awt.Font.PLAIN;
+	public static final int FONT_BOLD = java.awt.Font.BOLD;
+	public static final int FONT_ITALIC = java.awt.Font.ITALIC;
+	public Font loadFont(String name, int type, float size, int[] codepages) throws RenderException;
+	public Font loadFont(URL url, int type, float size, int[] codepages) throws RenderException;
+	public default Font loadFont(String name, int type, float size) throws RenderException {
+		return loadFont(name, type, size, new int[0]);
+	}
+	public default Font loadFont(URL url, int type, float size) throws RenderException {
+		return loadFont(url, type, size, new int[0]);
+	}
+	public Input getInput();
 }
