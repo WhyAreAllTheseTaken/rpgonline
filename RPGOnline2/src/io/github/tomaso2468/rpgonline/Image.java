@@ -50,8 +50,7 @@ public class Image implements Cloneable {
 	}
 
 	public void setFilter(int filterMode) {
-		// TODO Auto-generated method stub
-
+		renderer.setFilter(texture, filterMode);
 	}
 
 	public TextureReference getTexture() {

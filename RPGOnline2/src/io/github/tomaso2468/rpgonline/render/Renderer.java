@@ -175,4 +175,5 @@ public interface Renderer {
 		return loadFont(url, type, size, new int[0]);
 	}
 	public Input getInput();
+	public void setFilter(TextureReference texture, int filterMode);
 }
