@@ -466,7 +466,7 @@ public class Game {
 			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.white.darker());
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
@@ -502,7 +502,7 @@ public class Game {
 			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.white.darker());
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
@@ -538,7 +538,7 @@ public class Game {
 			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.white.darker());
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
@@ -574,7 +574,7 @@ public class Game {
 			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.white.darker());
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
@@ -612,7 +612,7 @@ public class Game {
 					- g.getFont().getWidth(label + ": " + Math.round(data) + "/" + Math.round(max) + "MiB"), y);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.white.darker());
 		return y + g.getFont().getHeight("[]") + 1;
 	}
 
