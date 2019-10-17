@@ -115,8 +115,7 @@ public class Image implements Cloneable {
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		texture.destroy();
 	}
 	
 	public void ensureInverted() {

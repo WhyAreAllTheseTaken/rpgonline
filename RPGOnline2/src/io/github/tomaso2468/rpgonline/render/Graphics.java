@@ -141,4 +141,6 @@ public interface Graphics {
 	public void copyArea(Image buffer, int i, int j);
 
 	public Renderer getRenderer();
+
+	public void resetTransform();
 }

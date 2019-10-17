@@ -6,6 +6,7 @@ import io.github.tomaso2468.rpgonline.TextureReference;
 
 class SlickTexture implements TextureReference {
 	Texture texture;
+	int fbo;
 	
 	SlickTexture(Texture texture) {
 		this.texture = texture;
@@ -34,6 +35,11 @@ class SlickTexture implements TextureReference {
 	@Override
 	public void bind() {
 		texture.bind();
+	}
+
+	@Override
+	public void destroy() {
+		//TODO
 	}
 
 }

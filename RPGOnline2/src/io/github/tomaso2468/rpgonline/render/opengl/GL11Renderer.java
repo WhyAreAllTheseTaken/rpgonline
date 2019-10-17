@@ -15,10 +15,12 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.ShapeRenderer;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.renderer.SGL;
 
@@ -69,8 +71,9 @@ public abstract class GL11Renderer implements Renderer {
 	 */
 	@Override
 	public void startUse(Image img) {
-		// TODO Auto-generated method stub
-
+		GL11.glColor4f(1, 1, 1, 1);
+		img.getTexture().bind();
+		GL11.glBegin(GL11.GL_QUADS);
 	}
 
 	/**
@@ -78,8 +81,7 @@ public abstract class GL11Renderer implements Renderer {
 	 */
 	@Override
 	public void endUse(Image img) {
-		// TODO Auto-generated method stub
-
+		GL11.glEnd();
 	}
 
 	/**
@@ -372,58 +374,111 @@ public abstract class GL11Renderer implements Renderer {
 	
 	private int fbo;
 	
-	@Override
-	public void setRenderTarget(Image image) throws RenderException {
-		if (!GLContext.getCapabilities().GL_EXT_framebuffer_object) {
-			throw new RenderException("Framebuffers are not supported on your system.");
-		}
-		
-		IntBuffer buffer = BufferUtils.createIntBuffer(1);
-		EXTFramebufferObject.glGenFramebuffersEXT(buffer); 
-		fbo = buffer.get();
-		
-		Texture tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
+	public void bindFBO(int fbo) {
+		this.fbo = fbo;
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+		GL11.glPushClientAttrib(GL11.GL_ALL_CLIENT_ATTRIB_BITS);
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPushMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
 		
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fbo);
-		EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 
-													   EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
-													   GL11.GL_TEXTURE_2D, tex.getTextureID(), 0);
+		GL11.glReadBuffer(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT);
+	}
+	
+	public void unbindFBO(int fbo) {
+		this.fbo = 0;
+		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+		GL11.glReadBuffer(GL11.GL_BACK);
 		
+		GL11.glPopClientAttrib();
+		GL11.glPopAttrib();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	}
+	
+	public void checkFBO(int fbo) throws RenderException {
 		int framebuffer = EXTFramebufferObject.glCheckFramebufferStatusEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT); 
 		switch ( framebuffer ) {
 			case EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT:
 				break;
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception" );
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception" );
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT exception" );
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception" );
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT exception" );
 			case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-				throw new SlickException( "FrameBuffer: " + fbo
+				throw new RenderException( "FrameBuffer: " + fbo
 						+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception" );
 			default:
-				throw new SlickException( "Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer);
+				throw new RenderException( "Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer);
+		}
+	}
+	
+	@Override
+	public void setRenderTarget(Image image) throws RenderException {
+		if (image == null) {
+			if (this.fbo != 0) {
+				unbindFBO(fbo);
+			}
+			return;
+		}
+		if (((SlickTexture) image.getTexture()).fbo == 0) {
+			if (!GLContext.getCapabilities().GL_EXT_framebuffer_object) {
+				throw new RenderException("Framebuffers are not supported on your system.");
+			}
+			
+			IntBuffer buffer = BufferUtils.createIntBuffer(1);
+			EXTFramebufferObject.glGenFramebuffersEXT(buffer); 
+			int fbo = buffer.get();
+
+			// for some reason FBOs won't work on textures unless you've absolutely just
+			// created them.
+			try {
+				Texture tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
+				
+				EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fbo);
+				EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 
+															   EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,
+															   GL11.GL_TEXTURE_2D, tex.getTextureID(), 0);
+				
+				checkFBO(fbo);
+				unbindFBO(fbo);
+				
+				// Clear our destination area before using it
+				clear();
+				
+				// keep hold of the original content
+				drawImage(image, 0, 0);
+				((SlickTexture) image.getTexture()).texture = tex;
+				((SlickTexture) image.getTexture()).fbo = fbo;
+				
+			} catch (Exception e) {
+				throw new RenderException("Failed to create new texture for FBO", e);
+			}
 		}
 		
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-		GL11.glReadBuffer(GL11.GL_BACK); 
-		
-		// Clear our destination area before using it
-		clear();
-		flush();
-		
-		// keep hold of the original content
-		drawImage(image, 0, 0);
-		((SlickTexture) image.getTexture()).texture = tex;
+		bindFBO(((SlickTexture) image.getTexture()).fbo);
+	}
+	
+	@Override
+	public void draw(Shape shape, Color color) {
+		TextureImpl.bindNone();
+		color.bind();
+		ShapeRenderer.draw(shape);
 	}
 }

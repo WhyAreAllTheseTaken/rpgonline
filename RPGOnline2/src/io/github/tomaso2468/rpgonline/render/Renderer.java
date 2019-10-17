@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
 import io.github.tomaso2468.rpgonline.Game;
@@ -153,4 +154,5 @@ public interface Renderer {
 	}
 	
 	public void setRenderTarget(Image img) throws RenderException;
+	public void draw(Shape shape, Color color);
 }

@@ -33,30 +33,36 @@ package io.github.tomaso2468.rpgonline.world2d.editor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.util.Log;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
+import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
+import io.github.tomaso2468.rpgonline.net.ServerManager;
+import io.github.tomaso2468.rpgonline.particle.Particle;
+import io.github.tomaso2468.rpgonline.post.MDRMap;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
+import io.github.tomaso2468.rpgonline.render.ColorMode;
+import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.LightSource;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.WorldState;
+import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
+import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 
 /**
@@ -125,50 +131,52 @@ public class WorldEditor extends WorldState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		Debugger.initRender();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
 
 		Debugger.start("game-render");
-		render2(container, game, g);
-
-		g.resetTransform();
+		render2(game, renderer);
 		Debugger.stop("game-render");
 
-		if (post != null && post_enable) {
+		renderer.resetTransform();
+
+		if (post_enable && light) {
 			Debugger.start("effects");
-
 			if (buffer == null) {
-				buffer = new Image(container.getWidth(), container.getHeight());
-			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
-				buffer = new Image(container.getWidth(), container.getHeight());
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			}
 
-			g.copyArea(buffer, 0, 0);
+			if (post != null) {
+				renderer.copyArea(buffer, 0, 0);
 
-			if (!(post instanceof MultiEffect)) {
-				Debugger.start("post-" + post.getClass());
+				if (!(post instanceof MultiEffect)) {
+					Debugger.start("post-" + post.getClass());
+				}
+				post.doPostProcess(game, buffer, renderer);
+				if (!(post instanceof MultiEffect)) {
+					Debugger.stop("post-" + post.getClass());
+				}
 			}
-			post.doPostProcess(container, game, buffer, g);
-			if (!(post instanceof MultiEffect)) {
-				Debugger.stop("post-" + post.getClass());
-			}
+			if (RPGConfig.isMDR()) {
+				Debugger.start("mdr");
+				renderer.copyArea(buffer, 0, 0);
 
+				if (mdr == null) {
+					mdr = new MDRMap();
+				}
+				mdr.doPostProcess(game, buffer, renderer);
+				Debugger.stop("mdr");
+			}
 			Debugger.stop("effects");
 		}
-		g.resetTransform();
-		g.flush();
 
 		if (!light) {
 			Debugger.start("gui");
+			
+			Graphics g = renderer.getGUIGraphics();
 
 			g.setColor(new Color(0, 0, 0, 128));
 			g.fillRect(0, 0, 512, 512);
@@ -183,7 +191,7 @@ public class WorldEditor extends WorldState {
 				if (tex.isCustom()) {
 					Debugger.start("custom-tile");
 
-					tex.render(g, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(),
+					tex.render(renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(),
 							0.1f);
 
 					Debugger.stop("custom-tile");
@@ -191,7 +199,7 @@ public class WorldEditor extends WorldState {
 					Image img = TextureMap.getTexture(tex.getTexture(Math.round(x), Math.round(y), z, world, state, t));
 
 					if (img != null) {
-						img.draw(32 + tex.getX(), 32 + tex.getY(), img.getWidth(), img.getHeight());
+						g.drawImage(img, 32 + tex.getX(), 32 + tex.getY());
 					}
 				}
 			}
@@ -221,92 +229,92 @@ public class WorldEditor extends WorldState {
 			Debugger.stop("gui");
 		}
 
-		g.flush();
-
 		Debugger.stop("render");
 	}
 
 	List<TileTexture> textures = new ArrayList<>();
 
 	/**
-	 * {@inheritDoc}
+	 * A method that renders the world.
 	 */
-	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		List<LightSource> lights = null;
-		if (RPGConfig.isLighting() && light) {
-			Debugger.start("light-compute");
+	public void render2(Game game, Renderer renderer) throws RenderException {
+		List<LightSource> lights = computerLights();
 
-			lights = world.getLights();
-
-			if (lights.size() != 0) {
-				lights.sort(new Comparator<LightSource>() {
-					@Override
-					public int compare(LightSource o1, LightSource o2) {
-						double dist1 = FastMath.hypot(x - o1.getLX(), y - o1.getLY());
-						double dist2 = FastMath.hypot(x - o2.getLX(), y - o2.getLY());
-
-						if (dist1 < dist2) {
-							return -1;
-						}
-
-						if (dist1 > dist2) {
-							return 1;
-						}
-
-						return 0;
-					}
-				});
-
-				for (int i = 0; i < lights.size(); i++) {
-					if (i < lights.size()) {
-						LightSource l = lights.get(i);
-						double dist = FastMath.hypot(x - l.getLX(), y - l.getLY());
-						if (dist > 40 * l.getBrightness()) {
-							lights.remove(l);
-							i -= 1;
-						}
-					}
-				}
-
-				while (lights.size() > 32) {
-					lights.remove(lights.size() - 1);
-				}
-			}
-
-			Debugger.stop("light-compute");
-		}
+		World world = ((Client2D) ServerManager.getClient()).getWorld();
 
 		Debugger.start("sky");
 		if (sky != null) {
-			sky.render(g, container, x, y, 0, world, world.getLightColor());
+			sky.render(renderer, game, x, y, 0, world, world.getLightColor());
 		}
 		Debugger.stop("sky");
 
-		g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
+		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
 
-		g.scale(base_scale, base_scale);
+		renderer.scale2D(zoom * base_scale, zoom * base_scale);
 
-		g.scale(zoom, zoom);
-
+		if (shake > 0) {
+			renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+		}
 		float sx = (float) (x * RPGConfig.getTileSize());
 		float sy = (float) (y * RPGConfig.getTileSize());
 
-		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
-		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
+		long dist_x = (long) (game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
+		long dist_y = (long) (game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
+
+		Debugger.start("entity-compute");
+		List<Entity> entities1 = ((Client2D) ServerManager.getClient()).getWorld().getEntities();
+		List<Entity> entities = new ArrayList<Entity>();
+
+		Rectangle screen_bounds = new Rectangle((float) (x - dist_x), (float) (y - dist_y), (float) (dist_x * 2),
+				(float) (dist_y * 2));
+
+		synchronized (entities1) {
+			for (Entity e : entities1) {
+				if (screen_bounds.contains((float) e.getX(), (float) e.getY())) {
+					entities.add(e);
+				}
+			}
+		}
+		Debugger.stop("entity-compute");
+
+		List<Particle> particles_light = null;
+		List<Particle> particles_nolight = null;
+
+		if (RPGConfig.isParticles()) {
+			Debugger.start("particle-compute");
+			particles_light = new ArrayList<Particle>(particles.size());
+			particles_nolight = new ArrayList<Particle>(32);
+
+			for (int i = 0; i < particles.size(); i++) {
+				Particle p = particles.get(i);
+
+				if (screen_bounds.contains(p.getX(), p.getY())) {
+					if (p.isLightAffected()) {
+						particles_light.add(p);
+					} else {
+						particles_nolight.add(p);
+					}
+				}
+			}
+			Debugger.stop("particle-compute");
+		}
 
 		Debugger.start("world");
 		long mix = (long) (x - dist_x);
 		long max = (long) (x + dist_x);
 		long miy = (long) (y - dist_y);
 		long may = (long) (y + dist_y);
+		long miz = world.getMinZ();
+		long maz = world.getMaxZ();
 
-		float wind = 0.25f;
+		float wind = ((Client2D) ServerManager.getClient()).getWind();
 
 		Image current = null;
 
 		Rectangle box = new Rectangle(Math.round(x) - size / 2, Math.round(y) - size / 2, size, size);
-
-		for (long z = 0; z >= -2; z--) {
+		
+		boolean hitbox = RPGConfig.isHitbox();
+		for (long z = maz; z >= FastMath.min(-1, miz); z--) {
 			for (long y = miy; y <= may; y++) {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, z);
@@ -317,13 +325,14 @@ public class WorldEditor extends WorldState {
 						if (tex.isCustom()) {
 							Debugger.start("custom-tile");
 							if (current != null)
-								current.endUse();
+								renderer.endUse(current);
 
-							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+							tex.render(renderer, x, y, z, world, state, t,
+									x * RPGConfig.getTileSize() + tex.getX() - sx,
 									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
 
 							if (current != null)
-								current.startUse();
+								renderer.startUse(current);
 							Debugger.stop("custom-tile");
 						} else {
 							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
@@ -331,42 +340,43 @@ public class WorldEditor extends WorldState {
 							if (img != null) {
 								if (TextureMap.getSheet(img) != current) {
 									if (current != null)
-										current.endUse();
+										renderer.endUse(current);
 									current = TextureMap.getSheet(img);
-									current.startUse();
+									renderer.startUse(current);
 								}
-								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx,
+								renderer.renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
 										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
 							}
 						}
 					}
 
 					textures.clear();
-
+					
 					if (!light && box.contains(x, y) && z == this.z) {
 						if (current != null)
-							current.endUse();
+							renderer.endUse(current);
 
+						Color c = Color.magenta;
 						switch (brush_mode) {
 						case 0:
-							g.setColor(new Color(0, 255, 255, 128));
+							c = new Color(0, 255, 255, 128);
 							break;
 						case 1:
-							g.setColor(new Color(255, 255, 0, 128));
+							c = new Color(255, 255, 0, 128);
 							break;
 						case 2:
-							g.setColor(new Color(255, 0, 0, 128));
+							c = new Color(255, 0, 0, 128);
 							break;
 						case 3:
-							g.setColor(new Color(255, 128, 0, 128));
+							c = new Color(255, 128, 0, 128);
 							break;
 						}
 
-						g.fillRect(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
-								RPGConfig.getTileSize(), RPGConfig.getTileSize());
+						renderer.drawQuad(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
+								RPGConfig.getTileSize(), RPGConfig.getTileSize(), c);
 
 						if (current != null)
-							current.startUse();
+							renderer.startUse(current);
 					}
 				}
 			}
@@ -374,123 +384,241 @@ public class WorldEditor extends WorldState {
 
 		Debugger.stop("world");
 
+		if (RPGConfig.isParticles()) {
+			Debugger.start("particles");
+			Debugger.start("particle-light");
+			for (Particle particle : particles_light) {
+				if (particle.isCustom()) {
+					if (current != null)
+						renderer.endUse(current);
+					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
+							particle.getY() * RPGConfig.getTileSize() - sy);
+					if (current != null)
+						renderer.startUse(current);
+				} else {
+					Image img = TextureMap.getTexture(particle.getTexture());
+
+					if (img != null) {
+						if (TextureMap.getSheet(img) != current) {
+							if (current != null)
+								renderer.endUse(current);
+							current = TextureMap.getSheet(img);
+							renderer.startUse(current);
+						}
+						new Color(1, 1, 1, particle.getAlpha()).bind();
+						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
+								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+					}
+				}
+			}
+
+			Debugger.stop("particle-light");
+			Debugger.stop("particles");
+		}
+
 		if (current != null)
-			current.endUse();
+			renderer.endUse(current);
 		current = null;
 
-		g.flush();
+		renderer.resetTransform();
 
-		g.resetTransform();
-
-		if (RPGConfig.isLighting() && light) {
+		if (RPGConfig.isLighting()) {
 			Debugger.start("lighting");
 
 			if (lights.size() == 0) {
-				g.setColor(world.getLightColor());
-				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-				g.setDrawMode(Graphics.MODE_NORMAL);
+				Color light = world.getLightColor();
+				renderer.setColorMode(ColorMode.MULTIPLY);
+				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
+						RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+				renderer.setColorMode(ColorMode.NORMAL);
 			} else {
-				Graphics sg = g;
-
 				if (lightBuffer == null) {
-					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				} else if (container.getWidth() != lightBuffer.getWidth()
-						|| container.getHeight() != lightBuffer.getHeight()) {
+					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
+				} else if (game.getWidth() != lightBuffer.getWidth()
+						|| game.getHeight() != lightBuffer.getHeight()) {
 					lightBuffer.destroy();
-					lightBuffer = new Image(container.getWidth(), container.getHeight());
+					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
 				}
 
-				g = lightBuffer.getGraphics();
+				renderer.setRenderTarget(lightBuffer);
 
-				g.clear();
+				renderer.clear();
 
-				g.setDrawMode(Graphics.MODE_NORMAL);
+				renderer.setColorMode(ColorMode.NORMAL);
 
 				Color wl = world.getLightColor();
-
-				float red = wl.r;
-				float green = wl.g;
-				float blue = wl.b;
-
-				float lum = (red + green + blue) / 3;
-
-				float rscale = FastMath.max(lum * 10, 1);
-				float gscale = FastMath.max(lum * 10, 1);
-				float bscale = FastMath.max(lum * 10, 1);
-
-				g.setColor(wl);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-
-				g.translate2d(container.getWidth() / 2, container.getHeight() / 2);
-
-				g.scale(base_scale, base_scale);
-				g.pushTransform();
-
-				g.scale(zoom, zoom);
-				if (shake > 0) {
-					g.translate2d((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+				if (RPGConfig.isMDR() && post_enable) {
+					wl = wl.darker(0.5f);
 				}
 
-				g.setDrawMode(Graphics.MODE_SCREEN);
+				renderer.drawQuad(0, 0, renderer.getWidth(), renderer.getHeight(), wl);
+
+				renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+
+				renderer.scale2D(base_scale, base_scale);
+				renderer.pushTransform();
+
+				renderer.scale2D(zoom, zoom);
+				if (shake > 0) {
+					renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+				}
+
+				renderer.setColorMode(ColorMode.ADD);
 
 				for (LightSource l : lights) {
-					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
+					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
 
-					img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
-
-					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sx * RPGConfig.getTileSize(),
-							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sy * RPGConfig.getTileSize());
+					renderer.renderFiltered(img, (float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
+							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy, img.getWidth(), img.getHeight(), new Color(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(),
+							l.getB() * 50 * l.getBrightness()));
 				}
 
-				g.flush();
+				renderer.resetTransform();
 
-				sg.resetTransform();
-
-				sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
-				sg.drawImage(lightBuffer, 0, 0);
-				sg.setDrawMode(Graphics.MODE_NORMAL);
-
-				g = sg;
+				renderer.setRenderTarget(null);
+				
+				renderer.setColorMode(ColorMode.MULTIPLY);
+				renderer.drawImage(lightBuffer, 0, 0);
+				renderer.setColorMode(ColorMode.NORMAL);
 			}
 
-			g.flush();
-
 			Debugger.stop("lighting");
+		} else if (post_enable && RPGConfig.isMDR()) {
+			Debugger.start("mdr");
+			Debugger.start("mdr-lightoverride");
+
+			Color light = Color.white;
+			renderer.setColorMode(ColorMode.MULTIPLY);
+			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
+					RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+			renderer.setColorMode(ColorMode.NORMAL);
+
+			Debugger.stop("mdr-lightoverride");
+			Debugger.stop("mdr");
 		}
 
-		g.resetTransform();
-	}
+		renderer.resetTransform();
 
+		if (RPGConfig.isParticles()) {
+			Debugger.start("particles");
+			Debugger.start("particles-nolight");
+
+			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+
+			renderer.scale2D(zoom * base_scale, zoom * base_scale);
+
+			if (shake > 0) {
+				renderer.translate2D((float) (FastMath.random() * shake * 5),
+						(float) (FastMath.random() * shake * 5));
+			}
+
+			for (Particle particle : particles_nolight) {
+				if (particle.isCustom()) {
+					if (current != null)
+						renderer.endUse(current);
+					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
+							particle.getY() * RPGConfig.getTileSize() - sy);
+					if (current != null)
+						renderer.startUse(current);
+				} else {
+					Image img = TextureMap.getTexture(particle.getTexture());
+
+					if (img != null) {
+						if (TextureMap.getSheet(img) != current) {
+							if (current != null)
+								renderer.endUse(current);
+							current = TextureMap.getSheet(img);
+							renderer.startUse(current);
+						}
+						new Color(1, 1, 1, particle.getAlpha()).bind();
+						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
+								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
+					}
+				}
+			}
+
+			if (current != null)
+				renderer.startUse(current);
+
+			renderer.resetTransform();
+
+			Debugger.stop("particles-nolight");
+			Debugger.stop("particles");
+		}
+
+		if (hitbox) {
+			Debugger.start("hitbox");
+
+			renderer.setMode(RenderMode.MODE_2D_LINES_NOVBO);
+			
+			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+
+			renderer.scale2D(zoom * base_scale, zoom * base_scale);
+
+			if (shake > 0) {
+				renderer.translate2D((float) (FastMath.random() * shake * 5),
+						(float) (FastMath.random() * shake * 5));
+			}
+
+			for (long y = miy; y <= may; y++) {
+				for (long x = mix; x <= max; x++) {
+					Tile t = world.getTile(x, y, -1);
+					String state = world.getTileState(x, y, -1);
+
+					if (hitbox && t.isSolid(state)) {
+						boolean collision = false;
+						for (Entity e : entities) {
+							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
+								if (e.isSolid()) {
+									collision = true;
+									break;
+								}
+
+							}
+						}
+						if (collision) {
+							renderer.draw(t.getHitBox()
+									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
+											RPGConfig.getTileSize()))
+									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
+											y * RPGConfig.getTileSize() - sy)), Color.orange);
+						}
+					}
+				}
+			}
+
+			for (Entity e : entities) {
+				renderer.draw(e.getHitBox()
+						.transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize()))
+						.transform(Transform.createTranslateTransform(-sx, -sy)), Color.red);
+			}
+			Debugger.stop("hitbox");
+		}
+	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		this.last_delta = delta;
+	public void update(Game game, float delf) throws RenderException {
+		this.last_delta = delf;
 
-		float delf = delta / 1000f;
-
-		Input in = container.getInput();
+		Input in = game.getInput();
 
 		boolean sprint = InputUtils.isActionPressed(in, InputUtils.SPRINT);
 
 		double walk_x = 0;
 		double walk_y = 0;
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
 			walk_y += -1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
 			walk_y += 1;
 		}
 
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
 			walk_x += 1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
 			walk_x -= 1;
 		}
 
@@ -501,78 +629,78 @@ public class WorldEditor extends WorldState {
 			exit();
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+		if (in.isKeyDown(Input.KEY_Q)) {
 			zoom /= 1.01f;
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+		if (in.isKeyDown(Input.KEY_E)) {
 			zoom *= 1.01f;
 		}
 
 		if (cooldown <= 0) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+			if (in.isKeyDown(Input.KEY_P)) {
 				light = !light;
 				cooldown = 1f;
 			}
 			if (!light) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				if (in.isKeyDown(Input.KEY_DOWN)) {
 					z += 1;
 					cooldown = 1f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				if (in.isKeyDown(Input.KEY_UP)) {
 					z -= 1;
 					cooldown = 1f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+				if (in.isKeyDown(Input.KEY_LEFT)) {
 					tile -= 1;
 					cooldown = 0.4f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				if (in.isKeyDown(Input.KEY_RIGHT)) {
 					tile += 1;
 					cooldown = 0.4f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
+				if (in.isKeyDown(Input.KEY_EQUALS)) {
 					set += 1;
 					tile = 0;
 					cooldown = 0.5f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_MINUS)) {
+				if (in.isKeyDown(Input.KEY_MINUS)) {
 					set -= 1;
 					tile = 0;
 					cooldown = 0.5f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)) {
+				if (in.isKeyDown(Input.KEY_LBRACKET)) {
 					size -= 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)) {
+				if (in.isKeyDown(Input.KEY_RBRACKET)) {
 					size += 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_0)) {
+				if (in.isKeyDown(Input.KEY_0)) {
 					size = 2;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+				if (in.isKeyDown(Input.KEY_9)) {
 					size = 50;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+				if (in.isKeyDown(Input.KEY_8)) {
 					size = 200;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+				if (in.isKeyDown(Input.KEY_1)) {
 					brush_mode = 0;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+				if (in.isKeyDown(Input.KEY_2)) {
 					brush_mode = 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+				if (in.isKeyDown(Input.KEY_3)) {
 					brush_mode = 2;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+				if (in.isKeyDown(Input.KEY_4)) {
 					brush_mode = 3;
 					cooldown = 0.2f;
 				}
@@ -593,7 +721,7 @@ public class WorldEditor extends WorldState {
 					size = 2;
 				}
 
-				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+				if (in.isKeyDown(Input.KEY_SPACE)) {
 					for (long tx = Math.round(x) - size / 2 + 1; tx < Math.round(x) - size / 2 + size; tx++) {
 						for (long ty = Math.round(y) - size / 2 + 1; ty < Math.round(y) - size / 2 + size; ty++) {
 							switch (brush_mode) {
@@ -619,7 +747,7 @@ public class WorldEditor extends WorldState {
 					cooldown = 0.075f;
 				}
 
-				if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+				if (in.isKeyDown(Input.KEY_RETURN)) {
 					try {
 						world.save();
 					} catch (IOException e) {
