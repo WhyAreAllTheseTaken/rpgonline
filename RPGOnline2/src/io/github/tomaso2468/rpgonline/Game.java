@@ -41,8 +41,8 @@ public class Game {
 	private boolean clearEveryFrame = true;
 	private String icon;
 	private boolean mouseGrabbed = false;
-	private float minDelta;
-	private float maxDelta;
+	private float minDelta = 0;
+	private float maxDelta = Float.POSITIVE_INFINITY;
 	private long lastUpdateTime = System.nanoTime();
 	private long lastRenderTime = System.nanoTime();
 	private float fps;
