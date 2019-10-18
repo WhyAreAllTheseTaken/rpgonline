@@ -2,11 +2,13 @@ package io.github.tomaso2468.rpgonline.render.opengl;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public class LWJGL2Input implements Input {
+	@SuppressWarnings("unused")
 	private final Renderer renderer;
 	
 	public LWJGL2Input(Renderer renderer) {
@@ -26,7 +28,7 @@ public class LWJGL2Input implements Input {
 
 	@Override
 	public float getMouseY() {
-		return renderer.getHeight() - Mouse.getY();
+		return Display.getHeight() - Mouse.getY();
 	}
 
 	@Override

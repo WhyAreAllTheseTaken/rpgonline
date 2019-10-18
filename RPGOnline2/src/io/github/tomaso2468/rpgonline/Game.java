@@ -275,14 +275,14 @@ public class Game {
 			if (render != null) {
 				y = drawDebugTitle(g, "Render Thread", y, false);
 				for (Entry<String, Long> t : render.getTimes()) {
-					y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
+					y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 				}
 			}
 
 			if (lastUpdate != null) {
 				y = drawDebugTitle(g, "Main Thread Updates", y, false);
 				for (Entry<String, Long> t : lastUpdate.getTimes()) {
-					y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
+					y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 				}
 			}
 
@@ -291,7 +291,7 @@ public class Game {
 				if (client != null) {
 					y = drawDebugTitle(g, "Client Thread", y, false);
 					for (Entry<String, Long> t : client.getTimes()) {
-						y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
+						y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 					}
 				}
 			}
@@ -301,7 +301,7 @@ public class Game {
 				if (server != null) {
 					y = drawDebugTitle(g, "Server Thread", y, false);
 					for (Entry<String, Long> t : server.getTimes()) {
-						y = drawDebugLine(g, String.format("%20s : %s", t.getKey(), t.getValue() / 1000), y, false);
+						y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 					}
 				}
 			}
