@@ -238,7 +238,7 @@ public class WorldState implements GameState, BaseScaleState {
 			Debugger.stop("effects");
 		}
 
-		if (gui) {
+		if (gui && guis != null) {
 			Debugger.start("gui");
 
 			renderer.resetTransform();
