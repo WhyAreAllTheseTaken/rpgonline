@@ -1164,6 +1164,6 @@ public class WorldState implements GameState, BaseScaleState {
 	@Override
 	public void scale(Game container, float base) {
 		base_scale = base;
-		guis.init(container.getWidth(), container.getHeight(), base_scale);
+		if (guis != null) guis.init(container.getWidth(), container.getHeight(), base_scale);
 	}
 }
