@@ -684,11 +684,10 @@ public class Game {
 		this.fullscreen = fullscreen;
 		if (started) {
 			if (fullscreen) {
-				renderer.setResolution(renderer.getScreenWidth(), renderer.getScreenHeight());
+				renderer.setDisplay(renderer.getScreenWidth(), renderer.getScreenHeight(), fullscreen);
 			} else {
-				renderer.setResolution(renderer.getScreenWidth() / 2, renderer.getScreenHeight() / 2);
+				renderer.setDisplay(renderer.getScreenWidth() / 2, renderer.getScreenHeight() / 2, fullscreen);
 			}
-			renderer.setFullscreen(fullscreen);
 		}
 	}
 

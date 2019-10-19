@@ -129,7 +129,7 @@ public class LWJGL2Renderer extends GL11Renderer {
 			setDisplayMode(width, height, fullscreen);
 			GL11.glViewport(0, 0, width, height);
 		} catch (LWJGLException e) {
-			throw new RenderException("Error changing setting fullscreen status to " + fullscreen, e);
+			throw new RenderException("Error changing fullscreen status to " + fullscreen, e);
 		}
 	}
 
@@ -143,7 +143,22 @@ public class LWJGL2Renderer extends GL11Renderer {
 				setDisplayMode(width, height, Display.isFullscreen());
 				GL11.glViewport(0, 0, width, height);
 			} catch (LWJGLException e) {
-				throw new RenderException("Error changing setting resolution", e);
+				throw new RenderException("Error changing resolution to " + width + "x" + height, e);
+			}
+		}
+	}
+	
+	@Override
+	public void setDisplay(int width, int height, boolean fullscreen) throws RenderException {
+		this.width = width;
+		this.height = height;
+
+		if (init) {
+			try {
+				setDisplayMode(width, height, fullscreen);
+				GL11.glViewport(0, 0, width, height);
+			} catch (LWJGLException e) {
+				throw new RenderException("Error changing display mode to " + width + "x" + height + " (fullscreen=" + fullscreen + ")", e);
 			}
 		}
 	}

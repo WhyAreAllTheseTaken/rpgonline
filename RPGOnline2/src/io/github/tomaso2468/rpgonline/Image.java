@@ -17,6 +17,7 @@ public class Image implements Cloneable {
 	private float textureHeight;
 	private float width;
 	private float height;
+	private int filter = FILTER_LINEAR;
 
 	public Image(Renderer renderer, int width, int height) throws RenderException {
 		this(renderer, renderer.createEmptyTexture(width, height));
@@ -54,6 +55,7 @@ public class Image implements Cloneable {
 
 	public void setFilter(int filterMode) {
 		renderer.setFilter(texture, filterMode);
+		this.filter = filterMode;
 	}
 
 	public TextureReference getTexture() {
@@ -103,8 +105,8 @@ public class Image implements Cloneable {
 	public Image getSubImage(float x, float y, float w, float h) {
 		float newTextureOffsetX = ((x / (float) this.width) * textureWidth) + textureX;
 		float newTextureOffsetY = ((y / (float) this.height) * textureHeight) + textureY;
-		float newTextureWidth = ((width / (float) this.width) * textureWidth);
-		float newTextureHeight = ((height / (float) this.height) * textureHeight);
+		float newTextureWidth = ((w / (float) this.width) * textureWidth);
+		float newTextureHeight = ((h / (float) this.height) * textureHeight);
 
 		Image sub = new Image(renderer, texture, newTextureOffsetX, newTextureOffsetY, newTextureWidth,
 				newTextureHeight, w, h);
@@ -128,7 +130,6 @@ public class Image implements Cloneable {
 	}
 
 	public int getFilter() {
-		// TODO Auto-generated method stub
-		return 0;
+		return filter;
 	}
 }

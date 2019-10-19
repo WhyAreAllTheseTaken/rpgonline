@@ -125,6 +125,10 @@ public interface Renderer {
 
 	public void setFullscreen(boolean fullscreen) throws RenderException;
 	public void setResolution(int width, int height) throws RenderException;
+	public default void setDisplay(int width, int height, boolean fullscreen) throws RenderException {
+		setResolution(width, height);
+		setFullscreen(fullscreen);
+	}
 	public void setVSync(boolean vsync);
 	public void setWindowTitle(String title);
 	
