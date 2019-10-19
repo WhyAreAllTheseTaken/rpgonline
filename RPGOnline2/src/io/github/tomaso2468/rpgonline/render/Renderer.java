@@ -101,6 +101,17 @@ public interface Renderer {
 	 * @param vshear The vertical shear.
 	 */
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear);
+	/**
+	 * Renders a texture sheared.
+	 * @param img The texture to render.
+	 * @param x The X position of the texture.
+	 * @param y The Y position of the texture.
+	 * @param w The width of the texture.
+	 * @param h The height of the texture.
+	 * @param hshear The horizontal shear.
+	 * @param vshear The vertical shear.
+	 */
+	public void renderShearedEmbedded(Image img, float x, float y, float w, float h, float hshear, float vshear);
 	public void drawQuad(float x, float y, float w, float h, Color c);
 	
 	public void translate2D(float x, float y);

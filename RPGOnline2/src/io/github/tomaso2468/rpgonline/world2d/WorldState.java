@@ -73,6 +73,7 @@ import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
+import io.github.tomaso2468.rpgonline.world2d.texture.WindTexture;
 import io.github.tomaso2468.rpgonline.world2d.texture.entity.EntityTexture;
 
 /**
@@ -403,17 +404,34 @@ public class WorldState implements GameState, BaseScaleState {
 
 					for (TileTexture tex : textures) {
 						if (tex.isCustom()) {
-							Debugger.start("custom-tile");
-							if (current != null)
-								renderer.endUse(current);
+							// Optimise wind textures to use embedded drawing.
+							if (tex instanceof WindTexture) {
+								Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
 
-							tex.render(renderer, x, y, z, world, state, t,
-									x * RPGConfig.getTileSize() + tex.getX() - sx,
-									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+								if (img != null) {
+									if (TextureMap.getSheet(img) != current) {
+										if (current != null)
+											renderer.endUse(current);
+										current = TextureMap.getSheet(img);
+										renderer.startUse(current);
+									}
+									float amount = ((WindTexture) tex).windAmount(x, y, wind);
+									renderer.renderShearedEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx - amount,
+											y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight(), amount, 0);
+								}
+							} else {
+								Debugger.start("custom-tile");
+								if (current != null)
+									renderer.endUse(current);
 
-							if (current != null)
-								renderer.startUse(current);
-							Debugger.stop("custom-tile");
+								tex.render(renderer, x, y, z, world, state, t,
+										x * RPGConfig.getTileSize() + tex.getX() - sx,
+										y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+
+								if (current != null)
+									renderer.startUse(current);
+								Debugger.stop("custom-tile");
+							}
 						} else {
 							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
 

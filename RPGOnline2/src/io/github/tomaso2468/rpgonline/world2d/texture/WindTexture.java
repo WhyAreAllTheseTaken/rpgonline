@@ -99,9 +99,15 @@ public class WindTexture extends BasicTileTexture {
 	 * @return A double value.
 	 */
 	public static double wibble(double v) {
-		double a = v % 50 + FastMath.log10(v);
-		double b = FastMath.sin(a) + FastMath.sin(FastMath.cbrt(a)) * 2 + (FastMath.cos(2 * a) / 3)
-				+ (FastMath.sin(-a) / 2) + (FastMath.tanh(a / 2)) / 3;
-		return (FastMath.abs(b) / 2.5 - 1 + FastMath.sin(v / 4) * 4) / 8;
+		return FastMath.sin(v / 6);
+//		double a = v % 50 + FastMath.log10(v);
+//		double b = FastMath.sin(a) + FastMath.sin(FastMath.cbrt(a)) * 2 + (FastMath.cos(2 * a) / 3)
+//				+ (FastMath.sin(-a) / 2) + (FastMath.tanh(a / 2)) / 3;
+//		return (FastMath.abs(b) / 2.5 - 1 + FastMath.sin(v / 4) * 4) / 8;
+	}
+	
+	public float windAmount(long x, long y, float wind) {
+		return (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
+				* f;
 	}
 }
