@@ -60,12 +60,19 @@ public abstract class GL20Renderer extends GL11Renderer {
 		int program = GL20.glCreateProgram();
 		GL20.glAttachShader(program, vertex);
 		GL20.glAttachShader(program, fragment);
-		GL20.glLinkProgram(program);
 		
+		GL20.glLinkProgram(program);
 		int errorCheck = GL20.glGetProgrami(program, GL20.GL_LINK_STATUS);
 		if (errorCheck != GL11.GL_NO_ERROR) {
 			String log = GL20.glGetProgramInfoLog(program, MAX_LOG_LENGTH);
 			throw new RenderException("Error linking program:\n" + log);
+		}
+		
+		GL20.glValidateProgram(program);
+		int errorCheck2 = GL20.glGetProgrami(program, GL20.GL_VALIDATE_STATUS);
+		if (errorCheck2 != GL11.GL_NO_ERROR) {
+			String log = GL20.glGetProgramInfoLog(program, MAX_LOG_LENGTH);
+			throw new RenderException("Error validating program:\n" + log);
 		}
 		
 		return program;
