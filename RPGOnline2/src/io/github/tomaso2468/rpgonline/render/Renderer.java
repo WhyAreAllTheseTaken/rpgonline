@@ -193,4 +193,7 @@ public interface Renderer {
 	public Input getInput();
 	public void setFilter(TextureReference texture, int filterMode);
 	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException;
+	
+	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException;
+	public void useShader(Shader shader) throws RenderException;
 }

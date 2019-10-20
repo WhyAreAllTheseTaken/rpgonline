@@ -36,6 +36,7 @@ import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 public abstract class GL11Renderer implements Renderer {
 	private RenderMode mode = RenderMode.MODE_NONE;
@@ -588,5 +589,23 @@ public abstract class GL11Renderer implements Renderer {
 		((SlickTexture) texture).texture.bind();
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter); 
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
+	}
+	
+	@Override
+	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException {
+		try {
+			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
+		} catch (UnsupportedOperationException e) {
+			throw new RenderException("Error creating shader");
+		}
+	}
+	
+	@Override
+	public void useShader(Shader shader) throws RenderException {
+		try {
+			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
+		} catch (UnsupportedOperationException e) {
+			throw new RenderException("Error using shader");
+		}
 	}
 }
