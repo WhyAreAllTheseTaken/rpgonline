@@ -1,20 +1,16 @@
-package io.github.tomaso2468.rpgonline.render.opengl;
+package io.github.tomaso2468.rpgonline.render;
 
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.render.Graphics;
-import io.github.tomaso2468.rpgonline.render.RenderMode;
-import io.github.tomaso2468.rpgonline.render.Renderer;
 
-class GL11Graphics implements Graphics {
-	private GL11Renderer renderer;
+public class BasicGraphics implements Graphics {
+	private Renderer renderer;
 	private Color color;
-	public GL11Graphics(GL11Renderer renderer) {
+	public BasicGraphics(Renderer renderer) {
 		this.renderer = renderer;
 	}
 
@@ -67,10 +63,7 @@ class GL11Graphics implements Graphics {
 	public void drawLine(float x, float y, float x2, float y2) {
 		store();
 		renderer.setMode(RenderMode.MODE_2D_LINES_NOVBO);
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex2f(x, y);
-		GL11.glVertex2f(x2, y2);
-		GL11.glEnd();
+		renderer.renderLine(x, y, x2, y2, color);
 		load();
 	}
 
@@ -121,7 +114,7 @@ class GL11Graphics implements Graphics {
 	public void drawString(String str, float x, float y) {
 		store();
 		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-		((SlickFont) renderer.getFont()).font.drawString(x, y, str);
+		renderer.drawFont(renderer.getFont(), x, y, str);
 		load();
 	}
 

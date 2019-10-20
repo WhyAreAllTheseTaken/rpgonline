@@ -32,6 +32,7 @@ import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
+import io.github.tomaso2468.rpgonline.render.BasicGraphics;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
@@ -61,6 +62,15 @@ public abstract class GL11Renderer implements Renderer {
 		GL11.glVertex3f(x + w, y + h, 0);
 		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
 		GL11.glVertex3f(x + w, y, 0);
+	}
+	
+	@Override
+	public void renderLine(float x, float y, float x2, float y2, Color c) {
+		GL11.glBegin(GL11.GL_LINES);
+		GL11.glColor4f(c.r, c.g, c.b, c.a);
+		GL11.glVertex2f(x, y);
+		GL11.glVertex2f(x2, y2);
+		GL11.glEnd();
 	}
 
 	/**
@@ -262,7 +272,7 @@ public abstract class GL11Renderer implements Renderer {
 
 	@Override
 	public Graphics getGUIGraphics() {
-		return new GL11Graphics(this);
+		return new BasicGraphics(this);
 	}
 
 	@Override
@@ -607,5 +617,10 @@ public abstract class GL11Renderer implements Renderer {
 		} catch (UnsupportedOperationException e) {
 			throw new RenderException("Error using shader");
 		}
+	}
+	
+	@Override
+	public void drawFont(Font font, float x, float y, String str) {
+		((SlickFont) font).font.drawString(x, y, str);
 	}
 }

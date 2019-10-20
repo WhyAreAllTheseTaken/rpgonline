@@ -186,7 +186,6 @@ public interface Renderer {
 	
 	public void setFont(Font font);
 	public Font getFont();
-	
 	public static final int FONT_NORMAL = java.awt.Font.PLAIN;
 	public static final int FONT_BOLD = java.awt.Font.BOLD;
 	public static final int FONT_ITALIC = java.awt.Font.ITALIC;
@@ -198,6 +197,7 @@ public interface Renderer {
 	public default Font loadFont(URL url, int type, float size) throws RenderException {
 		return loadFont(url, type, size, new int[0]);
 	}
+	public void drawFont(Font font, float x, float y, String str);
 	
 	public Input getInput();
 	
@@ -206,4 +206,9 @@ public interface Renderer {
 	
 	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException;
 	public void useShader(Shader shader) throws RenderException;
+	
+	public default void renderLine(float x, float y, float x2, float y2) {
+		renderLine(x, y, x2, y2, Color.white);
+	}
+	public void renderLine(float x, float y, float x2, float y2, Color color);
 }
