@@ -69,7 +69,11 @@ public interface Renderer {
 	 * @param w The width of the texture.
 	 * @param h The height of the texture.
 	 */
-	public void render(Image img, float x, float y, float w, float h);
+	public default void render(Image img, float x, float y, float w, float h) {
+		startUse(img);
+		renderEmbedded(img, x, y, w, h);
+		endUse(img);
+	}
 	/**
 	 * Binds a texture.
 	 * @param img The texture to bind.
@@ -100,7 +104,11 @@ public interface Renderer {
 	 * @param hshear The horizontal shear.
 	 * @param vshear The vertical shear.
 	 */
-	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear);
+	public default void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear) {
+		startUse(img);
+		renderShearedEmbedded(img, x, y, w, h, hshear, vshear);
+		endUse(img);
+	}
 	/**
 	 * Renders a texture sheared.
 	 * @param img The texture to render.
@@ -190,7 +198,9 @@ public interface Renderer {
 	public default Font loadFont(URL url, int type, float size) throws RenderException {
 		return loadFont(url, type, size, new int[0]);
 	}
+	
 	public Input getInput();
+	
 	public void setFilter(TextureReference texture, int filterMode);
 	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException;
 	
