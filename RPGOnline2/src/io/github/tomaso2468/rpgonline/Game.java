@@ -140,7 +140,7 @@ public class Game {
 	public void init(Game game) throws RenderException {
 		renderer.init(this);
 		if (font == null) {
-			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 14);
+			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 18);
 		}
 		renderer.setFont(font);
 		TextureMap.setRenderer(renderer);
