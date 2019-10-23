@@ -1,5 +1,7 @@
 package io.github.tomaso2468.rpgonline.render.opengl;
 
+import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.Pbuffer;
 import org.newdawn.slick.opengl.Texture;
 
 import io.github.tomaso2468.rpgonline.TextureReference;
@@ -7,6 +9,7 @@ import io.github.tomaso2468.rpgonline.TextureReference;
 class SlickTexture implements TextureReference {
 	Texture texture;
 	int fbo;
+	Pbuffer pbuffer;
 	
 	SlickTexture(Texture texture) {
 		this.texture = texture;
@@ -39,7 +42,10 @@ class SlickTexture implements TextureReference {
 
 	@Override
 	public void destroy() {
-		//TODO
+		texture.release();
+		if (fbo != 0) {
+			EXTFramebufferObject.glDeleteFramebuffersEXT(fbo);
+		}
 	}
 
 }

@@ -138,6 +138,12 @@ public interface Renderer {
 	public int getScreenHeight();
 	public int getWidth();
 	public int getHeight();
+	public default int getRenderWidth() {
+		return getWidth();
+	}
+	public default int getRenderHeight() {
+		return getHeight();
+	}
 	
 	public void init(Game game) throws RenderException;
 	public void exit(Game game);
@@ -179,7 +185,9 @@ public interface Renderer {
 		renderFiltered(img, x, y, img.getWidth(), img.getHeight(), light);
 	}
 	
-	public void setRenderTarget(Image img) throws RenderException;
+	public default void setRenderTarget(Image img) throws RenderException {
+		throw new RenderException("An error occured creating a render target.", new UnsupportedOperationException("Render targets are not supported in this renderer."));
+	}
 	
 	public void draw(Shape shape, Color color);
 	public void fill(Shape shape, Color color);
