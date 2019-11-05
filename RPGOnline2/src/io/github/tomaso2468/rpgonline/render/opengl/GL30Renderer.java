@@ -13,12 +13,33 @@ import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
 
 public abstract class GL30Renderer extends GL20Renderer {
 	protected int fbo;
+	protected Image fbo_image;
 
-	protected void bindFBO(int fbo) {
+	@Override
+	public int getRenderWidth() {
+		if (fbo_image != null) {
+			return (int) fbo_image.getWidth();
+		} else {
+			return super.getRenderWidth();
+		}
+	}
+
+	@Override
+	public int getRenderHeight() {
+		if (fbo_image != null) {
+			return (int) fbo_image.getHeight();
+		} else {
+			return super.getRenderHeight();
+		}
+	}
+	
+	protected void bindFBO(int fbo, Image img) {
 		this.fbo = fbo;
+		this.fbo_image = img;
 		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 		GL11.glPushClientAttrib(GL11.GL_ALL_CLIENT_ATTRIB_BITS);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -30,8 +51,9 @@ public abstract class GL30Renderer extends GL20Renderer {
 		GL11.glReadBuffer(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT);
 	}
 
-	protected void unbindFBO(int fbo) {
+	protected void unbindFBO(int fbo, Image img) {
 		this.fbo = 0;
+		this.fbo_image = null;
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 		GL11.glReadBuffer(GL11.GL_BACK);
 
@@ -76,7 +98,8 @@ public abstract class GL30Renderer extends GL20Renderer {
 	public void setRenderTarget(Image image) throws RenderException {
 		if (image == null) {
 			if (this.fbo != 0) {
-				unbindFBO(fbo);
+				unbindFBO(fbo, image);
+				setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			}
 			return;
 		}
@@ -97,12 +120,12 @@ public abstract class GL30Renderer extends GL20Renderer {
 				Texture tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(),
 						image.getFilter());
 
-				bindFBO(fbo);
+				bindFBO(fbo, image);
 				EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
 						EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, tex.getTextureID(), 0);
 
 				checkFBO(fbo);
-				unbindFBO(fbo);
+				unbindFBO(fbo, image);
 
 				// Clear our destination area before using it
 				clear();
@@ -117,6 +140,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 			}
 		}
 
-		bindFBO(((SlickTexture) image.getTexture()).fbo);
+		bindFBO(((SlickTexture) image.getTexture()).fbo, image);
+		setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 	}
 }

@@ -20,6 +20,7 @@ import org.newdawn.slick.opengl.TextureImpl;
 
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Shader;
 
 public abstract class GL20Renderer extends GL11Renderer {
@@ -134,6 +135,15 @@ public abstract class GL20Renderer extends GL11Renderer {
 
 	protected void unbindBuffer(Pbuffer pbuffer, Image image) throws RenderException {
 		this.currentBuffer = null;
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((SlickTexture) image.getTexture()).texture.getTextureID());
+		pbuffer.bindTexImage(Pbuffer.FRONT_LEFT_BUFFER);
+		
+		try {
+			Display.makeCurrent();
+		} catch (LWJGLException e) {
+			throw new RenderException("Error making display current.");
+		}
 	}
 
 	protected void bindBuffer(Pbuffer pbuffer, Image image) throws RenderException {
@@ -231,6 +241,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 		if (image == null) {
 			if (this.currentBuffer != null) {
 				unbindBuffer(this.currentBuffer, image);
+				setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			}
 			return;
 		}
@@ -299,5 +310,6 @@ public abstract class GL20Renderer extends GL11Renderer {
 			}
 		}
 		bindBuffer(((SlickTexture) image.getTexture()).pbuffer, image);
+		setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 	}
 }
