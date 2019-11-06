@@ -576,10 +576,12 @@ public class WorldState implements GameState, BaseScaleState {
 
 			if (lights.size() == 0) {
 				Color light = world.getLightColor();
+				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.setColorMode(ColorMode.MULTIPLY);
 				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
 						RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
 				renderer.setColorMode(ColorMode.NORMAL);
+				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			} else {
 				if (lightBuffer == null) {
 					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
@@ -600,7 +602,9 @@ public class WorldState implements GameState, BaseScaleState {
 					wl = wl.darker(0.5f);
 				}
 
+				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.drawQuad(0, 0, renderer.getWidth(), renderer.getHeight(), wl);
+				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 
 				renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
 

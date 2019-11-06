@@ -88,7 +88,7 @@ public class MotionBlur implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws RenderException {
+	public void dispose(Renderer renderer) throws RenderException {
 		if (last != null) {
 			last.destroy();
 		}

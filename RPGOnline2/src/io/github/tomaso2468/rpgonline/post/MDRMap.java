@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * An effect for mapping tones in MDR rendering. <b>This is set automatically when MDR is enabled.</b>
@@ -73,7 +73,7 @@ public class MDRMap extends GLShaderEffect {
 	@Override
 	protected void initShader(Shader shader, Game c) {
 		super.initShader(shader, c);
-		shader.setUniformFloatVariable("exposure", exposure);
-		shader.setUniformFloatVariable("gamma", gamma);
+		shader.setUniform("exposure", exposure);
+		shader.setUniform("gamma", gamma);
 	}
 }

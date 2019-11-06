@@ -214,6 +214,7 @@ public interface Renderer {
 	
 	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException;
 	public void useShader(Shader shader) throws RenderException;
+	public void deleteShader(Shader shader) throws RenderException;
 	
 	public default void renderLine(float x, float y, float x2, float y2) {
 		renderLine(x, y, x2, y2, Color.white);

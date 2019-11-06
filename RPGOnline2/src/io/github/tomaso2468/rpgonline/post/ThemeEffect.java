@@ -34,7 +34,7 @@ package io.github.tomaso2468.rpgonline.post;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * <p>
@@ -163,14 +163,14 @@ public class ThemeEffect extends GLShaderEffect {
 	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 
-		shader.setUniformColor("bc", bc);
-		shader.setUniformColor("lc", lc);
-		shader.setUniformColor("mc", mc);
-		shader.setUniformColor("hc", hc);
-		shader.setUniformColor("wc", wc);
+		shader.setUniform("bc", bc);
+		shader.setUniform("lc", lc);
+		shader.setUniform("mc", mc);
+		shader.setUniform("hc", hc);
+		shader.setUniform("wc", wc);
 
-		shader.setUniformFloatVariable("lp", lp);
-		shader.setUniformFloatVariable("mp", mp);
-		shader.setUniformFloatVariable("hp", hp);
+		shader.setUniform("lp", lp);
+		shader.setUniform("mp", mp);
+		shader.setUniform("hp", hp);
 	}
 }

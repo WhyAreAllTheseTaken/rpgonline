@@ -37,7 +37,7 @@ import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.net.HeatAffected;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.render.Renderer;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * A heat shader effect that changes over time.
@@ -76,7 +76,7 @@ public class DynamicHeatShader extends GLShaderEffect {
 	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 
-		shader.setUniformFloatVariable("u_time", System.currentTimeMillis() % 100000 / 50f);
-		shader.setUniformFloatVariable("stren", heat);
+		shader.setUniform("u_time", System.currentTimeMillis() % 100000 / 50f);
+		shader.setUniform("stren", heat);
 	}
 }

@@ -23,7 +23,6 @@ import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.opengl.renderer.SGL;
 
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
@@ -342,7 +341,7 @@ public abstract class GL11Renderer implements Renderer {
 		Texture texture = ((SlickTexture) buffer.getTexture()).texture;
 		int format = texture.hasAlpha() ? GL11.GL_RGBA : GL11.GL_RGB;
 		texture.bind();
-		GL11.glCopyTexImage2D(SGL.GL_TEXTURE_2D, 0, format, x, getHeight() - (y + (int) buffer.getHeight()),
+		GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, format, x, /*getHeight() - (y + (int) buffer.getHeight())*/0,
 				texture.getTextureWidth(), texture.getTextureHeight(), 0);
 		buffer.ensureInverted();
 	}
@@ -500,7 +499,7 @@ public abstract class GL11Renderer implements Renderer {
 		try {
 			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
 		} catch (UnsupportedOperationException e) {
-			throw new RenderException("Error creating shader");
+			throw new RenderException("Error creating shader", e);
 		}
 	}
 	
@@ -509,7 +508,16 @@ public abstract class GL11Renderer implements Renderer {
 		try {
 			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
 		} catch (UnsupportedOperationException e) {
-			throw new RenderException("Error using shader");
+			throw new RenderException("Error using shader", e);
+		}
+	}
+	
+	@Override
+	public void deleteShader(Shader shader) throws RenderException {
+		try {
+			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
+		} catch (UnsupportedOperationException e) {
+			throw new RenderException("Error deleting shader", e);
 		}
 	}
 	

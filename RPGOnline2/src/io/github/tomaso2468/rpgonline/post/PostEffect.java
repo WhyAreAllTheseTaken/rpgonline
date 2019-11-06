@@ -60,7 +60,7 @@ public interface PostEffect {
 	 * Disposes of and destroys all resources used by this effect.
 	 * @throws SlickException If an error occurs in the Slick2D library.
 	 */
-	public default void dispose() throws RenderException {
+	public default void dispose(Renderer renderer) throws RenderException {
 
 	}
 }

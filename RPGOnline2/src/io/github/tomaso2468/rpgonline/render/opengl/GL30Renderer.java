@@ -1,11 +1,9 @@
 package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.io.IOException;
-import java.nio.IntBuffer;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
@@ -13,9 +11,12 @@ import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 
 public abstract class GL30Renderer extends GL20Renderer {
+	protected boolean offscreen = false;
+	protected int offscreen_buffer;
 	protected int fbo;
 	protected Image fbo_image;
 
@@ -36,61 +37,22 @@ public abstract class GL30Renderer extends GL20Renderer {
 			return super.getRenderHeight();
 		}
 	}
-	
-	protected void bindFBO(int fbo, Image img) {
-		this.fbo = fbo;
-		this.fbo_image = img;
-		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-		GL11.glPushClientAttrib(GL11.GL_ALL_CLIENT_ATTRIB_BITS);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPushMatrix();
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPushMatrix();
-
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fbo);
-		GL11.glReadBuffer(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT);
-	}
-
-	protected void unbindFBO(int fbo, Image img) {
-		this.fbo = 0;
-		this.fbo_image = null;
-		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-		GL11.glReadBuffer(GL11.GL_BACK);
-
-		GL11.glPopClientAttrib();
-		GL11.glPopAttrib();
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPopMatrix();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glPopMatrix();
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	}
 
 	protected void checkFBO(int fbo) throws RenderException {
-		int framebuffer = EXTFramebufferObject.glCheckFramebufferStatusEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT);
+		int framebuffer = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
 		switch (framebuffer) {
-		case EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT:
+		case GL30.GL_FRAMEBUFFER_COMPLETE:
 			break;
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-			throw new RenderException(
-					"FrameBuffer: " + fbo + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception");
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-			throw new RenderException("FrameBuffer: " + fbo
-					+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception");
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-			throw new RenderException(
-					"FrameBuffer: " + fbo + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT exception");
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-			throw new RenderException(
-					"FrameBuffer: " + fbo + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception");
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-			throw new RenderException(
-					"FrameBuffer: " + fbo + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT exception");
-		case EXTFramebufferObject.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-			throw new RenderException(
-					"FrameBuffer: " + fbo + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception");
+		case GL30.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+		case GL30.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+		case GL30.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
+		case GL30.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
 		default:
-			throw new RenderException("Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer);
+			throw new RenderException("Unknown: " + framebuffer);
 		}
 	}
 
@@ -98,8 +60,12 @@ public abstract class GL30Renderer extends GL20Renderer {
 	public void setRenderTarget(Image image) throws RenderException {
 		if (image == null) {
 			if (this.fbo != 0) {
-				unbindFBO(fbo, image);
+				this.fbo = 0;
+				this.fbo_image = null;
+				GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);   
 				setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+				setColorMode(ColorMode.NORMAL);
+				resetTransform();
 			}
 			return;
 		}
@@ -110,37 +76,33 @@ public abstract class GL30Renderer extends GL20Renderer {
 				super.setRenderTarget(image);
 			}
 
-			IntBuffer buffer = BufferUtils.createIntBuffer(1);
-			EXTFramebufferObject.glGenFramebuffersEXT(buffer);
-			int fbo = buffer.get();
-
-			// for some reason FBOs won't work on textures unless you've absolutely just
-			// created them.
+			int fbo = GL30.glGenFramebuffers();
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
+			
+			Texture tex;
 			try {
-				Texture tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(),
-						image.getFilter());
-
-				bindFBO(fbo, image);
-				EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,
-						EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, tex.getTextureID(), 0);
-
-				checkFBO(fbo);
-				unbindFBO(fbo, image);
-
-				// Clear our destination area before using it
-				clear();
-
-				// keep hold of the original content
-				drawImage(image, 0, 0);
-				((SlickTexture) image.getTexture()).texture = tex;
-				((SlickTexture) image.getTexture()).fbo = fbo;
-
+				tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
 			} catch (IOException e) {
-				throw new RenderException("Failed to create new texture for FBO", e);
+				throw new RenderException("Failed to create texture.");
 			}
+
+			int filter = image.getFilter() == Image.FILTER_LINEAR ? GL11.GL_LINEAR : GL11.GL_NEAREST;
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter); 
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
+	        
+	        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, tex.getTextureID(), 0);
+	        
+	        ((SlickTexture) image.getTexture()).texture = tex;
+			((SlickTexture) image.getTexture()).fbo = fbo;
+			
+			checkFBO(fbo);
 		}
 
-		bindFBO(((SlickTexture) image.getTexture()).fbo, image);
+		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ((SlickTexture) image.getTexture()).fbo);
+		this.fbo = ((SlickTexture) image.getTexture()).fbo;
+		this.fbo_image = image;
 		setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+		setColorMode(ColorMode.NORMAL);
+		resetTransform();
 	}
 }

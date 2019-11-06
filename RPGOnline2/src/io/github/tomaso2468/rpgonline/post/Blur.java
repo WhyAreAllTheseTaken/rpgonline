@@ -31,13 +31,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import org.newdawn.slick.SlickException;
+import java.io.IOException;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * <p>A 2 pass gaussian blur effect.</p>
@@ -84,47 +84,46 @@ public class Blur implements PostEffect {
 		//XXX Two files needed because uniforms wouldn't change.
 		if (shader == null) {
 			try {
-				shader = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
-			} catch (SlickException e) {
+				shader = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
+			} catch (IOException e) {
 				throw new RenderException(e);
 			}
 		}
 		if (shader2 == null) {
 			try {
-				shader2 = Shader.makeShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
-			} catch (SlickException e) {
+				shader2 = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
+			} catch (IOException e) {
 				throw new RenderException(e);
 			}
 		}
 		
-		shader.startShader();
-		shader.setUniformIntVariable("blurSize", size);
-		shader.setUniformFloatVariable("sigma", sigma);
+		renderer.useShader(shader);
+		shader.setUniform("blurSize", size);
+		shader.setUniform("sigma", sigma);
 		
 		// vertical pass
 		renderer.drawImage(buffer, 0, 0);
 		
 		//TODO Is this needed?
-		Shader.forceFixedShader();
+		renderer.useShader(null);
 		
 		renderer.copyArea(buffer, 0, 0);
 		
-		shader2.startShader();
-		
-		shader2.setUniformIntVariable("blurSize", size);
-		shader2.setUniformFloatVariable("sigma", sigma);
+		renderer.useShader(shader);
+		shader.setUniform("blurSize", size);
+		shader.setUniform("sigma", sigma);
 		
 		// horizontal pass
 		renderer.drawImage(buffer, 0, 0);
-		Shader.forceFixedShader();
+		renderer.useShader(null);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws RenderException {
-		shader.deleteShader();
-		shader2.deleteShader();
+	public void dispose(Renderer renderer) throws RenderException {
+		renderer.deleteShader(shader);
+		renderer.deleteShader(shader2);
 	}
 }

@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
+import java.io.IOException;
 import java.net.URL;
-
-import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * An effect based on a shader.
@@ -93,21 +92,21 @@ public class GLShaderEffect implements PostEffect {
 
 		if (shader == null) {
 			try {
-				shader = Shader.makeShader(vertex, fragment);
-			} catch (SlickException e) {
-				throw new RenderException("Error creating GL shader", e);
+				shader = renderer.createShader(vertex, fragment);
+			} catch (IOException e) {
+				throw new RenderException("Error creating shader.", e);
 			}
-			shader.startShader();
+			renderer.useShader(shader);
 			initShader(shader, game);
 		} else {
-			shader.startShader();
+			renderer.useShader(shader);
 		}
 
 		updateShader(shader, game);
 
 		renderer.render(buffer, 0, 0, buffer.getWidth(), buffer.getHeight());
 
-		Shader.forceFixedShader(); // Return to the default fixed pipeline shader
+		renderer.useShader(null);
 	}
 
 	/**
@@ -131,11 +130,12 @@ public class GLShaderEffect implements PostEffect {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws RenderException 
 	 */
 	@Override
-	public void dispose() {
+	public void dispose(Renderer renderer) throws RenderException {
 		if (shader != null) {
-			shader.deleteShader();
+			renderer.deleteShader(shader);
 		}
 	}
 }

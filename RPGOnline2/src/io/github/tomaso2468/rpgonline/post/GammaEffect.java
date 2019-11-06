@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * An effect that modifies the gamma of the screen to convert from linear to SRGB values.
@@ -67,7 +67,7 @@ public class GammaEffect extends GLShaderEffect {
 	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		
-		shader.setUniformFloatVariable("gamma", gamma);
+		shader.setUniform("gamma", gamma);
 	}
 
 }

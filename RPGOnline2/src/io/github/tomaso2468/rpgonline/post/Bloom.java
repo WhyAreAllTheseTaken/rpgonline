@@ -95,8 +95,8 @@ public class Bloom extends MultiEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws RenderException {
-		super.dispose();
+	public void dispose(Renderer renderer) throws RenderException {
+		super.dispose(renderer);
 		buffer2.destroy();
 	}
 }

@@ -17,9 +17,11 @@ import org.lwjgl.opengl.RenderTexture;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
+import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Shader;
 
@@ -59,11 +61,13 @@ public abstract class GL20Renderer extends GL11Renderer {
 		GL20.glCompileShader(shader);
 
 		int errorCheck = GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS);
-		if (errorCheck != GL11.GL_NO_ERROR) {
-			String log = GL20.glGetShaderInfoLog(shader, MAX_LOG_LENGTH);
+		if (errorCheck != GL11.GL_TRUE) {
+			String log = GL20.glGetShaderInfoLog(shader, GL20.glGetShaderi(shader, GL20.GL_INFO_LOG_LENGTH));
+			
+			GL20.glDeleteShader(shader);
 			throw new RenderException("Error compiling shaders:\n" + log);
 		}
-		return 0;
+		return shader;
 	}
 
 	protected int createProgram(int vertex, int fragment) throws RenderException {
@@ -73,14 +77,14 @@ public abstract class GL20Renderer extends GL11Renderer {
 
 		GL20.glLinkProgram(program);
 		int errorCheck = GL20.glGetProgrami(program, GL20.GL_LINK_STATUS);
-		if (errorCheck != GL11.GL_NO_ERROR) {
+		if (errorCheck != GL11.GL_TRUE) {
 			String log = GL20.glGetProgramInfoLog(program, MAX_LOG_LENGTH);
 			throw new RenderException("Error linking program:\n" + log);
 		}
 
 		GL20.glValidateProgram(program);
 		int errorCheck2 = GL20.glGetProgrami(program, GL20.GL_VALIDATE_STATUS);
-		if (errorCheck2 != GL11.GL_NO_ERROR) {
+		if (errorCheck2 != GL11.GL_TRUE) {
 			String log = GL20.glGetProgramInfoLog(program, MAX_LOG_LENGTH);
 			throw new RenderException("Error validating program:\n" + log);
 		}
@@ -90,6 +94,8 @@ public abstract class GL20Renderer extends GL11Renderer {
 
 	@Override
 	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException {
+		Log.debug("Compiling shader v=" + vertex.toString() + " f=" + fragment.toString());
+		
 		String vertexData, fragmentData;
 		try {
 			vertexData = read(vertex);
@@ -97,7 +103,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 			throw new IOException("Error reading a vertex shader ", e);
 		}
 		try {
-			fragmentData = read(vertex);
+			fragmentData = read(fragment);
 		} catch (IOException e) {
 			throw new IOException("Error reading a fragment shader", e);
 		}
@@ -111,6 +117,11 @@ public abstract class GL20Renderer extends GL11Renderer {
 		GL20.glDeleteShader(fragmentShader);
 
 		return new GLShader(program);
+	}
+
+	@Override
+	public void deleteShader(Shader shader) throws RenderException {
+		GL20.glDeleteShader(((GLShader) shader).program);
 	}
 
 	@Override
@@ -135,18 +146,34 @@ public abstract class GL20Renderer extends GL11Renderer {
 
 	protected void unbindBuffer(Pbuffer pbuffer, Image image) throws RenderException {
 		this.currentBuffer = null;
-		
+
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((SlickTexture) image.getTexture()).texture.getTextureID());
 		pbuffer.bindTexImage(Pbuffer.FRONT_LEFT_BUFFER);
-		
+
 		try {
 			Display.makeCurrent();
 		} catch (LWJGLException e) {
 			throw new RenderException("Error making display current.");
 		}
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPopMatrix();
+		GL11.glPopClientAttrib();
+		GL11.glPopAttrib();
 	}
 
 	protected void bindBuffer(Pbuffer pbuffer, Image image) throws RenderException {
+		GL11.glDisable(GL11.GL_TEXTURE);
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+		GL11.glPushClientAttrib(GL11.GL_ALL_CLIENT_ATTRIB_BITS);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glPushMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
 		this.currentBuffer = pbuffer;
 		try {
 			if (pbuffer.isBufferLost()) {
@@ -159,7 +186,8 @@ public abstract class GL20Renderer extends GL11Renderer {
 					throw new RenderException("An error occured creating a texture.", e);
 				}
 
-				final RenderTexture rt = new RenderTexture(false, true, false, false, RenderTexture.RENDER_TEXTURE_2D, 0);
+				final RenderTexture rt = new RenderTexture(false, true, false, false, RenderTexture.RENDER_TEXTURE_2D,
+						0);
 				try {
 					pbuffer = new Pbuffer((int) image.getWidth(), (int) image.getHeight(), new PixelFormat(8, 0, 0), rt,
 							null);
@@ -198,7 +226,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 				render(image, 0, 0, image.getWidth(), image.getHeight());
 				((SlickTexture) image.getTexture()).pbuffer = pbuffer;
 				((SlickTexture) image.getTexture()).texture = tex;
-				
+
 				try {
 					Display.makeCurrent();
 				} catch (LWJGLException e) {
@@ -210,7 +238,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 		} catch (LWJGLException e) {
 			throw new RenderException("Could not recreate Pbuffer", e);
 		}
-		
+
 		// Put the renderer contents to the texture
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((SlickTexture) image.getTexture()).texture.getTextureID());
 		pbuffer.releaseTexImage(Pbuffer.FRONT_LEFT_BUFFER);
@@ -302,7 +330,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 			render(image, 0, 0, image.getWidth(), image.getHeight());
 			((SlickTexture) image.getTexture()).pbuffer = pbuffer;
 			((SlickTexture) image.getTexture()).texture = tex;
-			
+
 			try {
 				Display.makeCurrent();
 			} catch (LWJGLException e) {
@@ -311,5 +339,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 		}
 		bindBuffer(((SlickTexture) image.getTexture()).pbuffer, image);
 		setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+		setColorMode(ColorMode.NORMAL);
+		resetTransform();
 	}
 }

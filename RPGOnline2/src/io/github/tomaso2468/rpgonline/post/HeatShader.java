@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * A shader creating a heat effect.
@@ -54,7 +54,7 @@ public class HeatShader extends GLShaderEffect {
 	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 
-		shader.setUniformFloatVariable("u_time", System.currentTimeMillis() % 100000 / 50f);
-		shader.setUniformFloatVariable("stren", 1);
+		shader.setUniform("u_time", System.currentTimeMillis() % 100000 / 50f);
+		shader.setUniform("stren", 1);
 	}
 }

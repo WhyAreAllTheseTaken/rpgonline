@@ -86,9 +86,9 @@ public class MultiEffect implements PostEffect {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispose() throws RenderException {
+	public void dispose(Renderer renderer) throws RenderException {
 		for (PostEffect e : effects) {
-			e.dispose();
+			e.dispose(renderer);
 		}
 	}
 

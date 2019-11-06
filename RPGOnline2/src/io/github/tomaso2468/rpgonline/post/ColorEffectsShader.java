@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * A shader that effects the colours on the screen.
@@ -118,11 +118,11 @@ public class ColorEffectsShader extends GLShaderEffect {
 	 */
 	@Override
 	protected void updateShader(Shader shader, Game c) {
-		shader.setUniformFloatVariable("saturation", saturation);
-		shader.setUniformFloatVariable("brightness", brightness);
-		shader.setUniformFloatVariable("contrast", contrast);
-		shader.setUniformFloatVariable("_vibrance", vibrance);
-		shader.setUniformFloatVariable("hueShift", hue);
-		shader.setUniformFloatVariable("gamma", gamma);
+		shader.setUniform("saturation", saturation);
+		shader.setUniform("brightness", brightness);
+		shader.setUniform("contrast", contrast);
+		shader.setUniform("_vibrance", vibrance);
+		shader.setUniform("hueShift", hue);
+		shader.setUniform("gamma", gamma);
 	}
 }

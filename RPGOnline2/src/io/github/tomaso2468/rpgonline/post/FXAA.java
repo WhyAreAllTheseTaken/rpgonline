@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * An implementation of FXAA anti-aliasing.
@@ -51,12 +51,12 @@ public class FXAA extends GLShaderEffect {
 	 */
 	@Override
 	protected void updateShader(Shader shader, Game c) {
-		shader.setUniformFloatVariable("u_texelStep", 1f / c.getWidth(), 1f / c.getHeight());
-		shader.setUniformIntVariable("u_showEdges", 0);
-		shader.setUniformIntVariable("u_fxaaOn", 1);
-		shader.setUniformFloatVariable("u_lumaThreshold", 0.5f);
-		shader.setUniformFloatVariable("u_mulReduce", 1 / 8f);
-		shader.setUniformFloatVariable("u_minReduce", 1 / 128f);
-		shader.setUniformFloatVariable("u_maxSpan", 8f);
+		shader.setUniform("u_texelStep", 1f / c.getWidth(), 1f / c.getHeight());
+		shader.setUniform("u_showEdges", 0);
+		shader.setUniform("u_fxaaOn", 1);
+		shader.setUniform("u_lumaThreshold", 0.5f);
+		shader.setUniform("u_mulReduce", 1 / 8f);
+		shader.setUniform("u_minReduce", 1 / 128f);
+		shader.setUniform("u_maxSpan", 8f);
 	}
 }

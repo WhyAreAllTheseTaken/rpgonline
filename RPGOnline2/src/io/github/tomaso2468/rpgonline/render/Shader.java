@@ -1,6 +1,11 @@
 package io.github.tomaso2468.rpgonline.render;
 
+import org.newdawn.slick.Color;
+
 public interface Shader {
+	public default void setUniform(String name, Color c) {
+		setUniform(name, c.r, c.g, c.b, c.a);
+	}
 	public void setUniform(String name, float value);
 	public void setUniform(String name, float v1, float v2);
 	public void setUniform(String name, float v1, float v2, float v3);

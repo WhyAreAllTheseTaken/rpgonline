@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
-import slickshader.Shader;
+import io.github.tomaso2468.rpgonline.render.Shader;
 
 /**
  * An effect that brightens the screen.
@@ -60,7 +60,7 @@ public class BrightnessEffect extends GLShaderEffect {
 	protected void updateShader(Shader shader, Game c) {
 		super.updateShader(shader, c);
 		
-		shader.setUniformFloatVariable("brightness", brightness);
+		shader.setUniform("brightness", brightness);
 	}
 
 }
