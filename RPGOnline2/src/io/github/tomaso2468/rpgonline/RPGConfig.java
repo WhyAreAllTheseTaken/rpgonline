@@ -177,9 +177,9 @@ public final class RPGConfig {
 	private static long pathfindingSleepTime = 1000 / 30;
 	
 	/**
-	 * Determines if MDR is enabled.
+	 * Determines if HDR is enabled.
 	 */
-	private static boolean mdr = false;
+	private static boolean hdr = false;
 
 	/**
 	 * Determines how language settings are computed. This defaults to returning the
@@ -661,19 +661,19 @@ public final class RPGConfig {
 	}
 
 	/**
-	 * Determines if the MDR effect is enabled.
-	 * @return {@code true} if MDR is enabled, {@code false} otherwise.
+	 * Determines if the HDR effect is enabled.
+	 * @return {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
-	public static boolean isMDR() {
-		return mdr;
+	public static boolean isHDR() {
+		return hdr;
 	}
 
 	/**
 	 * Sets if the MDR effect is enabled.
-	 * @param mdr {@code true} if MDR is enabled, {@code false} otherwise.
+	 * @param hdr {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
-	public static void setMDR(boolean mdr) {
-		RPGConfig.mdr = mdr;
+	public static void setHDR(boolean hdr) {
+		RPGConfig.hdr = hdr;
 	}
 
 }

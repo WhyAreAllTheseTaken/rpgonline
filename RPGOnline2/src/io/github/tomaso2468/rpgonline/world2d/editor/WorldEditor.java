@@ -160,7 +160,7 @@ public class WorldEditor extends WorldState {
 					Debugger.stop("post-" + post.getClass());
 				}
 			}
-			if (RPGConfig.isMDR()) {
+			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
 				renderer.copyArea(buffer, 0, 0);
 
@@ -429,7 +429,7 @@ public class WorldEditor extends WorldState {
 				Color light = world.getLightColor();
 				renderer.setColorMode(ColorMode.MULTIPLY);
 				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-						RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+						RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
 				renderer.setColorMode(ColorMode.NORMAL);
 			} else {
 				if (lightBuffer == null) {
@@ -447,7 +447,7 @@ public class WorldEditor extends WorldState {
 				renderer.setColorMode(ColorMode.NORMAL);
 
 				Color wl = world.getLightColor();
-				if (RPGConfig.isMDR() && post_enable) {
+				if (RPGConfig.isHDR() && post_enable) {
 					wl = wl.darker(0.5f);
 				}
 
@@ -483,14 +483,14 @@ public class WorldEditor extends WorldState {
 			}
 
 			Debugger.stop("lighting");
-		} else if (post_enable && RPGConfig.isMDR()) {
+		} else if (post_enable && RPGConfig.isHDR()) {
 			Debugger.start("mdr");
 			Debugger.start("mdr-lightoverride");
 
 			Color light = Color.white;
 			renderer.setColorMode(ColorMode.MULTIPLY);
 			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-					RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+					RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
 			renderer.setColorMode(ColorMode.NORMAL);
 
 			Debugger.stop("mdr-lightoverride");

@@ -236,7 +236,7 @@ public class WorldState implements GameState, BaseScaleState {
 				NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
 			}
 			renderer.setRenderTarget(null);
-			if (RPGConfig.isMDR()) {
+			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
 				
 				if (mdr == null) {
@@ -603,7 +603,7 @@ public class WorldState implements GameState, BaseScaleState {
 				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.setColorMode(ColorMode.MULTIPLY);
 				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-						RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+						RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
 				renderer.setColorMode(ColorMode.NORMAL);
 				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			} else {
@@ -622,7 +622,7 @@ public class WorldState implements GameState, BaseScaleState {
 				renderer.setColorMode(ColorMode.NORMAL);
 
 				Color wl = world.getLightColor();
-				if (RPGConfig.isMDR() && post_enable) {
+				if (RPGConfig.isHDR() && post_enable) {
 					wl = wl.darker(0.5f);
 				}
 
@@ -660,14 +660,14 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 
 			Debugger.stop("lighting");
-		} else if (post_enable && RPGConfig.isMDR()) {
+		} else if (post_enable && RPGConfig.isHDR()) {
 			Debugger.start("mdr");
 			Debugger.start("mdr-lightoverride");
 
 			Color light = Color.white;
 			renderer.setColorMode(ColorMode.MULTIPLY);
 			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-					RPGConfig.isMDR() && post_enable ? light.darker(0.5f) : light);
+					RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
 			renderer.setColorMode(ColorMode.NORMAL);
 
 			Debugger.stop("mdr-lightoverride");

@@ -139,7 +139,7 @@ public class Game {
 
 	public void init(Game game) throws RenderException {
 		renderer.init(this);
-		renderer.useHDRBuffers(true);
+		renderer.useHDRBuffers(RPGConfig.isHDR());
 		if (font == null) {
 			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 18);
 		}
