@@ -2,11 +2,13 @@ package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.io.IOException;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 import org.newdawn.slick.opengl.InternalTextureLoader;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
@@ -19,6 +21,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 	protected int offscreen_buffer;
 	protected int fbo;
 	protected Image fbo_image;
+	protected boolean hdr;
 
 	@Override
 	public int getRenderWidth() {
@@ -64,6 +67,29 @@ public abstract class GL30Renderer extends GL20Renderer {
 			throw new RenderException("Unknown: " + framebuffer);
 		}
 	}
+	
+	@Override
+	public boolean isHDR() {
+		return hdr;
+	}
+	
+	@Override
+	public void useHDRBuffers(boolean hdr) throws RenderException {
+		this.hdr = hdr;
+	}
+	
+	protected Texture createHDR(int width, int height) {
+		int tex = GL11.glGenTextures();
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_RGBA16F, width, height, 0, GL11.GL_RGBA, GL11.GL_FLOAT, BufferUtils.createByteBuffer(width * height * 4 * 4));
+		
+		Texture texture = new TextureImpl("createHDR", GL11.GL_TEXTURE_2D, tex);
+		
+		//TODO HDR
+		
+		return texture;
+	}
 
 	private boolean fbo_ext_warn = false;
 	@Override
@@ -93,7 +119,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 			
 			Texture tex;
 			try {
-				tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
+				tex = hdr ? createHDR((int) image.getWidth(), (int) image.getHeight()) : InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
 			} catch (IOException e) {
 				throw new RenderException("Failed to create texture.");
 			}

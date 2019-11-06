@@ -949,6 +949,16 @@ public class WorldState implements GameState, BaseScaleState {
 		} else {
 			post_enable = true;
 		}
+		
+		if (in.isKeyDown(Input.KEY_EQUALS)) {
+			zoom *= 1 + (1 * delta);
+		}
+		if (in.isKeyDown(Input.KEY_MINUS)) {
+			zoom *= 1 - (1 * delta);
+		}
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
+			walk_x -= 1;
+		}
 
 		Debugger.stop("input");
 	}

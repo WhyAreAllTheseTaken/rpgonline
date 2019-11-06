@@ -171,6 +171,15 @@ public interface Renderer {
 	public TextureReference getPNG(URL url) throws RenderException, IOException;
 	public void copyArea(Image buffer, int x, int y);
 	public TextureReference createEmptyTexture(int width, int height) throws RenderException;
+	public default TextureReference createHDRTexture(int width, int height) throws RenderException {
+		throw new RenderException("An error occured creating a texture.", new UnsupportedOperationException("HDR is not supported by this renderer."));
+	}
+	public default void useHDRBuffers(boolean hdr) throws RenderException {
+		throw new RenderException("An error occured using HDR.", new UnsupportedOperationException("HDR is not supported by this renderer."));
+	}
+	public default boolean isHDR() {
+		return false;
+	}
 	
 	public String getVersion();
 	public String getVendor();
