@@ -81,12 +81,19 @@ public abstract class GL30Renderer extends GL20Renderer {
 	protected Texture createHDR(int width, int height) {
 		int tex = GL11.glGenTextures();
 		
+		int width_fold = InternalTextureLoader.get2Fold(width);
+		int height_fold = InternalTextureLoader.get2Fold(height);
+		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_RGBA16F, width, height, 0, GL11.GL_RGBA, GL11.GL_FLOAT, BufferUtils.createByteBuffer(width * height * 4 * 4));
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_RGBA16F, width_fold, height_fold, 0, GL11.GL_RGBA, GL11.GL_FLOAT, BufferUtils.createByteBuffer(width_fold * height_fold * 4 * 4));
 		
-		Texture texture = new TextureImpl("createHDR", GL11.GL_TEXTURE_2D, tex);
+		TextureImpl texture = new TextureImpl("createHDR", GL11.GL_TEXTURE_2D, tex);
 		
-		//TODO HDR
+		texture.setTextureWidth(InternalTextureLoader.get2Fold(width));
+		texture.setTextureHeight(InternalTextureLoader.get2Fold(height));
+		
+		texture.setWidth(width);
+		texture.setHeight(height);
 		
 		return texture;
 	}
