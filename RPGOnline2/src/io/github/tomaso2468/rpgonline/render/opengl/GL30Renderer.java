@@ -37,6 +37,15 @@ public abstract class GL30Renderer extends GL20Renderer {
 			return super.getRenderHeight();
 		}
 	}
+	
+	@Override
+	public Image getCurrentTarget() throws RenderException {
+		if (fbo_image != null) {
+			return fbo_image;
+		} else {
+			return super.getCurrentTarget();
+		}
+	}
 
 	protected void checkFBO(int fbo) throws RenderException {
 		int framebuffer = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
@@ -56,6 +65,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 		}
 	}
 
+	private boolean fbo_ext_warn = false;
 	@Override
 	public void setRenderTarget(Image image) throws RenderException {
 		if (image == null) {
@@ -71,9 +81,11 @@ public abstract class GL30Renderer extends GL20Renderer {
 		}
 		if (((SlickTexture) image.getTexture()).fbo == 0) {
 			if (!GLContext.getCapabilities().GL_EXT_framebuffer_object) {
-				Log.warn("FBOs are not supported on your system, falling back to pbuffers.");
+				if (!fbo_ext_warn) Log.warn("FBOs are not supported on your system, falling back to pbuffers.");
+				fbo_ext_warn = true;
 				// Fallback to pbuffer
 				super.setRenderTarget(image);
+				return;
 			}
 
 			int fbo = GL30.glGenFramebuffers();
@@ -94,6 +106,8 @@ public abstract class GL30Renderer extends GL20Renderer {
 	        
 	        ((SlickTexture) image.getTexture()).texture = tex;
 			((SlickTexture) image.getTexture()).fbo = fbo;
+			
+			image.ensureInverted();
 			
 			checkFBO(fbo);
 		}

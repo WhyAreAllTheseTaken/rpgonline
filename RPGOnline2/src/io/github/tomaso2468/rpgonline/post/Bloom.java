@@ -86,7 +86,14 @@ public class Bloom extends MultiEffect {
 			buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 		}
 		
-		renderer.copyArea(buffer2, 0, 0);
+		Image target = renderer.getCurrentTarget();
+		
+		renderer.setRenderTarget(buffer2);
+		renderer.clear();
+		
+		renderer.drawImage(buffer, 0, 0);
+		
+		renderer.setRenderTarget(target);
 		
 		super.doPostProcess(game, buffer, renderer);
 	}

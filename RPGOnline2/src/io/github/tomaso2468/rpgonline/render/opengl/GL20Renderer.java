@@ -141,11 +141,18 @@ public abstract class GL20Renderer extends GL11Renderer {
 			return super.getRenderHeight();
 		}
 	}
+	
+	@Override
+	public Image getCurrentTarget() throws RenderException {
+		return currentImage;
+	}
 
 	protected Pbuffer currentBuffer = null;
+	protected Image currentImage = null;
 
 	protected void unbindBuffer(Pbuffer pbuffer, Image image) throws RenderException {
 		this.currentBuffer = null;
+		this.currentImage = null;
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((SlickTexture) image.getTexture()).texture.getTextureID());
 		pbuffer.bindTexImage(Pbuffer.FRONT_LEFT_BUFFER);
@@ -175,6 +182,7 @@ public abstract class GL20Renderer extends GL11Renderer {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 		this.currentBuffer = pbuffer;
+		this.currentImage = image;
 		try {
 			if (pbuffer.isBufferLost()) {
 				pbuffer.destroy();

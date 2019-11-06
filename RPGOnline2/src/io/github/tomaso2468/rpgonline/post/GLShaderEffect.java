@@ -88,8 +88,6 @@ public class GLShaderEffect implements PostEffect {
 	@Override
 	public void doPostProcess(Game game, Image buffer, Renderer renderer)
 			throws RenderException {
-		renderer.clear();
-
 		if (shader == null) {
 			try {
 				shader = renderer.createShader(vertex, fragment);

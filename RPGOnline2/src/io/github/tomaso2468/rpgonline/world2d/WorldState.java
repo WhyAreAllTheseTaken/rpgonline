@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,13 +63,13 @@ import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.MDRMap;
-import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
+import io.github.tomaso2468.rpgonline.render.Shader;
 import io.github.tomaso2468.rpgonline.sky.SkyLayer;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
@@ -132,7 +133,7 @@ public class WorldState implements GameState, BaseScaleState {
 	protected Image buffer;
 
 	/**
-	 * A second (smaller) buffer for pixel perfect effects.
+	 * A second buffer for shader effects.
 	 */
 	protected Image buffer2;
 
@@ -191,7 +192,7 @@ public class WorldState implements GameState, BaseScaleState {
 	/**
 	 * The MDR map for this world state.
 	 */
-	public static MDRMap mdr;
+	public Shader mdr;
 
 	/**
 	 * {@inheritDoc}
@@ -199,6 +200,17 @@ public class WorldState implements GameState, BaseScaleState {
 	@Override
 	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
+		
+		if (post_enable) {
+			if (buffer == null) {
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
+				buffer.destroy();
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			}
+			renderer.setRenderTarget(buffer);
+			renderer.clear();
+		}
 
 		Debugger.start("game-render");
 		render2(game, renderer);
@@ -208,34 +220,46 @@ public class WorldState implements GameState, BaseScaleState {
 
 		if (post_enable) {
 			Debugger.start("effects");
-			if (buffer == null) {
-				buffer = new Image(renderer, game.getWidth(), game.getHeight());
-			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
-				buffer.destroy();
-				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			if (buffer2 == null) {
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
+				buffer2.destroy();
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 			}
-
+			renderer.setRenderTarget(buffer2);
+			renderer.clear();
 			if (post != null) {
-				renderer.copyArea(buffer, 0, 0);
-
-				if (!(post instanceof MultiEffect)) {
-					Debugger.start("post-" + post.getClass());
-				}
+				Debugger.start("post-" + post.getClass());
 				post.doPostProcess(game, buffer, renderer);
-				if (!(post instanceof MultiEffect)) {
-					Debugger.stop("post-" + post.getClass());
-				}
+				Debugger.stop("post-" + post.getClass());
+			} else {
+				NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
 			}
+			renderer.setRenderTarget(null);
 			if (RPGConfig.isMDR()) {
 				Debugger.start("mdr");
-				renderer.copyArea(buffer, 0, 0);
-
+				
 				if (mdr == null) {
-					mdr = new MDRMap();
+					try {
+						mdr = renderer.createShader(MDRMap.class.getResource("/generic.vrt"), MDRMap.class.getResource("/mdr.frg"));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				mdr.doPostProcess(game, buffer, renderer);
+				renderer.useShader(mdr);
+				mdr.setUniform("exposure", 1f);
+				mdr.setUniform("gamma", 1.2f);
+				
+				renderer.drawImage(buffer2, 0, 0);
+				
+				renderer.useShader(null);
+				
 				Debugger.stop("mdr");
+			} else {
+				renderer.drawImage(buffer2, 0, 0);
 			}
+			
 			Debugger.stop("effects");
 		}
 
@@ -628,7 +652,7 @@ public class WorldState implements GameState, BaseScaleState {
 
 				renderer.resetTransform();
 
-				renderer.setRenderTarget(null);
+				renderer.setRenderTarget(post_enable ? buffer : null);
 				
 				renderer.setColorMode(ColorMode.MULTIPLY);
 				renderer.drawImage(lightBuffer, 0, 0);

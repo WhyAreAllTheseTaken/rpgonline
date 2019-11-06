@@ -188,6 +188,9 @@ public interface Renderer {
 	public default void setRenderTarget(Image img) throws RenderException {
 		throw new RenderException("An error occured creating a render target.", new UnsupportedOperationException("Render targets are not supported in this renderer."));
 	}
+	public default Image getCurrentTarget() throws RenderException {
+		throw new RenderException("An error occured getting a render target.", new UnsupportedOperationException("Render targets are not supported in this renderer."));
+	}
 	
 	public void draw(Shape shape, Color color);
 	public void fill(Shape shape, Color color);
@@ -220,4 +223,5 @@ public interface Renderer {
 		renderLine(x, y, x2, y2, Color.white);
 	}
 	public void renderLine(float x, float y, float x2, float y2, Color color);
+	
 }

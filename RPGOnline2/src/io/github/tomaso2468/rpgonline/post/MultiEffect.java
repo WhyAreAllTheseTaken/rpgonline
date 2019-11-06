@@ -58,15 +58,31 @@ public class MultiEffect implements PostEffect {
 		this.effects = effects;
 	}
 
+	private Image buffer2;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void doPostProcess(Game game, Image buffer, Renderer renderer)
 			throws RenderException {
+		Image current_buffer = renderer.getCurrentTarget();
+		
+		if (buffer2 == null) {
+			buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+		} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
+			buffer2.destroy();
+			buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+		}
+		renderer.setRenderTarget(buffer2);
+		
 		if (effects.length == 0) {
 			NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
+			Image buffer_swap = buffer;
+			buffer = buffer2;
+			buffer2 = buffer_swap;
 		}
+		
 		for (PostEffect e : effects) {
 			if (!(e instanceof MultiEffect)) {
 				Debugger.start("post-" + e.getClass());
@@ -74,12 +90,20 @@ public class MultiEffect implements PostEffect {
 			e.doPostProcess(game, buffer, renderer);
 
 			renderer.resetTransform();
-
-			renderer.copyArea(buffer, 0, 0);
+			
 			if (!(e instanceof MultiEffect)) {
 				Debugger.stop("post-" + e.getClass());
 			}
+			
+			Image buffer_swap = buffer;
+			buffer = buffer2;
+			buffer2 = buffer_swap;
+			
+			renderer.setRenderTarget(buffer2);
 		}
+		
+		renderer.setRenderTarget(current_buffer);
+		renderer.drawImage(buffer, 0, 0);
 	}
 
 	/**
