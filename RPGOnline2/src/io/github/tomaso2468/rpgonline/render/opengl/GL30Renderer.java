@@ -12,9 +12,10 @@ import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
+import io.github.tomaso2468.rpgonline.render.RenderResourceException;
 
 public abstract class GL30Renderer extends GL20Renderer {
 	protected boolean offscreen = false;
@@ -52,19 +53,9 @@ public abstract class GL30Renderer extends GL20Renderer {
 
 	protected void checkFBO(int fbo) throws RenderException {
 		int framebuffer = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
-		switch (framebuffer) {
-		case GL30.GL_FRAMEBUFFER_COMPLETE:
-			break;
-		case GL30.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
-		case GL30.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
-		case GL30.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
-		case GL30.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-			throw new RenderException("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
-		default:
-			throw new RenderException("Unknown: " + framebuffer);
+		
+		if (framebuffer != GL30.GL_FRAMEBUFFER_COMPLETE) {
+			throw new FBOException(framebuffer);
 		}
 	}
 	
@@ -128,7 +119,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 			try {
 				tex = hdr ? createHDR((int) image.getWidth(), (int) image.getHeight()) : InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
 			} catch (IOException e) {
-				throw new RenderException("Failed to create texture.");
+				throw new RenderResourceException("Failed to create texture.");
 			}
 
 			int filter = image.getFilter() == Image.FILTER_LINEAR ? GL11.GL_LINEAR : GL11.GL_NEAREST;

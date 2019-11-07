@@ -1,5 +1,6 @@
 package io.github.tomaso2468.rpgonline;
 
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public interface GameState {

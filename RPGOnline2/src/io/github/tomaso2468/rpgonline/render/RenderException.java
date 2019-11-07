@@ -1,4 +1,4 @@
-package io.github.tomaso2468.rpgonline;
+package io.github.tomaso2468.rpgonline.render;
 
 public class RenderException extends Exception {
 	private static final long serialVersionUID = 6117014228574493017L;

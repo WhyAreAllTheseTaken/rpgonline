@@ -36,9 +36,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A class representing a GUI component.

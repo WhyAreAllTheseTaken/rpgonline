@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.post;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**

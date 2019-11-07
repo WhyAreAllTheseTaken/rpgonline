@@ -33,9 +33,9 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * The root class providing text input support.

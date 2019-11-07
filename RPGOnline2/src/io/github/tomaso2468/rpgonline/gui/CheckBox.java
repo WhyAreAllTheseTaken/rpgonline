@@ -33,9 +33,9 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.geom.Rectangle;
 
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A box that can be toggled.

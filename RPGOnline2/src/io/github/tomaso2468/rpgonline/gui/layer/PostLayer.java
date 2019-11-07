@@ -33,9 +33,9 @@ package io.github.tomaso2468.rpgonline.gui.layer;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A layer that applies a post-processing effect.

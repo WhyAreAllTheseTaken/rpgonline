@@ -3,6 +3,7 @@ package io.github.tomaso2468.rpgonline;
 import java.io.File;
 import java.io.IOException;
 
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 public class Image implements Cloneable {

@@ -42,7 +42,6 @@ import org.newdawn.slick.geom.Transform;
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.input.Input;
 

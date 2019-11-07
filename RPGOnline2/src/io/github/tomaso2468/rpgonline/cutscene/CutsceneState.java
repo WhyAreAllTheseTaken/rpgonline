@@ -35,7 +35,7 @@ import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.GameState;
-import io.github.tomaso2468.rpgonline.RenderException;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.transition.FadeInTransition;
 import io.github.tomaso2468.rpgonline.transition.FadeOutTransition;

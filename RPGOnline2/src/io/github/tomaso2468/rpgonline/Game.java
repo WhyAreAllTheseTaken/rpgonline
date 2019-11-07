@@ -18,6 +18,7 @@ import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.transition.BlankTransition;

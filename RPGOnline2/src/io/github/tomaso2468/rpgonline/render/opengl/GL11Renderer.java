@@ -26,14 +26,17 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.render.BasicGraphics;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
+import io.github.tomaso2468.rpgonline.render.FeatureException;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.render.Shader;
+import io.github.tomaso2468.rpgonline.render.TextureCreateException;
+import io.github.tomaso2468.rpgonline.render.java2d.AWTResourceException;
 
 public abstract class GL11Renderer implements Renderer {
 	private RenderMode mode = RenderMode.MODE_NONE;
@@ -347,11 +350,11 @@ public abstract class GL11Renderer implements Renderer {
 	}
 
 	@Override
-	public TextureReference createEmptyTexture(int width, int height) throws RenderException {
+	public TextureReference createEmptyTexture(int width, int height) throws TextureCreateException {
 		try {
 			return new SlickTexture(InternalTextureLoader.get().createTexture(width, height, Image.FILTER_NEAREST));
 		} catch (IOException e) {
-			throw new RenderException("Failed to create empty image", e);
+			throw new TextureCreateException("Failed to create empty image", e);
 		}
 	}
 
@@ -455,7 +458,7 @@ public abstract class GL11Renderer implements Renderer {
 		try {
 			uniFont.loadGlyphs();
 		} catch (SlickException e) {
-			throw new RenderException("Error loading font", e);
+			throw new SlickResourceException("Error loading font", e);
 		}
 		
 		return new SlickFont(uniFont);
@@ -468,7 +471,7 @@ public abstract class GL11Renderer implements Renderer {
 		try {
 			awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, url.openStream()).deriveFont(type, size);
 		} catch (FontFormatException | IOException e) {
-			throw new RenderException("Error loading font", e);
+			throw new AWTResourceException("Error loading font", e);
 		}
 		
 		UnicodeFont uniFont = new UnicodeFont(awtFont);
@@ -480,7 +483,7 @@ public abstract class GL11Renderer implements Renderer {
 		try {
 			uniFont.loadGlyphs();
 		} catch (SlickException e) {
-			throw new RenderException("Error loading font", e);
+			throw new SlickResourceException("Error loading font", e);
 		}
 		
 		return new SlickFont(uniFont);
@@ -496,29 +499,17 @@ public abstract class GL11Renderer implements Renderer {
 	
 	@Override
 	public Shader createShader(URL vertex, URL fragment) throws RenderException {
-		try {
-			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
-		} catch (UnsupportedOperationException e) {
-			throw new RenderException("Error creating shader", e);
-		}
+		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
 	
 	@Override
 	public void useShader(Shader shader) throws RenderException {
-		try {
-			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
-		} catch (UnsupportedOperationException e) {
-			throw new RenderException("Error using shader", e);
-		}
+		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
 	
 	@Override
 	public void deleteShader(Shader shader) throws RenderException {
-		try {
-			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
-		} catch (UnsupportedOperationException e) {
-			throw new RenderException("Error deleting shader", e);
-		}
+		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
 	
 	@Override

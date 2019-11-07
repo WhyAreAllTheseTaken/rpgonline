@@ -37,9 +37,9 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A component that can hold other components.

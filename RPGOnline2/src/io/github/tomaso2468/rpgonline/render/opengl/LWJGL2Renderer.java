@@ -13,8 +13,8 @@ import org.newdawn.slick.imageout.ImageOut;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.input.Input;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 public class LWJGL2Renderer extends GL30Renderer {
 	private int width = 640;

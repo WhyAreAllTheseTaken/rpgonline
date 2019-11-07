@@ -33,8 +33,8 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.Color;
 
-import io.github.tomaso2468.rpgonline.RenderException;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A representation of a GUI screen.
