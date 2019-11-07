@@ -495,7 +495,7 @@ public abstract class GL11Renderer implements Renderer {
 	}
 	
 	@Override
-	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException {
+	public Shader createShader(URL vertex, URL fragment) throws RenderException {
 		try {
 			throw new UnsupportedOperationException("Shaders are not supported by OpenGL 1.1");
 		} catch (UnsupportedOperationException e) {

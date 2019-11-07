@@ -93,19 +93,19 @@ public abstract class GL20Renderer extends GL11Renderer {
 	}
 
 	@Override
-	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException {
+	public Shader createShader(URL vertex, URL fragment) throws RenderException {
 		Log.debug("Compiling shader v=" + vertex.toString() + " f=" + fragment.toString());
 		
 		String vertexData, fragmentData;
 		try {
 			vertexData = read(vertex);
 		} catch (IOException e) {
-			throw new IOException("Error reading a vertex shader ", e);
+			throw new RenderException("Error reading a vertex shader ", e);
 		}
 		try {
 			fragmentData = read(fragment);
 		} catch (IOException e) {
-			throw new IOException("Error reading a fragment shader", e);
+			throw new RenderException("Error reading a fragment shader", e);
 		}
 
 		int vertexShader = compileShader(GL20.GL_VERTEX_SHADER, vertexData);

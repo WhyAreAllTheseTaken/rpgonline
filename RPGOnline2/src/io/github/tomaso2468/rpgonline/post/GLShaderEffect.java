@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import java.io.IOException;
 import java.net.URL;
 
 import io.github.tomaso2468.rpgonline.Game;
@@ -89,11 +88,7 @@ public class GLShaderEffect implements PostEffect {
 	public void doPostProcess(Game game, Image buffer, Renderer renderer)
 			throws RenderException {
 		if (shader == null) {
-			try {
-				shader = renderer.createShader(vertex, fragment);
-			} catch (IOException e) {
-				throw new RenderException("Error creating shader.", e);
-			}
+			shader = renderer.createShader(vertex, fragment);
 			renderer.useShader(shader);
 			initShader(shader, game);
 		} else {

@@ -39,7 +39,7 @@ import io.github.tomaso2468.rpgonline.render.Shader;
  * @author Tomaso2468
  *
  */
-public class MDRMap extends GLShaderEffect {
+public class HDRMap extends GLShaderEffect {
 	/**
 	 * The exposure of the MDR tone map.
 	 */
@@ -52,8 +52,8 @@ public class MDRMap extends GLShaderEffect {
 	/**
 	 * Constructs a new MDRMap with an exposure of 1 for a monitor with a gamma of 1.2.
 	 */
-	public MDRMap() {
-		super(MDRMap.class.getResource("/mdr.frg"));
+	public HDRMap() {
+		super(HDRMap.class.getResource("/mdr.frg"));
 	}
 
 	/**
@@ -61,8 +61,8 @@ public class MDRMap extends GLShaderEffect {
 	 * @param exposure The exposure.
 	 * @param gamma The gamma of the monitor (normally 1.2).
 	 */
-	public MDRMap(float exposure, float gamma) {
-		super(MDRMap.class.getResource("/mdr.frg"));
+	public HDRMap(float exposure, float gamma) {
+		super(HDRMap.class.getResource("/mdr.frg"));
 		this.exposure = exposure;
 		this.gamma = gamma;
 	}

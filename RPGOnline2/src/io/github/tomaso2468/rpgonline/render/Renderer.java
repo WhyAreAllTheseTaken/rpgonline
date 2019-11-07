@@ -224,7 +224,7 @@ public interface Renderer {
 	public void setFilter(TextureReference texture, int filterMode);
 	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException;
 	
-	public Shader createShader(URL vertex, URL fragment) throws IOException, RenderException;
+	public Shader createShader(URL vertex, URL fragment) throws RenderException;
 	public void useShader(Shader shader) throws RenderException;
 	public void deleteShader(Shader shader) throws RenderException;
 	

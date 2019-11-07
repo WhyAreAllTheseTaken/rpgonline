@@ -51,7 +51,7 @@ import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.post.MDRMap;
+import io.github.tomaso2468.rpgonline.post.HDRMap;
 import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
@@ -165,7 +165,7 @@ public class WorldEditor extends WorldState {
 				renderer.copyArea(buffer, 0, 0);
 
 				if (mdr == null) {
-					mdr = new MDRMap();
+					mdr = new HDRMap();
 				}
 				mdr.doPostProcess(game, buffer, renderer);
 				Debugger.stop("mdr");

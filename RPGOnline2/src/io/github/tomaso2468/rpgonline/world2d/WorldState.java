@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,7 +61,7 @@ import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.post.MDRMap;
+import io.github.tomaso2468.rpgonline.post.HDRMap;
 import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
 import io.github.tomaso2468.rpgonline.post.PostEffect;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
@@ -200,7 +199,7 @@ public class WorldState implements GameState, BaseScaleState {
 	@Override
 	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
-		
+
 		if (post_enable) {
 			if (buffer == null) {
 				buffer = new Image(renderer, game.getWidth(), game.getHeight());
@@ -238,28 +237,24 @@ public class WorldState implements GameState, BaseScaleState {
 			renderer.setRenderTarget(null);
 			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
-				
+
 				if (mdr == null) {
-					try {
-						mdr = renderer.createShader(MDRMap.class.getResource("/generic.vrt"), MDRMap.class.getResource("/mdr.frg"));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					mdr = renderer.createShader(HDRMap.class.getResource("/generic.vrt"),
+								HDRMap.class.getResource("/hdr.frg"));
 				}
 				renderer.useShader(mdr);
 				mdr.setUniform("exposure", 1f);
 				mdr.setUniform("gamma", 1.2f);
-				
+
 				renderer.drawImage(buffer2, 0, 0);
-				
+
 				renderer.useShader(null);
-				
+
 				Debugger.stop("mdr");
 			} else {
 				renderer.drawImage(buffer2, 0, 0);
 			}
-			
+
 			Debugger.stop("effects");
 		}
 
@@ -440,8 +435,10 @@ public class WorldState implements GameState, BaseScaleState {
 										renderer.startUse(current);
 									}
 									float amount = ((WindTexture) tex).windAmount(x, y, wind);
-									renderer.renderShearedEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx - amount,
-											y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight(), amount, 0);
+									renderer.renderShearedEmbedded(img,
+											x * RPGConfig.getTileSize() + tex.getX() - sx - amount,
+											y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
+											img.getHeight(), amount, 0);
 								}
 							} else {
 								Debugger.start("custom-tile");
@@ -602,15 +599,13 @@ public class WorldState implements GameState, BaseScaleState {
 				Color light = world.getLightColor();
 				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.setColorMode(ColorMode.MULTIPLY);
-				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-						RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
+				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), light);
 				renderer.setColorMode(ColorMode.NORMAL);
 				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			} else {
 				if (lightBuffer == null) {
 					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-				} else if (game.getWidth() != lightBuffer.getWidth()
-						|| game.getHeight() != lightBuffer.getHeight()) {
+				} else if (game.getWidth() != lightBuffer.getWidth() || game.getHeight() != lightBuffer.getHeight()) {
 					lightBuffer.destroy();
 					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
 				}
@@ -622,9 +617,6 @@ public class WorldState implements GameState, BaseScaleState {
 				renderer.setColorMode(ColorMode.NORMAL);
 
 				Color wl = world.getLightColor();
-				if (RPGConfig.isHDR() && post_enable) {
-					wl = wl.darker(0.5f);
-				}
 
 				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.drawQuad(0, 0, renderer.getWidth(), renderer.getHeight(), wl);
@@ -637,7 +629,8 @@ public class WorldState implements GameState, BaseScaleState {
 
 				renderer.scale2D(zoom, zoom);
 				if (shake > 0) {
-					renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
+					renderer.translate2D((float) (FastMath.random() * shake * 5),
+							(float) (FastMath.random() * shake * 5));
 				}
 
 				renderer.setColorMode(ColorMode.ADD);
@@ -645,33 +638,23 @@ public class WorldState implements GameState, BaseScaleState {
 				for (LightSource l : lights) {
 					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
 
-					renderer.renderFiltered(img, (float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
-							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy, img.getWidth(), img.getHeight(), new Color(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(),
-							l.getB() * 50 * l.getBrightness()));
+					renderer.renderFiltered(img,
+							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
+							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy,
+							img.getWidth(), img.getHeight(), new Color(l.getR() * 50 * l.getBrightness(),
+									l.getG() * 50 * l.getBrightness(), l.getB() * 50 * l.getBrightness()));
 				}
 
 				renderer.resetTransform();
 
 				renderer.setRenderTarget(post_enable ? buffer : null);
-				
+
 				renderer.setColorMode(ColorMode.MULTIPLY);
 				renderer.drawImage(lightBuffer, 0, 0);
 				renderer.setColorMode(ColorMode.NORMAL);
 			}
 
 			Debugger.stop("lighting");
-		} else if (post_enable && RPGConfig.isHDR()) {
-			Debugger.start("mdr");
-			Debugger.start("mdr-lightoverride");
-
-			Color light = Color.white;
-			renderer.setColorMode(ColorMode.MULTIPLY);
-			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-					RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
-			renderer.setColorMode(ColorMode.NORMAL);
-
-			Debugger.stop("mdr-lightoverride");
-			Debugger.stop("mdr");
 		}
 
 		renderer.resetTransform();
@@ -685,8 +668,7 @@ public class WorldState implements GameState, BaseScaleState {
 			renderer.scale2D(zoom * base_scale, zoom * base_scale);
 
 			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
+				renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 			}
 
 			for (Particle particle : particles_nolight) {
@@ -727,14 +709,13 @@ public class WorldState implements GameState, BaseScaleState {
 			Debugger.start("hitbox");
 
 			renderer.setMode(RenderMode.MODE_2D_LINES_NOVBO);
-			
+
 			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
 
 			renderer.scale2D(zoom * base_scale, zoom * base_scale);
 
 			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
+				renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 			}
 
 			for (long y = miy; y <= may; y++) {
@@ -758,7 +739,8 @@ public class WorldState implements GameState, BaseScaleState {
 									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
 											RPGConfig.getTileSize()))
 									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
-											y * RPGConfig.getTileSize() - sy)), Color.orange);
+											y * RPGConfig.getTileSize() - sy)),
+									Color.orange);
 						}
 					}
 				}
@@ -896,8 +878,7 @@ public class WorldState implements GameState, BaseScaleState {
 	 * @param delf      The delta value in seconds.
 	 * @throws SlickException If an error occurs.
 	 */
-	public void updateControls(Input in, Game game, float delta)
-			throws RenderException {
+	public void updateControls(Input in, Game game, float delta) throws RenderException {
 		Debugger.start("input");
 
 		double walk_x = 0;
@@ -949,7 +930,7 @@ public class WorldState implements GameState, BaseScaleState {
 		} else {
 			post_enable = true;
 		}
-		
+
 		if (in.isKeyDown(Input.KEY_EQUALS)) {
 			zoom *= 1 + (1 * delta);
 		}
@@ -1220,6 +1201,7 @@ public class WorldState implements GameState, BaseScaleState {
 	@Override
 	public void scale(Game container, float base) {
 		base_scale = base;
-		if (guis != null) guis.init(container.getWidth(), container.getHeight(), base_scale);
+		if (guis != null)
+			guis.init(container.getWidth(), container.getHeight(), base_scale);
 	}
 }

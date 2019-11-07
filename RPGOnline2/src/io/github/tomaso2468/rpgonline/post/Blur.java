@@ -31,8 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.post;
 
-import java.io.IOException;
-
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RenderException;
@@ -83,18 +81,10 @@ public class Blur implements PostEffect {
 		
 		//XXX Two files needed because uniforms wouldn't change.
 		if (shader == null) {
-			try {
-				shader = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
-			} catch (IOException e) {
-				throw new RenderException(e);
-			}
+			shader = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurV.frg"));
 		}
 		if (shader2 == null) {
-			try {
-				shader2 = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
-			} catch (IOException e) {
-				throw new RenderException(e);
-			}
+			shader2 = renderer.createShader(Blur.class.getResource("/generic.vrt"), Blur.class.getResource("/blurH.frg"));
 		}
 		
 		renderer.useShader(shader);
