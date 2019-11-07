@@ -51,5 +51,85 @@ public class GLShader implements Shader {
 	public void setUniform(String name, int v1, int v2, int v3, int v4) {
 		GL20.glUniform4i(GL20.glGetUniformLocation(program, name), v1, v2, v3, v4);
 	}
+
+	@Override
+	public void setUniformArray(String name, int index, float value) {
+		GL20.glUniform1f(GL20.glGetUniformLocation(program, name + index), value);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, float v1, float v2) {
+		GL20.glUniform2f(GL20.glGetUniformLocation(program, name + index), v1, v2);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, float v1, float v2, float v3) {
+		GL20.glUniform3f(GL20.glGetUniformLocation(program, name + index), v1, v2, v3);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, float v1, float v2, float v3, float v4) {
+		GL20.glUniform4f(GL20.glGetUniformLocation(program, name + index), v1, v2, v3, v4);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, int value) {
+		GL20.glUniform1i(GL20.glGetUniformLocation(program, name + index), value);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, int v1, int v2) {
+		GL20.glUniform2i(GL20.glGetUniformLocation(program, name + index), v1, v2);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, int v1, int v2, int v3) {
+		GL20.glUniform3i(GL20.glGetUniformLocation(program, name + index), v1, v2, v3);
+	}
+
+	@Override
+	public void setUniformArray(String name, int index, int v1, int v2, int v3, int v4) {
+		GL20.glUniform4i(GL20.glGetUniformLocation(program, name + index), v1, v2, v3, v4);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, float value) {
+		GL20.glUniform1f(GL20.glGetUniformLocation(program, name + index + "." + field), value);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, float v1, float v2) {
+		GL20.glUniform2f(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, float v1, float v2, float v3) {
+		GL20.glUniform3f(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2, v3);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, float v1, float v2, float v3, float v4) {
+		GL20.glUniform4f(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2, v3, v4);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, int value) {
+		GL20.glUniform1i(GL20.glGetUniformLocation(program, name + index + "." + field), value);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, int v1, int v2) {
+		GL20.glUniform2i(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, int v1, int v2, int v3) {
+		GL20.glUniform3i(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2, v3);
+	}
+
+	@Override
+	public void setUniformArrayStruct(String name, int index, String field, int v1, int v2, int v3, int v4) {
+		GL20.glUniform4i(GL20.glGetUniformLocation(program, name + index + "." + field), v1, v2, v3, v4);
+	}
 	
 }

@@ -164,10 +164,10 @@ public class WorldEditor extends WorldState {
 				Debugger.start("mdr");
 				renderer.copyArea(buffer, 0, 0);
 
-				if (mdr == null) {
-					mdr = new HDRMap();
+				if (hdr == null) {
+					hdr = new HDRMap();
 				}
-				mdr.doPostProcess(game, buffer, renderer);
+				hdr.doPostProcess(game, buffer, renderer);
 				Debugger.stop("mdr");
 			}
 			Debugger.stop("effects");

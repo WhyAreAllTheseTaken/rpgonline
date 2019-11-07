@@ -43,6 +43,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
+import org.newdawn.slick.geom.Vector2f;
 
 import io.github.tomaso2468.rpgonline.BaseScaleState;
 import io.github.tomaso2468.rpgonline.Game;
@@ -190,9 +191,14 @@ public class WorldState implements GameState, BaseScaleState {
 	}
 
 	/**
-	 * The MDR map for this world state.
+	 * The HDR map for this world state.
 	 */
-	public Shader mdr;
+	public Shader hdr;
+	
+	/**
+	 * The lightingShader for this world state.
+	 */
+	public Shader lightingShader;
 
 	/**
 	 * {@inheritDoc}
@@ -239,13 +245,13 @@ public class WorldState implements GameState, BaseScaleState {
 			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
 
-				if (mdr == null) {
-					mdr = renderer.createShader(HDRMap.class.getResource("/generic.vrt"),
+				if (hdr == null) {
+					hdr = renderer.createShader(HDRMap.class.getResource("/generic.vrt"),
 							HDRMap.class.getResource("/hdr.frg"));
 				}
-				renderer.useShader(mdr);
-				mdr.setUniform("exposure", 1f);
-				mdr.setUniform("gamma", 1.2f);
+				renderer.useShader(hdr);
+				hdr.setUniform("exposure", 1f);
+				hdr.setUniform("gamma", 1.2f);
 
 				renderer.drawImage(buffer2, 0, 0);
 
@@ -337,6 +343,8 @@ public class WorldState implements GameState, BaseScaleState {
 		return lights;
 	}
 
+	private Image currentTarget;
+	
 	/**
 	 * A method that renders the world.
 	 */
@@ -344,10 +352,24 @@ public class WorldState implements GameState, BaseScaleState {
 		List<LightSource> lights = computerLights();
 
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
+		
+		if (RPGConfig.getLighting() == LightingEngine.SHADER) {
+			currentTarget = renderer.getCurrentTarget();
+			
+			if (lightBuffer == null) {
+				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != lightBuffer.getWidth() || game.getHeight() != lightBuffer.getHeight()) {
+				lightBuffer.destroy();
+				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
+			}
 
+			renderer.setRenderTarget(lightBuffer);
+			renderer.clear();
+		}
+		
 		Debugger.start("sky");
 		if (sky != null) {
-			sky.render(renderer, game, x, y, 0, world, world.getLightColor());
+			sky.render(renderer, game, x, y, 0, world, Color.white);
 		}
 		Debugger.stop("sky");
 
@@ -663,6 +685,58 @@ public class WorldState implements GameState, BaseScaleState {
 					renderer.drawImage(lightBuffer, 0, 0);
 					renderer.setColorMode(ColorMode.NORMAL);
 				}
+			}
+			if (RPGConfig.getLighting() == LightingEngine.SHADER) {
+				renderer.setRenderTarget(currentTarget);
+				
+				renderer.resetTransform();
+				
+				if (lightingShader == null) {
+					lightingShader = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
+							WorldState.class.getResource("/lighting.frg"));
+				}
+				renderer.useShader(lightingShader);
+
+				lightingShader.setUniform("ambientLight", world.getLightColor());
+				
+				int light_count = lights.size();
+				
+				lightingShader.setUniform("light_count", light_count);
+				
+				Transform trans = Transform.createTranslateTransform(sx, sy)
+						.concatenate(Transform.createScaleTransform(1 / (zoom * base_scale), 1 / (zoom * base_scale)))
+						.concatenate(Transform.createTranslateTransform(-game.getWidth() / 2, -game.getHeight() / 2))
+						.concatenate(Transform.createScaleTransform(game.getWidth(), game.getHeight()))
+						.concatenate(Transform.createScaleTransform(1, -1))
+						.concatenate(Transform.createTranslateTransform(0, 1));
+				
+				for (int i = 0; i < lights.size(); i++) {
+					LightSource light = lights.get(i);
+					
+					float x = (float) light.getLX();
+					float y = (float) light.getLY();
+					
+					Vector2f loc = new Vector2f(x, y);
+					
+					loc = trans.transform(loc);
+					
+					lightingShader.setUniformArrayStruct("lights", i, "location", loc.x, loc.y);
+					lightingShader.setUniformArrayStruct("lights", i, "lightColor", new Color(
+							light.getR() * light.getBrightness(),
+							light.getG() * light.getBrightness(),
+							light.getB() * light.getBrightness()
+					));
+				}
+				
+				renderer.drawImage(lightBuffer, 0, 0);
+
+				renderer.useShader(null);
+				
+				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
+				renderer.setColorMode(ColorMode.MULTIPLY);
+				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), Color.white);
+				renderer.setColorMode(ColorMode.NORMAL);
+				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			}
 
 			Debugger.stop("lighting");
