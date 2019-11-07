@@ -422,7 +422,7 @@ public class WorldEditor extends WorldState {
 
 		renderer.resetTransform();
 
-		if (RPGConfig.isLighting()) {
+		if (RPGConfig.getLighting()) {
 			Debugger.start("lighting");
 
 			if (lights.size() == 0) {

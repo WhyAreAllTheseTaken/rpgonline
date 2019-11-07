@@ -124,12 +124,12 @@ public final class RPGConfig {
 	private static boolean debug = false;
 
 	/**
-	 * Determines if lighting should be used.
+	 * Determines the lighting engine to use.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	private static boolean lighting = false;
+	private static LightingEngine lighting = LightingEngine.NONE;
 
 	/**
 	 * Determines if particles should be used.
@@ -502,27 +502,26 @@ public final class RPGConfig {
 	}
 
 	/**
-	 * Determines if lighting should be used.
+	 * Gets the lighting engine to be used.
 	 * 
-	 * @return {@code true} if lighting is enabled, {@code false} otherwise.
+	 * @return A lighting engine enum.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	public static boolean isLighting() {
+	public static LightingEngine getLighting() {
 		return lighting;
 	}
 
 	/**
-	 * Sets if lighting should be used.
+	 * Sets the lighting engine to be used.
 	 * 
-	 * @param lighting {@code true} if lighting should be enabled, {@code false}
-	 *                 otherwise.
+	 * @param lighting A lighting engine enum.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	public static void setLighting(boolean lighting) {
+	public static void setLighting(LightingEngine lighting) {
 		RPGConfig.lighting = lighting;
 	}
 

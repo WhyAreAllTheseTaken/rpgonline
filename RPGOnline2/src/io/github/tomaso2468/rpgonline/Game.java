@@ -344,7 +344,7 @@ public class Game {
 			y = drawDebugLineLabel(g, "Path Threads", RPGConfig.getPathfindingThreads() + "", y, true);
 			y = drawDebugLineLabel(g, "Tile Size", RPGConfig.getTileSize() + "", y, true);
 			y = drawDebugLineLabel(g, "Hitbox Rendering", RPGConfig.isHitbox() + "", y, true);
-			y = drawDebugLineLabel(g, "Lighting", RPGConfig.isLighting() + "", y, true);
+			y = drawDebugLineLabel(g, "Lighting", RPGConfig.getLighting() + "", y, true);
 			y = drawDebugLineLabel(g, "Particles", RPGConfig.isParticles() + "", y, true);
 			y = drawDebugLineLabel(g, "Wind", RPGConfig.isWind() + "", y, true);
 
