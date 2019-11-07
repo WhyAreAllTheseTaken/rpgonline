@@ -240,7 +240,7 @@ public class WorldState implements GameState, BaseScaleState {
 
 				if (mdr == null) {
 					mdr = renderer.createShader(HDRMap.class.getResource("/generic.vrt"),
-								HDRMap.class.getResource("/hdr.frg"));
+							HDRMap.class.getResource("/hdr.frg"));
 				}
 				renderer.useShader(mdr);
 				mdr.setUniform("exposure", 1f);
@@ -633,16 +633,16 @@ public class WorldState implements GameState, BaseScaleState {
 							(float) (FastMath.random() * shake * 5));
 				}
 
-				renderer.setColorMode(ColorMode.ADD);
+				renderer.setColorMode(ColorMode.SCREEN);
 
 				for (LightSource l : lights) {
 					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
-
-					renderer.renderFiltered(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
+					
+					renderer.startUse(img);
+					renderer.drawQuad((float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
 							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy,
-							img.getWidth(), img.getHeight(), new Color(l.getR() * 50 * l.getBrightness(),
-									l.getG() * 50 * l.getBrightness(), l.getB() * 50 * l.getBrightness()));
+							img.getWidth(), img.getHeight(), Color.white);
+					renderer.endUse(img);
 				}
 
 				renderer.resetTransform();
