@@ -834,16 +834,6 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 			Debugger.stop("hitbox");
 		}
-		
-		renderer.resetTransform();
-		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-		renderer.setColorMode(ColorMode.NORMAL);
-		
-		renderer.drawQuad(-10, -10, 20, 20, Color.white);
-		
-		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-		renderer.setColorMode(ColorMode.NORMAL);
 	}
 
 	/**
