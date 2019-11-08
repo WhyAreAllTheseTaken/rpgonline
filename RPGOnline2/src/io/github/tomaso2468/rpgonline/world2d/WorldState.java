@@ -331,8 +331,6 @@ public class WorldState implements GameState, BaseScaleState {
 
 		return lights;
 	}
-
-	private Image currentTarget;
 	
 	protected void setupTransform(Game game, Renderer renderer) throws RenderException {
 		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
