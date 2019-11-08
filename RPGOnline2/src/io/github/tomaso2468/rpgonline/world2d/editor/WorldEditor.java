@@ -35,10 +35,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Game;
@@ -46,26 +44,20 @@ import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
-import io.github.tomaso2468.rpgonline.net.ServerManager;
-import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
 import io.github.tomaso2468.rpgonline.render.Renderer;
-import io.github.tomaso2468.rpgonline.world2d.LightSource;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.WorldState;
-import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
-import io.github.tomaso2468.rpgonline.world2d.net.Client2D;
 import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 
 /**
  * A class that allows for the editing of game worlds.
+ * 
  * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.world2d.WorldState
  */
@@ -103,13 +95,19 @@ public class WorldEditor extends WorldState {
 	 */
 	private int size = 2;
 	/**
-	 * <p>The brush mode.</p>
+	 * <p>
+	 * The brush mode.
+	 * </p>
 	 * <table>
 	 * <tr>
-	 * <td>0</td><td>Draw Mode</td>
-	 * <td>1</td><td>Random (very light)</td>
-	 * <td>2</td><td>Delete</td>
-	 * <td>3</td><td>Random (light)</td>
+	 * <td>0</td>
+	 * <td>Draw Mode</td>
+	 * <td>1</td>
+	 * <td>Random (very light)</td>
+	 * <td>2</td>
+	 * <td>Delete</td>
+	 * <td>3</td>
+	 * <td>Random (light)</td>
 	 * </tr>
 	 * <table>
 	 */
@@ -193,7 +191,7 @@ public class WorldEditor extends WorldState {
 
 		if (!light) {
 			Debugger.start("gui");
-			
+
 			Graphics g = renderer.getGUIGraphics();
 
 			g.setColor(new Color(0, 0, 0, 128));
@@ -209,8 +207,8 @@ public class WorldEditor extends WorldState {
 				if (tex.isCustom()) {
 					Debugger.start("custom-tile");
 
-					tex.render(renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(),
-							0.1f);
+					tex.render(renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(),
+							32 + tex.getY(), 0.1f);
 
 					Debugger.stop("custom-tile");
 				} else {
@@ -252,367 +250,45 @@ public class WorldEditor extends WorldState {
 
 	List<TileTexture> textures = new ArrayList<>();
 
-	/**
-	 * A method that renders the world.
-	 */
-	public void render2(Game game, Renderer renderer) throws RenderException {
-		List<LightSource> lights = computeLights();
+	@Override
+	protected Image renderTile(Game game, Renderer renderer, float dist_x, float dist_y, World world, float sx,
+			float sy, Tile t, String state, Image current, long x, long y, long z, float wind) throws RenderException {
+		current = super.renderTile(game, renderer, dist_x, dist_y, world, sx, sy, t, state, current, x, y, z, wind);
 
-		World world = ((Client2D) ServerManager.getClient()).getWorld();
-
-		Debugger.start("sky");
-		if (sky != null) {
-			sky.render(renderer, game, x, y, 0, world, world.getLightColor());
-		}
-		Debugger.stop("sky");
-
-		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-
-		renderer.scale2D(zoom * base_scale, zoom * base_scale);
-
-		if (shake > 0) {
-			renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
-		}
-		float sx = (float) (x * RPGConfig.getTileSize());
-		float sy = (float) (y * RPGConfig.getTileSize());
-
-		long dist_x = (long) (game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
-		long dist_y = (long) (game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
-
-		Debugger.start("entity-compute");
-		List<Entity> entities1 = ((Client2D) ServerManager.getClient()).getWorld().getEntities();
-		List<Entity> entities = new ArrayList<Entity>();
-
-		Rectangle screen_bounds = new Rectangle((float) (x - dist_x), (float) (y - dist_y), (float) (dist_x * 2),
-				(float) (dist_y * 2));
-
-		synchronized (entities1) {
-			for (Entity e : entities1) {
-				if (screen_bounds.contains((float) e.getX(), (float) e.getY())) {
-					entities.add(e);
-				}
-			}
-		}
-		Debugger.stop("entity-compute");
-
-		List<Particle> particles_light = null;
-		List<Particle> particles_nolight = null;
-
-		if (RPGConfig.isParticles()) {
-			Debugger.start("particle-compute");
-			particles_light = new ArrayList<Particle>(particles.size());
-			particles_nolight = new ArrayList<Particle>(32);
-
-			for (int i = 0; i < particles.size(); i++) {
-				Particle p = particles.get(i);
-
-				if (screen_bounds.contains(p.getX(), p.getY())) {
-					if (p.isLightAffected()) {
-						particles_light.add(p);
-					} else {
-						particles_nolight.add(p);
-					}
-				}
-			}
-			Debugger.stop("particle-compute");
-		}
-
-		Debugger.start("world");
-		long mix = (long) (x - dist_x);
-		long max = (long) (x + dist_x);
-		long miy = (long) (y - dist_y);
-		long may = (long) (y + dist_y);
-		long miz = world.getMinZ();
-		long maz = world.getMaxZ();
-
-		float wind = ((Client2D) ServerManager.getClient()).getWind();
-
-		Image current = null;
-
-		Rectangle box = new Rectangle(Math.round(x) - size / 2, Math.round(y) - size / 2, size, size);
+		Rectangle box = new Rectangle(Math.round(this.x) - size / 2, Math.round(this.y) - size / 2, size, size);
 		
-		boolean hitbox = RPGConfig.isHitbox();
-		for (long z = maz; z >= FastMath.min(-1, miz); z--) {
-			for (long y = miy; y <= may; y++) {
-				for (long x = mix; x <= max; x++) {
-					Tile t = world.getTile(x, y, z);
-					String state = world.getTileState(x, y, z);
-					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
+		if (!light && box.contains(x, y) && z == this.z) {
+			if (current != null)
+				renderer.endUse(current);
 
-					for (TileTexture tex : textures) {
-						if (tex.isCustom()) {
-							Debugger.start("custom-tile");
-							if (current != null)
-								renderer.endUse(current);
-
-							tex.render(renderer, x, y, z, world, state, t,
-									x * RPGConfig.getTileSize() + tex.getX() - sx,
-									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
-
-							if (current != null)
-								renderer.startUse(current);
-							Debugger.stop("custom-tile");
-						} else {
-							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-
-							if (img != null) {
-								if (TextureMap.getSheet(img) != current) {
-									if (current != null)
-										renderer.endUse(current);
-									current = TextureMap.getSheet(img);
-									renderer.startUse(current);
-								}
-								renderer.renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
-										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
-							}
-						}
-					}
-
-					textures.clear();
-					
-					if (!light && box.contains(x, y) && z == this.z) {
-						if (current != null)
-							renderer.endUse(current);
-
-						Color c = Color.magenta;
-						switch (brush_mode) {
-						case 0:
-							c = new Color(0, 255, 255, 128);
-							break;
-						case 1:
-							c = new Color(255, 255, 0, 128);
-							break;
-						case 2:
-							c = new Color(255, 0, 0, 128);
-							break;
-						case 3:
-							c = new Color(255, 128, 0, 128);
-							break;
-						}
-
-						renderer.drawQuad(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
-								RPGConfig.getTileSize(), RPGConfig.getTileSize(), c);
-
-						if (current != null)
-							renderer.startUse(current);
-					}
-				}
-			}
-		}
-
-		Debugger.stop("world");
-
-		if (RPGConfig.isParticles()) {
-			Debugger.start("particles");
-			Debugger.start("particle-light");
-			for (Particle particle : particles_light) {
-				if (particle.isCustom()) {
-					if (current != null)
-						renderer.endUse(current);
-					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
-							particle.getY() * RPGConfig.getTileSize() - sy);
-					if (current != null)
-						renderer.startUse(current);
-				} else {
-					Image img = TextureMap.getTexture(particle.getTexture());
-
-					if (img != null) {
-						if (TextureMap.getSheet(img) != current) {
-							if (current != null)
-								renderer.endUse(current);
-							current = TextureMap.getSheet(img);
-							renderer.startUse(current);
-						}
-						new Color(1, 1, 1, particle.getAlpha()).bind();
-						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
-								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
-					}
-				}
+			Color c = Color.magenta;
+			switch (brush_mode) {
+			case 0:
+				c = new Color(0, 255, 255, 128);
+				break;
+			case 1:
+				c = new Color(255, 255, 0, 128);
+				break;
+			case 2:
+				c = new Color(255, 0, 0, 128);
+				break;
+			case 3:
+				c = new Color(255, 128, 0, 128);
+				break;
 			}
 
-			Debugger.stop("particle-light");
-			Debugger.stop("particles");
-		}
-
-		if (current != null)
-			renderer.endUse(current);
-		current = null;
-
-		renderer.resetTransform();
-
-		if (RPGConfig.getLighting()) {
-			Debugger.start("lighting");
-
-			if (lights.size() == 0) {
-				Color light = world.getLightColor();
-				renderer.setColorMode(ColorMode.MULTIPLY);
-				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-						RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
-				renderer.setColorMode(ColorMode.NORMAL);
-			} else {
-				if (lightBuffer == null) {
-					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-				} else if (game.getWidth() != lightBuffer.getWidth()
-						|| game.getHeight() != lightBuffer.getHeight()) {
-					lightBuffer.destroy();
-					lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-				}
-
-				renderer.setRenderTarget(lightBuffer);
-
-				renderer.clear();
-
-				renderer.setColorMode(ColorMode.NORMAL);
-
-				Color wl = world.getLightColor();
-				if (RPGConfig.isHDR() && post_enable) {
-					wl = wl.darker(0.5f);
-				}
-
-				renderer.drawQuad(0, 0, renderer.getWidth(), renderer.getHeight(), wl);
-
-				renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-
-				renderer.scale2D(base_scale, base_scale);
-				renderer.pushTransform();
-
-				renderer.scale2D(zoom, zoom);
-				if (shake > 0) {
-					renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
-				}
-
-				renderer.setColorMode(ColorMode.ADD);
-
-				for (LightSource l : lights) {
-					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
-
-					renderer.renderFiltered(img, (float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
-							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy, img.getWidth(), img.getHeight(), new Color(l.getR() * 50 * l.getBrightness(), l.getG() * 50 * l.getBrightness(),
-							l.getB() * 50 * l.getBrightness()));
-				}
-
-				renderer.resetTransform();
-
-				renderer.setRenderTarget(null);
-				
-				renderer.setColorMode(ColorMode.MULTIPLY);
-				renderer.drawImage(lightBuffer, 0, 0);
-				renderer.setColorMode(ColorMode.NORMAL);
-			}
-
-			Debugger.stop("lighting");
-		} else if (post_enable && RPGConfig.isHDR()) {
-			Debugger.start("mdr");
-			Debugger.start("mdr-lightoverride");
-
-			Color light = Color.white;
-			renderer.setColorMode(ColorMode.MULTIPLY);
-			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(),
-					RPGConfig.isHDR() && post_enable ? light.darker(0.5f) : light);
-			renderer.setColorMode(ColorMode.NORMAL);
-
-			Debugger.stop("mdr-lightoverride");
-			Debugger.stop("mdr");
-		}
-
-		renderer.resetTransform();
-
-		if (RPGConfig.isParticles()) {
-			Debugger.start("particles");
-			Debugger.start("particles-nolight");
-
-			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-
-			renderer.scale2D(zoom * base_scale, zoom * base_scale);
-
-			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
-			}
-
-			for (Particle particle : particles_nolight) {
-				if (particle.isCustom()) {
-					if (current != null)
-						renderer.endUse(current);
-					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
-							particle.getY() * RPGConfig.getTileSize() - sy);
-					if (current != null)
-						renderer.startUse(current);
-				} else {
-					Image img = TextureMap.getTexture(particle.getTexture());
-
-					if (img != null) {
-						if (TextureMap.getSheet(img) != current) {
-							if (current != null)
-								renderer.endUse(current);
-							current = TextureMap.getSheet(img);
-							renderer.startUse(current);
-						}
-						new Color(1, 1, 1, particle.getAlpha()).bind();
-						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx,
-								particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
-					}
-				}
-			}
+			renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
+			renderer.drawQuad(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
+					RPGConfig.getTileSize(), RPGConfig.getTileSize(), c);
+			renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 
 			if (current != null)
 				renderer.startUse(current);
-
-			renderer.resetTransform();
-
-			Debugger.stop("particles-nolight");
-			Debugger.stop("particles");
 		}
 
-		if (hitbox) {
-			Debugger.start("hitbox");
-
-			renderer.setMode(RenderMode.MODE_2D_LINES_NOVBO);
-			
-			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-
-			renderer.scale2D(zoom * base_scale, zoom * base_scale);
-
-			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
-			}
-
-			for (long y = miy; y <= may; y++) {
-				for (long x = mix; x <= max; x++) {
-					Tile t = world.getTile(x, y, -1);
-					String state = world.getTileState(x, y, -1);
-
-					if (hitbox && t.isSolid(state)) {
-						boolean collision = false;
-						for (Entity e : entities) {
-							if (((x - e.getX()) * (x - e.getX()) + (y - e.getY()) * (y - e.getY())) <= (4 * 4)) {
-								if (e.isSolid()) {
-									collision = true;
-									break;
-								}
-
-							}
-						}
-						if (collision) {
-							renderer.draw(t.getHitBox()
-									.transform(Transform.createScaleTransform(RPGConfig.getTileSize(),
-											RPGConfig.getTileSize()))
-									.transform(Transform.createTranslateTransform(x * RPGConfig.getTileSize() - sx,
-											y * RPGConfig.getTileSize() - sy)), Color.orange);
-						}
-					}
-				}
-			}
-
-			for (Entity e : entities) {
-				renderer.draw(e.getHitBox()
-						.transform(Transform.createScaleTransform(RPGConfig.getTileSize(), RPGConfig.getTileSize()))
-						.transform(Transform.createTranslateTransform(-sx, -sy)), Color.red);
-			}
-			Debugger.stop("hitbox");
-		}
+		return current;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */

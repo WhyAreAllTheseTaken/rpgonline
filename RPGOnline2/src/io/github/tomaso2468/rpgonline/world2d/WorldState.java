@@ -394,6 +394,62 @@ public class WorldState implements GameState, BaseScaleState {
 		return new List[] {particles_light, particles_nolight};
 	}
 	
+	protected Image renderTile(Game game, Renderer renderer, float dist_x, float dist_y, World world, float sx, float sy, Tile t, String state, Image current, long x, long y, long z, float wind) throws RenderException {
+		expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
+
+		for (TileTexture tex : textures) {
+			if (tex.isCustom()) {
+				// Optimise wind textures to use embedded drawing.
+				if (tex instanceof WindTexture) {
+					Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
+
+					if (img != null) {
+						if (TextureMap.getSheet(img) != current) {
+							if (current != null)
+								renderer.endUse(current);
+							current = TextureMap.getSheet(img);
+							renderer.startUse(current);
+						}
+						float amount = ((WindTexture) tex).windAmount(x, y, wind);
+						renderer.renderShearedEmbedded(img,
+								x * RPGConfig.getTileSize() + tex.getX() - sx - amount,
+								y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
+								img.getHeight(), amount, 0);
+					}
+				} else {
+					Debugger.start("custom-tile");
+					if (current != null)
+						renderer.endUse(current);
+
+					tex.render(renderer, x, y, z, world, state, t,
+							x * RPGConfig.getTileSize() + tex.getX() - sx,
+							y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
+
+					if (current != null)
+						renderer.startUse(current);
+					Debugger.stop("custom-tile");
+				}
+			} else {
+				Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
+
+				if (img != null) {
+					if (TextureMap.getSheet(img) != current) {
+						if (current != null)
+							renderer.endUse(current);
+						current = TextureMap.getSheet(img);
+						renderer.startUse(current);
+					}
+					renderer.renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
+							y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
+				}
+			}
+		}
+		
+		textures.clear();
+		
+		return current;
+	}
+	
 	protected Image renderWorld(Game game, Renderer renderer, float dist_x, float dist_y, World world, float sx, float sy, List<Entity> entities) throws RenderException {
 		Debugger.start("world");
 		long mix = (long) (x - dist_x);
@@ -412,57 +468,8 @@ public class WorldState implements GameState, BaseScaleState {
 				for (long x = mix; x <= max; x++) {
 					Tile t = world.getTile(x, y, z);
 					String state = world.getTileState(x, y, z);
-					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
-
-					for (TileTexture tex : textures) {
-						if (tex.isCustom()) {
-							// Optimise wind textures to use embedded drawing.
-							if (tex instanceof WindTexture) {
-								Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-
-								if (img != null) {
-									if (TextureMap.getSheet(img) != current) {
-										if (current != null)
-											renderer.endUse(current);
-										current = TextureMap.getSheet(img);
-										renderer.startUse(current);
-									}
-									float amount = ((WindTexture) tex).windAmount(x, y, wind);
-									renderer.renderShearedEmbedded(img,
-											x * RPGConfig.getTileSize() + tex.getX() - sx - amount,
-											y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(),
-											img.getHeight(), amount, 0);
-								}
-							} else {
-								Debugger.start("custom-tile");
-								if (current != null)
-									renderer.endUse(current);
-
-								tex.render(renderer, x, y, z, world, state, t,
-										x * RPGConfig.getTileSize() + tex.getX() - sx,
-										y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
-
-								if (current != null)
-									renderer.startUse(current);
-								Debugger.stop("custom-tile");
-							}
-						} else {
-							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-
-							if (img != null) {
-								if (TextureMap.getSheet(img) != current) {
-									if (current != null)
-										renderer.endUse(current);
-									current = TextureMap.getSheet(img);
-									renderer.startUse(current);
-								}
-								renderer.renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
-										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
-							}
-						}
-					}
-
-					textures.clear();
+					
+					current = renderTile(game, renderer, dist_x, dist_y, world, sx, sy, t, state, current, x, y, z, wind);
 
 					current = renderEntitiesAtTile(game, renderer, dist_x, dist_y, world, sx, sy, entities, current, wind, x, y, z);
 				}
