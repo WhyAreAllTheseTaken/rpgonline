@@ -46,6 +46,7 @@ import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
@@ -132,42 +133,61 @@ public class WorldEditor extends WorldState {
 	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
 
-		Debugger.start("game-render");
-		render2(game, renderer);
-		Debugger.stop("game-render");
-
-		renderer.resetTransform();
-
-		if (post_enable && light) {
-			Debugger.start("effects");
+		if (post_enable) {
 			if (buffer == null) {
 				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
 				buffer.destroy();
 				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			}
+			renderer.setRenderTarget(buffer);
+			renderer.clear();
+		}
 
-			if (post != null) {
-				renderer.copyArea(buffer, 0, 0);
+		Debugger.start("game-render");
+		render2(game, renderer);
+		Debugger.stop("game-render");
 
-				if (!(post instanceof MultiEffect)) {
-					Debugger.start("post-" + post.getClass());
-				}
-				post.doPostProcess(game, buffer, renderer);
-				if (!(post instanceof MultiEffect)) {
-					Debugger.stop("post-" + post.getClass());
-				}
+		renderer.resetTransform();
+
+		if (post_enable) {
+			Debugger.start("effects");
+			if (buffer2 == null) {
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
+				buffer2.destroy();
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 			}
+			renderer.setRenderTarget(buffer2);
+			renderer.clear();
+			if (post != null) {
+				Debugger.start("post-" + post.getClass());
+				post.postProcess(buffer, buffer2, renderer);
+				Debugger.stop("post-" + post.getClass());
+			} else {
+				renderer.drawImage(buffer, 0, 0);
+			}
+			renderer.setRenderTarget(null);
 			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
-				renderer.copyArea(buffer, 0, 0);
 
 				if (hdr == null) {
-					hdr = new HDRMap();
+					hdr = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
+							WorldState.class.getResource("/hdr.frg"));
 				}
-				hdr.doPostProcess(game, buffer, renderer);
+				renderer.useShader(hdr);
+				hdr.setUniform("exposure", 1f);
+				hdr.setUniform("gamma", 1.2f);
+
+				renderer.drawImage(buffer2, 0, 0);
+
+				renderer.useShader(null);
+
 				Debugger.stop("mdr");
+			} else {
+				renderer.drawImage(buffer2, 0, 0);
 			}
+
 			Debugger.stop("effects");
 		}
 
@@ -236,7 +256,7 @@ public class WorldEditor extends WorldState {
 	 * A method that renders the world.
 	 */
 	public void render2(Game game, Renderer renderer) throws RenderException {
-		List<LightSource> lights = computerLights();
+		List<LightSource> lights = computeLights();
 
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
 
