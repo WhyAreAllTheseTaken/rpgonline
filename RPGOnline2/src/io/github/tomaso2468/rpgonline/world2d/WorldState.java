@@ -43,8 +43,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.BaseScaleState;
 import io.github.tomaso2468.rpgonline.Game;
