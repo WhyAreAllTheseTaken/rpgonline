@@ -48,7 +48,6 @@ import io.github.tomaso2468.rpgonline.BaseScaleState;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.GameState;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.LightingEngine;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.UpdateHook;
@@ -62,7 +61,6 @@ import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
 import io.github.tomaso2468.rpgonline.post.PostProcessing;
-import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
@@ -290,49 +288,46 @@ public class WorldState implements GameState, BaseScaleState {
 	 * @return A list of lights or null if lighting is off.
 	 */
 	public List<LightSource> computeLights() {
-		List<LightSource> lights = null;
-		if (RPGConfig.getLighting() != LightingEngine.NONE) {
-			Debugger.start("light-compute");
+		Debugger.start("light-compute");
 
-			lights = ((Client2D) ServerManager.getClient()).getWorld().getLights();
+		List<LightSource> lights = ((Client2D) ServerManager.getClient()).getWorld().getLights();
 
-			if (lights.size() != 0) {
-				lights.sort(new Comparator<LightSource>() {
-					@Override
-					public int compare(LightSource o1, LightSource o2) {
-						double dist1 = FastMath.hypot(x - o1.getLX(), y - o1.getLY());
-						double dist2 = FastMath.hypot(x - o2.getLX(), y - o2.getLY());
+		if (lights.size() != 0) {
+			lights.sort(new Comparator<LightSource>() {
+				@Override
+				public int compare(LightSource o1, LightSource o2) {
+					double dist1 = FastMath.hypot(x - o1.getLX(), y - o1.getLY());
+					double dist2 = FastMath.hypot(x - o2.getLX(), y - o2.getLY());
 
-						if (dist1 < dist2) {
-							return -1;
-						}
-
-						if (dist1 > dist2) {
-							return 1;
-						}
-
-						return 0;
+					if (dist1 < dist2) {
+						return -1;
 					}
-				});
 
-				for (int i = 0; i < lights.size(); i++) {
-					if (i < lights.size()) {
-						LightSource l = lights.get(i);
-						double dist = FastMath.hypot(x - l.getLX(), y - l.getLY());
-						if (dist > 40 * l.getBrightness()) {
-							lights.remove(l);
-							i -= 1;
-						}
+					if (dist1 > dist2) {
+						return 1;
 					}
+
+					return 0;
 				}
+			});
 
-				while (lights.size() > 32) {
-					lights.remove(lights.size() - 1);
+			for (int i = 0; i < lights.size(); i++) {
+				if (i < lights.size()) {
+					LightSource l = lights.get(i);
+					double dist = FastMath.hypot(x - l.getLX(), y - l.getLY());
+					if (dist > 40 * l.getBrightness()) {
+						lights.remove(l);
+						i -= 1;
+					}
 				}
 			}
 
-			Debugger.stop("light-compute");
+			while (lights.size() > 32) {
+				lights.remove(lights.size() - 1);
+			}
 		}
+
+		Debugger.stop("light-compute");
 
 		return lights;
 	}
@@ -349,21 +344,9 @@ public class WorldState implements GameState, BaseScaleState {
 		}
 	}
 	
-	protected void preRenderLighting(Game game, Renderer renderer) throws RenderException {
+	protected void preRenderLighting(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy) throws RenderException {
 		Debugger.start("lighting");
-		if (RPGConfig.getLighting() == LightingEngine.SHADER) {
-			currentTarget = renderer.getCurrentTarget();
-			
-			if (lightBuffer == null) {
-				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-			} else if (game.getWidth() != lightBuffer.getWidth() || game.getHeight() != lightBuffer.getHeight()) {
-				lightBuffer.destroy();
-				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-			}
-
-			renderer.setRenderTarget(lightBuffer);
-			renderer.clear();
-		}
+		RPGConfig.getLighting().preRender(game, renderer, lights, world, sx, sy, zoom, base_scale, shake);
 		Debugger.stop("lighting");
 	}
 	
@@ -591,143 +574,10 @@ public class WorldState implements GameState, BaseScaleState {
 		return current;
 	}
 	
-	protected void lightingOverlay(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy) throws RenderException {
-		Color light = world.getLightColor();
-		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-		renderer.setColorMode(ColorMode.MULTIPLY);
-		renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), light);
-		renderer.setColorMode(ColorMode.NORMAL);
-		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-	}
-	
-	protected void lightingBuffer(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy) throws RenderException {
-		if (lights.size() == 0) {
-			Color light = world.getLightColor();
-			renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-			renderer.setColorMode(ColorMode.MULTIPLY);
-			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), light);
-			renderer.setColorMode(ColorMode.NORMAL);
-			renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-		} else {
-			if (lightBuffer == null) {
-				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-			} else if (game.getWidth() != lightBuffer.getWidth() || game.getHeight() != lightBuffer.getHeight()) {
-				lightBuffer.destroy();
-				lightBuffer = new Image(renderer, game.getWidth(), game.getHeight());
-			}
-
-			renderer.setRenderTarget(lightBuffer);
-
-			renderer.clear();
-
-			renderer.setColorMode(ColorMode.NORMAL);
-
-			Color wl = world.getLightColor();
-
-			renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-			renderer.drawQuad(0, 0, renderer.getWidth(), renderer.getHeight(), wl);
-			renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-
-			renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
-
-			renderer.scale2D(base_scale, base_scale);
-			renderer.pushTransform();
-
-			renderer.scale2D(zoom, zoom);
-			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
-			}
-
-			renderer.setColorMode(ColorMode.SCREEN);
-
-			for (LightSource l : lights) {
-				Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
-				
-				renderer.startUse(img);
-				renderer.drawQuad((float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,
-						(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sy,
-						img.getWidth(), img.getHeight(), Color.white);
-				renderer.endUse(img);
-			}
-
-			renderer.resetTransform();
-
-			renderer.setRenderTarget(post_enable ? buffer : null);
-
-			renderer.setColorMode(ColorMode.MULTIPLY);
-			renderer.drawImage(lightBuffer, 0, 0);
-			renderer.setColorMode(ColorMode.NORMAL);
-		}
-	}
-	
-	protected void lightingShader(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy) throws RenderException {
-		renderer.setRenderTarget(currentTarget);
-		
-		renderer.resetTransform();
-		
-		if (lightingShader == null) {
-			lightingShader = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
-					WorldState.class.getResource("/lighting.frg"));
-		}
-		renderer.useShader(lightingShader);
-
-		lightingShader.setUniform("ambientLight", world.getLightColor());
-		
-		int light_count = lights.size();
-		
-		lightingShader.setUniform("light_count", light_count);
-
-		float dist_x_f = game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / lightBuffer.getTextureWidth();
-		float dist_y_f = game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / lightBuffer.getTextureHeight();
-		
-		for (int i = 0; i < lights.size(); i++) {
-			LightSource light = lights.get(i);
-			
-			float x = (float) light.getLX() - sx / RPGConfig.getTileSize() + 0.5f;
-			float y = (float) light.getLY() - sy / RPGConfig.getTileSize() + 0.5f;
-			
-			lightingShader.setUniformArrayStruct("lights", 0, "location", lightBuffer.getTextureWidth() / 2 + x / dist_x_f, -lightBuffer.getTextureHeight() / 2 + y / dist_y_f);
-//			lightingShader.setUniformArrayStruct("lights", 0, "lightColor", light.getColor());
-			lightingShader.setUniformArrayStruct("lights", 0, "lightColor", new Color(1f, 1f, 1f));
-		}
-
-		lightingShader.setUniform("worldScale", dist_x_f, dist_y_f);
-		
-		renderer.drawImage(lightBuffer, 0, 0);
-
-		renderer.useShader(null);
-		
-		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-		renderer.setColorMode(ColorMode.MULTIPLY);
-//		renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), Color.white);
-		renderer.setColorMode(ColorMode.NORMAL);
-		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-	}
-	
-	@SuppressWarnings("deprecation")
 	protected void doLighting(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy) throws RenderException {
-		if (RPGConfig.getLighting() != LightingEngine.NONE) {
-			Debugger.start("lighting");
-
-			if (RPGConfig.getLighting() == LightingEngine.OVERLAY) {
-				lightingOverlay(game, renderer, lights, world, sx, sy);
-			}
-			if (RPGConfig.getLighting() == LightingEngine.BUFFER) {
-				lightingBuffer(game, renderer, lights, world, sx, sy);
-			}
-			if (RPGConfig.getLighting() == LightingEngine.SHADER) {
-				lightingShader(game, renderer, lights, world, sx, sy);
-			}
-
-			Debugger.stop("lighting");
-		} else {
-			renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
-			renderer.setColorMode(ColorMode.MULTIPLY);
-//			renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), Color.white);
-			renderer.setColorMode(ColorMode.NORMAL);
-			renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
-		}
+		Debugger.start("lighting");
+		RPGConfig.getLighting().postRender(game, renderer, lights, world, sx, sy, zoom, base_scale, shake);
+		Debugger.stop("lighting");
 	}
 	
 	protected void renderHitboxes(Game game, Renderer renderer, World world, List<Entity> entities, long dist_x, long dist_y, float sx, float sy) {
@@ -743,7 +593,6 @@ public class WorldState implements GameState, BaseScaleState {
 			if (shake > 0) {
 				renderer.translate2D((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
 			}
-
 			
 			long mix = (long) (x - dist_x);
 			long max = (long) (x + dist_x);
@@ -793,8 +642,10 @@ public class WorldState implements GameState, BaseScaleState {
 		List<LightSource> lights = computeLights();
 
 		World world = ((Client2D) ServerManager.getClient()).getWorld();
+		float sx = (float) (x * RPGConfig.getTileSize());
+		float sy = (float) (y * RPGConfig.getTileSize());
 		
-		preRenderLighting(game, renderer);
+		preRenderLighting(game, renderer, lights, world, sx, sy);
 		
 		Debugger.start("sky");
 		if (sky != null) {
@@ -803,9 +654,6 @@ public class WorldState implements GameState, BaseScaleState {
 		Debugger.stop("sky");
 
 		setupTransform(game, renderer);
-		
-		float sx = (float) (x * RPGConfig.getTileSize());
-		float sy = (float) (y * RPGConfig.getTileSize());
 		
 		long dist_x = (long) (game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
 		long dist_y = (long) (game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;

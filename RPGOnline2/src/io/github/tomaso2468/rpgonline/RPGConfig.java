@@ -37,6 +37,8 @@ import javax.annotation.Nonnull;
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
 import io.github.tomaso2468.rpgonline.input.MapKeyProvider;
 import io.github.tomaso2468.rpgonline.lang.LangProvider;
+import io.github.tomaso2468.rpgonline.lighting.LightingDisabled;
+import io.github.tomaso2468.rpgonline.lighting.LightingEngine;
 
 /**
  * A class for storing configuration details about the game engine.
@@ -129,7 +131,7 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	private static LightingEngine lighting = LightingEngine.NONE;
+	private static LightingEngine lighting = new LightingDisabled();
 
 	/**
 	 * Determines if particles should be used.

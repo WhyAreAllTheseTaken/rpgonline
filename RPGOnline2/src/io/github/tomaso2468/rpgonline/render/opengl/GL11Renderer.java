@@ -126,15 +126,7 @@ public abstract class GL11Renderer implements Renderer {
 	public void renderSheared(Image img, float x, float y, float w, float h, float hshear, float vshear) {
 		startUse(img);
 
-		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
-		GL11.glVertex3f(x, y, 0);
-		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
-		GL11.glVertex3f(x, y + h, 0);
-		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(),
-				img.getTextureOffsetY() + img.getTextureHeight());
-		GL11.glVertex3f(x + w + hshear, y + h + vshear, 0);
-		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
-		GL11.glVertex3f(x + w, y, 0);
+		renderShearedEmbedded(img, x, y, w, h, hshear, vshear);
 
 		endUse(img);
 	}
