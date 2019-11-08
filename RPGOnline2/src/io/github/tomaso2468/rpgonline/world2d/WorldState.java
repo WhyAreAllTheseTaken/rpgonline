@@ -44,6 +44,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.BaseScaleState;
 import io.github.tomaso2468.rpgonline.Game;
@@ -702,31 +703,22 @@ public class WorldState implements GameState, BaseScaleState {
 				int light_count = lights.size();
 				
 				lightingShader.setUniform("light_count", light_count);
-				
-				Transform trans = Transform.createTranslateTransform(sx, sy)
-						.concatenate(Transform.createScaleTransform(1 / (zoom * base_scale), 1 / (zoom * base_scale)))
-						.concatenate(Transform.createTranslateTransform(-game.getWidth() / 2, -game.getHeight() / 2))
-						.concatenate(Transform.createScaleTransform(game.getWidth(), game.getHeight()))
-						.concatenate(Transform.createScaleTransform(1, -1))
-						.concatenate(Transform.createTranslateTransform(0, 1));
+
+				float dist_x_f = game.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / lightBuffer.getTextureWidth();
+				float dist_y_f = game.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / lightBuffer.getTextureHeight();
 				
 				for (int i = 0; i < lights.size(); i++) {
 					LightSource light = lights.get(i);
 					
-					float x = (float) light.getLX();
-					float y = (float) light.getLY();
+					float x = (float) light.getLX() - sx / RPGConfig.getTileSize() + 0.5f;
+					float y = (float) light.getLY() - sy / RPGConfig.getTileSize() + 0.5f;
 					
-					Vector2f loc = new Vector2f(x, y);
-					
-					loc = trans.transform(loc);
-					
-					lightingShader.setUniformArrayStruct("lights", i, "location", loc.x, loc.y);
-					lightingShader.setUniformArrayStruct("lights", i, "lightColor", new Color(
-							light.getR() * light.getBrightness(),
-							light.getG() * light.getBrightness(),
-							light.getB() * light.getBrightness()
-					));
+					lightingShader.setUniformArrayStruct("lights", 0, "location", lightBuffer.getTextureWidth() / 2 + x / dist_x_f, -lightBuffer.getTextureHeight() / 2 + y / dist_y_f);
+//					lightingShader.setUniformArrayStruct("lights", 0, "lightColor", light.getColor());
+					lightingShader.setUniformArrayStruct("lights", 0, "lightColor", new Color(1f, 1f, 1f));
 				}
+	
+				lightingShader.setUniform("worldScale", dist_x_f, dist_y_f);
 				
 				renderer.drawImage(lightBuffer, 0, 0);
 
@@ -734,7 +726,7 @@ public class WorldState implements GameState, BaseScaleState {
 				
 				renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 				renderer.setColorMode(ColorMode.MULTIPLY);
-				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), Color.white);
+//				renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), Color.white);
 				renderer.setColorMode(ColorMode.NORMAL);
 				renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 			}
@@ -844,6 +836,16 @@ public class WorldState implements GameState, BaseScaleState {
 			}
 			Debugger.stop("hitbox");
 		}
+		
+		renderer.resetTransform();
+		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
+		renderer.setColorMode(ColorMode.NORMAL);
+		
+		renderer.drawQuad(-10, -10, 20, 20, Color.white);
+		
+		renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+		renderer.setColorMode(ColorMode.NORMAL);
 	}
 
 	/**

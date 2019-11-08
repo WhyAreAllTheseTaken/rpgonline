@@ -2,6 +2,8 @@ uniform sampler2D texel;
 
 uniform vec4 ambientLight;
 
+uniform vec2 worldScale;
+
 struct Light {
 	vec2 location;
 	vec4 lightColor;
@@ -13,12 +15,19 @@ uniform int light_count;
 
 uniform Light lights[light_count_max];
 
+vec2 scale(vec2 p) {
+	return p * worldScale / 5;
+}
+
 float sqr_dist(vec2 p1, vec2 p2) {
 	return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
 }
 
 vec4 computeLight(Light light, vec2 loc) {
-	return light.lightColor / sqr_dist(loc, light.location);
+	float dist = sqr_dist(scale(loc), scale(light.location));
+	dist /= 2;
+	dist = max(dist, 1 / length(light.lightColor));
+	return light.lightColor * 1.1 / dist / (1 + length(ambientLight) * 2);
 }
 
 vec4 computeLights(vec2 loc) {
@@ -40,7 +49,7 @@ void main()
 	vec2 loc = gl_TexCoord[0].st;
   	vec4 objectColor = texture2D(texel, loc);
 	
-    vec3 result = (ambientLight * 2 + computeLights(loc)) * objectColor;
+    vec3 result = (ambientLight / 1.1 + computeLights(loc)) * objectColor;
     
-    gl_FragColor = vec4(result, 1.0);
+    gl_FragColor = vec4(result, 1);
 }  

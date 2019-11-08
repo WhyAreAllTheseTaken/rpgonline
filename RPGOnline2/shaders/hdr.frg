@@ -13,7 +13,7 @@ void main() {
   	
   	//vec3 mapped = hdrColor / (hdrColor + vec3(0.25));
   	
-  	mapped = pow(mapped, vec3(1.1)) * 1.75;
+  	mapped = mapped * 1.9;
   	
   	mapped = pow(mapped, vec3(1.0 / gamma));
   	
