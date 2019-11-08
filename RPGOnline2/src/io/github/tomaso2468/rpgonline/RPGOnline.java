@@ -36,8 +36,6 @@ import java.util.Properties;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.ResourceLoader;
 
-import slickshader.SlickShader;
-
 /**
  * A class that represents version info of the RPGOnline library.
  * 
@@ -92,8 +90,6 @@ public final class RPGOnline {
 		}
 		SLICK_VERSION = new Version("1." + build);
 	}
-	
-	public static final Version SHADER_VERSION = new Version(SlickShader.VERSION);
 
 	/**
 	 * Prints version info and displays warnings in the case of unsupported java

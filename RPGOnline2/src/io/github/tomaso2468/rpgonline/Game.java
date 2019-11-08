@@ -336,7 +336,6 @@ public class Game {
 			y = drawDebugLineLabel(g, "OpenAL Version", AL10.alGetString(AL10.AL_VERSION), y, true);
 			y = drawDebugLineLabel(g, "OpenAL Vendor", AL10.alGetString(AL10.AL_VENDOR), y, true);
 			y = drawDebugLineLabel(g, "Slick2D Version", RPGOnline.SLICK_VERSION.toSimpleString(), y, true);
-			y = drawDebugLineLabel(g, "SlickShader Version", RPGOnline.SHADER_VERSION.toSimpleString(), y, true);
 			y = drawDebugLineLabel(g, "SpriteMap Size", RPGConfig.getAutoSpriteMapSize() + "", y, true);
 			y = drawDebugLineLabel(g, "SpriteMap Enabled", RPGConfig.isMapped() + "", y, true);
 			y = drawDebugLineLabel(g, "Texture Mode", RPGConfig.getFilterMode() + "", y, true);
