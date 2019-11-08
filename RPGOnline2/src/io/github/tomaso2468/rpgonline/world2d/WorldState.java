@@ -61,9 +61,7 @@ import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.post.HDRMap;
-import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
-import io.github.tomaso2468.rpgonline.post.PostEffect;
+import io.github.tomaso2468.rpgonline.post.PostProcessing;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -143,11 +141,6 @@ public class WorldState implements GameState, BaseScaleState {
 	protected Image lightBuffer;
 
 	/**
-	 * The current shader effect.
-	 */
-	protected PostEffect post = null;
-
-	/**
 	 * The GUI toggle.
 	 */
 	protected boolean gui = true;
@@ -171,6 +164,8 @@ public class WorldState implements GameState, BaseScaleState {
 	 * If shaders are enabled.
 	 */
 	protected boolean post_enable = true;
+	
+	public PostProcessing post;
 
 	/**
 	 * Creates a new {@code WorldState}.
@@ -235,18 +230,18 @@ public class WorldState implements GameState, BaseScaleState {
 			renderer.clear();
 			if (post != null) {
 				Debugger.start("post-" + post.getClass());
-				post.doPostProcess(game, buffer, renderer);
+				post.postProcess(buffer, buffer2, renderer);
 				Debugger.stop("post-" + post.getClass());
 			} else {
-				NullPostProcessEffect.INSTANCE.doPostProcess(game, buffer, renderer);
+				renderer.drawImage(buffer, 0, 0);
 			}
 			renderer.setRenderTarget(null);
 			if (RPGConfig.isHDR()) {
 				Debugger.start("mdr");
 
 				if (hdr == null) {
-					hdr = renderer.createShader(HDRMap.class.getResource("/generic.vrt"),
-							HDRMap.class.getResource("/hdr.frg"));
+					hdr = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
+							WorldState.class.getResource("/hdr.frg"));
 				}
 				renderer.useShader(hdr);
 				hdr.setUniform("exposure", 1f);
@@ -1198,7 +1193,7 @@ public class WorldState implements GameState, BaseScaleState {
 	 * 
 	 * @return A {@code PostEffect} object.
 	 */
-	public PostEffect getPost() {
+	public PostProcessing getPost() {
 		return post;
 	}
 
@@ -1207,10 +1202,7 @@ public class WorldState implements GameState, BaseScaleState {
 	 * 
 	 * @param post A {@code PostEffect} object.
 	 */
-	public void setPost(PostEffect post) {
-		if (post == null) {
-			post = NullPostProcessEffect.INSTANCE;
-		}
+	public void setPost(PostProcessing post) {
 		this.post = post;
 	}
 

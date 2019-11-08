@@ -50,8 +50,6 @@ import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
 import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.post.HDRMap;
-import io.github.tomaso2468.rpgonline.post.MultiEffect;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;

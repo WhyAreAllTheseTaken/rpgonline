@@ -58,9 +58,7 @@ import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.particle.Particle;
-import io.github.tomaso2468.rpgonline.post.MultiEffect;
-import io.github.tomaso2468.rpgonline.post.NullPostProcessEffect;
-import io.github.tomaso2468.rpgonline.post.PostEffect;
+import io.github.tomaso2468.rpgonline.post.PostProcessing;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
@@ -144,7 +142,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	/**
 	 * The current post processing effects.
 	 */
-	protected PostEffect post = null;
+	protected PostProcessing post = null;
 	
 	/**
 	 * A list of GUIs used in this state.
@@ -201,13 +199,9 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			
 			renderer.copyArea(buffer, 0, 0);
 			
-			if (!(post instanceof MultiEffect)) {
-				Debugger.start("post-" + post.getClass());
-			}
-			post.doPostProcess(game, buffer, renderer);
-			if (!(post instanceof MultiEffect)) {
-				Debugger.stop("post-" + post.getClass());
-			}
+			Debugger.start("post-" + post.getClass());
+			post.postProcess(buffer, null, renderer);
+			Debugger.stop("post-" + post.getClass());
 			
 			Debugger.stop("effects");
 		}
@@ -516,7 +510,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * Gets the currently used post processing effects.
 	 * @return A PostEffect or null if no effect is active.
 	 */
-	public PostEffect getPost() {
+	public PostProcessing getPost() {
 		return post;
 	}
 
@@ -524,10 +518,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * Sets the post processing effects.
 	 * @param post A PostEffect or null if no effect should be active.
 	 */
-	public void setPost(PostEffect post) {
-		if (post == null) {
-			post = NullPostProcessEffect.INSTANCE;
-		}
+	public void setPost(PostProcessing post) {
 		this.post = post;
 	}
 	
