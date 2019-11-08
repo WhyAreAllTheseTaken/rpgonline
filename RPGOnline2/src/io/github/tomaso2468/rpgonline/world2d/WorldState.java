@@ -342,6 +342,7 @@ public class WorldState implements GameState, BaseScaleState {
 	/**
 	 * A method that renders the world.
 	 */
+	@SuppressWarnings("deprecation")
 	public void render2(Game game, Renderer renderer) throws RenderException {
 		List<LightSource> lights = computerLights();
 
