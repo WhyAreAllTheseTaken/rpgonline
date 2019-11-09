@@ -31,9 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
 import io.github.tomaso2468.rpgonline.input.MapKeyProvider;
 import io.github.tomaso2468.rpgonline.lang.LangProvider;
@@ -311,7 +308,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #setTileSize(int)
 	 */
-	@Nonnegative
 	public static int getTileSize() {
 		return tileSize;
 	}
@@ -326,7 +322,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #getTileSize()
 	 */
-	@Nonnegative
 	public static void setTileSize(int tileSize) {
 		if (tileSize <= 0) {
 			throw new IllegalArgumentException("tileSize must be greater than 0.");
@@ -344,7 +339,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 * @see #setKeyInput(KeyboardInputProvider)
 	 */
-	@Nonnull
 	public static KeyboardInputProvider getKeyInput() {
 		return keyInput;
 	}
@@ -359,7 +353,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 * @see #getKeyInput()
 	 */
-	@Nonnull
 	public static void setKeyInput(KeyboardInputProvider keyInput) {
 		if (keyInput == null) {
 			throw new NullPointerException("keyInput");
@@ -425,7 +418,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see #setLangProvider(LangProvider)
 	 */
-	@Nonnull
 	public static LangProvider getLangProvider() {
 		return lang;
 	}
@@ -439,7 +431,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see #getLangProvider(LangProvider)
 	 */
-	@Nonnull
 	public static void setLangProvider(LangProvider lang) {
 		if (lang == null) {
 			throw new NullPointerException("lang");
@@ -457,7 +448,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see io.github.tomaso2468.rpgonline.lang.LangPack
 	 */
-	@Nonnull
 	public static String[] getLangloc() {
 		return langloc;
 	}
