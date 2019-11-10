@@ -1,6 +1,7 @@
 package io.github.tomaso2468.rpgonline;
 
 import java.lang.management.ManagementFactory;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,22 +26,72 @@ import io.github.tomaso2468.rpgonline.transition.BlankTransition;
 import io.github.tomaso2468.rpgonline.transition.Transition;
 import io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager;
 
+/**
+ * A class representing a game.
+ * @author Tomaso2468
+ *
+ */
 public class Game {
+	/**
+	 * The title of the game.
+	 */
 	private String title;
+	/**
+	 * The states of the game.
+	 */
 	private Map<Integer, GameState> states = new HashMap<>();
+	/**
+	 * The previous game state.
+	 */
 	private GameState previousState;
+	/**
+	 * The current game state.
+	 */
 	private GameState currentState;
+	/**
+	 * The next game state.
+	 */
 	private GameState nextState;
+	/**
+	 * The transition for entering the state.
+	 */
 	private Transition enter;
+	/**
+	 * The transition for leaving the state.
+	 */
 	private Transition leave;
+	/**
+	 * The FPS cap for the game.
+	 */
 	private int fpsCap = 0;
+	/**
+	 * The renderer for the game.
+	 */
 	private Renderer renderer;
+	/**
+	 * The version of the game.
+	 */
 	private final Version version;
+	/**
+	 * {@code true} if vsync should be used.
+	 */
 	private boolean vsync = true;
+	/**
+	 * The default font of the game. This is used for stuff like the debug menu.
+	 */
 	private Font font;
+	/**
+	 * {@code true} if antialias is enabled.
+	 */
 	private boolean antialias = false;
+	/**
+	 * {@code true} if the screen should be cleared after each frame.
+	 */
 	private boolean clearEveryFrame = true;
-	private String icon;
+	/**
+	 * The icon for the game.
+	 */
+	private URL icon;
 	private boolean mouseGrabbed = false;
 	private float minDelta = 0;
 	private float maxDelta = Float.POSITIVE_INFINITY;
@@ -145,6 +196,9 @@ public class Game {
 			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 18);
 		}
 		renderer.setFont(font);
+		renderer.setAntialias(antialias);
+		renderer.setVSync(vsync);
+		renderer.setIcon(icon);
 		TextureMap.setRenderer(renderer);
 		
 		this.input = renderer.getInput();
@@ -718,6 +772,7 @@ public class Game {
 
 	public void setVsync(boolean vsync) {
 		this.vsync = vsync;
+		if (started) renderer.setVSync(vsync);
 	}
 
 	public Font getFont() {
@@ -735,6 +790,7 @@ public class Game {
 
 	public void setAntialias(boolean antialias) {
 		this.antialias = antialias;
+		if (started) renderer.setAntialias(antialias);
 	}
 
 	public boolean isClearEveryFrame() {
@@ -745,12 +801,13 @@ public class Game {
 		this.clearEveryFrame = clearEveryFrame;
 	}
 
-	public String getIcon() {
+	public URL getIcon() {
 		return icon;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(URL icon) {
 		this.icon = icon;
+		if (started) renderer.setIcon(icon);
 	}
 
 	public boolean isMouseGrabbed() {
@@ -759,6 +816,7 @@ public class Game {
 
 	public void setMouseGrabbed(boolean mouseGrabbed) {
 		this.mouseGrabbed = mouseGrabbed;
+		if (started) renderer.setMouseGrab(mouseGrabbed);
 	}
 
 	public float getMinDelta() {

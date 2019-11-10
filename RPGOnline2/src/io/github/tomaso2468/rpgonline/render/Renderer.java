@@ -231,5 +231,8 @@ public interface Renderer {
 		renderLine(x, y, x2, y2, Color.white);
 	}
 	public void renderLine(float x, float y, float x2, float y2, Color color);
+	public void setAntialias(boolean antialias);
+	public void setMouseGrab(boolean mouseGrabbed);
+	public void setIcon(URL icon);
 	
 }

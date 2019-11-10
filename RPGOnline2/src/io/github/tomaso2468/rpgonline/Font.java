@@ -31,7 +31,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
+/**
+ * A representation of a font.
+ * @author Tomaso2468
+ */
 public interface Font {
+	/**
+	 * Gets the height (in pixels) of a piece of text.
+	 * @param text The text to measure.
+	 * @return A positive float value.
+	 */
 	public float getHeight(String text);
+	/**
+	 * Gets the width (in pixels) of a piece of text.
+	 * @param text The text to measure.
+	 * @return A positive float value.
+	 */
 	public float getWidth(String text);
 }
