@@ -235,4 +235,8 @@ public interface Renderer {
 	public void setMouseGrab(boolean mouseGrabbed);
 	public void setIcon(URL icon);
 	
+	public default boolean isBuiltInTonemapping() {
+		return false;
+	}
+	
 }

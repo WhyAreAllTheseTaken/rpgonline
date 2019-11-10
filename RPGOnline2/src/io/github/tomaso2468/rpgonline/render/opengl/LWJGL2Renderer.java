@@ -49,6 +49,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.imageout.ImageOut;
+import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
@@ -93,11 +94,29 @@ public class LWJGL2Renderer extends GL30Renderer {
 		try {
 			setDisplayMode(width, height, game.isFullscreen());
 			if (antialias) {
-				Display.create(new PixelFormat(8,8,0,2));
+				try {
+					if (hdr && Display.getDesktopDisplayMode().getBitsPerPixel() > 8 * 4) {
+						Display.create(new PixelFormat().withFloatingPoint(true).withSamples(2));
+					} else {
+						Display.create(new PixelFormat().withSamples(2));
+					}
+				} catch (LWJGLException e) {
+					Log.error("Could not use multisampling: ", e);
+					
+					if (hdr && Display.getDesktopDisplayMode().getBitsPerPixel() > 8 * 4) {
+						Display.create(new PixelFormat().withFloatingPoint(true));
+					} else {
+						Display.create();
+					}
+				}
 				GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
 				GL11.glEnable(GL11.GL_LINE_SMOOTH);
 			} else {
-				Display.create();
+				if (hdr && Display.getDesktopDisplayMode().getBitsPerPixel() > 8 * 4) {
+					Display.create(new PixelFormat().withFloatingPoint(true));
+				} else {
+					Display.create();
+				}
 				GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
 				GL11.glDisable(GL11.GL_LINE_SMOOTH);
 			}
@@ -328,12 +347,16 @@ public class LWJGL2Renderer extends GL30Renderer {
 
 	@Override
 	public void setAntialias(boolean antialias) {
-		// TODO Auto-generated method stub
-		
+		this.antialias = antialias;
 	}
 
 	@Override
 	public void setMouseGrab(boolean mouseGrabbed) {
 		Mouse.setGrabbed(mouseGrabbed);
+	}
+	
+	@Override
+	public boolean isBuiltInTonemapping() {
+		return hdr && !Display.isFullscreen() && Display.getDesktopDisplayMode().getBitsPerPixel() > 8 * 4;
 	}
 }

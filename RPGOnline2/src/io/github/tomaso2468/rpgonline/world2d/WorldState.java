@@ -234,7 +234,7 @@ public class WorldState implements GameState, BaseScaleState {
 				renderer.drawImage(buffer, 0, 0);
 			}
 			renderer.setRenderTarget(null);
-			if (RPGConfig.isHDR()) {
+			if (RPGConfig.isHDR() && !renderer.isBuiltInTonemapping()) {
 				Debugger.start("mdr");
 
 				if (hdr == null) {
