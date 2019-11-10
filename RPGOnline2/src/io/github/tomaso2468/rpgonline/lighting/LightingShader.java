@@ -94,9 +94,8 @@ public class LightingShader implements LightingEngine {
 			float x = (float) light.getLX() - sx / RPGConfig.getTileSize() + 0.5f;
 			float y = (float) light.getLY() - sy / RPGConfig.getTileSize() + 0.5f;
 			
-			lightingShader.setUniformArrayStruct("lights", 0, "location", lightBuffer.getTextureWidth() / 2 + x / dist_x_f, -lightBuffer.getTextureHeight() / 2 + y / dist_y_f);
-			lightingShader.setUniformArrayStruct("lights", 0, "lightColor", light.getColor());
-//			lightingShader.setUniformArrayStruct("lights", 0, "lightColor", new Color(1f, 1f, 1f));
+			lightingShader.setUniformArrayStruct("lights", i, "location", lightBuffer.getTextureWidth() / 2 + x / dist_x_f, -lightBuffer.getTextureHeight() / 2 + y / dist_y_f);
+			lightingShader.setUniformArrayStruct("lights", i, "lightColor", light.getColor());
 		}
 
 		lightingShader.setUniform("worldScale", dist_x_f, dist_y_f);

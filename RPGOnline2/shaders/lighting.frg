@@ -9,14 +9,14 @@ struct Light {
 	vec4 lightColor;
 };
 
-const int light_count_max = 16;
+const int light_count_max = 32;
 
 uniform int light_count;
 
 uniform Light lights[light_count_max];
 
 vec2 scale(vec2 p) {
-	return p * worldScale / 5;
+	return p * worldScale / 2;
 }
 
 float sqr_dist(vec2 p1, vec2 p2) {

@@ -315,14 +315,14 @@ public class WorldState implements GameState, BaseScaleState {
 				if (i < lights.size()) {
 					LightSource l = lights.get(i);
 					double dist = FastMath.hypot(x - l.getLX(), y - l.getLY());
-					if (dist > 40 * l.getBrightness()) {
+					if (dist > 50 * l.getBrightness()) {
 						lights.remove(l);
 						i -= 1;
 					}
 				}
 			}
 
-			while (lights.size() > 32) {
+			while (lights.size() > 50) {
 				lights.remove(lights.size() - 1);
 			}
 		}
