@@ -29,6 +29,9 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+/*
+ * Some algrotihms by Ruo Feidu and Tanner Hellend
+ */
 package io.github.tomaso2468.rpgonline;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
@@ -50,7 +53,7 @@ import io.github.tomaso2468.rpgonline.debug.Debugger;
  * 
  * @see io.github.tomaso2468.rpgonline.post.ColorEffectsShader
  * 
- * @author Tomaso2468, Ruo Feidu, Tanner Hellend
+ * @author Tomas, Ruo Feidu, Tanner Hellend
  */
 public final class ColorUtils {
 	/**
