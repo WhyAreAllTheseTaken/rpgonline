@@ -113,6 +113,8 @@ public final class AudioManager {
 	 * A map of IDs to music.
 	 */
 	private static final Map<String, AmbientMusic> ambientMusic = new HashMap<>();
+	
+	private static Thread audioThread;
 
 	static {
 		SoundSystemConfig.setLogger(new SoundSystemLogger() {
@@ -194,7 +196,7 @@ public final class AudioManager {
 		volumes.put("sound", 1f);
 		volumes.put("ambient", 1f);
 
-		Thread t = new Thread("Sound Daemon") {
+		audioThread = new Thread("Sound Daemon") {
 			@Override
 			public void run() {
 				while (true) {
@@ -216,8 +218,8 @@ public final class AudioManager {
 				}
 			}
 		};
-		t.setDaemon(true);
-		t.start();
+		audioThread.setDaemon(true);
+		audioThread.start();
 	}
 
 	/**
@@ -242,7 +244,12 @@ public final class AudioManager {
 	/**
 	 * Deletes the sound system.
 	 */
+	@SuppressWarnings("deprecation")
 	public static void dispose() {
+		if (fadeThread != null && fadeThread.isAlive()) {
+			fadeThread.stop();
+		}
+		audioThread.stop();
 		system.cleanup();
 	}
 
@@ -292,13 +299,9 @@ public final class AudioManager {
 	 * Sets the currently playing piece of music.
 	 * @param m A music object or null to stop all music.
 	 */
-	@SuppressWarnings("deprecation")
 	public static void setMusic(AmbientMusic m) {
 		if (m == music) {
 			return;
-		}
-		if (fadeThread != null) {
-			fadeThread.stop();
 		}
 
 		fadeThread = new Thread() {

@@ -32,6 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -42,6 +44,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.util.Log;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -54,6 +57,7 @@ public abstract class GL30Renderer extends GL20Renderer {
 	protected int fbo;
 	protected Image fbo_image;
 	protected boolean hdr;
+	private List<Integer> fbos = new ArrayList<Integer>();
 
 	@Override
 	public int getRenderWidth() {
@@ -165,6 +169,8 @@ public abstract class GL30Renderer extends GL20Renderer {
 			image.ensureInverted();
 			
 			checkFBO(fbo);
+			
+			fbos.add(fbo);
 		}
 
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ((SlickTexture) image.getTexture()).fbo);
@@ -173,5 +179,12 @@ public abstract class GL30Renderer extends GL20Renderer {
 		setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
 		setColorMode(ColorMode.NORMAL);
 		resetTransform();
+	}
+	
+	@Override
+	public void exit(Game game) {
+		for (int i : fbos) {
+			GL30.glDeleteFramebuffers(i);
+		}
 	}
 }

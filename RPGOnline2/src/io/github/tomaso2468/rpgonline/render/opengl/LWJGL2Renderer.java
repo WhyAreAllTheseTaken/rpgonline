@@ -187,6 +187,7 @@ public class LWJGL2Renderer extends GL30Renderer {
 
 	@Override
 	public void exit(Game game) {
+		super.exit(game);
 		Display.destroy();
 	}
 
