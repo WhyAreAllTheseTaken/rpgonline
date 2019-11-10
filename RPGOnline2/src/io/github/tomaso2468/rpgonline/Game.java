@@ -83,7 +83,7 @@ public class Game {
 	/**
 	 * {@code true} if antialias is enabled.
 	 */
-	private boolean antialias = false;
+	private boolean antialias = true;
 	/**
 	 * {@code true} if the screen should be cleared after each frame.
 	 */
@@ -190,13 +190,13 @@ public class Game {
 	}
 
 	public void init(Game game) throws RenderException {
-		renderer.init(this);
+		renderer.setAntialias(antialias);
 		renderer.useHDRBuffers(RPGConfig.isHDR());
+		renderer.init(this);
 		if (font == null) {
 			font = renderer.loadFont("Arial", Renderer.FONT_NORMAL, 18);
 		}
 		renderer.setFont(font);
-		renderer.setAntialias(antialias);
 		renderer.setVSync(vsync);
 		renderer.setIcon(icon);
 		TextureMap.setRenderer(renderer);

@@ -31,14 +31,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render.opengl;
 
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.imageout.ImageOut;
 
@@ -51,6 +59,7 @@ public class LWJGL2Renderer extends GL30Renderer {
 	private int width = 640;
 	private int height = 480;
 	private boolean init = false;
+	private boolean antialias = false;
 
 	@Override
 	public int getScreenWidth() {
@@ -83,7 +92,15 @@ public class LWJGL2Renderer extends GL30Renderer {
 
 		try {
 			setDisplayMode(width, height, game.isFullscreen());
-			Display.create();
+			if (antialias) {
+				Display.create(new PixelFormat(8,8,0,2));
+				GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
+				GL11.glEnable(GL11.GL_LINE_SMOOTH);
+			} else {
+				Display.create();
+				GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
+				GL11.glDisable(GL11.GL_LINE_SMOOTH);
+			}
 			GL11.glViewport(0, 0, width, height);
 		} catch (LWJGLException e) {
 			throw new RenderException("Error creating display.", e);
@@ -228,5 +245,95 @@ public class LWJGL2Renderer extends GL30Renderer {
 		} catch (SlickException e) {
 			throw new RenderException(e);
 		}
+	}
+	
+	@Override
+	public void setIcon(URL icon) {
+		if (icon == null) {
+			return;
+		}
+		ByteBuffer[] list = loadIcon(icon);
+		Display.setIcon(list);
+	}
+	
+	public static ByteBuffer[] loadIcon(URL icon)
+    {
+        BufferedImage image = null;
+        try
+        {
+            image = ImageIO.read(icon);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        ByteBuffer[] buffers = new ByteBuffer[3];
+        buffers[0] = loadIconInstance(image, 128);
+        buffers[1] = loadIconInstance(image, 32);
+        buffers[2] = loadIconInstance(image, 16);
+        return buffers;
+    }
+     
+    private static ByteBuffer loadIconInstance(BufferedImage image, int dimension)
+    {
+        BufferedImage scaledIcon = new BufferedImage(dimension, dimension, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = scaledIcon.createGraphics();
+        double ratio = 1;
+        if(image.getWidth() > scaledIcon.getWidth())
+        {
+            ratio = (double) (scaledIcon.getWidth()) / image.getWidth();
+        }
+        else
+        {
+            ratio = (int) (scaledIcon.getWidth() / image.getWidth());
+        }
+        if(image.getHeight() > scaledIcon.getHeight())
+        {
+            double r2 = (double) (scaledIcon.getHeight()) / image.getHeight();
+            if(r2 < ratio)
+            {
+                ratio = r2;
+            }
+        }
+        else
+        {
+            double r2 =  (int) (scaledIcon.getHeight() / image.getHeight());
+            if(r2 < ratio)
+            {
+                ratio = r2;
+            }
+        }
+        double width = image.getWidth() * ratio;
+        double height = image.getHeight() * ratio;
+        g.drawImage(image, (int) ((scaledIcon.getWidth() - width) / 2), (int) ((scaledIcon.getHeight() - height) / 2),
+                (int) (width), (int) (height), null);
+        g.dispose();
+         
+        byte[] imageBuffer = new byte[dimension*dimension*4];
+        int counter = 0;
+        for(int i = 0; i < dimension; i++)
+        {
+            for(int j = 0; j < dimension; j++)
+            {
+                int colorSpace = scaledIcon.getRGB(j, i);
+                imageBuffer[counter + 0] =(byte)((colorSpace << 8) >> 24 );
+                imageBuffer[counter + 1] =(byte)((colorSpace << 16) >> 24 );
+                imageBuffer[counter + 2] =(byte)((colorSpace << 24) >> 24 );
+                imageBuffer[counter + 3] =(byte)(colorSpace >> 24 );
+                counter += 4;
+            }
+        }
+        return ByteBuffer.wrap(imageBuffer);
+    }
+
+	@Override
+	public void setAntialias(boolean antialias) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMouseGrab(boolean mouseGrabbed) {
+		Mouse.setGrabbed(mouseGrabbed);
 	}
 }
