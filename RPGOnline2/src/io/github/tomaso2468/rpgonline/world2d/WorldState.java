@@ -785,7 +785,7 @@ public class WorldState implements GameState, BaseScaleState {
 				Debugger.stop("gui-mouse");
 
 				Debugger.start("gui-update");
-				guis.update(delta / 1000f);
+				guis.update(delta / 1000f, in);
 				Debugger.stop("gui-update");
 			}
 			Debugger.stop("gui");

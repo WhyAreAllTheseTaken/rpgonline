@@ -1,5 +1,7 @@
 package io.github.tomaso2468.rpgonline.input;
 
+import org.lwjgl.input.Keyboard;
+
 public interface Input {
 	public static final int KEY_NONE = 0x00;
 
@@ -143,4 +145,8 @@ public interface Input {
 	public boolean isButtonDown(int i);
 	public boolean hasWheel();
 	public float getDWheel();
+	
+	public static String getKeyName(int code) {
+		return Keyboard.getKeyName(code);
+	}
 }

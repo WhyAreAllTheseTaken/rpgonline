@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.input.Input;
+
 /**
  * A button that can be toggled on and off.
  * @author Tomaso2468
@@ -68,7 +70,7 @@ public class ToggleButton extends Button {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta) {
+	public void update(float delta, Input input) {
 		
 	}
 }

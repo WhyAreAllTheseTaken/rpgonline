@@ -37,6 +37,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -317,8 +318,9 @@ public abstract class Component {
 
 	/**
 	 * Component update (for keyboard profiling and real-time updates).
+	 * @param input 
 	 */
-	public void update(float delta) {
+	public void update(float delta, Input input) {
 		
 	}
 

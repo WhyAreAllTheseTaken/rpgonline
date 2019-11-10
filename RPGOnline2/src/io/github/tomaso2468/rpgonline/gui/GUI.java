@@ -37,6 +37,7 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -538,9 +539,9 @@ public class GUI {
 	 * Game update information.
 	 * @param delta The time since the last game update in seconds.
 	 */
-	public void update(float delta) {
+	public void update(float delta, Input input) {
 		if (selected != null) {
-			selected.update(delta);
+			selected.update(delta, input);
 		}
 	}
 	

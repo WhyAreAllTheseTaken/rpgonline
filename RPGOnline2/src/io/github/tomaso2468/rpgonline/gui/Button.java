@@ -34,6 +34,7 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -90,7 +91,7 @@ public class Button extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta) {
+	public void update(float delta, Input input) {
 		setState(false);
 	}
 	

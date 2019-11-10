@@ -38,7 +38,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.math3.util.FastMath;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
@@ -346,17 +345,17 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		
 		double walk_x = 0;
 		double walk_y = 0;
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_NORTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_NORTH))) {
 			walk_y += -1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_SOUTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_SOUTH))) {
 			walk_y += 1;
 		}
 
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_EAST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_EAST))) {
 			walk_x += 1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_WEST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.BULLET_WEST))) {
 			walk_x -= 1;
 		}
 
@@ -393,7 +392,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			Debugger.stop("gui-mouse");
 			
 			Debugger.start("gui-update");
-			gui.update(delta / 1000f);
+			gui.update(delta / 1000f, in);
 			Debugger.stop("gui-update");
 			
 			Debugger.stop("gui");
