@@ -98,14 +98,6 @@ public class RPGLog implements LogSystem {
 	}
 
 	public void print(String type, String message) {
-		StringBuilder sb = new StringBuilder();
-		if (detailed_debug) {
-			sb.append("]\t[");
-			sb.append(Thread.currentThread().getStackTrace()[4].getClassName());
-			sb.append("]\t[");
-			sb.append(Thread.currentThread().getStackTrace()[4].getMethodName());
-		}
-
 		String str;
 		if (!detailed_debug) {
 			str = String.format("%-30s %-7s %-15s %s", "[" + new Date() + "]", "[" + type + "]",
@@ -120,7 +112,7 @@ public class RPGLog implements LogSystem {
 				method = Thread.currentThread().getStackTrace()[5].getMethodName();
 			}
 			
-			str = String.format("%-30s %-7s %-15s %-50s %-24s %s", "[" + new Date() + "]", "[" + type + "]",
+			str = String.format("%-30s %-7s %-15s %-60s %-25s %s", "[" + new Date() + "]", "[" + type + "]",
 					"[" + Thread.currentThread().getName() + "]",
 					"[" + caller + "]",
 					"[" + method + "]", message);
