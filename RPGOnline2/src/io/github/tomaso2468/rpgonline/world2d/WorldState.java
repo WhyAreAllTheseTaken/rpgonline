@@ -207,7 +207,7 @@ public class WorldState implements GameState, BaseScaleState {
 				buffer = new Image(renderer, game.getWidth(), game.getHeight());
 			}
 			renderer.setRenderTarget(buffer);
-			renderer.clear();
+			if (game.isClearEveryFrame()) renderer.clear();
 		}
 
 		Debugger.start("game-render");
@@ -225,7 +225,7 @@ public class WorldState implements GameState, BaseScaleState {
 				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 			}
 			renderer.setRenderTarget(buffer2);
-			renderer.clear();
+			if (game.isClearEveryFrame()) renderer.clear();
 			if (post != null) {
 				Debugger.start("post-" + post.getClass());
 				post.postProcess(buffer, buffer2, renderer);
