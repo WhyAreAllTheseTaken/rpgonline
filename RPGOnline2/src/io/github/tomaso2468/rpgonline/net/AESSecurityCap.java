@@ -16,6 +16,7 @@ import sun.misc.BASE64Encoder;
  * A system for setting up key exchange for AES.
  * @author Jegan Babu, Wojciech Wirzbicki
  */
+@SuppressWarnings("restriction")
 class AESSecurityCap {
 	/**
 	 * The public key to use.
@@ -78,7 +79,7 @@ class AESSecurityCap {
      * @param msg The message to encrypt.
      * @return An encrypted string in base64.
      */
-    public String encrypt(String msg) {
+	public String encrypt(String msg) {
         try {
             Key key = generateKey();
             Cipher c = Cipher.getInstance(ALGO);
@@ -101,7 +102,7 @@ class AESSecurityCap {
             Key key = generateKey();
             Cipher c = Cipher.getInstance(ALGO);
             c.init(Cipher.DECRYPT_MODE, key);
-            byte[] decordedValue = new BASE64Decoder().decodeBuffer(encryptedData);
+			byte[] decordedValue = new BASE64Decoder().decodeBuffer(encryptedData);
             byte[] decValue = c.doFinal(decordedValue);
             return new String(decValue);
         } catch (BadPaddingException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | IOException e) {
