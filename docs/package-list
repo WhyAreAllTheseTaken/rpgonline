@@ -11,6 +11,7 @@ io.github.tomaso2468.rpgonline.gui.layout
 io.github.tomaso2468.rpgonline.gui.theme
 io.github.tomaso2468.rpgonline.input
 io.github.tomaso2468.rpgonline.lang
+io.github.tomaso2468.rpgonline.lighting
 io.github.tomaso2468.rpgonline.lowlevel
 io.github.tomaso2468.rpgonline.net
 io.github.tomaso2468.rpgonline.net.login
@@ -19,9 +20,11 @@ io.github.tomaso2468.rpgonline.noise
 io.github.tomaso2468.rpgonline.particle
 io.github.tomaso2468.rpgonline.post
 io.github.tomaso2468.rpgonline.render
+io.github.tomaso2468.rpgonline.render.java2d
+io.github.tomaso2468.rpgonline.render.opengl
 io.github.tomaso2468.rpgonline.sky
-io.github.tomaso2468.rpgonline.state
 io.github.tomaso2468.rpgonline.threading
+io.github.tomaso2468.rpgonline.transition
 io.github.tomaso2468.rpgonline.world2d
 io.github.tomaso2468.rpgonline.world2d.chunk
 io.github.tomaso2468.rpgonline.world2d.editor
