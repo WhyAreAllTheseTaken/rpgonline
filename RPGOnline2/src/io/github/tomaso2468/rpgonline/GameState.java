@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
+import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
@@ -51,7 +52,18 @@ public interface GameState {
 
 	}
 	
-	public void render(Game game, Renderer renderer) throws RenderException ;
+	public void render(Game game, Renderer renderer) throws RenderException;
 	
 	public int getID();
+	
+	public default float drawDebugLeft(Game game, Graphics g, float y) throws RenderException {
+		y = game.drawDebugLine(g, "N/A", y, false);
+		return y;
+	}
+	
+	public default float drawDebugRight(Game game, Graphics g, float y) throws RenderException {
+		y = game.drawDebugLine(g, "N/A", y, true);
+		return y;
+	}
+	
 }
