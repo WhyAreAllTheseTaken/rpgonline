@@ -20,13 +20,12 @@ vec2 scale(vec2 p) {
 }
 
 float sqr_dist(vec2 p1, vec2 p2) {
-	return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+	return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (0 - 1) * (0 - 1);
 }
 
 vec4 computeLight(Light light, vec2 loc) {
 	float dist = sqr_dist(scale(loc), scale(light.location));
 	dist /= 2;
-	dist = max(dist, 1 / length(light.lightColor));
 	return light.lightColor * 1.1 / dist / (1 + length(ambientLight) * 2);
 }
 
