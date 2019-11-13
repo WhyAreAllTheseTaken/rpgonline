@@ -32,8 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.render;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.Image;
+
+import io.github.tomaso2468.rpgonline.Font;
+import io.github.tomaso2468.rpgonline.Image;
 
 /**
  * The interface for GUI graphics.
@@ -125,20 +126,15 @@ public interface Graphics {
 	public void drawImage(Image img, float x, float y);
 	
 	/**
-	 * Begins Slick2D rendering.
-	 * @return A graphics object.
-	 */
-	public org.newdawn.slick.Graphics beginSlick();
-	/**
-	 * Ends Slick2D rendering.
-	 */
-	public void endSlick();
-	
-	/**
 	 * Gets the current font.
 	 * @return A font object.
 	 */
 	public Font getFont();
+	
+	/**
+	 * Sets the current font.
+	 */
+	public void setFont(Font font);
 	/**
 	 * Draws the string.
 	 * @param str The text to draw.
@@ -146,4 +142,10 @@ public interface Graphics {
 	 * @param y The Y position.
 	 */
 	public void drawString(String str, float x, float y);
+
+	public void copyArea(Image buffer, int x, int y);
+
+	public Renderer getRenderer();
+
+	public void resetTransform();
 }

@@ -31,11 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
-import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.SlickException;
-
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * The root class providing text input support.
@@ -105,8 +104,8 @@ public abstract class TextComponent extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta) {
-		super.update(delta);
+	public void update(float delta, Input input) {
+		super.update(delta, input);
 		
 		cooldown -= delta;
 		
@@ -114,11 +113,11 @@ public abstract class TextComponent extends Component {
 			return;
 		}
 		
-		boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-		boolean alt = Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU);
+		boolean shift = input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT);
+		boolean ctrl = input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyDown(Input.KEY_RCONTROL);
+		boolean alt = input.isKeyDown(Input.KEY_LMENU) || input.isKeyDown(Input.KEY_RMENU);
 
-		processKeys(shift, ctrl, alt);
+		processKeys(shift, ctrl, alt, input);
 	}
 	
 	/**
@@ -139,112 +138,112 @@ public abstract class TextComponent extends Component {
 	}
 	
 	/**
-	 * Processes the keyboard input for this component.
+	 * Processes the Input input for this component.
 	 * @param shift {@code true} if the SHIFT key is pressed, {@code false} otherwise.
 	 * @param ctrl {@code true} if the CTRL key is pressed, {@code false} otherwise.
 	 * @param alt {@code true} if the ALT key is pressed, {@code false} otherwise.
 	 */
-	protected void processKeys(boolean shift, boolean ctrl, boolean alt) {
+	protected void processKeys(boolean shift, boolean ctrl, boolean alt, Input input) {
 		int[] codes = {
-				Keyboard.KEY_0,
-				Keyboard.KEY_1,
-				Keyboard.KEY_2,
-				Keyboard.KEY_3,
-				Keyboard.KEY_4,
-				Keyboard.KEY_5,
-				Keyboard.KEY_6,
-				Keyboard.KEY_7,
-				Keyboard.KEY_8,
-				Keyboard.KEY_9,
-				Keyboard.KEY_A,
-				Keyboard.KEY_B,
-				Keyboard.KEY_C,
-				Keyboard.KEY_D,
-				Keyboard.KEY_E,
-				Keyboard.KEY_F,
-				Keyboard.KEY_G,
-				Keyboard.KEY_H,
-				Keyboard.KEY_I,
-				Keyboard.KEY_J,
-				Keyboard.KEY_K,
-				Keyboard.KEY_L,
-				Keyboard.KEY_M,
-				Keyboard.KEY_N,
-				Keyboard.KEY_O,
-				Keyboard.KEY_P,
-				Keyboard.KEY_Q,
-				Keyboard.KEY_R,
-				Keyboard.KEY_S,
-				Keyboard.KEY_T,
-				Keyboard.KEY_U,
-				Keyboard.KEY_V,
-				Keyboard.KEY_W,
-				Keyboard.KEY_X,
-				Keyboard.KEY_Y,
-				Keyboard.KEY_Z,
-				Keyboard.KEY_MINUS,
-				Keyboard.KEY_EQUALS,
-				Keyboard.KEY_BACK,
-				Keyboard.KEY_TAB,
-				Keyboard.KEY_LBRACKET,
-				Keyboard.KEY_RBRACKET,
-				Keyboard.KEY_RETURN,
-				Keyboard.KEY_SEMICOLON,
-				Keyboard.KEY_APOSTROPHE,
-				Keyboard.KEY_GRAVE,
-				Keyboard.KEY_BACKSLASH,
-				Keyboard.KEY_COMMA,
-				Keyboard.KEY_PERIOD,
-				Keyboard.KEY_SLASH,
-				Keyboard.KEY_MULTIPLY,
-				Keyboard.KEY_SPACE,
-				Keyboard.KEY_F1,
-				Keyboard.KEY_F2,
-				Keyboard.KEY_F3,
-				Keyboard.KEY_F4,
-				Keyboard.KEY_F5,
-				Keyboard.KEY_F6,
-				Keyboard.KEY_F7,
-				Keyboard.KEY_F8,
-				Keyboard.KEY_F9,
-				Keyboard.KEY_F10,
-				Keyboard.KEY_F11,
-				Keyboard.KEY_F12,
-				Keyboard.KEY_F13,
-				Keyboard.KEY_F14,
-				Keyboard.KEY_F15,
-				Keyboard.KEY_F16,
-				Keyboard.KEY_F17,
-				Keyboard.KEY_F18,
-				Keyboard.KEY_F19,
-				Keyboard.KEY_NUMPAD0,
-				Keyboard.KEY_NUMPAD1,
-				Keyboard.KEY_NUMPAD2,
-				Keyboard.KEY_NUMPAD3,
-				Keyboard.KEY_NUMPAD4,
-				Keyboard.KEY_NUMPAD5,
-				Keyboard.KEY_NUMPAD6,
-				Keyboard.KEY_NUMPAD7,
-				Keyboard.KEY_NUMPAD8,
-				Keyboard.KEY_NUMPAD9,
-				Keyboard.KEY_SUBTRACT,
-				Keyboard.KEY_ADD,
-				Keyboard.KEY_DECIMAL,
-				Keyboard.KEY_YEN,
-				Keyboard.KEY_AT,
-				Keyboard.KEY_COLON,
-				Keyboard.KEY_NUMPADENTER,
-				Keyboard.KEY_DIVIDE,
-				Keyboard.KEY_HOME,
-				Keyboard.KEY_PRIOR,
-				Keyboard.KEY_LEFT,
-				Keyboard.KEY_RIGHT,
-				Keyboard.KEY_END,
-				Keyboard.KEY_CLEAR,
+				Input.KEY_0,
+				Input.KEY_1,
+				Input.KEY_2,
+				Input.KEY_3,
+				Input.KEY_4,
+				Input.KEY_5,
+				Input.KEY_6,
+				Input.KEY_7,
+				Input.KEY_8,
+				Input.KEY_9,
+				Input.KEY_A,
+				Input.KEY_B,
+				Input.KEY_C,
+				Input.KEY_D,
+				Input.KEY_E,
+				Input.KEY_F,
+				Input.KEY_G,
+				Input.KEY_H,
+				Input.KEY_I,
+				Input.KEY_J,
+				Input.KEY_K,
+				Input.KEY_L,
+				Input.KEY_M,
+				Input.KEY_N,
+				Input.KEY_O,
+				Input.KEY_P,
+				Input.KEY_Q,
+				Input.KEY_R,
+				Input.KEY_S,
+				Input.KEY_T,
+				Input.KEY_U,
+				Input.KEY_V,
+				Input.KEY_W,
+				Input.KEY_X,
+				Input.KEY_Y,
+				Input.KEY_Z,
+				Input.KEY_MINUS,
+				Input.KEY_EQUALS,
+				Input.KEY_BACK,
+				Input.KEY_TAB,
+				Input.KEY_LBRACKET,
+				Input.KEY_RBRACKET,
+				Input.KEY_RETURN,
+				Input.KEY_SEMICOLON,
+				Input.KEY_APOSTROPHE,
+				Input.KEY_GRAVE,
+				Input.KEY_BACKSLASH,
+				Input.KEY_COMMA,
+				Input.KEY_PERIOD,
+				Input.KEY_SLASH,
+				Input.KEY_MULTIPLY,
+				Input.KEY_SPACE,
+				Input.KEY_F1,
+				Input.KEY_F2,
+				Input.KEY_F3,
+				Input.KEY_F4,
+				Input.KEY_F5,
+				Input.KEY_F6,
+				Input.KEY_F7,
+				Input.KEY_F8,
+				Input.KEY_F9,
+				Input.KEY_F10,
+				Input.KEY_F11,
+				Input.KEY_F12,
+				Input.KEY_F13,
+				Input.KEY_F14,
+				Input.KEY_F15,
+				Input.KEY_F16,
+				Input.KEY_F17,
+				Input.KEY_F18,
+				Input.KEY_F19,
+				Input.KEY_NUMPAD0,
+				Input.KEY_NUMPAD1,
+				Input.KEY_NUMPAD2,
+				Input.KEY_NUMPAD3,
+				Input.KEY_NUMPAD4,
+				Input.KEY_NUMPAD5,
+				Input.KEY_NUMPAD6,
+				Input.KEY_NUMPAD7,
+				Input.KEY_NUMPAD8,
+				Input.KEY_NUMPAD9,
+				Input.KEY_SUBTRACT,
+				Input.KEY_ADD,
+				Input.KEY_DECIMAL,
+				Input.KEY_YEN,
+				Input.KEY_AT,
+				Input.KEY_COLON,
+				Input.KEY_NUMPADENTER,
+				Input.KEY_DIVIDE,
+				Input.KEY_HOME,
+				Input.KEY_PRIOR,
+				Input.KEY_LEFT,
+				Input.KEY_RIGHT,
+				Input.KEY_END,
+				Input.KEY_CLEAR,
 		};
 		for (int c : codes) {
-			if (Keyboard.isKeyDown(c)) {
-				processKey(shift, ctrl, alt, c);
+			if (input.isKeyDown(c)) {
+				processKey(shift, ctrl, alt, c, input);
 				cooldown = DEFAULT_COOLDOWN;
 			}
 		}
@@ -256,47 +255,47 @@ public abstract class TextComponent extends Component {
 	 * @param ctrl {@code true} if the CTRL key is pressed, {@code false} otherwise.
 	 * @param alt {@code true} if the ALT key is pressed, {@code false} otherwise.
 	 */
-	protected void processKey(boolean shift, boolean ctrl, boolean alt, int code) {
+	protected void processKey(boolean shift, boolean ctrl, boolean alt, int code, Input input) {
 		switch (code) {
-		case Keyboard.KEY_RETURN:
+		case Input.KEY_RETURN:
 			if (isMultiLine()) {
 				insert("\n");
 			}
 			break;
-		case Keyboard.KEY_NUMPADENTER:
+		case Input.KEY_NUMPADENTER:
 			if (isMultiLine()) {
 				insert("\n");
 			}
 			break;
-		case Keyboard.KEY_BACK:
+		case Input.KEY_BACK:
 			text.deleteCharAt(text.length() - 1);
 			index -= 1;
 			break;
-		case Keyboard.KEY_HOME:
+		case Input.KEY_HOME:
 			index = 0;
 			break;
-		case Keyboard.KEY_END:
+		case Input.KEY_END:
 			index = text.length();
 			break;
-		case Keyboard.KEY_PRIOR:
+		case Input.KEY_PRIOR:
 			index = 0;
 			break;
-		case Keyboard.KEY_NEXT:
+		case Input.KEY_NEXT:
 			index = text.length();
 			break;
-		case Keyboard.KEY_LEFT:
+		case Input.KEY_LEFT:
 			index -= 1;
 			if (index < 0) {
 				index = 0;
 			}
 			break;
-		case Keyboard.KEY_RIGHT:
+		case Input.KEY_RIGHT:
 			index += 1;
 			if (index > text.length()) {
 				index = text.length();
 			}
 			break;
-		case Keyboard.KEY_CLEAR:
+		case Input.KEY_CLEAR:
 			setText("");
 			break;
 		default:
@@ -312,92 +311,92 @@ public abstract class TextComponent extends Component {
 	 */
 	protected String processChar(boolean shift, boolean ctrl, boolean alt, int code) {
 		switch (code) {
-		case Keyboard.KEY_ADD:
+		case Input.KEY_ADD:
 			return shift ? "+" : "+";
-		case Keyboard.KEY_APOSTROPHE:
+		case Input.KEY_APOSTROPHE:
 			return shift ? "@" : "'";
-		case Keyboard.KEY_AT:
+		case Input.KEY_AT:
 			return shift ? "@" : "@";
-		case Keyboard.KEY_BACKSLASH:
+		case Input.KEY_BACKSLASH:
 			return shift ? "|" : "\\";
-		case Keyboard.KEY_COLON:
+		case Input.KEY_COLON:
 			return shift ? "¦" : ":";
-		case Keyboard.KEY_COMMA:
+		case Input.KEY_COMMA:
 			return shift ? "<" : ",";
-		case Keyboard.KEY_DECIMAL:
+		case Input.KEY_DECIMAL:
 			return shift ? ">" : ".";
-		case Keyboard.KEY_DIVIDE:
+		case Input.KEY_DIVIDE:
 			return shift ? "?" : "/";
-		case Keyboard.KEY_EQUALS:
+		case Input.KEY_EQUALS:
 			return shift ? "+" : "=";
-		case Keyboard.KEY_GRAVE:
+		case Input.KEY_GRAVE:
 			return shift ? "¬" : "`";
-		case Keyboard.KEY_LBRACKET:
+		case Input.KEY_LBRACKET:
 			return shift ? "{" : "[";
-		case Keyboard.KEY_RBRACKET:
+		case Input.KEY_RBRACKET:
 			return shift ? "}" : "]";
-		case Keyboard.KEY_MINUS:
+		case Input.KEY_MINUS:
 			return shift ? "_" : "-";
-		case Keyboard.KEY_MULTIPLY:
+		case Input.KEY_MULTIPLY:
 			return shift ? "*" : "*";
-		case Keyboard.KEY_NUMPAD0:
+		case Input.KEY_NUMPAD0:
 			return "0";
-		case Keyboard.KEY_NUMPAD1:
+		case Input.KEY_NUMPAD1:
 			return "1";
-		case Keyboard.KEY_NUMPAD2:
+		case Input.KEY_NUMPAD2:
 			return "2";
-		case Keyboard.KEY_NUMPAD3:
+		case Input.KEY_NUMPAD3:
 			return "3";
-		case Keyboard.KEY_NUMPAD4:
+		case Input.KEY_NUMPAD4:
 			return "4";
-		case Keyboard.KEY_NUMPAD5:
+		case Input.KEY_NUMPAD5:
 			return "5";
-		case Keyboard.KEY_NUMPAD6:
+		case Input.KEY_NUMPAD6:
 			return "6";
-		case Keyboard.KEY_NUMPAD7:
+		case Input.KEY_NUMPAD7:
 			return "7";
-		case Keyboard.KEY_NUMPAD8:
+		case Input.KEY_NUMPAD8:
 			return "8";
-		case Keyboard.KEY_NUMPAD9:
+		case Input.KEY_NUMPAD9:
 			return "9";
-		case Keyboard.KEY_NUMPADCOMMA:
+		case Input.KEY_NUMPADCOMMA:
 			return shift ? "," : ",";
-		case Keyboard.KEY_NUMPADEQUALS:
+		case Input.KEY_NUMPADEQUALS:
 			return shift ? "=" : "=";
-		case Keyboard.KEY_PERIOD:
+		case Input.KEY_PERIOD:
 			return shift ? ">" : ".";
-		case Keyboard.KEY_SEMICOLON:
+		case Input.KEY_SEMICOLON:
 			return shift ? ":" : ";";
-		case Keyboard.KEY_SLASH:
+		case Input.KEY_SLASH:
 			return shift ? "?" : "/";
-		case Keyboard.KEY_SUBTRACT:
+		case Input.KEY_SUBTRACT:
 			return shift ? "_" : "-";
-		case Keyboard.KEY_TAB:
+		case Input.KEY_TAB:
 			return shift ? "\t" : "\t";
-		case Keyboard.KEY_YEN:
+		case Input.KEY_YEN:
 			return shift ? "\u00A5" : "\u00A5";
-		case Keyboard.KEY_0:
+		case Input.KEY_0:
 			return shift ? "!" : "0";
-		case Keyboard.KEY_1:
+		case Input.KEY_1:
 			return shift ? "\"" : "1";
-		case Keyboard.KEY_2:
+		case Input.KEY_2:
 			return shift ? "£" : "2";
-		case Keyboard.KEY_3:
+		case Input.KEY_3:
 			return shift ? "$" : "3";
-		case Keyboard.KEY_4:
+		case Input.KEY_4:
 			return shift ? "%" : "4";
-		case Keyboard.KEY_5:
+		case Input.KEY_5:
 			return shift ? "^" : "5";
-		case Keyboard.KEY_6:
+		case Input.KEY_6:
 			return shift ? "&" : "6";
-		case Keyboard.KEY_7:
+		case Input.KEY_7:
 			return shift ? "*" : "7";
-		case Keyboard.KEY_8:
+		case Input.KEY_8:
 			return shift ? "(" : "8";
-		case Keyboard.KEY_9:
+		case Input.KEY_9:
 			return shift ? ")" : "9";
 		default:
-			return shift ? (Keyboard.getKeyName(code).charAt(0) + "").toUpperCase() : Keyboard.getKeyName(code).charAt(0) + "";
+			return shift ? (Input.getKeyName(code).charAt(0) + "").toUpperCase() : Input.getKeyName(code).charAt(0) + "";
 		}
 	}
 
@@ -421,7 +420,7 @@ public abstract class TextComponent extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		ThemeManager.getTheme().paintText(g, scaling, this);
 	}
 

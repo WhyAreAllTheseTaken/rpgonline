@@ -33,9 +33,7 @@ package io.github.tomaso2468.rpgonline.bullet;
 
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.TextureMap;
 
 /**
@@ -111,12 +109,12 @@ public class BasicBullet implements Bullet {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(GameContainer container, StateBasedGame game, float delf, float px, float py, float xv, float yv,
+	public void update(Game game, float delf, float px, float py, float xv, float yv,
 			BulletState state, List<Bullet> bullets) {
 		x += this.xv * delf;
 		y += this.yv * delf;
 		
-		if (!state.getStateBounds(container).contains(x, y)) {
+		if (!state.getStateBounds(game).contains(x, y)) {
 			bullets.remove(this);
 		}
 	}

@@ -32,12 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.world2d.texture;
 
 import org.apache.commons.math3.util.FastMath;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
-import io.github.tomaso2468.rpgonline.render.RenderManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -83,16 +82,14 @@ public class WindTexture extends BasicTileTexture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) {
-		Graphics.setCurrent(g);
-		
+	public void render(Renderer renderer, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) {
 		float amount = (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
 				* f;
 		
 		Image img = TextureMap.getTexture(getTexture(x, y, z, w, state, t));
 		
 		if (img != null) {
-			RenderManager.getRenderer().renderSheared(img, sx - amount, sy, img.getWidth(), img.getHeight(), amount, 0);
+			renderer.renderSheared(img, sx - amount, sy, img.getWidth(), img.getHeight(), amount, 0);
 		}
 	}
 	
@@ -102,9 +99,15 @@ public class WindTexture extends BasicTileTexture {
 	 * @return A double value.
 	 */
 	public static double wibble(double v) {
-		double a = v % 50 + FastMath.log10(v);
-		double b = FastMath.sin(a) + FastMath.sin(FastMath.cbrt(a)) * 2 + (FastMath.cos(2 * a) / 3)
-				+ (FastMath.sin(-a) / 2) + (FastMath.tanh(a / 2)) / 3;
-		return (FastMath.abs(b) / 2.5 - 1 + FastMath.sin(v / 4) * 4) / 8;
+		return FastMath.sin(v / 6);
+//		double a = v % 50 + FastMath.log10(v);
+//		double b = FastMath.sin(a) + FastMath.sin(FastMath.cbrt(a)) * 2 + (FastMath.cos(2 * a) / 3)
+//				+ (FastMath.sin(-a) / 2) + (FastMath.tanh(a / 2)) / 3;
+//		return (FastMath.abs(b) / 2.5 - 1 + FastMath.sin(v / 4) * 4) / 8;
+	}
+	
+	public float windAmount(long x, long y, float wind) {
+		return (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
+				* f;
 	}
 }

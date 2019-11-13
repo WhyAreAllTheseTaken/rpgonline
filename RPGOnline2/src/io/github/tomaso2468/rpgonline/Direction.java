@@ -31,8 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
-import javax.annotation.Nonnull;
-
 /**
  * An enum used to represent NESW directions. This class also provides based
  * geometry control for directions.
@@ -90,7 +88,6 @@ public enum Direction {
 	 * 
 	 * @return A direction.
 	 */
-	@Nonnull
 	public Direction flip() {
 		switch (this) {
 		case EAST:

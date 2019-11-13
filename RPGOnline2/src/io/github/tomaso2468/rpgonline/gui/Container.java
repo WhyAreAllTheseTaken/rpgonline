@@ -34,11 +34,12 @@ package io.github.tomaso2468.rpgonline.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A component that can hold other components.
@@ -77,7 +78,7 @@ public class Container extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		ThemeManager.getTheme().paintContainer(g, scaling, this);
 		paintComponents(g, scaling);
 	}
@@ -112,7 +113,7 @@ public class Container extends Component {
 	 * @param scaling The scaling factor for rendering.
 	 * @throws SlickException If an error occurs rendering the components.
 	 */
-	public void paintComponents(Graphics g, float scaling) throws SlickException {
+	public void paintComponents(Graphics g, float scaling) throws RenderException {
 		for (Component component : components) {
 			g.pushTransform();
 			g.translate(component.getX(), component.getY());
@@ -237,7 +238,7 @@ public class Container extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void containerUpdate(GameContainer c) {
+	public void containerUpdate(Game c) {
 		for (Component component : components) {
 			component.containerUpdate(c);
 		}

@@ -31,13 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.cutscene;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * A cutscene that displays a static texture.
@@ -68,8 +67,9 @@ public class TextureCutscene extends Cutscene {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(GameContainer c, StateBasedGame game, Graphics g, CutsceneState state) {
-		g.drawImage(TextureMap.getTexture(texture).getScaledCopy(c.getWidth(), c.getHeight()), 0, 0);
+	public void render(Game game, Renderer renderer, CutsceneState state) {
+		Image img = TextureMap.getTexture(texture).getScaledCopy(renderer.getWidth(), renderer.getHeight());
+		renderer.render(img, 0, 0, img.getWidth(), img.getHeight());
 	}
 
 	/**

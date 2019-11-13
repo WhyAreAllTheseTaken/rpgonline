@@ -32,12 +32,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
 
 /**
  * A class representing a GUI component.
@@ -67,8 +69,9 @@ public abstract class Component {
 	 * @param g The graphics context.
 	 * @param scaling The scaling factor for rendering.
 	 * @throws SlickException If an error occurs rendering graphics.
+	 * @throws RenderException 
 	 */
-	public void paint(Graphics g, float scaling) throws SlickException {
+	public void paint(Graphics g, float scaling) throws RenderException {
 		ThemeManager.getTheme().paintComponent(g, scaling, this);
 	}
 	
@@ -315,8 +318,9 @@ public abstract class Component {
 
 	/**
 	 * Component update (for keyboard profiling and real-time updates).
+	 * @param input 
 	 */
-	public void update(float delta) {
+	public void update(float delta, Input input) {
 		
 	}
 
@@ -356,9 +360,9 @@ public abstract class Component {
 	
 	/**
 	 * Updates the game container.
-	 * @param c A game container object.
+	 * @param game The game.
 	 */
-	public void containerUpdate(GameContainer c) {
+	public void containerUpdate(Game game) {
 		
 	}
 }

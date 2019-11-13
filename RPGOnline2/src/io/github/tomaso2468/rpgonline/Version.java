@@ -35,8 +35,6 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.annotation.Nonnull;
-
 import org.newdawn.slick.util.Log;
 
 /**
@@ -170,7 +168,7 @@ public class Version implements Comparable<Version> {
 	 * 
 	 * @param verstr The string to parse.
 	 */
-	public Version(@Nonnull String verstr) {
+	public Version(String verstr) {
 		date = Long.MIN_VALUE;
 		major = 0;
 		minor = 0;
@@ -447,7 +445,6 @@ public class Version implements Comparable<Version> {
 	 * 
 	 * @return A version number without the time stamp.
 	 */
-	@Nonnull
 	public String toSimpleString() {
 		return name;
 	}
@@ -457,7 +454,6 @@ public class Version implements Comparable<Version> {
 	 * 
 	 * @return A version number with a human readable date component.
 	 */
-	@Nonnull
 	public String toDatedString() {
 		return dated_string;
 	}

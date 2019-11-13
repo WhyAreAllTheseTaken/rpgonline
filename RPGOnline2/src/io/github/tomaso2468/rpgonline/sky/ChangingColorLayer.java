@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -47,9 +47,8 @@ public abstract class ChangingColorLayer implements SkyLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
-		g.setColor(getColor(g, c, x, y, z, world));
-		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light) {
+		renderer.drawQuad(0, 0, game.getWidth(), game.getHeight(), getColor(renderer, game, x, y, z, world));
 	}
 	
 	/**
@@ -62,5 +61,5 @@ public abstract class ChangingColorLayer implements SkyLayer {
 	 * @param world The current world.
 	 * @return A color object.
 	 */
-	public abstract Color getColor(Graphics g, GameContainer c, double x, double y, double z, World world);
+	public abstract Color getColor(Renderer renderer, Game game, double x, double y, double z, World world);
 }

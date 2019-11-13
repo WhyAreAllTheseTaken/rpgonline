@@ -32,20 +32,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.cutscene;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
-import org.newdawn.slick.state.transition.Transition;
+
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.GameState;
+import io.github.tomaso2468.rpgonline.render.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
+import io.github.tomaso2468.rpgonline.transition.FadeInTransition;
+import io.github.tomaso2468.rpgonline.transition.FadeOutTransition;
+import io.github.tomaso2468.rpgonline.transition.Transition;
 
 /**
  * A state that holds cutscene information.
  * @author Tomaso2468
  */
-public abstract class CutsceneState extends BasicGameState {
+public abstract class CutsceneState implements GameState {
 	/**
 	 * The ID of the state.
 	 */
@@ -90,7 +90,7 @@ public abstract class CutsceneState extends BasicGameState {
 	 * @param c The color of the transition screen.
 	 */
 	public CutsceneState(int id, int nextState, Cutscene scene, Color c) {
-		this(id, nextState, scene, new FadeOutTransition(c, 500), new FadeInTransition(c, 50));
+		this(id, nextState, scene, new FadeOutTransition(c, 0.5f), new FadeInTransition(c, 0.05f));
 	}
 	/**
 	 * Constructs a new Cutscene state.
@@ -105,7 +105,7 @@ public abstract class CutsceneState extends BasicGameState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+	public void init(Game game) throws RenderException {
 		
 	}
 
@@ -113,18 +113,18 @@ public abstract class CutsceneState extends BasicGameState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		scene.render(container, game, g, this);
+	public void render(Game game, Renderer renderer) throws RenderException {
+		scene.render(game, renderer, this);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		scene.update(delta / 1000f);
+	public void update(Game game, float delta) throws RenderException {
+		scene.update(delta);
 		if (scene.isDone()) {
-			game.enterState(nextState, leave, enter);
+			game.changeState(nextState, leave, enter);
 		}
 	}
 	
@@ -132,8 +132,7 @@ public abstract class CutsceneState extends BasicGameState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		super.enter(container, game);
+	public void enterState(Game game) throws RenderException {
 		scene.reset();
 		scene.onStart();
 	}

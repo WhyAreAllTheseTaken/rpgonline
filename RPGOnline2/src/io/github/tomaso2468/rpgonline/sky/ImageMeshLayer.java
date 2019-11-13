@@ -32,11 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -69,14 +69,14 @@ public abstract class ImageMeshLayer implements SkyLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Graphics g, GameContainer c, double x, double y, double z, World world, Color light) {
-		g.pushTransform();
+	public void render(Renderer renderer, Game game, double x, double y, double z, World world, Color light) {
+		renderer.pushTransform();
 		
-		g.translate(c.getWidth() / 2, c.getHeight() / 2);
-		g.translate((float) x % imageWidth, (float) y % imageHeight);
+		renderer.translate2D(game.getWidth() / 2, game.getHeight() / 2);
+		renderer.translate2D((float) x % imageWidth, (float) y % imageHeight);
 		
-		long dist_x = c.getWidth() / 2 / imageWidth + 1;
-		long dist_y = c.getHeight() / 2 / imageHeight + 1;
+		long dist_x = game.getWidth() / 2 / imageWidth + 1;
+		long dist_y = game.getHeight() / 2 / imageHeight + 1;
 		
 		Image current = null;
 		for (long tx = -dist_x; tx <= dist_x; tx++) {
@@ -84,18 +84,18 @@ public abstract class ImageMeshLayer implements SkyLayer {
 				Image img = getImageAt(tx - (long) (x / imageWidth), ty - (long) (y / imageHeight));
 				if (img != null) {
 					if (TextureMap.getSheet(img) != current) {
-						if (current != null) current.endUse();
+						if (current != null) renderer.endUse(img);
 						current = TextureMap.getSheet(img);
-						current.startUse();
+						renderer.startUse(img);
 					}
 					light.bind();
-					img.drawEmbedded(tx * imageWidth, ty * imageHeight, imageWidth, imageHeight);
+					renderer.renderEmbedded(img, tx * imageWidth, ty * imageHeight, imageWidth, imageHeight);
 				}
 			}
 		}
-		if (current != null) current.endUse();
+		if (current != null) renderer.endUse(current);
 		
-		g.popTransform();
+		renderer.popTransform();
 	}
 	
 	/**

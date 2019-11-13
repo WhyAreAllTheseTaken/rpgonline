@@ -33,9 +33,9 @@ package io.github.tomaso2468.rpgonline.particle;
 
 import java.util.List;
 
-import org.newdawn.slick.Graphics;
-
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -73,8 +73,9 @@ public interface Particle {
 	 * @param sx The X position to render at.
 	 * @param sy The Y position to render at.
 	 */
-	public default void render(Graphics g, float sx, float sy) {
-		g.drawImage(TextureMap.getTexture(getTexture()), sx, sy);
+	public default void render(Renderer renderer, float sx, float sy) {
+		Image img = TextureMap.getTexture(getTexture());
+		renderer.render(img, sx, sy, img.getWidth(), img.getHeight());
 	}
 	/**
 	 * Gets the X position of this particle.

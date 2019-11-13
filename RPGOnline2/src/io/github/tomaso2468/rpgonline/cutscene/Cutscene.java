@@ -31,12 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.cutscene;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.audio.AudioManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * An abstract class representing a cutscene.
@@ -88,7 +86,7 @@ public abstract class Cutscene {
 	 * @param g The current graphics context.
 	 * @param state The current game state.
 	 */
-	public abstract void render(GameContainer c, StateBasedGame game, Graphics g, CutsceneState state);
+	public abstract void render(Game game, Renderer renderer, CutsceneState state);
 	/**
 	 * Gets the music for this cutscene.
 	 * @return An ambient music object.

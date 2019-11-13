@@ -31,9 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.input;
 
-import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.Input;
-
 import io.github.tomaso2468.rpgonline.RPGConfig;
 
 /**
@@ -100,12 +97,7 @@ public final class InputUtils {
 	 * @return {@code true} if the binding is pressed, {@code false} otherwise.
 	 */
 	public static boolean isActionPressed(Input in, String func) {
-		if (in.getControllerCount() > 0) {
-			return Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(func)) 
-					|| ControllerInputProvider.isButtonPressed(in, RPGConfig.getControllerInput().getBinding(func));
-		} else {
-			return Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(func));
-		}
+		return in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(func));
 	}
 	
 }

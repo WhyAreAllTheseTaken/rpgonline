@@ -33,8 +33,6 @@ package io.github.tomaso2468.rpgonline;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-
 /**
  * A class to assist with storing save files.
  * @author Tomaso2468
@@ -56,7 +54,6 @@ public final class FolderHelper {
 	 * </table>
 	 * @return A file representing a directory (that may not exist).
 	 */
-	@Nonnull
 	public static File getAppDataFolder() {
 		String os = System.getProperty("os.name").toLowerCase();
 		
@@ -80,7 +77,6 @@ public final class FolderHelper {
 	 * </table>
 	 * @return A file representing a directory that exists.
 	 */
-	@Nonnull
 	public static File createAppDataFolder(String... name) {
 		File folder = getAppDataFolder();
 		

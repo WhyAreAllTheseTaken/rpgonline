@@ -31,9 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.theme;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.Button;
 import io.github.tomaso2468.rpgonline.gui.CheckBox;
 import io.github.tomaso2468.rpgonline.gui.Component;
@@ -230,5 +230,5 @@ public interface Theme {
 	 * @param c The game container to use.
 	 * @param scaling The scaling factor for the display.
 	 */
-	public void init(GameContainer c, float scaling);
+	public void init(Game c, float scaling);
 }

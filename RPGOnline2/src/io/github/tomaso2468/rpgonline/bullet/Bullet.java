@@ -32,14 +32,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.bullet;
 
 import java.util.List;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
-import io.github.tomaso2468.rpgonline.render.RenderManager;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * A interface representing a bullet.
@@ -75,7 +71,7 @@ public interface Bullet {
 	 * @param state     The current bullet state.
 	 * @param bullets   A list of all bullets currently in the state.
 	 */
-	public void update(GameContainer container, StateBasedGame game, float delf, float px, float py, float xv, float yv,
+	public void update(Game game, float delf, float px, float py, float xv, float yv,
 			BulletState state, List<Bullet> bullets);
 
 	/**
@@ -133,12 +129,12 @@ public interface Bullet {
 	 * @see #renderEmbedded(float, float, float, float, BulletState, Graphics,
 	 *      Image, float, float)
 	 */
-	public default void render(float px, float py, float xv, float yv, BulletState state, Graphics g, float sx,
+	public default void render(float px, float py, float xv, float yv, BulletState state, Renderer renderer, float sx,
 			float sy) {
 		Image img = TextureMap.getTexture(getTexture());
 		
 		if (img != null) {
-			RenderManager.getRenderer().render(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+			renderer.render(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
 		}
 	}
 
@@ -216,18 +212,18 @@ public interface Bullet {
 	 * @see #isCombined()
 	 * @see #isCustom()
 	 */
-	public default Image renderEmbedded(float px, float py, float xv, float yv, BulletState state, Graphics g,
+	public default Image renderEmbedded(float px, float py, float xv, float yv, BulletState state, Renderer renderer,
 			Image current, float sx, float sy) {
 		Image img = TextureMap.getTexture(getTexture());
 		
 		if (img != null) {
 			if (TextureMap.getSheet(img) != current) {
-				if (current != null) current.endUse();
+				if (current != null) renderer.endUse(img);
 				current = TextureMap.getSheet(img);
-				if (current != null) current.startUse();
+				if (current != null) renderer.startUse(img);
 			}
 			
-			RenderManager.getRenderer().renderEmbedded(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
+			renderer.renderEmbedded(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
 		}
 		
 		return current;

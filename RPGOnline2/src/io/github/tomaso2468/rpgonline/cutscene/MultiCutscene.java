@@ -31,12 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.cutscene;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.StateBasedGame;
-
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * A cutscene type that allows multiple cutscenes to be combined.
@@ -73,15 +70,12 @@ public class MultiCutscene extends Cutscene {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(GameContainer c, StateBasedGame game, Graphics g, CutsceneState state) {
+	public void render(Game game, Renderer renderer, CutsceneState state) {
 		if (index < scenes.length) {
-			scenes[index].render(c, game, g, state);
+			scenes[index].render(game, renderer, state);
 		}
 		
-		g.resetTransform();
-		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		renderer.resetTransform();
 	}
 	
 	/**

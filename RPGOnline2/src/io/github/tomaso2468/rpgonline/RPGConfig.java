@@ -31,16 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
-import org.newdawn.slick.Image;
-
-import io.github.tomaso2468.rpgonline.input.ControllerInputProvider;
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
-import io.github.tomaso2468.rpgonline.input.MapControllerProvider;
 import io.github.tomaso2468.rpgonline.input.MapKeyProvider;
 import io.github.tomaso2468.rpgonline.lang.LangProvider;
+import io.github.tomaso2468.rpgonline.lighting.LightingDisabled;
+import io.github.tomaso2468.rpgonline.lighting.LightingEngine;
 
 /**
  * A class for storing configuration details about the game engine.
@@ -101,23 +96,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 */
 	private static KeyboardInputProvider keyInput = new MapKeyProvider();
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 */
-	private static float controllerActuation = 0.5f;
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 */
-	private static ControllerInputProvider controllerInput = new MapControllerProvider();
 
 	/**
 	 * Determines if textures should be mapped/atlases. <b>This must be set before
@@ -145,12 +123,12 @@ public final class RPGConfig {
 	private static boolean debug = false;
 
 	/**
-	 * Determines if lighting should be used.
+	 * Determines the lighting engine to use.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	private static boolean lighting = false;
+	private static LightingEngine lighting = new LightingDisabled();
 
 	/**
 	 * Determines if particles should be used.
@@ -176,14 +154,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	private static int filterMode = Image.FILTER_NEAREST;
-
-	/**
-	 * Determines if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	private static boolean snapToPixel = false;
 	
 	/**
 	 * The number of threads to use for pathfinding.
@@ -206,9 +176,9 @@ public final class RPGConfig {
 	private static long pathfindingSleepTime = 1000 / 30;
 	
 	/**
-	 * Determines if MDR is enabled.
+	 * Determines if HDR is enabled.
 	 */
-	private static boolean mdr = false;
+	private static boolean hdr = false;
 
 	/**
 	 * Determines how language settings are computed. This defaults to returning the
@@ -338,7 +308,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #setTileSize(int)
 	 */
-	@Nonnegative
 	public static int getTileSize() {
 		return tileSize;
 	}
@@ -353,7 +322,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 * @see #getTileSize()
 	 */
-	@Nonnegative
 	public static void setTileSize(int tileSize) {
 		if (tileSize <= 0) {
 			throw new IllegalArgumentException("tileSize must be greater than 0.");
@@ -371,7 +339,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 * @see #setKeyInput(KeyboardInputProvider)
 	 */
-	@Nonnull
 	public static KeyboardInputProvider getKeyInput() {
 		return keyInput;
 	}
@@ -386,83 +353,11 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
 	 * @see #getKeyInput()
 	 */
-	@Nonnull
 	public static void setKeyInput(KeyboardInputProvider keyInput) {
 		if (keyInput == null) {
 			throw new NullPointerException("keyInput");
 		}
 		RPGConfig.keyInput = keyInput;
-	}
-
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @return A float that is equal to or greater than 0. A float value of Infinity
-	 *         or NaN may be used to disable axis that are used as buttons.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 * @see #setControllerActuation(float)
-	 */
-	@Nonnegative
-	public static float getControllerActuation() {
-		return controllerActuation;
-	}
-
-	/**
-	 * The sensitivity for interpreting an axis button as a normal button. If the
-	 * value passes this it will be considered as true. This is applied to the
-	 * absolute value of the axis.
-	 * 
-	 * @param controllerActuation A float that is equal to or greater than 0. A
-	 *                            float value of Infinity or NaN may be used to
-	 *                            disable axis that are used as buttons.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.ControllerInputProvider
-	 * @see #getControllerActuation()
-	 */
-	@Nonnegative
-	public static void setControllerActuation(float controllerActuation) {
-		if (controllerActuation < 0) {
-			throw new IllegalArgumentException("Actuation point cannot be less than 0.");
-		}
-		RPGConfig.controllerActuation = controllerActuation;
-	}
-
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @return A ControllerInputProvider.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see #setControllerInput(ControllerInputProvider)
-	 */
-	@Nonnull
-	public static ControllerInputProvider getControllerInput() {
-		return controllerInput;
-	}
-
-	/**
-	 * A handler for storing bindings on controllers. This defaults to a
-	 * {@code MapControllerProvider}
-	 * 
-	 * @param controllerInput A ControllerInputProvider. This cannot be null.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.input.MapControllerProvider
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see #getControllerInput()
-	 */
-	@Nonnull
-	public static void setControllerInput(ControllerInputProvider controllerInput) {
-		if (controllerInput == null) {
-			throw new NullPointerException("controllerInput");
-		}
-		RPGConfig.controllerInput = controllerInput;
 	}
 
 	/**
@@ -523,7 +418,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see #setLangProvider(LangProvider)
 	 */
-	@Nonnull
 	public static LangProvider getLangProvider() {
 		return lang;
 	}
@@ -537,7 +431,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see #getLangProvider(LangProvider)
 	 */
-	@Nonnull
 	public static void setLangProvider(LangProvider lang) {
 		if (lang == null) {
 			throw new NullPointerException("lang");
@@ -555,7 +448,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.lang.Lang
 	 * @see io.github.tomaso2468.rpgonline.lang.LangPack
 	 */
-	@Nonnull
 	public static String[] getLangloc() {
 		return langloc;
 	}
@@ -602,27 +494,26 @@ public final class RPGConfig {
 	}
 
 	/**
-	 * Determines if lighting should be used.
+	 * Gets the lighting engine to be used.
 	 * 
-	 * @return {@code true} if lighting is enabled, {@code false} otherwise.
+	 * @return A lighting engine enum.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	public static boolean isLighting() {
+	public static LightingEngine getLighting() {
 		return lighting;
 	}
 
 	/**
-	 * Sets if lighting should be used.
+	 * Sets the lighting engine to be used.
 	 * 
-	 * @param lighting {@code true} if lighting should be enabled, {@code false}
-	 *                 otherwise.
+	 * @param lighting A lighting engine enum.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
 	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
 	 */
-	public static void setLighting(boolean lighting) {
+	public static void setLighting(LightingEngine lighting) {
 		RPGConfig.lighting = lighting;
 	}
 
@@ -708,31 +599,7 @@ public final class RPGConfig {
 	public static void setFilterMode(int filterMode) {
 		RPGConfig.filterMode = filterMode;
 	}
-
-	/**
-	 * Determines if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @return {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static boolean isSnapToPixel() {
-		return snapToPixel;
-	}
-
-	/**
-	 * Sets if rendering should snap graphics to the pixel size of the game or
-	 * allow subpixel rendering.
-	 * 
-	 * @param snapToPixel {@code true} if rendering is locked to pixels, {@code false} otherwise (subpixel rendering).
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static void setSnapToPixel(boolean snapToPixel) {
-		RPGConfig.snapToPixel = snapToPixel;
-	}
-
+	
 	/**
 	 * Gets the number of pathfinding threads to use.
 	 * @return An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
@@ -785,19 +652,19 @@ public final class RPGConfig {
 	}
 
 	/**
-	 * Determines if the MDR effect is enabled.
-	 * @return {@code true} if MDR is enabled, {@code false} otherwise.
+	 * Determines if the HDR effect is enabled.
+	 * @return {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
-	public static boolean isMDR() {
-		return mdr;
+	public static boolean isHDR() {
+		return hdr;
 	}
 
 	/**
 	 * Sets if the MDR effect is enabled.
-	 * @param mdr {@code true} if MDR is enabled, {@code false} otherwise.
+	 * @param hdr {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
-	public static void setMDR(boolean mdr) {
-		RPGConfig.mdr = mdr;
+	public static void setHDR(boolean hdr) {
+		RPGConfig.hdr = hdr;
 	}
 
 }

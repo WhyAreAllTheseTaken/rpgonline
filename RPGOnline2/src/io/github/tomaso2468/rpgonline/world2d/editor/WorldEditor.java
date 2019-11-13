@@ -33,27 +33,23 @@ package io.github.tomaso2468.rpgonline.world2d.editor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.math3.util.FastMath;
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import io.github.tomaso2468.rpgonline.Game;
+import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
-import io.github.tomaso2468.rpgonline.post.MultiEffect;
-import io.github.tomaso2468.rpgonline.world2d.LightSource;
+import io.github.tomaso2468.rpgonline.render.Graphics;
+import io.github.tomaso2468.rpgonline.render.RenderException;
+import io.github.tomaso2468.rpgonline.render.RenderMode;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.WorldState;
@@ -61,6 +57,7 @@ import io.github.tomaso2468.rpgonline.world2d.texture.TileTexture;
 
 /**
  * A class that allows for the editing of game worlds.
+ * 
  * @author Tomaso2468
  * @see io.github.tomaso2468.rpgonline.world2d.WorldState
  */
@@ -98,13 +95,19 @@ public class WorldEditor extends WorldState {
 	 */
 	private int size = 2;
 	/**
-	 * <p>The brush mode.</p>
+	 * <p>
+	 * The brush mode.
+	 * </p>
 	 * <table>
 	 * <tr>
-	 * <td>0</td><td>Draw Mode</td>
-	 * <td>1</td><td>Random (very light)</td>
-	 * <td>2</td><td>Delete</td>
-	 * <td>3</td><td>Random (light)</td>
+	 * <td>0</td>
+	 * <td>Draw Mode</td>
+	 * <td>1</td>
+	 * <td>Random (very light)</td>
+	 * <td>2</td>
+	 * <td>Delete</td>
+	 * <td>3</td>
+	 * <td>Random (light)</td>
 	 * </tr>
 	 * <table>
 	 */
@@ -125,50 +128,71 @@ public class WorldEditor extends WorldState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		Debugger.initRender();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(Game game, Renderer renderer) throws RenderException {
 		Debugger.start("render");
 
-		Debugger.start("game-render");
-		render2(container, game, g);
+		if (post_enable) {
+			if (buffer == null) {
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
+				buffer.destroy();
+				buffer = new Image(renderer, game.getWidth(), game.getHeight());
+			}
+			renderer.setRenderTarget(buffer);
+			renderer.clear();
+		}
 
-		g.resetTransform();
+		Debugger.start("game-render");
+		render2(game, renderer);
 		Debugger.stop("game-render");
 
-		if (post != null && post_enable) {
+		renderer.resetTransform();
+
+		if (post_enable) {
 			Debugger.start("effects");
-
-			if (buffer == null) {
-				buffer = new Image(container.getWidth(), container.getHeight());
-			} else if (container.getWidth() != buffer.getWidth() || container.getHeight() != buffer.getHeight()) {
-				buffer.destroy();
-				buffer = new Image(container.getWidth(), container.getHeight());
+			if (buffer2 == null) {
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
+			} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
+				buffer2.destroy();
+				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
 			}
-
-			g.copyArea(buffer, 0, 0);
-
-			if (!(post instanceof MultiEffect)) {
+			renderer.setRenderTarget(buffer2);
+			renderer.clear();
+			if (post != null) {
 				Debugger.start("post-" + post.getClass());
-			}
-			post.doPostProcess(container, game, buffer, g);
-			if (!(post instanceof MultiEffect)) {
+				post.postProcess(buffer, buffer2, renderer);
 				Debugger.stop("post-" + post.getClass());
+			} else {
+				renderer.drawImage(buffer, 0, 0);
+			}
+			renderer.setRenderTarget(null);
+			if (RPGConfig.isHDR()) {
+				Debugger.start("mdr");
+
+				if (hdr == null) {
+					hdr = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
+							WorldState.class.getResource("/hdr.frg"));
+				}
+				renderer.useShader(hdr);
+				hdr.setUniform("exposure", 1f);
+				hdr.setUniform("gamma", 1.2f);
+
+				renderer.drawImage(buffer2, 0, 0);
+
+				renderer.useShader(null);
+
+				Debugger.stop("mdr");
+			} else {
+				renderer.drawImage(buffer2, 0, 0);
 			}
 
 			Debugger.stop("effects");
 		}
-		g.resetTransform();
-		g.flush();
 
 		if (!light) {
 			Debugger.start("gui");
+
+			Graphics g = renderer.getGUIGraphics();
 
 			g.setColor(new Color(0, 0, 0, 128));
 			g.fillRect(0, 0, 512, 512);
@@ -183,15 +207,15 @@ public class WorldEditor extends WorldState {
 				if (tex.isCustom()) {
 					Debugger.start("custom-tile");
 
-					tex.render(g, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(), 32 + tex.getY(),
-							0.1f);
+					tex.render(renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(),
+							32 + tex.getY(), 0.1f);
 
 					Debugger.stop("custom-tile");
 				} else {
 					Image img = TextureMap.getTexture(tex.getTexture(Math.round(x), Math.round(y), z, world, state, t));
 
 					if (img != null) {
-						img.draw(32 + tex.getX(), 32 + tex.getY(), img.getWidth(), img.getHeight());
+						g.drawImage(img, 32 + tex.getX(), 32 + tex.getY());
 					}
 				}
 			}
@@ -221,276 +245,74 @@ public class WorldEditor extends WorldState {
 			Debugger.stop("gui");
 		}
 
-		g.flush();
-
 		Debugger.stop("render");
 	}
 
 	List<TileTexture> textures = new ArrayList<>();
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void render2(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		List<LightSource> lights = null;
-		if (RPGConfig.isLighting() && light) {
-			Debugger.start("light-compute");
+	@Override
+	protected Image renderTile(Game game, Renderer renderer, float dist_x, float dist_y, World world, float sx,
+			float sy, Tile t, String state, Image current, long x, long y, long z, float wind) throws RenderException {
+		current = super.renderTile(game, renderer, dist_x, dist_y, world, sx, sy, t, state, current, x, y, z, wind);
 
-			lights = world.getLights();
+		Rectangle box = new Rectangle(Math.round(this.x) - size / 2, Math.round(this.y) - size / 2, size, size);
+		
+		if (!light && box.contains(x, y) && z == this.z) {
+			if (current != null)
+				renderer.endUse(current);
 
-			if (lights.size() != 0) {
-				lights.sort(new Comparator<LightSource>() {
-					@Override
-					public int compare(LightSource o1, LightSource o2) {
-						double dist1 = FastMath.hypot(x - o1.getLX(), y - o1.getLY());
-						double dist2 = FastMath.hypot(x - o2.getLX(), y - o2.getLY());
-
-						if (dist1 < dist2) {
-							return -1;
-						}
-
-						if (dist1 > dist2) {
-							return 1;
-						}
-
-						return 0;
-					}
-				});
-
-				for (int i = 0; i < lights.size(); i++) {
-					if (i < lights.size()) {
-						LightSource l = lights.get(i);
-						double dist = FastMath.hypot(x - l.getLX(), y - l.getLY());
-						if (dist > 40 * l.getBrightness()) {
-							lights.remove(l);
-							i -= 1;
-						}
-					}
-				}
-
-				while (lights.size() > 32) {
-					lights.remove(lights.size() - 1);
-				}
+			Color c = Color.magenta;
+			switch (brush_mode) {
+			case 0:
+				c = new Color(0, 255, 255, 128);
+				break;
+			case 1:
+				c = new Color(255, 255, 0, 128);
+				break;
+			case 2:
+				c = new Color(255, 0, 0, 128);
+				break;
+			case 3:
+				c = new Color(255, 128, 0, 128);
+				break;
 			}
 
-			Debugger.stop("light-compute");
+			renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
+			renderer.drawQuad(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
+					RPGConfig.getTileSize(), RPGConfig.getTileSize(), c);
+			renderer.setMode(RenderMode.MODE_2D_SPRITE_NOVBO);
+
+			if (current != null)
+				renderer.startUse(current);
 		}
 
-		Debugger.start("sky");
-		if (sky != null) {
-			sky.render(g, container, x, y, 0, world, world.getLightColor());
-		}
-		Debugger.stop("sky");
-
-		g.translate(container.getWidth() / 2, container.getHeight() / 2);
-
-		g.scale(base_scale, base_scale);
-
-		g.scale(zoom, zoom);
-
-		float sx = (float) (x * RPGConfig.getTileSize());
-		float sy = (float) (y * RPGConfig.getTileSize());
-
-		long dist_x = (long) (container.getWidth() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 2;
-		long dist_y = (long) (container.getHeight() / base_scale / zoom / RPGConfig.getTileSize() / 2) + 7;
-
-		Debugger.start("world");
-		long mix = (long) (x - dist_x);
-		long max = (long) (x + dist_x);
-		long miy = (long) (y - dist_y);
-		long may = (long) (y + dist_y);
-
-		float wind = 0.25f;
-
-		Image current = null;
-
-		Rectangle box = new Rectangle(Math.round(x) - size / 2, Math.round(y) - size / 2, size, size);
-
-		for (long z = 0; z >= -2; z--) {
-			for (long y = miy; y <= may; y++) {
-				for (long x = mix; x <= max; x++) {
-					Tile t = world.getTile(x, y, z);
-					String state = world.getTileState(x, y, z);
-					expandTexture(t.getTexture(), textures, x, y, z, world, t, state);
-
-					for (TileTexture tex : textures) {
-						if (tex.isCustom()) {
-							Debugger.start("custom-tile");
-							if (current != null)
-								current.endUse();
-
-							tex.render(g, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
-									y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
-
-							if (current != null)
-								current.startUse();
-							Debugger.stop("custom-tile");
-						} else {
-							Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
-
-							if (img != null) {
-								if (TextureMap.getSheet(img) != current) {
-									if (current != null)
-										current.endUse();
-									current = TextureMap.getSheet(img);
-									current.startUse();
-								}
-								img.drawEmbedded(x * RPGConfig.getTileSize() + tex.getX() - sx,
-										y * RPGConfig.getTileSize() + tex.getY() - sy, img.getWidth(), img.getHeight());
-							}
-						}
-					}
-
-					textures.clear();
-
-					if (!light && box.contains(x, y) && z == this.z) {
-						if (current != null)
-							current.endUse();
-
-						switch (brush_mode) {
-						case 0:
-							g.setColor(new Color(0, 255, 255, 128));
-							break;
-						case 1:
-							g.setColor(new Color(255, 255, 0, 128));
-							break;
-						case 2:
-							g.setColor(new Color(255, 0, 0, 128));
-							break;
-						case 3:
-							g.setColor(new Color(255, 128, 0, 128));
-							break;
-						}
-
-						g.fillRect(x * RPGConfig.getTileSize() - sx, y * RPGConfig.getTileSize() - sy,
-								RPGConfig.getTileSize(), RPGConfig.getTileSize());
-
-						if (current != null)
-							current.startUse();
-					}
-				}
-			}
-		}
-
-		Debugger.stop("world");
-
-		if (current != null)
-			current.endUse();
-		current = null;
-
-		g.flush();
-
-		g.resetTransform();
-
-		if (RPGConfig.isLighting() && light) {
-			Debugger.start("lighting");
-
-			if (lights.size() == 0) {
-				g.setColor(world.getLightColor());
-				g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-				g.setDrawMode(Graphics.MODE_NORMAL);
-			} else {
-				Graphics sg = g;
-
-				if (lightBuffer == null) {
-					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				} else if (container.getWidth() != lightBuffer.getWidth()
-						|| container.getHeight() != lightBuffer.getHeight()) {
-					lightBuffer.destroy();
-					lightBuffer = new Image(container.getWidth(), container.getHeight());
-				}
-
-				g = lightBuffer.getGraphics();
-
-				g.clear();
-
-				g.setDrawMode(Graphics.MODE_NORMAL);
-
-				Color wl = world.getLightColor();
-
-				float red = wl.r;
-				float green = wl.g;
-				float blue = wl.b;
-
-				float lum = (red + green + blue) / 3;
-
-				float rscale = FastMath.max(lum * 10, 1);
-				float gscale = FastMath.max(lum * 10, 1);
-				float bscale = FastMath.max(lum * 10, 1);
-
-				g.setColor(wl);
-				g.fillRect(0, 0, container.getWidth(), container.getHeight());
-
-				g.translate(container.getWidth() / 2, container.getHeight() / 2);
-
-				g.scale(base_scale, base_scale);
-				g.pushTransform();
-
-				g.scale(zoom, zoom);
-				if (shake > 0) {
-					g.translate((float) (FastMath.random() * shake * 5), (float) (FastMath.random() * shake * 5));
-				}
-
-				g.setDrawMode(Graphics.MODE_SCREEN);
-
-				for (LightSource l : lights) {
-					Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 2);
-
-					img.setImageColor(l.getR() / rscale, l.getG() / gscale, l.getB() / bscale);
-
-					g.drawImage(img,
-							(float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sx * RPGConfig.getTileSize(),
-							(float) l.getLY() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 2
-									- sy * RPGConfig.getTileSize());
-				}
-
-				g.flush();
-
-				sg.resetTransform();
-
-				sg.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
-				sg.drawImage(lightBuffer, 0, 0);
-				sg.setDrawMode(Graphics.MODE_NORMAL);
-
-				g = sg;
-			}
-
-			g.flush();
-
-			Debugger.stop("lighting");
-		}
-
-		g.resetTransform();
+		return current;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		this.last_delta = delta;
+	public void update(Game game, float delf) throws RenderException {
+		this.last_delta = delf;
 
-		float delf = delta / 1000f;
-
-		Input in = container.getInput();
+		Input in = game.getInput();
 
 		boolean sprint = InputUtils.isActionPressed(in, InputUtils.SPRINT);
 
 		double walk_x = 0;
 		double walk_y = 0;
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_NORTH))) {
 			walk_y += -1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_SOUTH))) {
 			walk_y += 1;
 		}
 
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_EAST))) {
 			walk_x += 1;
 		}
-		if (Keyboard.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
+		if (in.isKeyDown(RPGConfig.getKeyInput().getKeyCodeForAction(InputUtils.WALK_WEST))) {
 			walk_x -= 1;
 		}
 
@@ -501,78 +323,78 @@ public class WorldEditor extends WorldState {
 			exit();
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+		if (in.isKeyDown(Input.KEY_Q)) {
 			zoom /= 1.01f;
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+		if (in.isKeyDown(Input.KEY_E)) {
 			zoom *= 1.01f;
 		}
 
 		if (cooldown <= 0) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+			if (in.isKeyDown(Input.KEY_P)) {
 				light = !light;
 				cooldown = 1f;
 			}
 			if (!light) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				if (in.isKeyDown(Input.KEY_DOWN)) {
 					z += 1;
 					cooldown = 1f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				if (in.isKeyDown(Input.KEY_UP)) {
 					z -= 1;
 					cooldown = 1f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+				if (in.isKeyDown(Input.KEY_LEFT)) {
 					tile -= 1;
 					cooldown = 0.4f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				if (in.isKeyDown(Input.KEY_RIGHT)) {
 					tile += 1;
 					cooldown = 0.4f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
+				if (in.isKeyDown(Input.KEY_EQUALS)) {
 					set += 1;
 					tile = 0;
 					cooldown = 0.5f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_MINUS)) {
+				if (in.isKeyDown(Input.KEY_MINUS)) {
 					set -= 1;
 					tile = 0;
 					cooldown = 0.5f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)) {
+				if (in.isKeyDown(Input.KEY_LBRACKET)) {
 					size -= 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)) {
+				if (in.isKeyDown(Input.KEY_RBRACKET)) {
 					size += 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_0)) {
+				if (in.isKeyDown(Input.KEY_0)) {
 					size = 2;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_9)) {
+				if (in.isKeyDown(Input.KEY_9)) {
 					size = 50;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_8)) {
+				if (in.isKeyDown(Input.KEY_8)) {
 					size = 200;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+				if (in.isKeyDown(Input.KEY_1)) {
 					brush_mode = 0;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+				if (in.isKeyDown(Input.KEY_2)) {
 					brush_mode = 1;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+				if (in.isKeyDown(Input.KEY_3)) {
 					brush_mode = 2;
 					cooldown = 0.2f;
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_4)) {
+				if (in.isKeyDown(Input.KEY_4)) {
 					brush_mode = 3;
 					cooldown = 0.2f;
 				}
@@ -593,7 +415,7 @@ public class WorldEditor extends WorldState {
 					size = 2;
 				}
 
-				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+				if (in.isKeyDown(Input.KEY_SPACE)) {
 					for (long tx = Math.round(x) - size / 2 + 1; tx < Math.round(x) - size / 2 + size; tx++) {
 						for (long ty = Math.round(y) - size / 2 + 1; ty < Math.round(y) - size / 2 + size; ty++) {
 							switch (brush_mode) {
@@ -619,7 +441,7 @@ public class WorldEditor extends WorldState {
 					cooldown = 0.075f;
 				}
 
-				if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+				if (in.isKeyDown(Input.KEY_RETURN)) {
 					try {
 						world.save();
 					} catch (IOException e) {
