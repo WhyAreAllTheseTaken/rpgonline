@@ -3,7 +3,7 @@ A game engine for 2D top-down tile-based games with multiplayer support. The lib
 
 RPGOnline is licensed under the 3-Clause BSD Licence.
 
-In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
+This library was originally developed using Slick2D but is now written using mostly LWJGL with some slick methods used for the GUI and shape rendering.
 
 [Contributing to RPGOnline](/CONTRIBUTING.md)
 
@@ -30,9 +30,7 @@ All dependencies are included in the release.zip file.
   - CodecJOrbis http://www.paulscode.com/forum/index.php?topic=4.0
     - JOrbis http://www.jcraft.com/jorbis [LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 - Simplex Noise https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java Public Domain
-- ABT https://github.com/Tomaso2468/abt [BSD 3-Clause](https://github.com/Tomaso2468/abt/blob/master/LICENSE)
-- JDA https://github.com/DV8FromTheWorld/JDA [Apache 2.0](https://github.com/DV8FromTheWorld/JDA/blob/master/LICENSE)
-- SteamWorks4j https://github.com/code-disaster/steamworks4j [MIT License](https://github.com/code-disaster/steamworks4j/blob/master/LICENSE)
+- ABT https://github.com/Tomaso2468/abt [BSD 3-Clause](https://github.com/Tomaso2468/abt/blob/master/LICENSE)disaster/steamworks4j/blob/master/LICENSE)
     
 ## Installation
 1. Download the rpgonline.zip folder of the latest stable release.
