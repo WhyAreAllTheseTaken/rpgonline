@@ -3,7 +3,7 @@ A game engine for 2D top-down tile-based games with multiplayer support. The lib
 
 RPGOnline is licensed under the 3-Clause BSD Licence.
 
-In the future, the possibility of a 3D system in addition to the 2D engine may be considered.
+This library was originally developed using Slick2D but is now written using mostly LWJGL with some slick methods used for the GUI and shape rendering.
 
 [Contributing to RPGOnline](/CONTRIBUTING.md)
 
