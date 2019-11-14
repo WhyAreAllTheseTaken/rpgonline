@@ -472,10 +472,7 @@ public class Game {
 			y = drawDebugLineLabel(g, "Pathfinding Ops/s",
 					PathFindingManager.getPathfindingOperations() / (uptime / 1000) + "", y, false);
 
-			y = drawDebugTitle(g, "Game Information", y, false);
 			y = drawDebugLeft(g, y);
-			
-			y = drawDebugTitle(g, "State Information", y, false);
 			y = currentState.drawDebugLeft(game, g, y);
 
 			DebugFrame render = lastFrame;
@@ -549,14 +546,9 @@ public class Game {
 			y = drawDebugLineLabel(g, "Path Threads", RPGConfig.getPathfindingThreads() + "", y, true);
 			y = drawDebugLineLabel(g, "Tile Size", RPGConfig.getTileSize() + "", y, true);
 			y = drawDebugLineLabel(g, "Hitbox Rendering", RPGConfig.isHitbox() + "", y, true);
-			y = drawDebugLineLabel(g, "Lighting", RPGConfig.getLighting().getClass().getSimpleName(), y, true);
 			y = drawDebugLineLabel(g, "Particles", RPGConfig.isParticles() + "", y, true);
 			y = drawDebugLineLabel(g, "Wind", RPGConfig.isWind() + "", y, true);
-
-			y = drawDebugTitle(g, "Game Information", y, true);
 			y = drawDebugRight(g, y);
-			
-			y = drawDebugTitle(g, "State Information", y, true);
 			y = currentState.drawDebugRight(game, g, y);
 
 			Debugger.stop("debug-screen");
@@ -574,7 +566,6 @@ public class Game {
 	 * @return The new Y position of text.
 	 */
 	protected float drawDebugLeft(Graphics g, float y) {
-		y = drawDebugLine(g, "N/A", y, false);
 		return y;
 	}
 
@@ -586,7 +577,6 @@ public class Game {
 	 * @return The new Y position of text.
 	 */
 	protected float drawDebugRight(Graphics g, float y) {
-		y = drawDebugLine(g, "N/A", y, true);
 		return y;
 	}
 

@@ -33,7 +33,6 @@ package io.github.tomaso2468.rpgonline.lighting;
 
 import java.util.List;
 
-import org.apache.commons.math3.util.FastMath;
 import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
@@ -54,12 +53,12 @@ public class LightingBuffered implements LightingEngine {
 	protected Image lightBuffer;
 	
 	@Override
-	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) {
+	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) {
 		
 	}
 
 	@Override
-	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) throws RenderException {
+	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) throws RenderException {
 		Image currentBuffer = renderer.getCurrentTarget();
 		if (lights.size() == 0) {
 			Color light = world.getLightColor();
@@ -94,10 +93,6 @@ public class LightingBuffered implements LightingEngine {
 			renderer.pushTransform();
 
 			renderer.scale2D(zoom, zoom);
-			if (shake > 0) {
-				renderer.translate2D((float) (FastMath.random() * shake * 5),
-						(float) (FastMath.random() * shake * 5));
-			}
 
 			renderer.setColorMode(ColorMode.SCREEN);
 

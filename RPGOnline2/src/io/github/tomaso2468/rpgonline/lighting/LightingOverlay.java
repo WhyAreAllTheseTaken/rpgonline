@@ -44,12 +44,12 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 
 public class LightingOverlay implements LightingEngine {
 	@Override
-	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) {
+	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) {
 		
 	}
 
 	@Override
-	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) {
+	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) {
 		Color light = world.getLightColor();
 		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 		renderer.setColorMode(ColorMode.MULTIPLY);

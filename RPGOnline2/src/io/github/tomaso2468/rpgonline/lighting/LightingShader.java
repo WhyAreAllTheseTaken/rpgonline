@@ -48,7 +48,7 @@ import io.github.tomaso2468.rpgonline.world2d.WorldState;
 public class LightingShader implements LightingEngine {
 	@Override
 	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy,
-			float zoom, float base_scale, float shake) throws RenderException {
+			float zoom, float base_scale) throws RenderException {
 		currentTarget = renderer.getCurrentTarget();
 		
 		if (lightBuffer == null) {
@@ -68,7 +68,7 @@ public class LightingShader implements LightingEngine {
 
 	@Override
 	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy,
-			float zoom, float base_scale, float shake) throws RenderException {
+			float zoom, float base_scale) throws RenderException {
 		renderer.setRenderTarget(currentTarget);
 		
 		renderer.resetTransform();

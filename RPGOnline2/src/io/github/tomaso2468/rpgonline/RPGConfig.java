@@ -34,8 +34,6 @@ package io.github.tomaso2468.rpgonline;
 import io.github.tomaso2468.rpgonline.input.KeyboardInputProvider;
 import io.github.tomaso2468.rpgonline.input.MapKeyProvider;
 import io.github.tomaso2468.rpgonline.lang.LangProvider;
-import io.github.tomaso2468.rpgonline.lighting.LightingDisabled;
-import io.github.tomaso2468.rpgonline.lighting.LightingEngine;
 
 /**
  * A class for storing configuration details about the game engine.
@@ -121,14 +119,6 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.debug.Debugger
 	 */
 	private static boolean debug = false;
-
-	/**
-	 * Determines the lighting engine to use.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	private static LightingEngine lighting = new LightingDisabled();
 
 	/**
 	 * Determines if particles should be used.
@@ -494,30 +484,6 @@ public final class RPGConfig {
 	}
 
 	/**
-	 * Gets the lighting engine to be used.
-	 * 
-	 * @return A lighting engine enum.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static LightingEngine getLighting() {
-		return lighting;
-	}
-
-	/**
-	 * Sets the lighting engine to be used.
-	 * 
-	 * @param lighting A lighting engine enum.
-	 * 
-	 * @see io.github.tomaso2468.rpgonline.world2d.LightSource
-	 * @see io.github.tomaso2468.rpgonline.world2d.WorldState
-	 */
-	public static void setLighting(LightingEngine lighting) {
-		RPGConfig.lighting = lighting;
-	}
-
-	/**
 	 * Determines if particles should be used.
 	 * 
 	 * @return {@code true} if particles are enabled, {@code false} otherwise.
@@ -650,7 +616,7 @@ public final class RPGConfig {
 	public static void setPathfindingSleepTime(long pathfindingSleepTime) {
 		RPGConfig.pathfindingSleepTime = pathfindingSleepTime;
 	}
-
+	
 	/**
 	 * Determines if the HDR effect is enabled.
 	 * @return {@code true} if HDR is enabled, {@code false} otherwise.
@@ -666,5 +632,4 @@ public final class RPGConfig {
 	public static void setHDR(boolean hdr) {
 		RPGConfig.hdr = hdr;
 	}
-
 }

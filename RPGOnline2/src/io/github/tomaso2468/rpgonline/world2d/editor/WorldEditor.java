@@ -124,71 +124,8 @@ public class WorldEditor extends WorldState {
 		this.world = world;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void render(Game game, Renderer renderer) throws RenderException {
-		Debugger.start("render");
-
-		if (post_enable) {
-			if (buffer == null) {
-				buffer = new Image(renderer, game.getWidth(), game.getHeight());
-			} else if (game.getWidth() != buffer.getWidth() || game.getHeight() != buffer.getHeight()) {
-				buffer.destroy();
-				buffer = new Image(renderer, game.getWidth(), game.getHeight());
-			}
-			renderer.setRenderTarget(buffer);
-			renderer.clear();
-		}
-
-		Debugger.start("game-render");
-		render2(game, renderer);
-		Debugger.stop("game-render");
-
-		renderer.resetTransform();
-
-		if (post_enable) {
-			Debugger.start("effects");
-			if (buffer2 == null) {
-				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
-			} else if (game.getWidth() != buffer2.getWidth() || game.getHeight() != buffer2.getHeight()) {
-				buffer2.destroy();
-				buffer2 = new Image(renderer, game.getWidth(), game.getHeight());
-			}
-			renderer.setRenderTarget(buffer2);
-			renderer.clear();
-			if (post != null) {
-				Debugger.start("post-" + post.getClass());
-				post.postProcess(buffer, buffer2, renderer);
-				Debugger.stop("post-" + post.getClass());
-			} else {
-				renderer.drawImage(buffer, 0, 0);
-			}
-			renderer.setRenderTarget(null);
-			if (RPGConfig.isHDR()) {
-				Debugger.start("mdr");
-
-				if (hdr == null) {
-					hdr = renderer.createShader(WorldState.class.getResource("/generic.vrt"),
-							WorldState.class.getResource("/hdr.frg"));
-				}
-				renderer.useShader(hdr);
-				hdr.setUniform("exposure", 1f);
-				hdr.setUniform("gamma", 1.2f);
-
-				renderer.drawImage(buffer2, 0, 0);
-
-				renderer.useShader(null);
-
-				Debugger.stop("mdr");
-			} else {
-				renderer.drawImage(buffer2, 0, 0);
-			}
-
-			Debugger.stop("effects");
-		}
-
+	public void renderGUI(Game game, Renderer renderer) throws RenderException {
 		if (!light) {
 			Debugger.start("gui");
 
@@ -244,8 +181,6 @@ public class WorldEditor extends WorldState {
 
 			Debugger.stop("gui");
 		}
-
-		Debugger.stop("render");
 	}
 
 	List<TileTexture> textures = new ArrayList<>();
@@ -294,7 +229,6 @@ public class WorldEditor extends WorldState {
 	 */
 	@Override
 	public void update(Game game, float delf) throws RenderException {
-		this.last_delta = delf;
 
 		Input in = game.getInput();
 
@@ -320,7 +254,7 @@ public class WorldEditor extends WorldState {
 		y += walk_y * (sprint ? 30 : 10) * delf;
 
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
-			exit();
+			game.exit(0);
 		}
 
 		if (in.isKeyDown(Input.KEY_Q)) {

@@ -110,7 +110,6 @@ public interface GameState {
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */
 	public default float drawDebugLeft(Game game, Graphics g, float y) throws RenderException {
-		y = game.drawDebugLine(g, "N/A", y, false);
 		return y;
 	}
 
@@ -123,7 +122,6 @@ public interface GameState {
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */
 	public default float drawDebugRight(Game game, Graphics g, float y) throws RenderException {
-		y = game.drawDebugLine(g, "N/A", y, true);
 		return y;
 	}
 

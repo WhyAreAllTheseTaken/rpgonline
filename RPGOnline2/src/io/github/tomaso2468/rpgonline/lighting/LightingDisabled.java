@@ -43,12 +43,12 @@ import io.github.tomaso2468.rpgonline.world2d.World;
 public class LightingDisabled implements LightingEngine {
 
 	@Override
-	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) {
+	public void preRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) {
 		
 	}
 
 	@Override
-	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale, float shake) {
+	public void postRender(Game game, Renderer renderer, List<LightSource> lights, World world, float sx, float sy, float zoom, float base_scale) {
 		renderer.setMode(RenderMode.MODE_2D_COLOR_NOVBO);
 		renderer.setColorMode(ColorMode.MULTIPLY);
 		// This just resets the render mode.
