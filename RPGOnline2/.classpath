@@ -6,7 +6,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" path="shaders">
+	<classpathentry kind="src" path="shaders">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
