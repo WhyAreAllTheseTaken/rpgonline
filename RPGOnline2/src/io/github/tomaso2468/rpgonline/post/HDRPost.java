@@ -8,7 +8,7 @@ public class HDRPost extends ShaderPost {
 	private float gamma_last = Float.NaN;
 	private float gamma = 1.2f;
 	private float pre_map_curve_last = Float.NaN;
-	private float pre_map_curve = 1.6f;
+	private float pre_map_curve = 1.5f;
 	private float post_map_mul_last = Float.NaN;
 	private float post_map_mul = 1.4f;
 	
