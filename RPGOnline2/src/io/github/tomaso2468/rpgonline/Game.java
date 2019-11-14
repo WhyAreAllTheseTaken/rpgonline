@@ -43,7 +43,7 @@ public class Game {
 	/**
 	 * The states of the game.
 	 */
-	private Map<Integer, GameState> states = new HashMap<>();
+	private Map<Long, GameState> states = new HashMap<>();
 	/**
 	 * The previous game state.
 	 */
@@ -153,7 +153,7 @@ public class Game {
 			}
 
 			@Override
-			public int getID() {
+			public long getID() {
 				return Integer.MIN_VALUE;
 			}
 		};
@@ -281,7 +281,7 @@ public class Game {
 		AudioManager.getSystem();
 
 		// Initialise game states.
-		for (Entry<Integer, GameState> state : getStates()) {
+		for (Entry<Long, GameState> state : getStates()) {
 			state.getValue().init(this);
 		}
 	}
@@ -872,7 +872,7 @@ public class Game {
 	 * 
 	 * @return An entry set.
 	 */
-	public Set<Entry<Integer, GameState>> getStates() {
+	public Set<Entry<Long, GameState>> getStates() {
 		return states.entrySet();
 	}
 
@@ -881,7 +881,7 @@ public class Game {
 	 * 
 	 * @return A map of integers to game states.
 	 */
-	public Map<Integer, GameState> getStateMap() {
+	public Map<Long, GameState> getStateMap() {
 		return states;
 	}
 
@@ -899,7 +899,7 @@ public class Game {
 	 * 
 	 * @return An integer.
 	 */
-	public int getCurrentStateID() {
+	public long getCurrentStateID() {
 		return currentState.getID();
 	}
 
@@ -921,7 +921,7 @@ public class Game {
 	 * @param id A game state ID.
 	 * @return A game state or null if no game state is found.
 	 */
-	public GameState getStateByID(int id) {
+	public GameState getStateByID(long id) {
 		return states.get(id);
 	}
 
@@ -934,7 +934,7 @@ public class Game {
 	 * 
 	 * @see #changeState(int)
 	 */
-	public void changeState(int id, Transition enter, Transition leave) {
+	public void changeState(long id, Transition enter, Transition leave) {
 		GameState nextState = getStateByID(id);
 		if (nextState == null) {
 			throw new NullPointerException(id + " is not a valid state.");
@@ -951,7 +951,7 @@ public class Game {
 	 * 
 	 * @see #changeState(int, Transition, Transition)
 	 */
-	public void changeState(int id) {
+	public void changeState(long id) {
 		changeState(id, new BlankTransition(), new BlankTransition());
 	}
 

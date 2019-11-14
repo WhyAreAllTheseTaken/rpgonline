@@ -72,7 +72,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	/**
 	 * The state ID.
 	 */
-	private final int id;
+	private final long id;
 	
 	/**
 	 * Player x position.
@@ -160,7 +160,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * Constructs a new bullet state.
 	 * @param id The state ID.
 	 */
-	public BulletState(int id) {
+	public BulletState(long id) {
 		this.id = id;
 	}
 	
@@ -493,7 +493,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getID() {
+	public long getID() {
 		return id;
 	}
 

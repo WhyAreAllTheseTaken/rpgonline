@@ -97,9 +97,9 @@ public interface GameState {
 
 	/**
 	 * Gets the unique ID number of this state.
-	 * @return An integer value.
+	 * @return A long integer value.
 	 */
-	public int getID();
+	public long getID();
 
 	/**
 	 * Draw the left half of this state's debug information.

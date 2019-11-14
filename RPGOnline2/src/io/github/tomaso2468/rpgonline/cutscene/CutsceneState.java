@@ -49,7 +49,7 @@ public abstract class CutsceneState implements GameState {
 	/**
 	 * The ID of the state.
 	 */
-	private final int id;
+	private final long id;
 	/**
 	 * The ID of the state to switch to after the cutscene is finished.
 	 */
@@ -74,7 +74,7 @@ public abstract class CutsceneState implements GameState {
 	 * @param leave The transition to play when leaving this state.
 	 * @param enter The transition to play when entering the next state.
 	 */
-	public CutsceneState(int id, int nextState, Cutscene scene, Transition leave, Transition enter) {
+	public CutsceneState(long id, int nextState, Cutscene scene, Transition leave, Transition enter) {
 		super();
 		this.id = id;
 		this.nextState = nextState;
@@ -89,7 +89,7 @@ public abstract class CutsceneState implements GameState {
 	 * @param scene The scene to play.
 	 * @param c The color of the transition screen.
 	 */
-	public CutsceneState(int id, int nextState, Cutscene scene, Color c) {
+	public CutsceneState(long id, int nextState, Cutscene scene, Color c) {
 		this(id, nextState, scene, new FadeOutTransition(c, 0.5f), new FadeInTransition(c, 0.05f));
 	}
 	/**
@@ -98,7 +98,7 @@ public abstract class CutsceneState implements GameState {
 	 * @param nextState The next state ID to switch to after the cutscene plays.
 	 * @param scene The scene to play.
 	 */
-	public CutsceneState(int id, int nextState, Cutscene scene) {
+	public CutsceneState(long id, int nextState, Cutscene scene) {
 		this(id, nextState, scene, Color.black);
 	}
 	/**
@@ -141,7 +141,7 @@ public abstract class CutsceneState implements GameState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getID() {
+	public long getID() {
 		return id;
 	}
 

@@ -82,7 +82,7 @@ public class WorldState implements GameState, BaseScaleState {
 	/**
 	 * This state's id.
 	 */
-	private int id;
+	private long id;
 	/**
 	 * The cached {@code x} position of the player.
 	 */
@@ -170,7 +170,7 @@ public class WorldState implements GameState, BaseScaleState {
 	 * 
 	 * @param id the ID of the state.
 	 */
-	public WorldState(int id) {
+	public WorldState(long id) {
 		this.id = id;
 	}
 
@@ -999,7 +999,7 @@ public class WorldState implements GameState, BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getID() {
+	public long getID() {
 		return id;
 	}
 
