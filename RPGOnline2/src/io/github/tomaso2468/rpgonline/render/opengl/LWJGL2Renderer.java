@@ -34,8 +34,8 @@ package io.github.tomaso2468.rpgonline.render.opengl;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
@@ -257,11 +257,9 @@ public class LWJGL2Renderer extends GL30Renderer {
 	}
 
 	@Override
-	public void writeImage(Image image, File file, boolean writeAlpha) throws IOException, RenderException {
+	public void writeImage(Image image, OutputStream out, boolean writeAlpha) throws IOException, RenderException {
 		try {
-			ImageOut.write(
-					new org.newdawn.slick.Image(((SlickTexture) image.getTexture()).texture),
-					file.getAbsolutePath(), writeAlpha);
+			ImageOut.write(new org.newdawn.slick.Image(((SlickTexture) image.getTexture()).texture), "PNG", out, writeAlpha);
 		} catch (SlickException e) {
 			throw new RenderException(e);
 		}

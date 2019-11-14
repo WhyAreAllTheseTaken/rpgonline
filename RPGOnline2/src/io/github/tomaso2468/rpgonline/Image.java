@@ -32,13 +32,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * A representation of a 2D image.
+ * 
  * @author Tomaso2468
  *
  */
@@ -51,7 +61,7 @@ public class Image implements Cloneable {
 	 * A filter that uses linear interpolation.
 	 */
 	public static final int FILTER_LINEAR = 1;
-	
+
 	/**
 	 * The renderer for this image.
 	 */
@@ -91,25 +101,27 @@ public class Image implements Cloneable {
 
 	/**
 	 * Constructs a new blank image.
+	 * 
 	 * @param renderer The renderer to use for image commands.
-	 * @param width The width of the image.
-	 * @param height The height of the image.
+	 * @param width    The width of the image.
+	 * @param height   The height of the image.
 	 * @throws RenderException If an error occurs creating an empty image.
 	 */
 	public Image(Renderer renderer, int width, int height) throws RenderException {
 		this(renderer, renderer.createEmptyTexture(width, height));
 	}
-	
+
 	/**
 	 * Constructs a new Image using texture information.
-	 * @param renderer The renderer to use for image commands.
-	 * @param texture The texture to use for this image.
+	 * 
+	 * @param renderer  The renderer to use for image commands.
+	 * @param texture   The texture to use for this image.
 	 * @param texture_x The texture X coord using OpenGL texture coords.
 	 * @param texture_y The texture Y coord using OpenGL texture coords.
 	 * @param texture_w The width of the area to use from the texture.
 	 * @param texture_h The height of the area to use from the texture.
-	 * @param width The width of the image.
-	 * @param height The height of the image.
+	 * @param width     The width of the image.
+	 * @param height    The height of the image.
 	 */
 	public Image(Renderer renderer, TextureReference texture, float texture_x, float texture_y, float texture_w,
 			float texture_h, float width, float height) {
@@ -126,8 +138,9 @@ public class Image implements Cloneable {
 
 	/**
 	 * Constructs a new Image using texture information.
+	 * 
 	 * @param renderer The renderer to use for image commands.
-	 * @param texture The texture to use for this image.
+	 * @param texture  The texture to use for this image.
 	 */
 	public Image(Renderer renderer, TextureReference texture) {
 		super();
@@ -142,9 +155,11 @@ public class Image implements Cloneable {
 	}
 
 	/**
-	 * Constructs a new image from an image. This does not create a new copy of the underlying texture.
+	 * Constructs a new image from an image. This does not create a new copy of the
+	 * underlying texture.
+	 * 
 	 * @param renderer The renderer to use for image commands.
-	 * @param img The image to copy data from.
+	 * @param img      The image to copy data from.
 	 */
 	public Image(Renderer renderer, Image img) {
 		this(renderer, img.getTexture(), img.getTextureOffsetX(), img.getTextureOffsetY(), img.getTextureWidth(),
@@ -153,6 +168,7 @@ public class Image implements Cloneable {
 
 	/**
 	 * Sets the filter for this image.
+	 * 
 	 * @param filterMode The filter mode.
 	 * 
 	 * @see #getFilter()
@@ -166,6 +182,7 @@ public class Image implements Cloneable {
 
 	/**
 	 * Gets the texture for this image.
+	 * 
 	 * @return A texture reference object compatible with the game's renderer.
 	 */
 	public TextureReference getTexture() {
@@ -174,19 +191,121 @@ public class Image implements Cloneable {
 
 	/**
 	 * Writes an image to a file.
-	 * @param dest The location to write to.
-	 * @param writeAlpha Whether or not the alpha channel should be used when writing this image.
-	 * @throws IOException If an error occurs writing the image.
+	 * 
+	 * @param dest       The location to write to.
+	 * @param writeAlpha Whether or not the alpha channel should be used when
+	 *                   writing this image.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(OutputStream dest, boolean writeAlpha) throws IOException, RenderException {
+		renderer.writeImage(this, dest, writeAlpha);
+	}
+
+	/**
+	 * Writes an image to a file.
+	 * 
+	 * @param dest       The location to write to.
+	 * @param writeAlpha Whether or not the alpha channel should be used when
+	 *                   writing this image.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(File dest, boolean writeAlpha) throws IOException, RenderException {
+		renderer.writeImage(this, new FileOutputStream(dest), writeAlpha);
+	}
+
+	/**
+	 * Writes an image to a file.
+	 * 
+	 * @param dest       The location to write to.
+	 * @param writeAlpha Whether or not the alpha channel should be used when
+	 *                   writing this image.
+	 * @throws IOException     If an error occurs writing the image.
 	 * @throws RenderException If an error occurs in the renderer.
 	 */
 	public void write(String dest, boolean writeAlpha) throws IOException, RenderException {
-		renderer.writeImage(this, new File(dest), writeAlpha);
+		renderer.writeImage(this, new FileOutputStream(dest), writeAlpha);
+	}
+
+	/**
+	 * Writes an image to a file. This will not automatically use the file API if a
+	 * file is specified and may be inefficient for most usage. This should only be
+	 * used if you are not writing to a file.
+	 * 
+	 * @param dest       The location to write to.
+	 * @param writeAlpha Whether or not the alpha channel should be used when
+	 *                   writing this image.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(URL dest, boolean writeAlpha) throws IOException, RenderException {
+		Log.info("A write to URL task was initialised from " + Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ " in " + Thread.currentThread().getStackTrace()[2].getClassName());
+
+		Log.debug("Beginning write to URL");
+		URLConnection connection = dest.openConnection();
+		renderer.writeImage(this, connection.getOutputStream(), writeAlpha);
+
+		Log.debug("Waiting for response from URL");
+
+		List<Byte> response = new ArrayList<>(1024);
+
+		InputStream in = connection.getInputStream();
+		while (in.available() > 0) {
+			response.add((byte) in.read());
+		}
+		in.close();
+
+		byte[] data = new byte[response.size()];
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = response.get(i);
+		}
+
+		Log.debug("URL response: " + new String(data));
 	}
 
 	/**
 	 * Writes an image to a file including the alpha channel.
+	 * 
 	 * @param dest The location to write to.
-	 * @throws IOException If an error occurs writing the image.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(OutputStream dest) throws IOException, RenderException {
+		write(dest, true);
+	}
+
+	/**
+	 * Writes an image to a file including the alpha channel.
+	 * 
+	 * @param dest The location to write to.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(File dest) throws IOException, RenderException {
+		write(dest, true);
+	}
+
+	/**
+	 * Writes an image to a file including the alpha channel. This will not
+	 * automatically use the file API if a file is specified and may be inefficient
+	 * for most usage. This should only be used if you are not writing to a file.
+	 * 
+	 * @param dest The location to write to.
+	 * @throws IOException     If an error occurs writing the image.
+	 * @throws RenderException If an error occurs in the renderer.
+	 */
+	public void write(URL dest) throws IOException, RenderException {
+		write(dest, true);
+	}
+
+	/**
+	 * Writes an image to a file including the alpha channel.
+	 * 
+	 * @param dest The location to write to.
+	 * @throws IOException     If an error occurs writing the image.
 	 * @throws RenderException If an error occurs in the renderer.
 	 */
 	public void write(String dest) throws IOException, RenderException {
@@ -195,6 +314,7 @@ public class Image implements Cloneable {
 
 	/**
 	 * Gets the X position from the source texture.
+	 * 
 	 * @return A float value.
 	 */
 	public float getTextureOffsetX() {
@@ -240,7 +360,7 @@ public class Image implements Cloneable {
 
 		return sub;
 	}
-	
+
 	public Image clone() {
 		return new Image(renderer, texture, textureX, textureY, textureWidth, textureHeight, width, height);
 	}
@@ -248,7 +368,7 @@ public class Image implements Cloneable {
 	public void destroy() {
 		texture.destroy();
 	}
-	
+
 	public void ensureInverted() {
 		if (textureHeight > 0) {
 			textureY = textureY + textureHeight;
