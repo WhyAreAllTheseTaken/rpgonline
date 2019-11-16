@@ -69,4 +69,36 @@ public class HDRPost extends ShaderPost {
 	public void setGamma(float gamma) {
 		this.gamma = gamma;
 	}
+
+	public float getCurveAngle() {
+		return curve_angle;
+	}
+
+	public void setCurveAngle(float curve_angle) {
+		this.curve_angle = curve_angle;
+	}
+
+	public float getCurveExponent() {
+		return curve_exponent;
+	}
+
+	public void setCurveExponent(float curve_exponent) {
+		this.curve_exponent = curve_exponent;
+	}
+
+	public float getContrast() {
+		return contrast;
+	}
+
+	public void setContrast(float contrast) {
+		this.contrast = contrast;
+	}
+
+	public float getWhite() {
+		return white;
+	}
+
+	public void setWhite(float white) {
+		this.white = white;
+	}
 }
