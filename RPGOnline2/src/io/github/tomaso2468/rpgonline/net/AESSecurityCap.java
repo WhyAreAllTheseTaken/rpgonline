@@ -16,7 +16,6 @@ import sun.misc.BASE64Encoder;
  * A system for setting up key exchange for AES.
  * @author Jegan Babu, Wojciech Wirzbicki
  */
-@SuppressWarnings("restriction")
 class AESSecurityCap {
 	/**
 	 * The public key to use.

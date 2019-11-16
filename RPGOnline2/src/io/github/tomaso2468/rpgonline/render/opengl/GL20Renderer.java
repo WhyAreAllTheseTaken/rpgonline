@@ -60,7 +60,7 @@ import io.github.tomaso2468.rpgonline.render.Shader;
 import io.github.tomaso2468.rpgonline.render.ShaderCompileException;
 import io.github.tomaso2468.rpgonline.render.ShaderLinkException;
 
-public abstract class GL20Renderer extends GL11Renderer {
+public abstract class GL20Renderer extends GL12Renderer {
 	@Override
 	public void useShader(Shader shader) {
 		if (shader == null) {

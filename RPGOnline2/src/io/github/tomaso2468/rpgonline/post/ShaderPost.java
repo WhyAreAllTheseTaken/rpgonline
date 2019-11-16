@@ -26,22 +26,32 @@ public class ShaderPost implements PostProcessing {
 		if (shader == null) {
 			shader = renderer.createShader(vertex, fragment);
 			renderer.useShader(shader);
-			initShader(shader);
+			initShader(shader, renderer);
 		} else {
 			renderer.useShader(shader);
 		}
-		updateShader(shader);
+		updateShader(shader, renderer);
 		
+		preDraw(shader, renderer);
 		renderer.drawImage(input, 0, 0);
+		postDraw(shader, renderer);
 		
 		renderer.useShader(null);
 	}
 	
-	public void initShader(Shader shader) {
+	public void initShader(Shader shader, Renderer renderer) throws RenderException {
 		
 	}
 	
-	public void updateShader(Shader shader) {
+	public void updateShader(Shader shader, Renderer renderer) throws RenderException {
+		
+	}
+	
+	public void preDraw(Shader shader, Renderer renderer) throws RenderException {
+		
+	}
+	
+	public void postDraw(Shader shader, Renderer renderer) throws RenderException {
 		
 	}
 }

@@ -1,5 +1,7 @@
 package io.github.tomaso2468.rpgonline.post;
 
+import io.github.tomaso2468.rpgonline.render.RenderException;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.render.Shader;
 
 public class HDRPost extends ShaderPost {
@@ -7,18 +9,23 @@ public class HDRPost extends ShaderPost {
 	private float exposure = 1f;
 	private float gamma_last = Float.NaN;
 	private float gamma = 1.2f;
-	private float pre_map_curve_last = Float.NaN;
-	private float pre_map_curve = 1.5f;
-	private float post_map_mul_last = Float.NaN;
-	private float post_map_mul = 1.4f;
+	
+	private float curve_angle_last = Float.NaN;
+	private float curve_angle = 1f;
+	private float curve_exponent_last = Float.NaN;
+	private float curve_exponent = -1f;
+	private float contrast_last = Float.NaN;
+	private float contrast = 1.4f;
+	private float white_last = Float.NaN;
+	private float white = 1f;
 	
 	public HDRPost() {
 		super(HDRPost.class.getResource("/generic.vrt"), HDRPost.class.getResource("/hdr.frg"));
 	}
 	
 	@Override
-	public void updateShader(Shader shader) {
-		super.updateShader(shader);
+	public void updateShader(Shader shader, Renderer renderer) throws RenderException {
+		super.updateShader(shader, renderer);
 		if (exposure != exposure_last) {
 			shader.setUniform("exposure", exposure);
 			this.exposure_last = exposure;
@@ -27,14 +34,24 @@ public class HDRPost extends ShaderPost {
 			shader.setUniform("gamma", gamma);
 			this.gamma_last = gamma;
 		}
-		if (pre_map_curve != pre_map_curve_last) {
-			shader.setUniform("pre_map_curve", pre_map_curve);
-			this.pre_map_curve_last = pre_map_curve;
+		
+		if (curve_angle != curve_angle_last) {
+			shader.setUniform("curve_angle", curve_angle);
+			this.curve_angle_last = curve_angle;
 		}
-		if (post_map_mul != post_map_mul_last) {
-			shader.setUniform("post_map_multiply", post_map_mul);
-			this.pre_map_curve_last = post_map_mul;
+		if (curve_exponent != curve_exponent_last) {
+			shader.setUniform("curve_exponent", curve_exponent);
+			this.curve_exponent_last = curve_exponent;
 		}
+		if (contrast != contrast_last) {
+			shader.setUniform("contrast", contrast);
+			this.contrast_last = contrast;
+		}
+		if (white != white_last) {
+			shader.setUniform("white_point", white);
+			this.white_last = white;
+		}
+		shader.setUniform("screenScale", 1, (float) renderer.getWidth() / renderer.getHeight());
 	}
 
 	public float getExposure() {
@@ -51,13 +68,5 @@ public class HDRPost extends ShaderPost {
 
 	public void setGamma(float gamma) {
 		this.gamma = gamma;
-	}
-
-	public float getPreMapCurve() {
-		return pre_map_curve;
-	}
-
-	public void setPreMapCurve(float pre_map) {
-		this.pre_map_curve = pre_map;
 	}
 }

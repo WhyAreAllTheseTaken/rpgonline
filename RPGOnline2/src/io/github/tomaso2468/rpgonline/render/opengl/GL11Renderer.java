@@ -93,7 +93,7 @@ public abstract class GL11Renderer implements Renderer {
 		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(), img.getTextureOffsetY());
 		GL11.glVertex3f(x + w, y, 0);
 	}
-	
+
 	@Override
 	public void renderLine(float x, float y, float x2, float y2, Color c) {
 		GL11.glBegin(GL11.GL_LINES);
@@ -161,7 +161,7 @@ public abstract class GL11Renderer implements Renderer {
 
 		endUse(img);
 	}
-	
+
 	@Override
 	public void renderShearedEmbedded(Image img, float x, float y, float w, float h, float hshear, float vshear) {
 		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
@@ -367,7 +367,7 @@ public abstract class GL11Renderer implements Renderer {
 		Texture texture = ((SlickTexture) buffer.getTexture()).texture;
 		int format = texture.hasAlpha() ? GL11.GL_RGBA : GL11.GL_RGB;
 		texture.bind();
-		GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, format, x, /*getHeight() - (y + (int) buffer.getHeight())*/0,
+		GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, format, x, /* getHeight() - (y + (int) buffer.getHeight()) */0,
 				texture.getTextureWidth(), texture.getTextureHeight(), 0);
 		buffer.ensureInverted();
 	}
@@ -483,7 +483,7 @@ public abstract class GL11Renderer implements Renderer {
 		} catch (SlickException e) {
 			throw new SlickResourceException("Error loading font", e);
 		}
-		
+
 		return new SlickFont(uniFont);
 	}
 
@@ -496,7 +496,7 @@ public abstract class GL11Renderer implements Renderer {
 		} catch (FontFormatException | IOException e) {
 			throw new AWTResourceException("Error loading font", e);
 		}
-		
+
 		UnicodeFont uniFont = new UnicodeFont(awtFont);
 		uniFont.getEffects().add(new ColorEffect(java.awt.Color.white));
 		uniFont.addAsciiGlyphs();
@@ -508,33 +508,33 @@ public abstract class GL11Renderer implements Renderer {
 		} catch (SlickException e) {
 			throw new SlickResourceException("Error loading font", e);
 		}
-		
+
 		return new SlickFont(uniFont);
 	}
-	
+
 	@Override
 	public void setFilter(TextureReference texture, int filterMode) {
 		int filter = filterMode == Image.FILTER_LINEAR ? GL11.GL_LINEAR : GL11.GL_NEAREST;
 		((SlickTexture) texture).texture.bind();
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter); 
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
 	}
-	
+
 	@Override
 	public Shader createShader(URL vertex, URL fragment) throws RenderException {
 		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
-	
+
 	@Override
 	public void useShader(Shader shader) throws RenderException {
 		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
-	
+
 	@Override
 	public void deleteShader(Shader shader) throws RenderException {
 		throw new FeatureException("Shaders are not supported by OpenGL 1.1");
 	}
-	
+
 	@Override
 	public void drawFont(Font font, float x, float y, String str) {
 		((SlickFont) font).font.drawString(x, y, str);

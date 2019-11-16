@@ -44,6 +44,7 @@ import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.input.Input;
+import io.github.tomaso2468.rpgonline.post.LUT;
 
 /**
  * An interface representing a renderer.
@@ -239,4 +240,6 @@ public interface Renderer {
 		return false;
 	}
 	
+	public LUT loadLUT(URL loc) throws IOException, RenderException;
+	public void setLUT(LUT lut);
 }
