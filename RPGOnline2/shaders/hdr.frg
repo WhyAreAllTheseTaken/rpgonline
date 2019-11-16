@@ -38,7 +38,7 @@ vec3 getBloomColor(vec2 loc, vec2 d, vec2 samples) {
 						
 			vec3 sample = sampleWithExposure(loc2);
 			
-			sample = sample - vec3(1, 1, 1);
+			sample = sample - vec3(white_point);
 			
 			if (sample.r > 0) {
 				bloom.r = bloom.r + sample.r / sqr_dist;
