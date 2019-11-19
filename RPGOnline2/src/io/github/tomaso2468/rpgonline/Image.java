@@ -321,6 +321,11 @@ public class Image implements Cloneable {
 		return textureX;
 	}
 
+	/**
+	 * Gets the internal width of the texture for this image.
+	 * 
+	 * @return A float value.
+	 */
 	public float getTextureWidth() {
 		return textureWidth;
 	}
