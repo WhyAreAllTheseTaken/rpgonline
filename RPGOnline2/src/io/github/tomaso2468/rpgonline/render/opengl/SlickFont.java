@@ -52,5 +52,10 @@ public class SlickFont implements Font {
 	public float getWidth(String text) {
 		return font.getWidth(text);
 	}
+	
+	@Override
+	public float getHeight() {
+		return font.getLineHeight();
+	}
 
 }

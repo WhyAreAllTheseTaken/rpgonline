@@ -596,7 +596,7 @@ public class Game {
 		} else {
 			g.drawString(s, renderer.getWidth() - 4 - g.getFont().getWidth(s), y);
 		}
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -615,7 +615,7 @@ public class Game {
 		} else {
 			g.drawString(s, renderer.getWidth() - 4 - g.getFont().getWidth(s), y);
 		}
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -635,7 +635,7 @@ public class Game {
 		} else {
 			g.drawString(label + ": " + data, renderer.getWidth() - 4 - g.getFont().getWidth(label + ": " + data), y);
 		}
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -671,7 +671,7 @@ public class Game {
 		}
 
 		g.setColor(Color.white.darker());
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -707,7 +707,7 @@ public class Game {
 		}
 
 		g.setColor(Color.white.darker());
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -743,7 +743,7 @@ public class Game {
 		}
 
 		g.setColor(Color.white.darker());
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -779,7 +779,7 @@ public class Game {
 		}
 
 		g.setColor(Color.white.darker());
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
@@ -817,7 +817,7 @@ public class Game {
 		}
 
 		g.setColor(Color.white.darker());
-		return y + g.getFont().getHeight("[]") + 1;
+		return y + g.getFont().getHeight() + 1;
 	}
 
 	/**
