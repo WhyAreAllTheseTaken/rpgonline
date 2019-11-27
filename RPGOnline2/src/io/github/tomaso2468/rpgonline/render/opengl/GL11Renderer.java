@@ -381,14 +381,31 @@ public abstract class GL11Renderer implements Renderer {
 		}
 	}
 
+	private String vendor;
 	@Override
 	public String getVendor() {
-		return GL11.glGetString(GL11.GL_VENDOR);
+		if (vendor == null) {
+			vendor = GL11.glGetString(GL11.GL_VENDOR);
+		}
+		return vendor;
 	}
 
+	private String version;
 	@Override
 	public String getVersion() {
-		return GL11.glGetString(GL11.GL_VERSION);
+		if (version == null) {
+			version = GL11.glGetString(GL11.GL_VERSION);
+		}
+		return version;
+	}
+	
+	private String gpu;
+	@Override
+	public String getGPU() {
+		if (gpu == null) {
+			gpu = GL11.glGetString(GL11.GL_RENDERER);
+		}
+		return gpu;
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.commons.math3.util.FastMath;
 import org.lwjgl.openal.AL10;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
 
@@ -516,7 +515,7 @@ public class Game {
 			y = drawDebugLineLabel(g, "Engine Version", RPGOnline.VERSION.toSimpleString(), y, true);
 			y = drawDebugLineLabel(g, "Game Version", getVersion().toSimpleString() + " (" + getVersionFlavour() + ")",
 					y, true);
-			y = drawDebugLineLabel(g, "GPU", GL11.glGetString(GL11.GL_RENDERER), y, true);
+			y = drawDebugLineLabel(g, "GPU", renderer.getGPU(), y, true);
 			y = drawDebugLineLabel(g, "Display Size", renderer.getScreenWidth() + "x" + renderer.getScreenHeight(), y,
 					true);
 			y = drawDebugLineLabel(g, "Game Size", renderer.getWidth() + "x" + renderer.getHeight(), y, true);

@@ -31,6 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.render.opengl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.lwjgl.opengl.GL20;
 
 import io.github.tomaso2468.rpgonline.render.Shader;
@@ -39,17 +42,28 @@ import io.github.tomaso2468.rpgonline.render.UnknownShaderVariableException;
 public class GLShader implements Shader {
 	final int program;
 	
+	private Map<String, Integer> locations = new HashMap<>();
+	
 	public GLShader(int program) {
 		super();
 		this.program = program;
 	}
 	
 	private int getLocation(String name) {
+		// Use cache if available
+		Integer loc = locations.get(name);
+		if (loc != null) {
+			return loc;
+		}
+		
+		// Get the location using OpenGL
 		int location = GL20.glGetUniformLocation(program, name);
 		
 		if (location == -1) {
 			throw new UnknownShaderVariableException(name);
 		}
+		
+		locations.put(name, location);
 		
 		return location;
 	}
