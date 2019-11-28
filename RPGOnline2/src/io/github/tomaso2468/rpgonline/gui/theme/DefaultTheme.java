@@ -125,7 +125,7 @@ public class DefaultTheme implements Theme {
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
 		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
-				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
+				c.getH() * scaling / 2 - g.getFont().getHeight() / 2);
 		g.scale(scaling, scaling);
 	}
 
@@ -135,7 +135,7 @@ public class DefaultTheme implements Theme {
 	@Override
 	public Rectangle calculateButtonBounds(Container c, Button b) {
 		return new Rectangle(0, 0, font.getWidth(b.getText()) / scaling + spacing * 2,
-				font.getHeight(b.getText()) / scaling + spacing * 2);
+				font.getHeight() / scaling + spacing * 2);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class DefaultTheme implements Theme {
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
 		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
-				c.getH() * scaling / 2 - g.getFont().getHeight(c.getText()) / 2);
+				c.getH() * scaling / 2 - g.getFont().getHeight());
 		g.scale(scaling, scaling);
 	}
 
@@ -179,7 +179,7 @@ public class DefaultTheme implements Theme {
 	@Override
 	public Rectangle calculateLabelBounds(Container c, Label b) {
 		return new Rectangle(0, 0, font.getWidth(b.getText()) / scaling + spacing * 2,
-				font.getHeight(b.getText()) / scaling + spacing * 2);
+				font.getHeight() / scaling + spacing * 2);
 	}
 
 	/**
@@ -284,7 +284,7 @@ public class DefaultTheme implements Theme {
 		g.fillOval(0, 0, spacing * 4, spacing * 4);
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
-		g.drawString(c.getText(), spacing * 5 * scaling, spacing * 4 / 2 * scaling - g.getFont().getHeight(c.getText()) / 2);
+		g.drawString(c.getText(), spacing * 5 * scaling, spacing * 4 / 2 * scaling - g.getFont().getHeight() / 2);
 		g.scale(scaling, scaling);
 	}
 
@@ -302,7 +302,7 @@ public class DefaultTheme implements Theme {
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
 		g.drawString(c.getText(), c.getW() / 2 * scaling - g.getFont().getWidth(c.getText()) / 2,
-				c.getH() / 2 * scaling - g.getFont().getHeight(c.getText()) / 2);
+				c.getH() / 2 * scaling - g.getFont().getHeight() / 2);
 		g.scale(scaling, scaling);
 	}
 
@@ -319,7 +319,7 @@ public class DefaultTheme implements Theme {
 	 */
 	@Override
 	public Rectangle calculateToolBarBounds(Container c, ToolBar toolBar) {
-		return new Rectangle(0, 0, c.getW(), font.getHeight("Q") / scaling);
+		return new Rectangle(0, 0, c.getW(), font.getHeight() / scaling);
 	}
 
 	/**
