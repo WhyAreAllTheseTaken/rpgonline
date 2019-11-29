@@ -57,6 +57,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.ImageFilter;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.render.BasicGraphics;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
@@ -375,7 +376,7 @@ public abstract class GL11Renderer implements Renderer {
 	@Override
 	public TextureReference createEmptyTexture(int width, int height) throws TextureCreateException {
 		try {
-			return new SlickTexture(InternalTextureLoader.get().createTexture(width, height, Image.FILTER_NEAREST));
+			return new SlickTexture(InternalTextureLoader.get().createTexture(width, height, ImageFilter.NEAREST.slickMapping));
 		} catch (IOException e) {
 			throw new TextureCreateException("Failed to create empty image", e);
 		}
@@ -530,8 +531,8 @@ public abstract class GL11Renderer implements Renderer {
 	}
 
 	@Override
-	public void setFilter(TextureReference texture, int filterMode) {
-		int filter = filterMode == Image.FILTER_LINEAR ? GL11.GL_LINEAR : GL11.GL_NEAREST;
+	public void setFilter(TextureReference texture, ImageFilter filterMode) {
+		int filter = filterMode.glMapping;
 		((SlickTexture) texture).texture.bind();
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);

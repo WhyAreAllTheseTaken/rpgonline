@@ -224,7 +224,7 @@ public abstract class GL20Renderer extends GL12Renderer {
 				Texture tex;
 				try {
 					tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(),
-							image.getFilter());
+							image.getFilter().slickMapping);
 				} catch (IOException e) {
 					throw new RenderResourceException("An error occured creating a texture.", e);
 				}
@@ -328,7 +328,7 @@ public abstract class GL20Renderer extends GL12Renderer {
 			Texture tex;
 			try {
 				tex = InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(),
-						image.getFilter());
+						image.getFilter().slickMapping);
 			} catch (IOException e) {
 				throw new RenderResourceException("An error occured creating a texture.", e);
 			}

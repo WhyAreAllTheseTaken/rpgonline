@@ -143,7 +143,7 @@ public final class RPGConfig {
 	 * @see org.newdawn.slick.Image#setFilter(int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
-	private static int filterMode = Image.FILTER_NEAREST;
+	private static ImageFilter filterMode = ImageFilter.NEAREST;
 	
 	/**
 	 * The number of threads to use for pathfinding.
@@ -536,16 +536,12 @@ public final class RPGConfig {
 	 * Determines the default filter mode for textures. <b>This must be set before
 	 * textures are initialised.</b>
 	 * 
-	 * @return <a href=
-	 *         "http://slick.ninjacave.com/javadoc/org/newdawn/slick/Image.html#FILTER_NEAREST">FILTER_NEAREST</a>
-	 *         if nearest filtering is used and <a href=
-	 *         "http://slick.ninjacave.com/javadoc/org/newdawn/slick/Image.html#FILTER_LINEAR">FILTER_LINEAR</a>
-	 *         if bilinear filtering is used.
+	 * @return An ImageFilter enum.
 	 * 
 	 * @see org.newdawn.slick.Image#setFilter(int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
-	public static int getFilterMode() {
+	public static ImageFilter getFilterMode() {
 		return filterMode;
 	}
 
@@ -553,16 +549,12 @@ public final class RPGConfig {
 	 * Sets the default filter mode for textures. <b>This must be set before
 	 * textures are initialised.</b>
 	 * 
-	 * @param filterMode <a href=
-	 *         "http://slick.ninjacave.com/javadoc/org/newdawn/slick/Image.html#FILTER_NEAREST">FILTER_NEAREST</a>
-	 *         if nearest filtering is used and <a href=
-	 *         "http://slick.ninjacave.com/javadoc/org/newdawn/slick/Image.html#FILTER_LINEAR">FILTER_LINEAR</a>
-	 *         if bilinear filtering is used.
+	 * @param filterMode An ImageFilter enum.
 	 * 
 	 * @see org.newdawn.slick.Image#setFilter(int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
-	public static void setFilterMode(int filterMode) {
+	public static void setFilterMode(ImageFilter filterMode) {
 		RPGConfig.filterMode = filterMode;
 	}
 	

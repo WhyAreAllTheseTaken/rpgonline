@@ -152,12 +152,12 @@ public abstract class GL30Renderer extends GL20Renderer {
 			
 			Texture tex;
 			try {
-				tex = hdr ? createHDR((int) image.getWidth(), (int) image.getHeight()) : InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter());
+				tex = hdr ? createHDR((int) image.getWidth(), (int) image.getHeight()) : InternalTextureLoader.get().createTexture((int) image.getWidth(), (int) image.getHeight(), image.getFilter().slickMapping);
 			} catch (IOException e) {
 				throw new RenderResourceException("Failed to create texture.");
 			}
 
-			int filter = image.getFilter() == Image.FILTER_LINEAR ? GL11.GL_LINEAR : GL11.GL_NEAREST;
+			int filter = image.getFilter().glMapping;
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter); 
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
 	        

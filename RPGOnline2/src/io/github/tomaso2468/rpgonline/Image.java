@@ -54,15 +54,6 @@ import io.github.tomaso2468.rpgonline.render.Renderer;
  */
 public class Image implements Cloneable {
 	/**
-	 * A filter that uses nearest neighbour interpolation.
-	 */
-	public static final int FILTER_NEAREST = 0;
-	/**
-	 * A filter that uses linear interpolation.
-	 */
-	public static final int FILTER_LINEAR = 1;
-
-	/**
 	 * The renderer for this image.
 	 */
 	private Renderer renderer;
@@ -97,7 +88,7 @@ public class Image implements Cloneable {
 	/**
 	 * The filter this image uses.
 	 */
-	private int filter = FILTER_LINEAR;
+	private ImageFilter filter = RPGConfig.getFilterMode();
 
 	/**
 	 * Constructs a new blank image.
@@ -175,7 +166,7 @@ public class Image implements Cloneable {
 	 * @see #FILTER_LINEAR
 	 * @see #FILTER_NEAREST
 	 */
-	public void setFilter(int filterMode) {
+	public void setFilter(ImageFilter filterMode) {
 		renderer.setFilter(texture, filterMode);
 		this.filter = filterMode;
 	}
@@ -330,30 +321,69 @@ public class Image implements Cloneable {
 		return textureWidth;
 	}
 
+	/**
+	 * Gets the Y offset from within the texture.
+	 * 
+	 * @return A float value.
+	 */
 	public float getTextureOffsetY() {
 		return textureY;
 	}
 
+	/**
+	 * Gets the X offset from within the texture.
+	 * 
+	 * @return A float value.
+	 */
 	public float getTextureHeight() {
 		return textureHeight;
 	}
 
+	/**
+	 * Gets the width of the image in pixels.
+	 * 
+	 * @return A float value.
+	 */
 	public float getWidth() {
 		return width;
 	}
 
+	/**
+	 * Gets the height of the image in pixels.
+	 * 
+	 * @return A float value.
+	 */
 	public float getHeight() {
 		return height;
 	}
 
+	/**
+	 * Gets a copy of the image at the specified width and height. The backing texture is shared and not resized.
+	 * @param w The width of the new image.
+	 * @param h The height of the new image.
+	 * @return A new scaled image.
+	 */
 	public Image getScaledCopy(float w, float h) {
 		return new Image(renderer, texture, textureX, textureY, textureWidth, textureHeight, w, h);
 	}
 
+	/**
+	 * Gets a copy of the image scaled by the amount specified. The backing texture is shared and not resized.
+	 * @param scale The amount to scale by (1 = original image).
+	 * @return A new scaled image.
+	 */
 	public Image getScaledCopy(float scale) {
 		return getScaledCopy(width * scale, height * scale);
 	}
 
+	/**
+	 * Gets a sub image of this image.
+	 * @param x The x position to start at.
+	 * @param y The y position to start at.
+	 * @param w The width of the sub image.
+	 * @param h The height of the sub image.
+	 * @return A new sub image.
+	 */
 	public Image getSubImage(float x, float y, float w, float h) {
 		float newTextureOffsetX = ((x / (float) this.width) * textureWidth) + textureX;
 		float newTextureOffsetY = ((y / (float) this.height) * textureHeight) + textureY;
@@ -366,14 +396,23 @@ public class Image implements Cloneable {
 		return sub;
 	}
 
+	/**
+	 * Creates a copy of this image with the same backing texture.
+	 */
 	public Image clone() {
 		return new Image(renderer, texture, textureX, textureY, textureWidth, textureHeight, width, height);
 	}
 
+	/**
+	 * Destroys the texture backing this image.
+	 */
 	public void destroy() {
 		texture.destroy();
 	}
 
+	/**
+	 * Flips texture coordinates on systems that need it.
+	 */
 	public void ensureInverted() {
 		if (textureHeight > 0) {
 			textureY = textureY + textureHeight;
@@ -381,7 +420,11 @@ public class Image implements Cloneable {
 		}
 	}
 
-	public int getFilter() {
+	/**
+	 * Gets the filter effect of this image.
+	 * @return A value filter.
+	 */
+	public ImageFilter getFilter() {
 		return filter;
 	}
 }

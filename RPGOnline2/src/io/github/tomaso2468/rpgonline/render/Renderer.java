@@ -42,6 +42,7 @@ import org.newdawn.slick.geom.Transform;
 import io.github.tomaso2468.rpgonline.Font;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.ImageFilter;
 import io.github.tomaso2468.rpgonline.TextureReference;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.post.LUT;
@@ -221,7 +222,7 @@ public interface Renderer {
 	
 	public Input getInput();
 	
-	public void setFilter(TextureReference texture, int filterMode);
+	public void setFilter(TextureReference texture, ImageFilter filterMode);
 	public void writeImage(Image image, OutputStream out, boolean writeAlpha) throws IOException, RenderException;
 	
 	public Shader createShader(URL vertex, URL fragment) throws RenderException;
