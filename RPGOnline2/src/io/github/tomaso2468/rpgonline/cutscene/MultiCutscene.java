@@ -99,16 +99,16 @@ public class MultiCutscene extends Cutscene {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delf) {
+	public void update(Game game, float delf) {
 		if (lastIndex != index) {
 			if (index < scenes.length) {
-				scenes[index].onStart();
+				scenes[index].onStart(game);
 			}
 		}
 		if (index < scenes.length) {
-			scenes[index].update(delf);
+			scenes[index].update(game, delf);
 			
-			lastMusic = scenes[index].getMusic();
+			lastMusic = scenes[index].getMusic(game);
 			
 			if (scenes[index].isDone()) {
 				index += 1;
@@ -120,7 +120,7 @@ public class MultiCutscene extends Cutscene {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AmbientMusic getMusic() {
+	public AmbientMusic getMusic(Game game) {
 		return lastMusic;
 	}
 

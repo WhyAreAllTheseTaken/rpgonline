@@ -122,7 +122,7 @@ public abstract class CutsceneState implements GameState {
 	 */
 	@Override
 	public void update(Game game, float delta) throws RenderException {
-		scene.update(delta);
+		scene.update(game, delta);
 		if (scene.isDone()) {
 			game.changeState(nextState, leave, enter);
 		}
@@ -134,7 +134,7 @@ public abstract class CutsceneState implements GameState {
 	@Override
 	public void enterState(Game game) throws RenderException {
 		scene.reset();
-		scene.onStart();
+		scene.onStart(game);
 	}
 
 	/**

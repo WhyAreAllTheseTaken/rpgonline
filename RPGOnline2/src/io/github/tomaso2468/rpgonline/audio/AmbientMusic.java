@@ -39,7 +39,7 @@ package io.github.tomaso2468.rpgonline.audio;
  * Ambient music will loop until changed (using cross-fading). Through the use
  * of groups individual parts of music can be changed to perform vertical
  * mixing. Horizontal mixing currently has to be done using
- * {@link io.github.tomaso2468.rpgonline.audio.AudioManager#setMusic(AmbientMusic)}
+ * {@link io.github.tomaso2468.rpgonline.audio.AudioSystem#setMusic(AmbientMusic)}
  * </p>
  * 
  * @author Tomaso2468
@@ -60,7 +60,7 @@ public class AmbientMusic {
 	/**
 	 * An internally-used list of references to currently-playing audio.
 	 * 
-	 * @see io.github.tomaso2468.rpgonline.audio.AudioManager#setMusic(AmbientMusic)
+	 * @see io.github.tomaso2468.rpgonline.audio.AudioSystem#setMusic(AmbientMusic)
 	 */
 	final String[] refs;
 

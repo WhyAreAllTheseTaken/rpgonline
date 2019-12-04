@@ -50,7 +50,6 @@ import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
@@ -410,7 +409,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		});
 		
 		if (InputUtils.isActionPressed(in, InputUtils.EXIT)) {
-			exit();
+			game.exit(0);
 		}
 		
 		xv = x - px;
@@ -423,10 +422,10 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			b.update(game, delta, x, y, x - px, y - py, this, bullets);
 		}
 		
-		AudioManager.setPlayerPos(x, 0, y);
-		AudioManager.setPlayerVelocity(xv / RPGConfig.getTileSize(), 0, yv / RPGConfig.getTileSize());
+		game.getAudio().setPlayerPos(x, 0, y);
+		game.getAudio().setPlayerVelocity(xv / RPGConfig.getTileSize(), 0, yv / RPGConfig.getTileSize());
 		
-		AudioManager.setMusic(getMusic());
+		game.getAudio().setMusic(getMusic());
 		
 		px = x;
 		py = y;
@@ -458,18 +457,6 @@ public abstract class BulletState implements GameState, BaseScaleState {
 	 */
 	public void postUpdate(Game game, float delf, Input in) {
 		
-	}
-	
-	/**
-	 * The command to execute when exit is pressed.
-	 * @see io.github.tomaso2468.rpgonline.RPGConfig#setKeyInput(io.github.tomaso2468.rpgonline.input.KeyboardInputProvider)
-	 * @see io.github.tomaso2468.rpgonline.RPGConfig#setControllerInput(io.github.tomaso2468.rpgonline.input.ControllerInputProvider)
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils
-	 * @see io.github.tomaso2468.rpgonline.input.InputUtils#EXIT
-	 */
-	public void exit() {
-		AudioManager.dispose();
-		System.exit(0);
 	}
 	
 	/**

@@ -33,7 +33,6 @@ package io.github.tomaso2468.rpgonline.cutscene;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
@@ -74,13 +73,14 @@ public abstract class Cutscene {
 	}
 	/**
 	 * Updates the cutscene.
+	 * @param game The game.
 	 * @param delf The time since the last game update in seconds.
 	 */
-	public void update(float delf) {
+	public void update(Game game, float delf) {
 		time -= delf;
 	}
 	/**
-	 * Renders the cutscene/
+	 * Renders the cutscene.
 	 * @param c The current game container.
 	 * @param game The current game.
 	 * @param g The current graphics context.
@@ -89,13 +89,18 @@ public abstract class Cutscene {
 	public abstract void render(Game game, Renderer renderer, CutsceneState state);
 	/**
 	 * Gets the music for this cutscene.
+	 * 
+	 * @param game The game.
+	 * 
 	 * @return An ambient music object.
 	 */
-	public abstract AmbientMusic getMusic();
+	public abstract AmbientMusic getMusic(Game game);
 	/**
 	 * Called at the start of a cutscene.
+	 * 
+	 * @param game The game.
 	 */
-	public void onStart() {
-		AudioManager.setMusic(getMusic());
+	public void onStart(Game game) {
+		game.getAudio().setMusic(getMusic(game));
 	}
 }

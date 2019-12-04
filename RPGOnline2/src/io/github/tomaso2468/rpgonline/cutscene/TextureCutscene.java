@@ -35,7 +35,6 @@ import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
@@ -76,8 +75,8 @@ public class TextureCutscene extends Cutscene {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AmbientMusic getMusic() {
-		return AudioManager.getAmbientMusic(music);
+	public AmbientMusic getMusic(Game game) {
+		return game.getAudio().getAmbientMusic(music);
 	}
 
 }

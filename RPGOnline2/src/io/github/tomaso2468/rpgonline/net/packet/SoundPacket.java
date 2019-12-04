@@ -35,7 +35,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.net.PacketType;
 
 /**
@@ -78,9 +78,11 @@ public class SoundPacket implements NetPacket {
 
 	/**
 	 * Apply the packet.
+	 * 
+	 * @param game The game.
 	 */
-	public void apply() {
-		AudioManager.playSound(id, v, p, x, y, z, false, dx, dy, dz);
+	public void apply(Game game) {
+		game.getAudio().playSound(id, v, p, x, y, z, false, dx, dy, dz);
 	}
 
 	@Override

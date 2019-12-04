@@ -52,7 +52,6 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.UpdateHook;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
@@ -950,10 +949,10 @@ public class WorldState implements GameState, BaseScaleState {
 	public void updateAudio(Game game, float delta) throws RenderException {
 		Debugger.start("audio");
 		AmbientMusic music = ServerManager.getClient().getMusic();
-		AudioManager.setMusic(music);
+		game.getAudio().setMusic(music);
 
-		AudioManager.setPlayerPos((float) x, 0, (float) y);
-		AudioManager.setPlayerVelocity((float) (x - px) / delta, 0, (float) (y - py) / delta);
+		game.getAudio().setPlayerPos((float) x, 0, (float) y);
+		game.getAudio().setPlayerVelocity((float) (x - px) / delta, 0, (float) (y - py) / delta);
 		Debugger.stop("audio");
 	}
 

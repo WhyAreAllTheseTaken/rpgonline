@@ -43,7 +43,7 @@ import org.lwjgl.openal.AL10;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
 
-import io.github.tomaso2468.rpgonline.audio.AudioManager;
+import io.github.tomaso2468.rpgonline.audio.AudioSystem;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.input.Input;
@@ -162,6 +162,11 @@ public class Game {
 	 * The input instance for the game.
 	 */
 	private Input input;
+	
+	/**
+	 * The AudioSystem for this game.
+	 */
+	private AudioSystem audio;
 
 	/**
 	 * Constructs a new game.
@@ -308,7 +313,9 @@ public class Game {
 		this.input = renderer.getInput();
 
 		// This triggers the static constructor of the AudioManager
-		AudioManager.getSystem();
+		if (audio != null) {
+			setAudio(new AudioSystem());
+		}
 
 		// Initialise game states.
 		for (Entry<Long, GameState> state : getStates()) {
@@ -1312,7 +1319,7 @@ public class Game {
 	 */
 	public void exit(int code) {
 		renderer.exit(this);
-		AudioManager.dispose();
+		audio.dispose();
 
 		if (code > 0) {
 			Log.warn(
@@ -1347,5 +1354,13 @@ public class Game {
 	 */
 	public int getWidth() {
 		return renderer.getWidth();
+	}
+
+	public AudioSystem getAudio() {
+		return audio;
+	}
+
+	public void setAudio(AudioSystem audio) {
+		this.audio = audio;
 	}
 }
