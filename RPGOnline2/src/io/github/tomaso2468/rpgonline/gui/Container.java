@@ -237,6 +237,140 @@ public class Container extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void mouseClickedAdditional(Game game, float x, float y, int button) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseClickedAdditional(game, x - selected.getX(), y - selected.getY(), button);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseClickedMiddle(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseClickedMiddle(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseClickedRight(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseClickedRight(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseDraggedMiddle(Game game, float ox, float oy, float nx, float ny) {
+		Component selected = getSelected(game, nx, ny);
+
+		if (selected != this) {
+			selected.mouseDraggedMiddle(game, ox - selected.getX(), oy - selected.getY(), nx - selected.getX(),
+					ny - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseDraggedRight(Game game, float ox, float oy, float nx, float ny) {
+		Component selected = getSelected(game, nx, ny);
+
+		if (selected != this) {
+			selected.mouseDraggedRight(game, ox - selected.getX(), oy - selected.getY(), nx - selected.getX(),
+					ny - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mousePressedAdditional(Game game, float x, float y, int button) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mousePressedAdditional(game, x - selected.getX(), y - selected.getY(), button);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mousePressedMiddle(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mousePressedMiddle(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mousePressedRight(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mousePressedRight(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseUnpressedAdditional(Game game, float x, float y, int button) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseUnpressedAdditional(game, x - selected.getX(), y - selected.getY(), button);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseUnpressedMiddle(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseUnpressedMiddle(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void mouseUnpressedRight(Game game, float x, float y) {
+		Component selected = getSelected(game, x, y);
+
+		if (selected != this) {
+			selected.mouseUnpressedRight(game, x - selected.getX(), y - selected.getY());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void containerUpdate(Game c) {
 		for (Component component : components) {
 			component.containerUpdate(c);
