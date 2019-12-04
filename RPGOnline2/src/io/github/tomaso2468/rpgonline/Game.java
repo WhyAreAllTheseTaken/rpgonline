@@ -33,7 +33,11 @@ package io.github.tomaso2468.rpgonline;
 
 import java.lang.management.ManagementFactory;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -531,14 +535,28 @@ public class Game {
 			DebugFrame render = lastFrame;
 			if (render != null) {
 				y = drawDebugTitle(g, "Render Thread", y, false);
-				for (Entry<String, Long> t : render.getTimes()) {
+				List<Entry<String,Long>> times = new ArrayList<>(render.getTimes());
+				Collections.sort(times, new Comparator<Entry<String,Long>>() {
+					@Override
+					public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
+						return o1.getKey().compareToIgnoreCase(o2.getKey());
+					}
+				});
+				for (Entry<String, Long> t : times) {
 					y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 				}
 			}
 
 			if (lastUpdate != null) {
 				y = drawDebugTitle(g, "Main Thread Updates", y, false);
-				for (Entry<String, Long> t : lastUpdate.getTimes()) {
+				List<Entry<String,Long>> times = new ArrayList<>(lastUpdate.getTimes());
+				Collections.sort(times, new Comparator<Entry<String,Long>>() {
+					@Override
+					public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
+						return o1.getKey().compareToIgnoreCase(o2.getKey());
+					}
+				});
+				for (Entry<String, Long> t : times) {
 					y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 				}
 			}
@@ -547,7 +565,14 @@ public class Game {
 				DebugFrame client = ServerManager.getClient().getDebugFrame();
 				if (client != null) {
 					y = drawDebugTitle(g, "Client Thread", y, false);
-					for (Entry<String, Long> t : client.getTimes()) {
+					List<Entry<String,Long>> times = new ArrayList<>(client.getTimes());
+					Collections.sort(times, new Comparator<Entry<String,Long>>() {
+						@Override
+						public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
+							return o1.getKey().compareToIgnoreCase(o2.getKey());
+						}
+					});
+					for (Entry<String, Long> t : times) {
 						y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 					}
 				}
@@ -557,7 +582,14 @@ public class Game {
 				DebugFrame server = ServerManager.getServer().getDebugFrame();
 				if (server != null) {
 					y = drawDebugTitle(g, "Server Thread", y, false);
-					for (Entry<String, Long> t : server.getTimes()) {
+					List<Entry<String,Long>> times = new ArrayList<>(server.getTimes());
+					Collections.sort(times, new Comparator<Entry<String,Long>>() {
+						@Override
+						public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
+							return o1.getKey().compareToIgnoreCase(o2.getKey());
+						}
+					});
+					for (Entry<String, Long> t : times) {
 						y = drawDebugLineLabel(g, t.getKey(), (t.getValue() / 1000) + "", y, false);
 					}
 				}
