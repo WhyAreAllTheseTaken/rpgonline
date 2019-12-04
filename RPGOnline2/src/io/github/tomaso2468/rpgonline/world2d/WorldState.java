@@ -53,7 +53,6 @@ import io.github.tomaso2468.rpgonline.UpdateHook;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.lighting.LightingDisabled;
@@ -175,7 +174,7 @@ public class WorldState implements GameState, BaseScaleState {
 	@Override
 	public void init(Game game) throws RenderException {
 		if (guis != null) {
-			guis.init(game.getWidth(), game.getHeight(), base_scale);
+			guis.init(game, game.getWidth(), game.getHeight(), base_scale);
 		}
 	}
 
@@ -261,7 +260,7 @@ public class WorldState implements GameState, BaseScaleState {
 
 			Graphics g2 = renderer.getGUIGraphics();
 
-			ThemeManager.getTheme().predraw(game, g2);
+			game.getTheme().predraw(game, g2);
 			guis.paint(game, g2, base_scale);
 
 			Debugger.stop("gui");
@@ -1131,10 +1130,10 @@ public class WorldState implements GameState, BaseScaleState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(Game container, float base) {
+	public void scale(Game game, float base) {
 		base_scale = base;
 		if (guis != null)
-			guis.init(container.getWidth(), container.getHeight(), base_scale);
+			guis.init(game, game.getWidth(), game.getHeight(), base_scale);
 	}
 
 	/**

@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
+
 /**
  * A button used to create a series of selectable options. This should be added to a RadioGroup.
  * @author Tomaso2468
@@ -54,7 +56,7 @@ public class RadioButton extends CheckBox {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onAction(float x, float y, boolean state) {
+	public void onAction(Game game, float x, float y, boolean state) {
 		group.buttonPressed(this);
 	}
 }

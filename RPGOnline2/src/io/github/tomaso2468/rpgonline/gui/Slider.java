@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -68,15 +67,15 @@ public class Slider extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateSliderBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateSliderBounds(c, this);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(Game game, float ox, float oy, float nx, float ny) {
 		pos = nx / getW() * max;
 	}
 
@@ -127,6 +126,6 @@ public class Slider extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintSlider(game, g, scaling, this);
+		game.getTheme().paintSlider(game, g, scaling, this);
 	}
 }

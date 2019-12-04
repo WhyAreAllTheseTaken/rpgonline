@@ -51,7 +51,6 @@ import io.github.tomaso2468.rpgonline.RPGConfig;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
 import io.github.tomaso2468.rpgonline.particle.Particle;
@@ -211,7 +210,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			
 			Graphics g2 = renderer.getGUIGraphics();
 			
-			ThemeManager.getTheme().predraw(game, g2);
+			game.getTheme().predraw(game, g2);
 			gui.paint(game, g2, base_scale);
 			Debugger.stop("gui");
 		}

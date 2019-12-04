@@ -31,8 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.layout.Border;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 /**
  * A container that is scrollable.
@@ -52,41 +52,41 @@ public class ScrollableContainer extends Container {
 	/**
 	 * Constructs a new scrollable container.
 	 */
-	public ScrollableContainer() {
-		Border border = new Border(ThemeManager.getTheme().getScrollableBorder());
+	public ScrollableContainer(Game game) {
+		Border border = new Border(game.getTheme().getScrollableBorder());
 		components.add(border);
 		
 		Container base_container = new Container() {
 			@Override
-			public void onResize(float x, float y, float w, float h) {
-				super.onResize(x, y, w, h);
+			public void onResize(Game game, float x, float y, float w, float h) {
+				super.onResize(game, x, y, w, h);
 				
 				if (container != null) {
-					container.setBounds(0, -bar.getPos(), w - bar.getDefaultBounds(this).getWidth(), h);
-					bar.setBounds(w - bar.getDefaultBounds(this).getWidth(), 0, bar.getDefaultBounds(this).getWidth(), h);
+					container.setBounds(game, 0, -bar.getPos(), w - bar.getDefaultBounds(game, this).getWidth(), h);
+					bar.setBounds(game, w - bar.getDefaultBounds(game, this).getWidth(), 0, bar.getDefaultBounds(game, this).getWidth(), h);
 				}
 			}
 		};
-		border.add(base_container);
+		border.add(game, base_container);
 		
 		bar = new ScrollBar(0, 1) {
 			@Override
 			public void onUpdate(float pos, float max) {
-				base_container.setBounds(base_container.getBounds());
+				base_container.setBounds(game, base_container.getBounds(game));
 			}
 		};
 		
-		container = new Border(ThemeManager.getTheme().getScrollableBorder()) {
+		container = new Border(game.getTheme().getScrollableBorder()) {
 			@Override
-			public void onResize(float x, float y, float w, float h) {
-				super.onResize(x, y, w, h);
+			public void onResize(Game game, float x, float y, float w, float h) {
+				super.onResize(game, x, y, w, h);
 				
 				bar.setMax(container.getH());
 			}
 		};
-		base_container.add(container);
+		base_container.add(game, container);
 		
-		base_container.setBounds(base_container.getBounds());
+		base_container.setBounds(game, base_container.getBounds(game));
 	}
 
 }

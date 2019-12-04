@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -68,23 +67,23 @@ public class Button extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintButton(game, g, scaling, this);
+		game.getTheme().paintButton(game, g, scaling, this);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseClickedLeft(float x, float y) {
+	public void mouseClickedLeft(Game game, float x, float y) {
 		setState(true);
-		onAction(x, y, state);
+		onAction(game, x, y, state);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseExited(float x, float y) {
+	public void mouseExited(Game game, float x, float y) {
 		setState(false);
 	}
 	
@@ -92,7 +91,7 @@ public class Button extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta, Input input) {
+	public void update(Game game, float delta, Input input) {
 		setState(false);
 	}
 	
@@ -118,7 +117,7 @@ public class Button extends Component {
 	 * @param y The Y position of the mouse,
 	 * @param state {@code true} if the button is pressed down, {@code false} otherwise.
 	 */
-	public void onAction(float x, float y, boolean state) {
+	public void onAction(Game game, float x, float y, boolean state) {
 		
 	}
 
@@ -142,7 +141,7 @@ public class Button extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateButtonBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateButtonBounds(c, this);
 	}
 }

@@ -33,7 +33,6 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -62,7 +61,7 @@ public class Picture extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintPicture(game, g, scaling, this);
+		game.getTheme().paintPicture(game, g, scaling, this);
 	}
 
 	/**

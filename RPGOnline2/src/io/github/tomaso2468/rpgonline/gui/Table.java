@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.layout.FillGridLayout;
 
 /**
@@ -43,12 +44,12 @@ public class Table extends FillGridLayout {
 	 * Constructs a new Table.
 	 * @param data The data of the table with the first index being columns.
 	 */
-	public Table(String[][] data) {
+	public Table(Game game, String[][] data) {
 		super(data.length, data[0].length);
 		
 		for (int x = 0; x < data.length; x++) {
 			for (int y = 0; y < data[0].length; y++) {
-				add(new Label(data[x][y]), x, y);
+				add(game, new Label(data[x][y]), x, y);
 			}
 		}
 	}
@@ -59,7 +60,7 @@ public class Table extends FillGridLayout {
 	 * @param y The Y position of the cell.
 	 * @param s The text of the cell.
 	 */
-	public void setText(int x, int y, String s) {
+	public void setText(Game game, int x, int y, String s) {
 		for (Component c : components) {
 			if(this.x.get(c) == x && this.y.get(c) == y) {
 				((Label) c).setText(s);
@@ -77,8 +78,8 @@ public class Table extends FillGridLayout {
 		}
 		
 		// Cause the system to recalculate bounds.
-		setBounds(getBounds());
+		setBounds(game, getBounds(game));
 		
-		add(new Label(s), x, y);
+		add(game, new Label(s), x, y);
 	}
 }

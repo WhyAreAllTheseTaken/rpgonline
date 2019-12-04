@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -68,15 +67,15 @@ public class ScrollBar extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateScrollBarBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateScrollBarBounds(c, this);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseClickedLeft(float x, float y) {
+	public void mouseClickedLeft(Game game, float x, float y) {
 		if (y < getH() / 20) {
 			setPos(0);
 		}
@@ -89,7 +88,7 @@ public class ScrollBar extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(Game game, float ox, float oy, float nx, float ny) {
 		pos = ny / getH() * max;
 		if (pos < 0) {
 			pos = 0;
@@ -146,6 +145,6 @@ public class ScrollBar extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintScrollBar(game, g, scaling, this);
+		game.getTheme().paintScrollBar(game, g, scaling, this);
 	}
 }

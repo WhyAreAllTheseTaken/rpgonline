@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
+
 /**
  * A button that, when pressed, cycles through a series of values.
  * @author Tomaso2468
@@ -67,7 +69,7 @@ public class CycleButton extends Button {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onAction(float x, float y, boolean state) {
+	public void onAction(Game game, float x, float y, boolean state) {
 		index = (index + 1) % states.length;
 		setText(prefix + states[index]);
 	}

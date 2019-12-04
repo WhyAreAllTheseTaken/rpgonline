@@ -32,7 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.gui;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -105,8 +104,8 @@ public abstract class TextComponent extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta, Input input) {
-		super.update(delta, input);
+	public void update(Game game, float delta, Input input) {
+		super.update(game, delta, input);
 		
 		cooldown -= delta;
 		
@@ -422,7 +421,7 @@ public abstract class TextComponent extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintText(game, g, scaling, this);
+		game.getTheme().paintText(game, g, scaling, this);
 	}
 
 }

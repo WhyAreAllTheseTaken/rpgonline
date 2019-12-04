@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -58,15 +57,15 @@ public class TabButton extends Button {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintTab(game, g, scaling, this);
+		game.getTheme().paintTab(game, g, scaling, this);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateTabBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateTabBounds(c, this);
 	}
 
 }

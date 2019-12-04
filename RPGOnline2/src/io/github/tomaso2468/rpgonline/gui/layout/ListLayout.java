@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layout;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
@@ -58,39 +59,39 @@ public class ListLayout extends Layout {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void add(Component c) {
+	public void add(Game game, Component c) {
 		components.add(c);
-		layout();
+		layout(game);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void remove(Component c) {
-		super.remove(c);
-		layout();
+	public void remove(Game game, Component c) {
+		super.remove(game, c);
+		layout(game);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onResize(float x, float y, float w, float h) {
-		super.onResize(x, y, w, h);
-		layout();
+	public void onResize(Game game, float x, float y, float w, float h) {
+		super.onResize(game, x, y, w, h);
+		layout(game);
 	}
 	
 	/**
 	 * Updates the layout of this component.
 	 */
-	protected void layout() {
+	protected void layout(Game game) {
 		Debugger.start("gui-layout");
 		float y = 0;
 		
 		for (Component c : components) {
-			c.setBounds(0, y, c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
-			y += c.getDefaultBounds(this).getHeight() + spacing;
+			c.setBounds(game, 0, y, c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
+			y += c.getDefaultBounds(game, this).getHeight() + spacing;
 		}
 		Debugger.stop("gui-layout");
 	}

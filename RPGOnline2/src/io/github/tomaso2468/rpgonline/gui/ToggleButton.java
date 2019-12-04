@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.input.Input;
 
 /**
@@ -53,16 +54,16 @@ public class ToggleButton extends Button {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseClickedLeft(float x, float y) {
+	public void mouseClickedLeft(Game game, float x, float y) {
 		setState(!isState());
-		onAction(x, y, isState());
+		onAction(game, x, y, isState());
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void mouseExited(float x, float y) {
+	public void mouseExited(Game game, float x, float y) {
 		
 	}
 	
@@ -70,7 +71,7 @@ public class ToggleButton extends Button {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float delta, Input input) {
+	public void update(Game game, float delta, Input input) {
 		
 	}
 }

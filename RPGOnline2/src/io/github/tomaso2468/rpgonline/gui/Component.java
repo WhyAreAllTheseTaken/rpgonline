@@ -36,7 +36,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -72,7 +71,7 @@ public abstract class Component {
 	 * @throws RenderException 
 	 */
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintComponent(game, g, scaling, this);
+		game.getTheme().paintComponent(game, g, scaling, this);
 	}
 	
 	/**
@@ -122,7 +121,7 @@ public abstract class Component {
 	 * Gets the bounds of this component.
 	 * @return A rectangle object.
 	 */
-	public Rectangle getBounds() {
+	public Rectangle getBounds(Game game) {
 		return new Rectangle(x, y, w, h);
 	}
 	
@@ -131,8 +130,8 @@ public abstract class Component {
 	 * @param c The container holding this component.
 	 * @return A rectangle object.
 	 */
-	public Rectangle getDefaultBounds(Container c) {
-		return c.getBounds();
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return c.getBounds(game);
 	}
 	
 	/**
@@ -140,7 +139,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseClickedLeft(float x, float y) {
+	public void mouseClickedLeft(Game game, float x, float y) {
 		
 	}
 	
@@ -149,7 +148,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mousePressedLeft(float x, float y) {
+	public void mousePressedLeft(Game game, float x, float y) {
 		
 	}
 	
@@ -158,7 +157,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseUnpressedLeft(float x, float y) {
+	public void mouseUnpressedLeft(Game game, float x, float y) {
 		
 	}
 	
@@ -169,7 +168,7 @@ public abstract class Component {
 	 * @param nx The new X position of the mouse with scaling.
 	 * @param ny The new Y position of the mouse with scaling.
 	 */
-	public void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedLeft(Game game, float ox, float oy, float nx, float ny) {
 		
 	}
 	
@@ -178,7 +177,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseClickedRight(float x, float y) {
+	public void mouseClickedRight(Game game, float x, float y) {
 		
 	}
 	
@@ -187,7 +186,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mousePressedRight(float x, float y) {
+	public void mousePressedRight(Game game, float x, float y) {
 		
 	}
 	
@@ -196,7 +195,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseUnpressedRight(float x, float y) {
+	public void mouseUnpressedRight(Game game, float x, float y) {
 		
 	}
 	
@@ -207,7 +206,7 @@ public abstract class Component {
 	 * @param nx The new X position of the mouse with scaling.
 	 * @param ny The new Y position of the mouse with scaling.
 	 */
-	public void mouseDraggedRight(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedRight(Game game, float ox, float oy, float nx, float ny) {
 		
 	}
 	
@@ -216,7 +215,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseClickedMiddle(float x, float y) {
+	public void mouseClickedMiddle(Game game, float x, float y) {
 		
 	}
 	
@@ -225,7 +224,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mousePressedMiddle(float x, float y) {
+	public void mousePressedMiddle(Game game, float x, float y) {
 		
 	}
 	
@@ -234,7 +233,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseUnpressedMiddle(float x, float y) {
+	public void mouseUnpressedMiddle(Game game, float x, float y) {
 		
 	}
 	
@@ -244,7 +243,7 @@ public abstract class Component {
 	 * @param y The Y position of the mouse with scaling.
 	 * @param button The button that was pressed.
 	 */
-	public void mouseClickedAdditional(float x, float y, int button) {
+	public void mouseClickedAdditional(Game game, float x, float y, int button) {
 		
 	}
 	
@@ -254,7 +253,7 @@ public abstract class Component {
 	 * @param y The Y position of the mouse with scaling.
 	 * @param button The button that was pressed.
 	 */
-	public void mousePressedAdditional(float x, float y, int button) {
+	public void mousePressedAdditional(Game game, float x, float y, int button) {
 		
 	}
 	
@@ -264,7 +263,7 @@ public abstract class Component {
 	 * @param y The Y position of the mouse with scaling.
 	 * @param button The button that was pressed.
 	 */
-	public void mouseUnpressedAdditional(float x, float y, int button) {
+	public void mouseUnpressedAdditional(Game game, float x, float y, int button) {
 		
 	}
 	
@@ -275,7 +274,7 @@ public abstract class Component {
 	 * @param nx The new X position of the mouse with scaling.
 	 * @param ny The new Y position of the mouse with scaling.
 	 */
-	public void mouseDraggedMiddle(float ox, float oy, float nx, float ny) {
+	public void mouseDraggedMiddle(Game game, float ox, float oy, float nx, float ny) {
 		
 	}
 	
@@ -284,7 +283,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseEntered(float x, float y) {
+	public void mouseEntered(Game game, float x, float y) {
 		
 	}
 	
@@ -293,7 +292,7 @@ public abstract class Component {
 	 * @param x The X position of the mouse with scaling.
 	 * @param y The Y position of the mouse with scaling.
 	 */
-	public void mouseExited(float x, float y) {
+	public void mouseExited(Game game, float x, float y) {
 		
 	}
 	
@@ -304,7 +303,7 @@ public abstract class Component {
 	 * @param nx The new X position of the mouse with scaling.
 	 * @param ny The new Y position of the mouse with scaling.
 	 */
-	public void mouseMoved(float ox, float oy, float nx, float ny) {
+	public void mouseMoved(Game game, float ox, float oy, float nx, float ny) {
 		
 	}
 	
@@ -312,7 +311,7 @@ public abstract class Component {
 	 * Mouse scroll event.
 	 * @param scroll The amount to scroll by.
 	 */
-	public void mouseWheel(float scroll) {
+	public void mouseWheel(Game game, float scroll) {
 		
 	}
 
@@ -320,7 +319,7 @@ public abstract class Component {
 	 * Component update (for keyboard profiling and real-time updates).
 	 * @param input 
 	 */
-	public void update(float delta, Input input) {
+	public void update(Game game, float delta, Input input) {
 		
 	}
 
@@ -328,8 +327,8 @@ public abstract class Component {
 	 * Sets the bounds of this component.
 	 * @param r A rectangle object.
 	 */
-	public void setBounds(Rectangle r) {
-		setBounds(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+	public void setBounds(Game game, Rectangle r) {
+		setBounds(game, r.getX(), r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	/**
@@ -339,12 +338,12 @@ public abstract class Component {
 	 * @param w The width of this component.
 	 * @param h The height of this component.
 	 */
-	public void setBounds(float x, float y, float w, float h) {
+	public void setBounds(Game game, float x, float y, float w, float h) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		onResize(x, y, w, h);
+		onResize(game, x, y, w, h);
 	}
 	
 	/**
@@ -354,7 +353,7 @@ public abstract class Component {
 	 * @param w The width of this component.
 	 * @param h The height of this component.
 	 */
-	public void onResize(float x, float y, float w, float h) {
+	public void onResize(Game game, float x, float y, float w, float h) {
 		
 	}
 	

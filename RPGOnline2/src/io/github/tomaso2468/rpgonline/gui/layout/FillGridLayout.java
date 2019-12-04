@@ -34,6 +34,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
@@ -77,7 +78,7 @@ public class FillGridLayout extends Layout {
 	 * @param x The X position of the component.
 	 * @param y The Y position of the component.
 	 */
-	public void add(Component c, int x, int y) {
+	public void add(Game game, Component c, int x, int y) {
 		components.add(c);
 		this.x.put(c, x);
 		this.y.put(c, y);
@@ -86,7 +87,7 @@ public class FillGridLayout extends Layout {
 		float spacingX = getW() / (grid_x);
 		float spacingY = getW() / (grid_y);
 		
-		c.setBounds(spacingX * x,
+		c.setBounds(game, spacingX * x,
 				spacingY * y,
 				spacingX,
 				spacingY);
@@ -96,15 +97,15 @@ public class FillGridLayout extends Layout {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void add(Component c) {
-		add(c, 0, 0);
+	public void add(Game game, Component c) {
+		add(game, c, 0, 0);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onResize(float ox, float oy, float w, float h) {
+	public void onResize(Game game, float ox, float oy, float w, float h) {
 		Debugger.start("gui-layout");
 		for (Component c : components) {
 			int x = this.x.get(c);
@@ -113,7 +114,7 @@ public class FillGridLayout extends Layout {
 			float spacingX = getW() / (grid_x);
 			float spacingY = getW() / (grid_y);
 			
-			c.setBounds(spacingX * x,
+			c.setBounds(game, spacingX * x,
 					spacingY * y,
 					spacingX,
 					spacingY);

@@ -34,6 +34,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
@@ -77,7 +78,7 @@ public class OuterGridLayout extends Layout {
 	 * @param x The X position of the component.
 	 * @param y The Y position of the component.
 	 */
-	public void add(Component c, int x, int y) {
+	public void add(Game game, Component c, int x, int y) {
 		components.add(c);
 		this.x.put(c, x);
 		this.y.put(c, y);
@@ -86,24 +87,24 @@ public class OuterGridLayout extends Layout {
 		if (y == 0) {
 			float spacing = getW() / (grid_x + 1);
 
-			c.setBounds(spacing * (x + 1) - c.getDefaultBounds(this).getWidth() / 2, 0,
-					c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, spacing * (x + 1) - c.getDefaultBounds(game, this).getWidth() / 2, 0,
+					c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 		} else if (y == grid_y - 1) {
 			float spacing = getW() / (grid_x + 1);
 
-			c.setBounds(spacing * (x + 1) - c.getDefaultBounds(this).getWidth() / 2,
-					getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-					c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, spacing * (x + 1) - c.getDefaultBounds(game, this).getWidth() / 2,
+					getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+					c.getDefaultBounds(game, this).getHeight());
 		} else if (x == 0) {
 			float spacing = getH() / (grid_y + 1);
 
-			c.setBounds(0, spacing * (y + 1) - c.getDefaultBounds(this).getHeight() / 2, c.getDefaultBounds(this).getWidth(),
-					c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, 0, spacing * (y + 1) - c.getDefaultBounds(game, this).getHeight() / 2, c.getDefaultBounds(game, this).getWidth(),
+					c.getDefaultBounds(game, this).getHeight());
 		} else if (x == grid_x - 1) {
 			float spacing = getH() / (grid_y + 1);
 
-			c.setBounds(0, spacing * (y + 1) - c.getDefaultBounds(this).getHeight() / 2, c.getDefaultBounds(this).getWidth(),
-					c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, 0, spacing * (y + 1) - c.getDefaultBounds(game, this).getHeight() / 2, c.getDefaultBounds(game, this).getWidth(),
+					c.getDefaultBounds(game, this).getHeight());
 		} else {
 			throw new IllegalArgumentException("Grid locations can only be placed on the outside of the layout.");
 		}
@@ -113,15 +114,15 @@ public class OuterGridLayout extends Layout {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void add(Component c) {
-		add(c, 0, 0);
+	public void add(Game game, Component c) {
+		add(game, c, 0, 0);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onResize(float ox, float oy, float w, float h) {
+	public void onResize(Game game, float ox, float oy, float w, float h) {
 		Debugger.start("gui-layout");
 		for (Component c : components) {
 			int x = this.x.get(c);
@@ -130,24 +131,24 @@ public class OuterGridLayout extends Layout {
 			if (y == 0) {
 				float spacing = getW() / (grid_x + 1);
 
-				c.setBounds(spacing * (x + 1) - c.getDefaultBounds(this).getWidth() / 2, 0,
-						c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, spacing * (x + 1) - c.getDefaultBounds(game, this).getWidth() / 2, 0,
+						c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 			} else if (y == grid_y - 1) {
 				float spacing = getW() / (grid_x + 1);
 
-				c.setBounds(spacing * (x + 1) - c.getDefaultBounds(this).getWidth() / 2,
-						getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-						c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, spacing * (x + 1) - c.getDefaultBounds(game, this).getWidth() / 2,
+						getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+						c.getDefaultBounds(game, this).getHeight());
 			} else if (x == 0) {
 				float spacing = getH() / (grid_y + 1);
 
-				c.setBounds(0, spacing * (y + 1) - c.getDefaultBounds(this).getHeight() / 2, c.getDefaultBounds(this).getWidth(),
-						c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, 0, spacing * (y + 1) - c.getDefaultBounds(game, this).getHeight() / 2, c.getDefaultBounds(game, this).getWidth(),
+						c.getDefaultBounds(game, this).getHeight());
 			} else if (x == grid_x - 1) {
 				float spacing = getH() / (grid_y + 1);
 
-				c.setBounds(0, spacing * (y + 1) - c.getDefaultBounds(this).getHeight() / 2, c.getDefaultBounds(this).getWidth(),
-						c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, 0, spacing * (y + 1) - c.getDefaultBounds(game, this).getHeight() / 2, c.getDefaultBounds(game, this).getWidth(),
+						c.getDefaultBounds(game, this).getHeight());
 			} else {
 				throw new IllegalArgumentException("Grid locations can only be placed on the outside of the layout.");
 			}

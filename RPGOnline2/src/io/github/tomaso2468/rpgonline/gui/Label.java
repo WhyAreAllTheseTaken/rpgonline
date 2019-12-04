@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -79,14 +78,14 @@ public class Label extends Component {
 	 */
 	@Override
 	public void paint(Game game, Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintLabel(game, g, scaling, this);
+		game.getTheme().paintLabel(game, g, scaling, this);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateLabelBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateLabelBounds(c, this);
 	}
 }

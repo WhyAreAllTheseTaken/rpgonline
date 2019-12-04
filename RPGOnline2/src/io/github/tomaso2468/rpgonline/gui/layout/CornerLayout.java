@@ -34,6 +34,7 @@ package io.github.tomaso2468.rpgonline.gui.layout;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
@@ -53,27 +54,27 @@ public class CornerLayout extends Layout {
 	 * @param c The component to add.
 	 * @param corner The corner to add the component to.
 	 */
-	public void add(Component c, Corner corner) {
+	public void add(Game game, Component c, Corner corner) {
 		components.add(c);
 		map.put(c, corner);
 
 		Debugger.start("gui-layout");
 		switch (corner) {
 		case BOTTOM_LEFT:
-			c.setBounds(0, getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-					c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, 0, getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+					c.getDefaultBounds(game, this).getHeight());
 			break;
 		case BOTTOM_RIGHT:
-			c.setBounds(getW() - c.getDefaultBounds(this).getWidth(), getH() - c.getDefaultBounds(this).getHeight(),
-					c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, getW() - c.getDefaultBounds(game, this).getWidth(), getH() - c.getDefaultBounds(game, this).getHeight(),
+					c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 			break;
 		case TOP_LEFT:
-			c.setBounds(0, getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-					c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, 0, getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+					c.getDefaultBounds(game, this).getHeight());
 			break;
 		case TOP_RIGHT:
-			c.setBounds(getW() - c.getDefaultBounds(this).getWidth(), getH() - c.getDefaultBounds(this).getHeight(),
-					c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+			c.setBounds(game, getW() - c.getDefaultBounds(game, this).getWidth(), getH() - c.getDefaultBounds(game, this).getHeight(),
+					c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 			break;
 		default:
 			break;
@@ -84,35 +85,35 @@ public class CornerLayout extends Layout {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void add(Component c) {
-		add(c, Corner.TOP_LEFT);
+	public void add(Game game, Component c) {
+		add(game, c, Corner.TOP_LEFT);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onResize(float x, float y, float w, float h) {
+	public void onResize(Game game, float x, float y, float w, float h) {
 		Debugger.start("gui-layout");
 		for (Component c : components) {
 			Corner corner = map.get(c);
 
 			switch (corner) {
 			case BOTTOM_LEFT:
-				c.setBounds(0, getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-						c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, 0, getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+						c.getDefaultBounds(game, this).getHeight());
 				break;
 			case BOTTOM_RIGHT:
-				c.setBounds(getW() - c.getDefaultBounds(this).getWidth(), getH() - c.getDefaultBounds(this).getHeight(),
-						c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, getW() - c.getDefaultBounds(game, this).getWidth(), getH() - c.getDefaultBounds(game, this).getHeight(),
+						c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 				break;
 			case TOP_LEFT:
-				c.setBounds(0, getH() - c.getDefaultBounds(this).getHeight(), c.getDefaultBounds(this).getWidth(),
-						c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, 0, getH() - c.getDefaultBounds(game, this).getHeight(), c.getDefaultBounds(game, this).getWidth(),
+						c.getDefaultBounds(game, this).getHeight());
 				break;
 			case TOP_RIGHT:
-				c.setBounds(getW() - c.getDefaultBounds(this).getWidth(), getH() - c.getDefaultBounds(this).getHeight(),
-						c.getDefaultBounds(this).getWidth(), c.getDefaultBounds(this).getHeight());
+				c.setBounds(game, getW() - c.getDefaultBounds(game, this).getWidth(), getH() - c.getDefaultBounds(game, this).getHeight(),
+						c.getDefaultBounds(game, this).getWidth(), c.getDefaultBounds(game, this).getHeight());
 				break;
 			default:
 				break;

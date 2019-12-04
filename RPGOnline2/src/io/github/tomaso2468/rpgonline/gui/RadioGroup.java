@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.layout.ListLayout;
 
 /**
@@ -55,11 +56,11 @@ public class RadioGroup extends ListLayout {
 	 * Adds a new radio button to this radio group.
 	 */
 	@Override
-	public void add(Component c) {
+	public void add(Game game, Component c) {
 		if (!(c instanceof RadioButton)) {
 			throw new IllegalArgumentException(c.getClass() + " is not an instance of " + RadioButton.class);
 		}
-		super.add(c);
+		super.add(game, c);
 		
 		((RadioButton) c).group = this;
 	}

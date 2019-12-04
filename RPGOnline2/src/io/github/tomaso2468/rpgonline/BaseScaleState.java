@@ -41,5 +41,5 @@ public interface BaseScaleState {
 	 * Scale the state to the specified scaling (1 == 100%).
 	 * @param base The scaling for the state.
 	 */
-	public void scale(Game container, float base);
+	public void scale(Game game, float base);
 }

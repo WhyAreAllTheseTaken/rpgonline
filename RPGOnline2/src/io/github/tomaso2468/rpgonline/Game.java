@@ -46,6 +46,8 @@ import org.newdawn.slick.util.Log;
 import io.github.tomaso2468.rpgonline.audio.AudioSystem;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
+import io.github.tomaso2468.rpgonline.gui.theme.DefaultTheme;
+import io.github.tomaso2468.rpgonline.gui.theme.Theme;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.lowlevel.LowLevelUtils;
 import io.github.tomaso2468.rpgonline.net.ServerManager;
@@ -172,6 +174,11 @@ public class Game {
 	 * The map of textures for 2D sprites.
 	 */
 	private TextureMap textures;
+	
+	/**
+	 * The theme for the game's GUI.
+	 */
+	private Theme theme;
 
 	/**
 	 * Constructs a new game.
@@ -322,7 +329,11 @@ public class Game {
 
 		// This triggers the static constructor of the AudioManager
 		if (audio != null) {
-			setAudio(new AudioSystem());
+			audio = new AudioSystem();
+		}
+		
+		if (theme != null) {
+			theme = new DefaultTheme();
 		}
 
 		// Initialise game states.
@@ -1378,5 +1389,13 @@ public class Game {
 
 	public void setTextures(TextureMap textures) {
 		this.textures = textures;
+	}
+
+	public Theme getTheme() {
+		return theme;
+	}
+
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 }

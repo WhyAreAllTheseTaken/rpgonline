@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layout;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.Component;
 
@@ -56,19 +57,19 @@ public class Border extends Layout {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void add(Component c) {
+	public void add(Game game, Component c) {
 		components.add(c);
-		c.setBounds(border, border, c.getDefaultBounds(this).getWidth() - 2 * border, c.getDefaultBounds(this).getHeight() - 2 * border);
+		c.setBounds(game, border, border, c.getDefaultBounds(game, this).getWidth() - 2 * border, c.getDefaultBounds(game, this).getHeight() - 2 * border);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onResize(float x, float y, float w, float h) {
+	public void onResize(Game game, float x, float y, float w, float h) {
 		Debugger.start("gui-layout");
 		for (Component c : components) {
-			c.setBounds(border, border, c.getDefaultBounds(this).getWidth() - 2 * border, c.getDefaultBounds(this).getHeight() - 2 * border);
+			c.setBounds(game, border, border, c.getDefaultBounds(game, this).getWidth() - 2 * border, c.getDefaultBounds(game, this).getHeight() - 2 * border);
 		}
 		Debugger.stop("gui-layout");
 	}

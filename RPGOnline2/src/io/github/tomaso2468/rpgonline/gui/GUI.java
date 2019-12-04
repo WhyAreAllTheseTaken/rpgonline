@@ -100,6 +100,11 @@ public class GUI {
 	 * The scaling factor for the display.
 	 */
 	private float scaling = 1;
+	
+	/**
+	 * An instance of the game.
+	 */
+	private Game game;
 
 	/**
 	 * Adds a screen to this GUI.
@@ -107,7 +112,7 @@ public class GUI {
 	 */
 	public void add(Screen screen) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseExited(mx, my);
+			getTopScreen().mouseExited(game, mx, my);
 		}
 		screens.add(screen);
 		selected = null;
@@ -119,7 +124,7 @@ public class GUI {
 	 */
 	public void remove(Screen screen) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseExited(mx, my);
+			getTopScreen().mouseExited(game, mx, my);
 		}
 		screens.remove(screen);
 		selected = null;
@@ -276,10 +281,10 @@ public class GUI {
 			mouseMoved(mx, my, x / scaling, y / scaling);
 
 			if (screens.size() > 0) {
-				Component selected = getTopScreen().getSelected(x, y);
+				Component selected = getTopScreen().getSelected(game, x, y);
 				if (selected != this.selected) {
-					selected.mouseEntered(x, y);
-					if (this.selected != null) this.selected.mouseExited(x, y);
+					selected.mouseEntered(game, x, y);
+					if (this.selected != null) this.selected.mouseExited(game, x, y);
 					this.selected = selected;
 				}
 			}
@@ -293,7 +298,7 @@ public class GUI {
 	 */
 	protected void mouseClickedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseClickedLeft(x, y);
+			getTopScreen().mouseClickedLeft(game, x, y);
 		}
 	}
 
@@ -304,7 +309,7 @@ public class GUI {
 	 */
 	protected void mousePressedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mousePressedLeft(x, y);
+			getTopScreen().mousePressedLeft(game, x, y);
 		}
 	}
 
@@ -315,7 +320,7 @@ public class GUI {
 	 */
 	protected void mouseUnpressedLeft(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseUnpressedLeft(x, y);
+			getTopScreen().mouseUnpressedLeft(game, x, y);
 		}
 	}
 	
@@ -326,7 +331,7 @@ public class GUI {
 	 */
 	protected void mouseClickedRight(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseClickedRight(x, y);
+			getTopScreen().mouseClickedRight(game, x, y);
 		}
 	}
 
@@ -337,7 +342,7 @@ public class GUI {
 	 */
 	protected void mousePressedRight(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mousePressedRight(x, y);
+			getTopScreen().mousePressedRight(game, x, y);
 		}
 	}
 
@@ -348,7 +353,7 @@ public class GUI {
 	 */
 	protected void mouseUnpressedRight(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseUnpressedRight(x, y);
+			getTopScreen().mouseUnpressedRight(game, x, y);
 		}
 	}
 	
@@ -359,7 +364,7 @@ public class GUI {
 	 */
 	protected void mouseClickedMiddle(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseClickedMiddle(x, y);
+			getTopScreen().mouseClickedMiddle(game, x, y);
 		}
 	}
 
@@ -370,7 +375,7 @@ public class GUI {
 	 */
 	protected void mousePressedMiddle(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mousePressedMiddle(x, y);
+			getTopScreen().mousePressedMiddle(game, x, y);
 		}
 	}
 
@@ -381,7 +386,7 @@ public class GUI {
 	 */
 	protected void mouseUnpressedMiddle(float x, float y) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseUnpressedMiddle(x, y);
+			getTopScreen().mouseUnpressedMiddle(game, x, y);
 		}
 	}
 	
@@ -393,7 +398,7 @@ public class GUI {
 	 */
 	protected void mouseClickedAdditional(float x, float y, int button) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseClickedAdditional(x, y, button);
+			getTopScreen().mouseClickedAdditional(game, x, y, button);
 		}
 	}
 
@@ -405,7 +410,7 @@ public class GUI {
 	 */
 	protected void mousePressedAdditional(float x, float y, int button) {
 		if (screens.size() > 0) {
-			getTopScreen().mousePressedAdditional(x, y, button);
+			getTopScreen().mousePressedAdditional(game, x, y, button);
 		}
 	}
 
@@ -417,7 +422,7 @@ public class GUI {
 	 */
 	protected void mouseUnpressedAdditional(float x, float y, int button) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseUnpressedAdditional(x, y, button);
+			getTopScreen().mouseUnpressedAdditional(game, x, y, button);
 		}
 	}
 
@@ -430,7 +435,7 @@ public class GUI {
 	 */
 	protected void mouseMoved(float ox, float oy, float nx, float ny) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseMoved(ox, oy, nx, ny);
+			getTopScreen().mouseMoved(game, ox, oy, nx, ny);
 		}
 	}
 
@@ -443,7 +448,7 @@ public class GUI {
 	 */
 	protected void mouseDraggedLeft(float ox, float oy, float nx, float ny) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseDraggedLeft(ox, oy, nx, ny);
+			getTopScreen().mouseDraggedLeft(game, ox, oy, nx, ny);
 		}
 	}
 	
@@ -456,7 +461,7 @@ public class GUI {
 	 */
 	protected void mouseDraggedRight(float ox, float oy, float nx, float ny) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseDraggedRight(ox, oy, nx, ny);
+			getTopScreen().mouseDraggedRight(game, ox, oy, nx, ny);
 		}
 	}
 	/**
@@ -468,7 +473,7 @@ public class GUI {
 	 */
 	protected void mouseDraggedMiddle(float ox, float oy, float nx, float ny) {
 		if (screens.size() > 0) {
-			getTopScreen().mouseDraggedMiddle(ox, oy, nx, ny);
+			getTopScreen().mouseDraggedMiddle(game, ox, oy, nx, ny);
 		}
 	}
 
@@ -482,10 +487,10 @@ public class GUI {
 		}
 		if (selected == null) {
 			if (screens.size() > 0) {
-				getTopScreen().mouseWheel(scroll);
+				getTopScreen().mouseWheel(game, scroll);
 			}
 		} else {
-			selected.mouseWheel(scroll);
+			selected.mouseWheel(game, scroll);
 		}
 	}
 	
@@ -495,9 +500,10 @@ public class GUI {
 	 * @param h The height of the screen.
 	 * @param scaling The scaling of the screen.
 	 */
-	public void init(int w, int h, float scaling) {
+	public void init(Game game, int w, int h, float scaling) {
+		this.game = game;
 		for (Screen screen : screens) {
-			screen.setBounds(0, 0, w / scaling, h / scaling);
+			screen.setBounds(game, 0, 0, w / scaling, h / scaling);
 		}
 		this.scaling = scaling;
 		selected = null;
@@ -543,7 +549,7 @@ public class GUI {
 	 */
 	public void update(float delta, Input input) {
 		if (selected != null) {
-			selected.update(delta, input);
+			selected.update(game, delta, input);
 		}
 	}
 	

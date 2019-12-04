@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.gui;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -49,9 +48,9 @@ public class List extends RadioGroup {
 	 * Constructs a new list.
 	 * @param data The values of the list,
 	 */
-	public List(String[] data) {
+	public List(Game game, String[] data) {
 		for (int i = 0; i < data.length; i++) {
-			add(new ListElement(data[i], i == 0 ? true : false));
+			add(game, new ListElement(data[i], i == 0 ? true : false));
 		}
 	}
 
@@ -75,15 +74,15 @@ public class List extends RadioGroup {
 		 */
 		@Override
 		public void paint(Game game, Graphics g, float scaling) throws RenderException {
-			ThemeManager.getTheme().paintListElement(game, g, scaling, this);
+			game.getTheme().paintListElement(game, g, scaling, this);
 		}
 		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Rectangle getDefaultBounds(Container c) {
-			return ThemeManager.getTheme().calculateListElementBounds(c, this);
+		public Rectangle getDefaultBounds(Game game, Container c) {
+			return game.getTheme().calculateListElementBounds(c, this);
 		}
 	}
 }

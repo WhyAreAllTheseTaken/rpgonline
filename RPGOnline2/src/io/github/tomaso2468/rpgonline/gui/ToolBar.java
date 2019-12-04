@@ -33,8 +33,8 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.layout.FlowLayout;
-import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 
 /**
  * A horizontal tool bar.
@@ -53,8 +53,8 @@ public class ToolBar extends FlowLayout {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Rectangle getDefaultBounds(Container c) {
-		return ThemeManager.getTheme().calculateToolBarBounds(c, this);
+	public Rectangle getDefaultBounds(Game game, Container c) {
+		return game.getTheme().calculateToolBarBounds(c, this);
 	}
 
 }
