@@ -320,21 +320,18 @@ public class Game {
 		renderer.setIcon(icon);
 		renderer.setMouseGrab(mouseGrabbed);
 
-		if (textures != null) {
+		if (textures == null) {
 			textures = new TextureMap();
 		}
 		textures.setRenderer(renderer);
-
-		this.input = renderer.getInput();
-
-		// This triggers the static constructor of the AudioManager
-		if (audio != null) {
+		if (audio == null) {
 			audio = new AudioSystem();
 		}
-		
-		if (theme != null) {
+		if (theme == null) {
 			theme = new DefaultTheme();
 		}
+
+		this.input = renderer.getInput();
 
 		// Initialise game states.
 		for (Entry<Long, GameState> state : getStates()) {
