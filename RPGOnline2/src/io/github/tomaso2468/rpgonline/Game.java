@@ -167,6 +167,11 @@ public class Game {
 	 * The AudioSystem for this game.
 	 */
 	private AudioSystem audio;
+	
+	/**
+	 * The map of textures for 2D sprites.
+	 */
+	private TextureMap textures;
 
 	/**
 	 * Constructs a new game.
@@ -308,7 +313,10 @@ public class Game {
 		renderer.setIcon(icon);
 		renderer.setMouseGrab(mouseGrabbed);
 
-		TextureMap.setRenderer(renderer);
+		if (textures != null) {
+			textures = new TextureMap();
+		}
+		textures.setRenderer(renderer);
 
 		this.input = renderer.getInput();
 
@@ -1362,5 +1370,13 @@ public class Game {
 
 	public void setAudio(AudioSystem audio) {
 		this.audio = audio;
+	}
+
+	public TextureMap getTextures() {
+		return textures;
+	}
+
+	public void setTextures(TextureMap textures) {
+		this.textures = textures;
 	}
 }

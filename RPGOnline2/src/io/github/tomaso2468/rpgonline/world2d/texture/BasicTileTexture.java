@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -58,8 +58,8 @@ public class BasicTileTexture implements TileTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public BasicTileTexture(String s, float x, float y) {
-		this.t = TextureMap.getTextureIndex(s);
+	public BasicTileTexture(Game game, String s, float x, float y) {
+		this.t = game.getTextures().getTextureIndex(s);
 		this.x = x;
 		this.y = y;
 	}
@@ -68,8 +68,8 @@ public class BasicTileTexture implements TileTexture {
 	 * Constructs a new BasicTileTexture.
 	 * @param s The texture ID.
 	 */
-	public BasicTileTexture(String s) {
-		this(s, 0, 0);
+	public BasicTileTexture(Game game, String s) {
+		this(game, s, 0, 0);
 	}
 	
 	/**

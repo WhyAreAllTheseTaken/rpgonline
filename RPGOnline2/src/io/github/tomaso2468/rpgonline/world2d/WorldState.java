@@ -49,7 +49,6 @@ import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.GameState;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.UpdateHook;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
@@ -262,8 +261,8 @@ public class WorldState implements GameState, BaseScaleState {
 
 			Graphics g2 = renderer.getGUIGraphics();
 
-			ThemeManager.getTheme().predraw(g2);
-			guis.paint(g2, base_scale);
+			ThemeManager.getTheme().predraw(game, g2);
+			guis.paint(game, g2, base_scale);
 
 			Debugger.stop("gui");
 		}
@@ -393,13 +392,13 @@ public class WorldState implements GameState, BaseScaleState {
 			if (tex.isCustom()) {
 				// Optimise wind textures to use embedded drawing.
 				if (tex instanceof WindTexture) {
-					Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
+					Image img = game.getTextures().getTexture(tex.getTexture(x, y, z, world, state, t));
 
 					if (img != null) {
-						if (TextureMap.getSheet(img) != current) {
+						if (game.getTextures().getSheet(img) != current) {
 							if (current != null)
 								renderer.endUse(current);
-							current = TextureMap.getSheet(img);
+							current = game.getTextures().getSheet(img);
 							renderer.startUse(current);
 						}
 						float amount = ((WindTexture) tex).windAmount(x, y, wind);
@@ -412,7 +411,7 @@ public class WorldState implements GameState, BaseScaleState {
 					if (current != null)
 						renderer.endUse(current);
 
-					tex.render(renderer, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
+					tex.render(game, renderer, x, y, z, world, state, t, x * RPGConfig.getTileSize() + tex.getX() - sx,
 							y * RPGConfig.getTileSize() + tex.getY() - sy, wind);
 
 					if (current != null)
@@ -420,13 +419,13 @@ public class WorldState implements GameState, BaseScaleState {
 					Debugger.stop("custom-tile");
 				}
 			} else {
-				Image img = TextureMap.getTexture(tex.getTexture(x, y, z, world, state, t));
+				Image img = game.getTextures().getTexture(tex.getTexture(x, y, z, world, state, t));
 
 				if (img != null) {
-					if (TextureMap.getSheet(img) != current) {
+					if (game.getTextures().getSheet(img) != current) {
 						if (current != null)
 							renderer.endUse(current);
-						current = TextureMap.getSheet(img);
+						current = game.getTextures().getSheet(img);
 						renderer.startUse(current);
 					}
 					renderer.renderEmbedded(img, x * RPGConfig.getTileSize() + tex.getX() - sx,
@@ -504,18 +503,18 @@ public class WorldState implements GameState, BaseScaleState {
 				if (current != null)
 					renderer.endUse(current);
 
-				tex.render(renderer, x, y, -3, world, e, sx, sy, wind);
+				tex.render(game, renderer, x, y, -3, world, e, sx, sy, wind);
 
 				if (current != null)
 					renderer.startUse(current);
 			} else {
-				Image img = TextureMap.getTexture(tex.getTexture(e.getX(), e.getY(), -3, world, e, wind));
+				Image img = game.getTextures().getTexture(tex.getTexture(e.getX(), e.getY(), -3, world, e, wind));
 
 				if (img != null) {
-					if (TextureMap.getSheet(img) != current) {
+					if (game.getTextures().getSheet(img) != current) {
 						if (current != null)
 							renderer.endUse(current);
-						current = TextureMap.getSheet(img);
+						current = game.getTextures().getSheet(img);
 						renderer.startUse(current);
 					}
 					renderer.renderEmbedded(img, (float) e.getX() * RPGConfig.getTileSize() + tex.getX() - sx,
@@ -551,18 +550,18 @@ public class WorldState implements GameState, BaseScaleState {
 				if (particle.isCustom()) {
 					if (current != null)
 						renderer.endUse(current);
-					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx,
+					particle.render(game, renderer, particle.getX() * RPGConfig.getTileSize() - sx,
 							particle.getY() * RPGConfig.getTileSize() - sy);
 					if (current != null)
 						renderer.startUse(current);
 				} else {
-					Image img = TextureMap.getTexture(particle.getTexture());
+					Image img = game.getTextures().getTexture(particle.getTexture());
 
 					if (img != null) {
-						if (TextureMap.getSheet(img) != current) {
+						if (game.getTextures().getSheet(img) != current) {
 							if (current != null)
 								renderer.endUse(current);
-							current = TextureMap.getSheet(img);
+							current = game.getTextures().getSheet(img);
 							renderer.startUse(current);
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();

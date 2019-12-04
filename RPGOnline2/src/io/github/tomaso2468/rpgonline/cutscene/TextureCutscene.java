@@ -33,7 +33,6 @@ package io.github.tomaso2468.rpgonline.cutscene;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
@@ -67,7 +66,7 @@ public class TextureCutscene extends Cutscene {
 	 */
 	@Override
 	public void render(Game game, Renderer renderer, CutsceneState state) {
-		Image img = TextureMap.getTexture(texture).getScaledCopy(renderer.getWidth(), renderer.getHeight());
+		Image img = game.getTextures().getTexture(texture).getScaledCopy(renderer.getWidth(), renderer.getHeight());
 		renderer.render(img, 0, 0, img.getWidth(), img.getHeight());
 	}
 

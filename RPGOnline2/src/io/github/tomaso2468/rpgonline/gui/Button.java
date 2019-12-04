@@ -33,6 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.render.Graphics;
@@ -66,8 +67,8 @@ public class Button extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintButton(g, scaling, this);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		ThemeManager.getTheme().paintButton(game, g, scaling, this);
 	}
 	
 	/**

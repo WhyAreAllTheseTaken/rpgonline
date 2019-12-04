@@ -33,11 +33,10 @@ package io.github.tomaso2468.rpgonline.sky;
 
 import org.newdawn.slick.Color;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
-import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.ColorUtils.SunColorGenerator;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
+import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -67,7 +66,7 @@ public abstract class SunLayer implements SkyLayer {
 		float sy =  (float) sg.getSunY(time) * game.getHeight() / 2 + game.getHeight() / 2;
 		float size = sg.getSunSize() * 256 * (game.getHeight() / 1440f);
 		
-		Image img = TextureMap.getTexture("sun").getScaledCopy((int) size, (int) size);
+		Image img = game.getTextures().getTexture("sun").getScaledCopy((int) size, (int) size);
 		renderer.drawImage(img, sx - size / 2, sy - size / 2, sg.getSunLight(time).brighter(2));
 	}
 	

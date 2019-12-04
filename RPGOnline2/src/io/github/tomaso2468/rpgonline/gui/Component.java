@@ -71,8 +71,8 @@ public abstract class Component {
 	 * @throws SlickException If an error occurs rendering graphics.
 	 * @throws RenderException 
 	 */
-	public void paint(Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintComponent(g, scaling, this);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		ThemeManager.getTheme().paintComponent(game, g, scaling, this);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public abstract class Component {
 	 * @param scaling The scaling factor for rendering.
 	 * @throws SlickException If an error occurs rendering graphics.
 	 */
-	public void debug(Graphics g, float scaling) {
+	public void debug(Game game, Graphics g, float scaling) {
 		g.setColor(Color.white);
 		g.drawRect(0, 0, getW() * scaling, getH() * scaling);
 	}

@@ -79,7 +79,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintComponent(Graphics g, float scaling, Component c) {
+	public void paintComponent(Game game, Graphics g, float scaling, Component c) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, c.getW(), c.getH());
 		g.setColor(Color.gray);
@@ -90,7 +90,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintContainer(Graphics g, float scaling, Container c) {
+	public void paintContainer(Game game, Graphics g, float scaling, Container c) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, c.getW(), c.getH());
 		g.setColor(Color.white);
@@ -101,8 +101,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintProgressBar(Graphics g, float scaling, ProgressBar c) {
-		paintComponent(g, scaling, c);
+	public void paintProgressBar(Game game, Graphics g, float scaling, ProgressBar c) {
+		paintComponent(game, g, scaling, c);
 		if (c.isIntermediate()) {
 			g.setColor(Color.gray);
 			g.fillRect(c.getW() - (float) (c.getW() * (FastMath.sin(System.currentTimeMillis() / 1000.0) + 1) / 2) / 2,
@@ -117,7 +117,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintButton(Graphics g, float scaling, Button c) {
+	public void paintButton(Game game, Graphics g, float scaling, Button c) {
 		g.setColor(c.isState() ? Color.darkGray : Color.black);
 		g.fillRect(0, 0, c.getW(), c.getH());
 		g.setColor(Color.gray);
@@ -142,8 +142,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintSwitch(Graphics g, float scaling, Switch c) {
-		paintComponent(g, scaling, c);
+	public void paintSwitch(Game game, Graphics g, float scaling, Switch c) {
+		paintComponent(game, g, scaling, c);
 		if (c.isState()) {
 			g.setColor(Color.green);
 			g.fillRect(c.getW() / 2, 0, c.getW() / 2, c.getH());
@@ -157,7 +157,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintPicture(Graphics g, float scaling, Picture p) {
+	public void paintPicture(Game game, Graphics g, float scaling, Picture p) {
 		g.drawImage(p.getImage().getScaledCopy((int) (p.getW()), (int) (p.getH())), 0, 0);
 	}
 
@@ -165,7 +165,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintLabel(Graphics g, float scaling, Label c) {
+	public void paintLabel(Game game, Graphics g, float scaling, Label c) {
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
 		g.drawString(c.getText(), c.getW() * scaling / 2 - g.getFont().getWidth(c.getText()) / 2,
@@ -186,8 +186,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintText(Graphics g, float scaling, TextComponent tf) {
-		paintComponent(g, scaling, tf);
+	public void paintText(Game game, Graphics g, float scaling, TextComponent tf) {
+		paintComponent(game, g, scaling, tf);
 		g.setColor(Color.white);
 		g.scale(1 / scaling, 1 / scaling);
 		g.drawString(new StringBuilder(tf.getText()).insert(tf.getIndex(), "|").toString(), spacing * scaling, spacing * scaling);
@@ -198,8 +198,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintPassword(Graphics g, float scaling, PasswordField tf) {
-		paintComponent(g, scaling, tf);
+	public void paintPassword(Game game, Graphics g, float scaling, PasswordField tf) {
+		paintComponent(game, g, scaling, tf);
 		String s = "";
 		for (int i = 0; i < tf.getText().length(); i++) {
 			s += "*";
@@ -214,8 +214,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintScrollBar(Graphics g, float scaling, ScrollBar c) {
-		paintComponent(g, scaling, c);
+	public void paintScrollBar(Game game, Graphics g, float scaling, ScrollBar c) {
+		paintComponent(game, g, scaling, c);
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, c.getW(), c.getH() * (c.getPos() / (float) c.getMax()));
 	}
@@ -248,8 +248,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintSlider(Graphics g, float scaling, Slider c) {
-		paintComponent(g, scaling, c);
+	public void paintSlider(Game game, Graphics g, float scaling, Slider c) {
+		paintComponent(game, g, scaling, c);
 		g.setColor(Color.white);
 		g.fillRect(0, 0, c.getW() * (c.getPos() / (float) c.getMax()), c.getH());
 	}
@@ -258,7 +258,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintCheckBox(Graphics g, float scaling, CheckBox c) {
+	public void paintCheckBox(Game game, Graphics g, float scaling, CheckBox c) {
 		g.setColor(c.isState() ? Color.green : Color.red);
 		g.fillRect(0, 0, spacing * 4, spacing * 4);
 		g.setColor(Color.white);
@@ -279,7 +279,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintRadioButton(Graphics g, float scaling, RadioButton c) {
+	public void paintRadioButton(Game game, Graphics g, float scaling, RadioButton c) {
 		g.setColor(c.isState() ? Color.green : Color.red);
 		g.fillOval(0, 0, spacing * 4, spacing * 4);
 		g.setColor(Color.white);
@@ -292,7 +292,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintListElement(Graphics g, float scaling, ListElement c) {
+	public void paintListElement(Game game, Graphics g, float scaling, ListElement c) {
 		if (c.isState()) {
 			g.setColor(Color.black);
 		} else {
@@ -326,8 +326,8 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paintTab(Graphics g, float scaling, TabButton c) {
-		paintButton(g, scaling, c);
+	public void paintTab(Game game, Graphics g, float scaling, TabButton c) {
+		paintButton(game, g, scaling, c);
 	}
 
 	/**
@@ -342,7 +342,7 @@ public class DefaultTheme implements Theme {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void predraw(Graphics g) {
+	public void predraw(Game game, Graphics g) {
 		if (font == null)
 			font = g.getFont();
 	}

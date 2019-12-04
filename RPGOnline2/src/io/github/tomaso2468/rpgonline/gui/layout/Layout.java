@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui.layout;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.Container;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -45,7 +46,7 @@ public class Layout extends Container {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws RenderException {
-		paintComponents(g, scaling);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		paintComponents(game, g, scaling);
 	}
 }

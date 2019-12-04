@@ -34,7 +34,6 @@ package io.github.tomaso2468.rpgonline.bullet;
 import java.util.List;
 
 import io.github.tomaso2468.rpgonline.Game;
-import io.github.tomaso2468.rpgonline.TextureMap;
 
 /**
  * A bullet with a single texture and constant velocity.
@@ -72,13 +71,13 @@ public class BasicBullet implements Bullet {
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#getTextureIndex(String)
 	 */
-	public BasicBullet(float x, float y, float xv, float yv, String texture) {
+	public BasicBullet(Game game, float x, float y, float xv, float yv, String texture) {
 		super();
 		this.xv = xv;
 		this.yv = yv;
 		this.x = x;
 		this.y = y;
-		this.texture = TextureMap.getTextureIndex(texture);
+		this.texture = game.getTextures().getTextureIndex(texture);
 	}
 
 	/**

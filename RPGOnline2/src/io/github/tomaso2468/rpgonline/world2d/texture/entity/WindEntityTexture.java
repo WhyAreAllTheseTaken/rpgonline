@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.world2d.texture.entity;
 
 import org.apache.commons.math3.util.FastMath;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
@@ -67,11 +67,11 @@ public class WindEntityTexture implements EntityTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public WindEntityTexture(String[] s, float[] b, float x, float y) {
+	public WindEntityTexture(Game game, String[] s, float[] b, float x, float y) {
 		t = new int[s.length];
 		
 		for (int i = 0; i < s.length; i++) {
-			t[i] = TextureMap.getTextureIndex(s[i]);
+			t[i] = game.getTextures().getTextureIndex(s[i]);
 		}
 		
 		this.x = x;
@@ -85,8 +85,8 @@ public class WindEntityTexture implements EntityTexture {
 	 * @param s The textures to use.
 	 * @param b The values to change the texture at.
 	 */
-	public WindEntityTexture(String[] s, float[] b) {
-		this(s, b, 0, 0);
+	public WindEntityTexture(Game game, String[] s, float[] b) {
+		this(game, s, b, 0, 0);
 	}
 	
 	/**

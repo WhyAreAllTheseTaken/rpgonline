@@ -38,7 +38,6 @@ import org.newdawn.slick.Color;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.ColorMode;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.RenderMode;
@@ -97,7 +96,7 @@ public class LightingBuffered implements LightingEngine {
 			renderer.setColorMode(ColorMode.SCREEN);
 
 			for (LightSource l : lights) {
-				Image img = TextureMap.getTexture("light").getScaledCopy(l.getBrightness() / 5);
+				Image img = game.getTextures().getTexture("light").getScaledCopy(l.getBrightness() / 5);
 				
 				renderer.startUse(img);
 				renderer.drawQuad((float) l.getLX() * RPGConfig.getTileSize() - 256 * l.getBrightness() / 5 - sx,

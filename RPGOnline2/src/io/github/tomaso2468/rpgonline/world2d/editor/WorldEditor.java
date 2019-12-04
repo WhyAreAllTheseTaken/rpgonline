@@ -42,7 +42,6 @@ import org.newdawn.slick.util.Log;
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.input.Input;
 import io.github.tomaso2468.rpgonline.input.InputUtils;
@@ -144,12 +143,12 @@ public class WorldEditor extends WorldState {
 				if (tex.isCustom()) {
 					Debugger.start("custom-tile");
 
-					tex.render(renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(),
+					tex.render(game, renderer, Math.round(x), Math.round(y), z, world, state, t, 32 + tex.getX(),
 							32 + tex.getY(), 0.1f);
 
 					Debugger.stop("custom-tile");
 				} else {
-					Image img = TextureMap.getTexture(tex.getTexture(Math.round(x), Math.round(y), z, world, state, t));
+					Image img = game.getTextures().getTexture(tex.getTexture(Math.round(x), Math.round(y), z, world, state, t));
 
 					if (img != null) {
 						g.drawImage(img, 32 + tex.getX(), 32 + tex.getY());

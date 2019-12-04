@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.gui;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.gui.theme.ThemeManager;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
@@ -69,8 +70,8 @@ public class ProgressBar extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintProgressBar(g, scaling, this);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		ThemeManager.getTheme().paintProgressBar(game, g, scaling, this);
 	}
 
 	/**

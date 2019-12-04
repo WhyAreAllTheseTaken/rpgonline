@@ -56,7 +56,10 @@ import io.github.tomaso2468.rpgonline.render.Renderer;
  * <p>
  * A class for storing, managing and mapping textures.
  * </p>
- * <p>Textures are loaded using the filter method described by {@link io.github.tomaso2468.rpgonline.RPGConfig#getFilterMode()}</p>
+ * <p>
+ * Textures are loaded using the filter method described by
+ * {@link io.github.tomaso2468.rpgonline.RPGConfig#getFilterMode()}
+ * </p>
  * <p>
  * Textures can be stored in 2 ways: by a string id or by index. When a texture
  * is added it is automatically put into a map with a key based on its string ID
@@ -93,31 +96,25 @@ import io.github.tomaso2468.rpgonline.render.Renderer;
  * @author Tomaso2468
  */
 public class TextureMap {
-	/**
-	 * Prevent instantiation.
-	 */
-	private TextureMap() {
-
-	}
 
 	/**
 	 * A list of textures.
 	 */
-	private static List<Image> texturesFast = new ArrayList<>();
+	private List<Image> texturesFast = new ArrayList<>();
 	/**
 	 * A map of texture IDs to textures.
 	 */
-	private static Map<String, Image> textures = new HashMap<>();
+	private Map<String, Image> textures = new HashMap<>();
 	/**
 	 * A map of textures that should be added to the atlas.
 	 */
-	private static Map<String, BufferedImage> texturesMapped = new HashMap<>();
+	private Map<String, BufferedImage> texturesMapped = new HashMap<>();
 	/**
 	 * A map of textures to their sprite sheet.
 	 */
-	private static Map<Image, Image> sheets = new HashMap<>();
-	
-	private static Renderer renderer;
+	private Map<Image, Image> sheets = new HashMap<>();
+
+	private Renderer renderer;
 
 	/**
 	 * Adds a texture to the texture map.
@@ -125,7 +122,7 @@ public class TextureMap {
 	 * @param s   The texture ID.
 	 * @param img The texture to add.
 	 */
-	public static void addTexture(String s, Image img) {
+	public void addTexture(String s, Image img) {
 		textures.put(s.intern(), img);
 		texturesFast.add(img);
 	}
@@ -135,9 +132,9 @@ public class TextureMap {
 	 * 
 	 * @param s   The texture ID.
 	 * @param loc The location of the texture file.
-	 * @throws RenderException 
+	 * @throws RenderException
 	 */
-	public static void loadTexture(String s, URL loc) throws RenderException {
+	public void loadTexture(String s, URL loc) throws RenderException {
 		Log.debug("Loading texture " + s + " from " + loc);
 
 		Image img;
@@ -167,7 +164,7 @@ public class TextureMap {
 	 * @param loc The location of the texture file.
 	 * @throws SlickException If an error occurs loading a texture.
 	 */
-	public static void loadMappedTexture(String s, URL loc) throws RenderException {
+	public void loadMappedTexture(String s, URL loc) throws RenderException {
 		// Load the texture normally if mapping is disabled.
 		if (!RPGConfig.isMapped()) {
 			loadTexture(s, loc);
@@ -200,7 +197,7 @@ public class TextureMap {
 	 * @param img The image to map.
 	 * @throws SlickException If an error occurs adding the texture.
 	 */
-	public static void addMappedTexture(String s, BufferedImage img) throws RenderException {
+	public void addMappedTexture(String s, BufferedImage img) throws RenderException {
 		// Store the texture in a file then reload if mapping is disabled.
 		if (!RPGConfig.isMapped()) {
 			try {
@@ -237,7 +234,7 @@ public class TextureMap {
 	 * @param tw  The width of one sprite.
 	 * @param th  The height of one sprite.
 	 */
-	public static void addSpriteMap(String s, Image img, int tw, int th) {
+	public void addSpriteMap(String s, Image img, int tw, int th) {
 		SpriteSheet map = new SpriteSheet(renderer, img, tw, th);
 		int id = 0;
 		Log.debug("Map size " + map.getHorizontalCount() + " x " + map.getVerticalCount());
@@ -265,7 +262,7 @@ public class TextureMap {
 	 * @param th  The height of one sprite.
 	 * @throws SlickException if an error occurs loading the sprite map.
 	 */
-	public static void loadSpriteMap(String s, URL loc, int tw, int th) throws RenderException {
+	public void loadSpriteMap(String s, URL loc, int tw, int th) throws RenderException {
 		Log.debug("Loading sprite map texture " + s + " from " + loc);
 		Image img;
 		try {
@@ -293,7 +290,7 @@ public class TextureMap {
 	 * @param th  The height of one sprite.
 	 * @throws SlickException if an error occurs loading the sprite map.
 	 */
-	public static void loadSpriteMapMapped(String s, URL loc, int tw, int th) throws RenderException {
+	public void loadSpriteMapMapped(String s, URL loc, int tw, int th) throws RenderException {
 		Log.debug("Loading sprite map texture " + s + " from " + loc);
 		BufferedImage img;
 		try {
@@ -319,7 +316,7 @@ public class TextureMap {
 	 * @param tw  The width of one sprite.
 	 * @param th  The height of one sprite.
 	 */
-	public static void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) throws RenderException {
+	public void addSpriteMapMapped(String s, BufferedImage img, int tw, int th) throws RenderException {
 		int id = 0;
 		Log.debug("Map size " + img.getWidth() / tw + " x " + img.getHeight() / th);
 		for (int y = 0; y < img.getHeight() / th; y++) {
@@ -337,16 +334,17 @@ public class TextureMap {
 	 * @param s The texture ID.
 	 * @return A texture index.
 	 */
-	public static int getTextureIndex(String s) {
+	public int getTextureIndex(String s) {
 		return texturesFast.indexOf(textures.get(s.intern()));
 	}
 
 	/**
 	 * Gets a texture by its index.
+	 * 
 	 * @param i The texture index.
 	 * @return A texture.
 	 */
-	public static Image getTexture(int i) {
+	public Image getTexture(int i) {
 		if (i < 0) {
 			return null;
 		}
@@ -355,20 +353,24 @@ public class TextureMap {
 
 	/**
 	 * Gets a texture by its ID.
+	 * 
 	 * @param s The texture ID.
 	 * @return A texture.
 	 */
-	public static Image getTexture(String s) {
+	public Image getTexture(String s) {
 		return textures.get(s.intern());
 	}
 
 	/**
-	 * Generates a texture map of the specified size. It is better to use {@link #generateAllMaps()} as it will automatically load all texture maps. This method will do nothing if mapping is disabled.
+	 * Generates a texture map of the specified size. It is better to use
+	 * {@link #generateAllMaps()} as it will automatically load all texture maps.
+	 * This method will do nothing if mapping is disabled.
+	 * 
 	 * @param sw The sprite width.
 	 * @param sh The sprite height.
 	 * @throws SlickException If an error occurs mapping textures.
 	 */
-	public static void genTextureMap(int sw, int sh) throws RenderException {
+	public void genTextureMap(int sw, int sh) throws RenderException {
 		if (!RPGConfig.isMapped()) {
 			return;
 		}
@@ -508,9 +510,10 @@ public class TextureMap {
 
 	/**
 	 * Generates all texture maps using {@link #genTextureMap(int, int)}
+	 * 
 	 * @throws SlickException If an error occurs mapping textures.
 	 */
-	public static void generateAllMaps() throws RenderException {
+	public void generateAllMaps() throws RenderException {
 		Log.info("Generating all texture maps.");
 		while (!texturesMapped.isEmpty()) {
 			Entry<String, BufferedImage> e = texturesMapped.entrySet().iterator().next();
@@ -521,12 +524,13 @@ public class TextureMap {
 
 	/**
 	 * Finds the largest multiple of a given number given a maximum (inclusive).
-	 * @param x A number to multiply.
+	 * 
+	 * @param x   A number to multiply.
 	 * @param max The maximum number to go to (inclusive).
 	 * @return A multiple of x.
 	 * @throws IllegalArgumentException if x or max is less than or equal to 0.
 	 */
-	private static int largestMultiple(int x, int max) {
+	private int largestMultiple(int x, int max) {
 		if (x <= 0 || max <= 0) {
 			throw new IllegalArgumentException("x and max must be greater than 0");
 		}
@@ -540,13 +544,14 @@ public class TextureMap {
 
 		return (i - 2) * x;
 	}
-	
+
 	/**
 	 * Gets the associated sprite sheet of this image.
+	 * 
 	 * @param img The texture to get the sprite sheet of.
 	 * @return A sprite sheet or {@code img} if no sprite sheet could be found.
 	 */
-	public static Image getSheet(Image img) {
+	public Image getSheet(Image img) {
 		Image sheet = sheets.get(img);
 		if (sheet == null) {
 			sheet = img;
@@ -554,7 +559,7 @@ public class TextureMap {
 		return sheet;
 	}
 
-	public static void setRenderer(Renderer renderer) {
-		TextureMap.renderer = renderer;
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
 	}
 }

@@ -33,6 +33,7 @@ package io.github.tomaso2468.rpgonline.gui;
 
 import org.newdawn.slick.Color;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 
@@ -46,8 +47,8 @@ public class Screen extends Container {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws RenderException {
-		paintComponents(g, scaling);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		paintComponents(game, g, scaling);
 		g.setColor(Color.white);
 		g.drawRect(g.getRenderer().getInput().getMouseX() / scaling, g.getRenderer().getInput().getMouseY() / scaling, 8, 8);
 	}

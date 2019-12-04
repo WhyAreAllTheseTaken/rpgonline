@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.bullet;
 
 import java.util.List;
+
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
@@ -86,9 +86,9 @@ public interface Bullet {
 	 * 
 	 * @return {@code true} if a custom rendering method is being used,
 	 *         {@code false} otherwise.
-	 * @see #render(float, float, float, float, BulletState, Graphics, float, float)
+	 * @see #render(float, float, float, float, BulletState, Renderer, float, float)
 	 * @see #isCombined()
-	 * @see #renderEmbedded(float, float, float, float, BulletState, Graphics,
+	 * @see #renderEmbedded(float, float, float, float, BulletState, Renderer,
 	 *      Image, float, float)
 	 */
 	public default boolean isCustom() {
@@ -126,12 +126,12 @@ public interface Bullet {
 	 * 
 	 * @see #isCustom()
 	 * @see #isCombined()
-	 * @see #renderEmbedded(float, float, float, float, BulletState, Graphics,
+	 * @see #renderEmbedded(float, float, float, float, BulletState, Renderer,
 	 *      Image, float, float)
 	 */
-	public default void render(float px, float py, float xv, float yv, BulletState state, Renderer renderer, float sx,
+	public default void render(Game game, float px, float py, float xv, float yv, BulletState state, Renderer renderer, float sx,
 			float sy) {
-		Image img = TextureMap.getTexture(getTexture());
+		Image img = game.getTextures().getTexture(getTexture());
 		
 		if (img != null) {
 			renderer.render(img, getX() - sx - img.getWidth() / 2, getY() - sy - img.getHeight() / 2, img.getWidth(), img.getHeight());
@@ -146,12 +146,12 @@ public interface Bullet {
 	 * </p>
 	 * <p>
 	 * This system has greater performance than {@link #isCustom()} and
-	 * {@link #render(float, float, float, float, BulletState, Graphics, float, float)}
+	 * {@link #render(float, float, float, float, BulletState, Renderer, float, float)}
 	 * but it requires that textures are bound and unbound.
 	 * </p>
 	 * 
-	 * @see #render(float, float, float, float, BulletState, Graphics, float, float)
-	 * @see #renderEmbedded(float, float, float, float, BulletState, Graphics,
+	 * @see #render(float, float, float, float, BulletState, Renderer, float, float)
+	 * @see #renderEmbedded(float, float, float, float, BulletState, Rebderer,
 	 *      Image, float, float)
 	 * @see #isCustom()
 	 * @return {@code true} if a combined rendering method is being used,
@@ -167,7 +167,7 @@ public interface Bullet {
 	 * </p>
 	 * <p>
 	 * This system has greater performance than {@link #isCustom()} and
-	 * {@link #render(float, float, float, float, BulletState, Graphics, float, float)}
+	 * {@link #render(float, float, float, float, BulletState, Renderer, float, float)}
 	 * but it requires that textures are bound and unbound.
 	 * </p>
 	 * <p>
@@ -208,18 +208,18 @@ public interface Bullet {
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#getSheet(Image)
-	 * @see #render(float, float, float, float, BulletState, Graphics, float, float)
+	 * @see #render(float, float, float, float, BulletState, Renderer, float, float)
 	 * @see #isCombined()
 	 * @see #isCustom()
 	 */
-	public default Image renderEmbedded(float px, float py, float xv, float yv, BulletState state, Renderer renderer,
+	public default Image renderEmbedded(Game game, float px, float py, float xv, float yv, BulletState state, Renderer renderer,
 			Image current, float sx, float sy) {
-		Image img = TextureMap.getTexture(getTexture());
+		Image img = game.getTextures().getTexture(getTexture());
 		
 		if (img != null) {
-			if (TextureMap.getSheet(img) != current) {
+			if (game.getTextures().getSheet(img) != current) {
 				if (current != null) renderer.endUse(img);
-				current = TextureMap.getSheet(img);
+				current = game.getTextures().getSheet(img);
 				if (current != null) renderer.startUse(img);
 			}
 			

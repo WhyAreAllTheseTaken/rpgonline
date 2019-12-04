@@ -48,7 +48,6 @@ import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.GameState;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.audio.AmbientMusic;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.GUI;
@@ -212,8 +211,8 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			
 			Graphics g2 = renderer.getGUIGraphics();
 			
-			ThemeManager.getTheme().predraw(g2);
-			gui.paint(g2, base_scale);
+			ThemeManager.getTheme().predraw(game, g2);
+			gui.paint(game, g2, base_scale);
 			Debugger.stop("gui");
 		}
 		
@@ -260,17 +259,17 @@ public abstract class BulletState implements GameState, BaseScaleState {
 		for (Bullet b : bullets) {
 			if (b.isCustom()) {
 				if (current != null) renderer.endUse(current);
-				b.render(x, y, xv, yv, this, renderer, sx, sy);
+				b.render(game, x, y, xv, yv, this, renderer, sx, sy);
 				if (current != null) renderer.startUse(current);
 			} else if (b.isCombined()) {
-				current = b.renderEmbedded(x, y, xv, yv, this, renderer, current, sx, sy);
+				current = b.renderEmbedded(game, x, y, xv, yv, this, renderer, current, sx, sy);
 			} else {
-				Image img = TextureMap.getTexture(b.getTexture());
+				Image img = game.getTextures().getTexture(b.getTexture());
 				
 				if (img != null) {
-					if (TextureMap.getSheet(img) != current) {
+					if (game.getTextures().getSheet(img) != current) {
 						if (current != null) renderer.endUse(current);
-						current = TextureMap.getSheet(img);
+						current = game.getTextures().getSheet(img);
 						if (current != null) renderer.startUse(current);
 					}
 					
@@ -289,15 +288,15 @@ public abstract class BulletState implements GameState, BaseScaleState {
 			for (Particle particle : particles) {
 				if (particle.isCustom()) {
 					if (current != null) renderer.endUse(current);
-					particle.render(renderer, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
+					particle.render(game, renderer, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy);
 					if (current != null) renderer.startUse(current);
 				} else {
-					Image img = TextureMap.getTexture(particle.getTexture());
+					Image img = game.getTextures().getTexture(particle.getTexture());
 					
 					if (img != null) {
-						if(TextureMap.getSheet(img) != current) {
+						if(game.getTextures().getSheet(img) != current) {
 							if (current != null) renderer.endUse(current);
-							current = TextureMap.getSheet(img);
+							current = game.getTextures().getSheet(img);
 							renderer.startUse(current);
 						}
 						new Color(1, 1, 1, particle.getAlpha()).bind();

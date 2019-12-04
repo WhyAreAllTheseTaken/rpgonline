@@ -110,9 +110,22 @@ public class AudioSystem {
 	 */
 	private final Map<String, AmbientMusic> ambientMusic = new HashMap<>();
 
+	/**
+	 * The thread for the AudioSystem.
+	 */
 	private Thread audioThread;
 
+	/**
+	 * Constructs a new AudioSystem.
+	 */
 	public AudioSystem() {
+		init();
+	}
+	
+	/**
+	 * Initialise the AudioSystem.
+	 */
+	protected void init() {
 		SoundSystemConfig.setLogger(new SoundSystemLogger() {
 			@Override
 			public boolean errorCheck(boolean error, String classname, String message, int indent) {

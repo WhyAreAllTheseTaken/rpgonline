@@ -78,18 +78,18 @@ public class Container extends Component {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) throws RenderException {
-		ThemeManager.getTheme().paintContainer(g, scaling, this);
-		paintComponents(g, scaling);
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
+		ThemeManager.getTheme().paintContainer(game, g, scaling, this);
+		paintComponents(game, g, scaling);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void debug(Graphics g, float scaling) {
-		super.debug(g, scaling);
-		debugComponents(g, scaling);
+	public void debug(Game game, Graphics g, float scaling) {
+		super.debug(game, g, scaling);
+		debugComponents(game, g, scaling);
 	}
 	
 	/**
@@ -98,11 +98,11 @@ public class Container extends Component {
 	 * @param scaling The scaling factor for rendering.
 	 * @throws SlickException If an error occurs rendering the components.
 	 */
-	public void debugComponents(Graphics g, float scaling) {
+	public void debugComponents(Game game, Graphics g, float scaling) {
 		for (Component component : components) {
 			g.pushTransform();
 			g.translate(component.getX(), component.getY());
-			component.debug(g, scaling);
+			component.debug(game, g, scaling);
 			g.popTransform();
 		}
 	}
@@ -113,11 +113,11 @@ public class Container extends Component {
 	 * @param scaling The scaling factor for rendering.
 	 * @throws SlickException If an error occurs rendering the components.
 	 */
-	public void paintComponents(Graphics g, float scaling) throws RenderException {
+	public void paintComponents(Game game, Graphics g, float scaling) throws RenderException {
 		for (Component component : components) {
 			g.pushTransform();
 			g.translate(component.getX(), component.getY());
-			component.paint(g, scaling);
+			component.paint(game, g, scaling);
 			g.popTransform();
 		}
 	}

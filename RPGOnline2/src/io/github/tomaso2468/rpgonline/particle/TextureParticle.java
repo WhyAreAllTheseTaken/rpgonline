@@ -33,7 +33,7 @@ package io.github.tomaso2468.rpgonline.particle;
 
 import java.util.List;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
 /**
@@ -70,8 +70,8 @@ public class TextureParticle implements Particle {
 	 * @param y The Y position of the particle.
 	 * @param time The time the particle has left on the screen.
 	 */
-	public TextureParticle(String s, float x, float y, float time) {
-		this.t = TextureMap.getTextureIndex(s);
+	public TextureParticle(Game game, String s, float x, float y, float time) {
+		this.t = game.getTextures().getTextureIndex(s);
 		this.x = x;
 		this.y = y;
 		this.time = time;

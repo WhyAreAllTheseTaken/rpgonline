@@ -33,6 +33,7 @@ package io.github.tomaso2468.rpgonline.gui.layer;
 
 import org.newdawn.slick.Color;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.render.Graphics;
 
 /**
@@ -59,7 +60,7 @@ public class FlatColorLayer extends Layer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint(Graphics g, float scaling) {
+	public void paint(Game game, Graphics g, float scaling) {
 		g.setColor(c);
 		g.fillRect(0, 0, getW() * scaling, getH() * scaling);
 	}

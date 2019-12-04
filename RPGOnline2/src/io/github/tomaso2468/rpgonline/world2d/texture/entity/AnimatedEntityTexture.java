@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture.entity;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
@@ -65,11 +65,11 @@ public class AnimatedEntityTexture implements EntityTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public AnimatedEntityTexture(String[] textures, long interval, float x, float y) {
+	public AnimatedEntityTexture(Game game, String[] textures, long interval, float x, float y) {
 		super();
 		this.textures = new int[textures.length];
 		for (int i = 0; i < this.textures.length; i++) {
-			this.textures[i] = TextureMap.getTextureIndex(textures[i]);
+			this.textures[i] = game.getTextures().getTextureIndex(textures[i]);
 		}
 		this.interval = interval;
 		this.x = x;
@@ -81,8 +81,8 @@ public class AnimatedEntityTexture implements EntityTexture {
 	 * @param textures The textures to use.
 	 * @param interval The time between each frame in milliseconds.
 	 */
-	public AnimatedEntityTexture(String[] textures, long interval) {
-		this(textures, interval, 0, 0);
+	public AnimatedEntityTexture(Game game, String[] textures, long interval) {
+		this(game, textures, interval, 0, 0);
 	}
 	
 	/**
@@ -93,8 +93,8 @@ public class AnimatedEntityTexture implements EntityTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public AnimatedEntityTexture(String texture, int length, long interval, float x, float y) {
-		this(getTexturesFromIndex(texture, length), interval, x, y);
+	public AnimatedEntityTexture(Game game, String texture, int length, long interval, float x, float y) {
+		this(game, getTexturesFromIndex(texture, length), interval, x, y);
 	}
 	
 	/**
@@ -103,8 +103,8 @@ public class AnimatedEntityTexture implements EntityTexture {
 	 * @param length The length of the texture list.
 	 * @param interval The time between each frame in milliseconds.
 	 */
-	public AnimatedEntityTexture(String texture, int length, long interval) {
-		this(getTexturesFromIndex(texture, length), interval, 0, 0);
+	public AnimatedEntityTexture(Game game, String texture, int length, long interval) {
+		this(game, getTexturesFromIndex(texture, length), interval, 0, 0);
 	}
 	
 	/**

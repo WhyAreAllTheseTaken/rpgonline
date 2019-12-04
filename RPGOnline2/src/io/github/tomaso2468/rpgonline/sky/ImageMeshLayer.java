@@ -35,7 +35,6 @@ import org.newdawn.slick.Color;
 
 import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -83,9 +82,9 @@ public abstract class ImageMeshLayer implements SkyLayer {
 			for (long ty = -dist_y; ty <= dist_y; ty++) {
 				Image img = getImageAt(tx - (long) (x / imageWidth), ty - (long) (y / imageHeight));
 				if (img != null) {
-					if (TextureMap.getSheet(img) != current) {
+					if (game.getTextures().getSheet(img) != current) {
 						if (current != null) renderer.endUse(img);
-						current = TextureMap.getSheet(img);
+						current = game.getTextures().getSheet(img);
 						renderer.startUse(img);
 					}
 					light.bind();

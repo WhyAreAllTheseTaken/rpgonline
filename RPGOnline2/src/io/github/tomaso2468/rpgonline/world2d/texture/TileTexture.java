@@ -31,8 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture;
 
+import org.newdawn.slick.SlickException;
+
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.RenderException;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
@@ -102,8 +104,8 @@ public interface TileTexture {
 	 * @param wind The current wind value.
 	 * @throws SlickException If an error occurs during rendering.
 	 */
-	public default void render(Renderer renderer, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) throws RenderException {
-		Image img = TextureMap.getTexture(getTexture(x, y, z, w, state, t));
+	public default void render(Game game, Renderer renderer, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) throws RenderException {
+		Image img = game.getTextures().getTexture(getTexture(x, y, z, w, state, t));
 		
 		if (img != null) {
 			renderer.render(img, sx, sy, img.getWidth(), img.getHeight());

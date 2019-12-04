@@ -33,8 +33,8 @@ package io.github.tomaso2468.rpgonline.particle;
 
 import java.util.List;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.World;
 
@@ -73,8 +73,8 @@ public interface Particle {
 	 * @param sx The X position to render at.
 	 * @param sy The Y position to render at.
 	 */
-	public default void render(Renderer renderer, float sx, float sy) {
-		Image img = TextureMap.getTexture(getTexture());
+	public default void render(Game game, Renderer renderer, float sx, float sy) {
+		Image img = game.getTextures().getTexture(getTexture());
 		renderer.render(img, sx, sy, img.getWidth(), img.getHeight());
 	}
 	/**

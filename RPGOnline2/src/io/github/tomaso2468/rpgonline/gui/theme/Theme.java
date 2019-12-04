@@ -64,28 +64,28 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param c The component to render.
 	 */
-	public void paintComponent(Graphics g, float scaling, Component c);
+	public void paintComponent(Game game, Graphics g, float scaling, Component c);
 	/**
 	 * Paints the graphics of the container without painting components in the container.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param c The container to render.
 	 */
-	public void paintContainer(Graphics g, float scaling, Container c);
+	public void paintContainer(Game game, Graphics g, float scaling, Container c);
 	/**
 	 * Paints the graphics of the progress bar.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param pb The progress bar to render.
 	 */
-	public void paintProgressBar(Graphics g, float scaling, ProgressBar pb);
+	public void paintProgressBar(Game game, Graphics g, float scaling, ProgressBar pb);
 	/**
 	 * Paints the graphics of the button.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param b The button to render.
 	 */
-	public void paintButton(Graphics g, float scaling, Button b);
+	public void paintButton(Game game, Graphics g, float scaling, Button b);
 	/**
 	 * Calculates the bounds for a button based on the specified container.
 	 * @param c The container the component is in.
@@ -99,21 +99,21 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param s The switch to render.
 	 */
-	public void paintSwitch(Graphics g, float scaling, Switch s);
+	public void paintSwitch(Game game, Graphics g, float scaling, Switch s);
 	/**
 	 * Paints the graphics of the picture.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param p The picture to render.
 	 */
-	public void paintPicture(Graphics g, float scaling, Picture p);
+	public void paintPicture(Game game, Graphics g, float scaling, Picture p);
 	/**
 	 * Paints the graphics of the label.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param l The label to render.
 	 */
-	public void paintLabel(Graphics g, float scaling, Label l);
+	public void paintLabel(Game game, Graphics g, float scaling, Label l);
 	/**
 	 * Calculates the bounds for a label based on the specified container.
 	 * @param c The container the component is in.
@@ -127,21 +127,21 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param tf The text component to render.
 	 */
-	public void paintText(Graphics g, float scaling, TextComponent tf);
+	public void paintText(Game game, Graphics g, float scaling, TextComponent tf);
 	/**
 	 * Paints the graphics of the password field.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param tf The password field to render.
 	 */
-	public void paintPassword(Graphics g, float scaling, PasswordField tf);
+	public void paintPassword(Game game, Graphics g, float scaling, PasswordField tf);
 	/**
 	 * Paints the graphics of the scroll bar.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param sb The scroll bar to render.
 	 */
-	public void paintScrollBar(Graphics g, float scaling, ScrollBar sb);
+	public void paintScrollBar(Game game, Graphics g, float scaling, ScrollBar sb);
 	/**
 	 * Calculates the bounds for a scroll bar based on the specified container.
 	 * @param c The container the component is in.
@@ -163,14 +163,14 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param slider The slider to render.
 	 */
-	public void paintSlider(Graphics g, float scaling, Slider slider);
+	public void paintSlider(Game game, Graphics g, float scaling, Slider slider);
 	/**
 	 * Paints the graphics of the check box.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param checkBox The checkBox to render.
 	 */
-	public void paintCheckBox(Graphics g, float scaling, CheckBox checkBox);
+	public void paintCheckBox(Game game, Graphics g, float scaling, CheckBox checkBox);
 	/**
 	 * Calculates the bounds for a checkBox based on the specified container.
 	 * @param c The container the component is in.
@@ -184,14 +184,14 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param pb The radio button to render.
 	 */
-	public void paintRadioButton(Graphics g, float scaling, RadioButton b);
+	public void paintRadioButton(Game game, Graphics g, float scaling, RadioButton b);
 	/**
 	 * Paints the graphics of the list element.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the GUI.
 	 * @param listElement The list element to render.
 	 */
-	public void paintListElement(Graphics g, float scaling, ListElement listElement);
+	public void paintListElement(Game game, Graphics g, float scaling, ListElement listElement);
 	/**
 	 * Calculates the bounds for a list element based on the specified container.
 	 * @param c The container the component is in.
@@ -212,7 +212,7 @@ public interface Theme {
 	 * @param scaling The scaling of the GUI.
 	 * @param tabButton The tab button to render.
 	 */
-	public void paintTab(Graphics g, float scaling, TabButton tabButton);
+	public void paintTab(Game game, Graphics g, float scaling, TabButton tabButton);
 	/**
 	 * Calculates the bounds for a tab button based on the specified container.
 	 * @param c The container the component is in.
@@ -224,7 +224,7 @@ public interface Theme {
 	 * A method called before drawing occurs on any frame.
 	 * @param g The current graphics context.
 	 */
-	public void predraw(Graphics g);
+	public void predraw(Game game, Graphics g);
 	/**
 	 * Initialises the theme with the game container.
 	 * @param c The game container to use.

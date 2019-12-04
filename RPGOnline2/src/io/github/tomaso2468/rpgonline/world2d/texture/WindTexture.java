@@ -33,9 +33,9 @@ package io.github.tomaso2468.rpgonline.world2d.texture;
 
 import org.apache.commons.math3.util.FastMath;
 
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.Image;
 import io.github.tomaso2468.rpgonline.RPGConfig;
-import io.github.tomaso2468.rpgonline.TextureMap;
 import io.github.tomaso2468.rpgonline.render.Renderer;
 import io.github.tomaso2468.rpgonline.world2d.Tile;
 import io.github.tomaso2468.rpgonline.world2d.World;
@@ -56,8 +56,8 @@ public class WindTexture extends BasicTileTexture {
 	 * @param y The Y offset of the texture.
 	 * @param f The strength of the wind effect.
 	 */
-	public WindTexture(String s, float x, float y, float f) {
-		super(s, x, y);
+	public WindTexture(Game game, String s, float x, float y, float f) {
+		super(game, s, x, y);
 		this.f = f;
 	}
 	
@@ -66,8 +66,8 @@ public class WindTexture extends BasicTileTexture {
 	 * @param s The texture ID.
 	 * @param f The strength of the wind effect.
 	 */
-	public WindTexture(String s, float f) {
-		this(s, 0, 0, f);
+	public WindTexture(Game game, String s, float f) {
+		this(game, s, 0, 0, f);
 	}
 	
 	/**
@@ -82,11 +82,11 @@ public class WindTexture extends BasicTileTexture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Renderer renderer, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) {
+	public void render(Game game, Renderer renderer, long x, long y, long z, World w, String state, Tile t, float sx, float sy, float wind) {
 		float amount = (float) wibble((x * y + (System.currentTimeMillis() / 50)) * (double) f) * wind
 				* f;
 		
-		Image img = TextureMap.getTexture(getTexture(x, y, z, w, state, t));
+		Image img = game.getTextures().getTexture(getTexture(x, y, z, w, state, t));
 		
 		if (img != null) {
 			renderer.renderSheared(img, sx - amount, sy, img.getWidth(), img.getHeight(), amount, 0);

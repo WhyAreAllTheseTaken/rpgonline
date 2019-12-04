@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture.entity;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
@@ -60,8 +60,8 @@ public class BasicEntityTexture implements EntityTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public BasicEntityTexture(String s, float x, float y) {
-		this.t = TextureMap.getTextureIndex(s);
+	public BasicEntityTexture(Game game, String s, float x, float y) {
+		this.t = game.getTextures().getTextureIndex(s);
 		this.x = x;
 		this.y = y;
 	}
@@ -70,8 +70,8 @@ public class BasicEntityTexture implements EntityTexture {
 	 * Constructs a new BasicEntityTexture.
 	 * @param s The texture ID.
 	 */
-	public BasicEntityTexture(String s) {
-		this(s, 0, 0);
+	public BasicEntityTexture(Game game, String s) {
+		this(game, s, 0, 0);
 	}
 	
 	/**

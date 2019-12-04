@@ -505,32 +505,34 @@ public class GUI {
 
 	/**
 	 * Paints this GUI.
+	 * @param game The game.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the screen.
 	 * @throws SlickException If an error occurs when rendering.
 	 */
-	public void paint(Graphics g, float scaling) throws RenderException {
+	public void paint(Game game, Graphics g, float scaling) throws RenderException {
 		this.scaling = scaling;
 		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
 			g.pushTransform();
-			screen.paint(g, scaling);
+			screen.paint(game, g, scaling);
 			g.popTransform();
 		}
 	}
 	
 	/**
 	 * Debugs this GUI.
+	 * @param game The game.
 	 * @param g The current graphics context.
 	 * @param scaling The scaling of the screen.
 	 * @throws SlickException If an error occurs when rendering.
 	 */
-	public void debug(Graphics g, float scaling) throws RenderException {
+	public void debug(Game game, Graphics g, float scaling) throws RenderException {
 		this.scaling = scaling;
 		g.scale(scaling, scaling);
 		for (Screen screen : screens) {
 			g.pushTransform();
-			screen.debug(g, scaling);
+			screen.debug(game, g, scaling);
 			g.popTransform();
 		}
 	}

@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline.world2d.texture.entity;
 
-import io.github.tomaso2468.rpgonline.TextureMap;
+import io.github.tomaso2468.rpgonline.Game;
 import io.github.tomaso2468.rpgonline.world2d.World;
 import io.github.tomaso2468.rpgonline.world2d.entity.Entity;
 
@@ -86,7 +86,7 @@ public class WalkCycleTexture implements EntityTexture {
 	 * @param x The X offset for this texture.
 	 * @param y The Y offset for this texture.
 	 */
-	public WalkCycleTexture(String base, int north, int east, int south, int west, int len, double speed, float x, float y) {
+	public WalkCycleTexture(Game game, String base, int north, int east, int south, int west, int len, double speed, float x, float y) {
 		this.north = new int[len];
 		this.east = new int[len];
 		this.south = new int[len];
@@ -95,10 +95,10 @@ public class WalkCycleTexture implements EntityTexture {
 		this.len = len;
 		
 		for (int i = 0; i < len; i++) {
-			this.north[i] = TextureMap.getTextureIndex(base + "." + (north + i));
-			this.east[i] = TextureMap.getTextureIndex(base + "." + (east + i));
-			this.south[i] = TextureMap.getTextureIndex(base + "." + (south + i));
-			this.west[i] = TextureMap.getTextureIndex(base + "." + (west + i));
+			this.north[i] = game.getTextures().getTextureIndex(base + "." + (north + i));
+			this.east[i] = game.getTextures().getTextureIndex(base + "." + (east + i));
+			this.south[i] = game.getTextures().getTextureIndex(base + "." + (south + i));
+			this.west[i] = game.getTextures().getTextureIndex(base + "." + (west + i));
 		}
 		
 		this.x = x;
@@ -115,8 +115,8 @@ public class WalkCycleTexture implements EntityTexture {
 	 * @param len The length of each walk cycle.
 	 * @param speed The speed of the walk cycle.
 	 */
-	public WalkCycleTexture(String base, int north, int east, int south, int west, int len, double speed) {
-		this(base, north, east, south, west, len, speed, 0, 0);
+	public WalkCycleTexture(Game game, String base, int north, int east, int south, int west, int len, double speed) {
+		this(game, base, north, east, south, west, len, speed, 0, 0);
 	}
 	
 	/**
