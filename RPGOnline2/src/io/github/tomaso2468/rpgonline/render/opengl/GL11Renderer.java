@@ -168,7 +168,7 @@ public abstract class GL11Renderer implements Renderer {
 		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY());
 		GL11.glVertex3f(x, y, 0);
 		GL11.glTexCoord2f(img.getTextureOffsetX(), img.getTextureOffsetY() + img.getTextureHeight());
-		GL11.glVertex3f(x, y + h, 0);
+		GL11.glVertex3f(x + hshear, y + h, 0);
 		GL11.glTexCoord2f(img.getTextureOffsetX() + img.getTextureWidth(),
 				img.getTextureOffsetY() + img.getTextureHeight());
 		GL11.glVertex3f(x + w + hshear, y + h + vshear, 0);
