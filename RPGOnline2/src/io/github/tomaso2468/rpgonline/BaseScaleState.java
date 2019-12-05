@@ -32,13 +32,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline;
 
 /**
- * An interface allowing a state to except a float scaling value.
+ * An interface allowing a state to scale based on a scaling value.
+ * 
  * @author Tomaso2468
- *
  */
 public interface BaseScaleState {
 	/**
 	 * Scale the state to the specified scaling (1 == 100%).
+	 * 
+	 * @param game The game.
 	 * @param base The scaling for the state.
 	 */
 	public void scale(Game game, float base);

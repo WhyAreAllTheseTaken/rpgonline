@@ -44,6 +44,7 @@ import io.github.tomaso2468.rpgonline.world2d.World;
  * @author Tomaso2468
  *
  */
+@Deprecated
 public abstract class MoonLayer implements SkyLayer {
 	/**
 	 * A sun color generator.

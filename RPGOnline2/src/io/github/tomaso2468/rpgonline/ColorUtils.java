@@ -53,7 +53,7 @@ import io.github.tomaso2468.rpgonline.debug.Debugger;
  * 
  * @see io.github.tomaso2468.rpgonline.post.ColorEffectsShader
  * 
- * @author Tomas, Ruo Feidu, Tanner Hellend
+ * @author Tomaso2468, Ruo Feidu, Tanner Hellend
  */
 public final class ColorUtils {
 	/**
@@ -534,6 +534,7 @@ public final class ColorUtils {
 	 * 
 	 * @author Tomas
 	 */
+	@Deprecated
 	public static class SunColorGenerator {
 		/**
 		 * Sun color red channel.
@@ -604,6 +605,19 @@ public final class ColorUtils {
 					nightSky);
 		}
 
+		/**
+		 * Initi
+		 * @param sunlight
+		 * @param moonlight
+		 * @param sundown1
+		 * @param sundown2
+		 * @param night
+		 * @param sunlightSky
+		 * @param sundown1Sky
+		 * @param sundown2Sky
+		 * @param moonlightSky
+		 * @param nightSky
+		 */
 		private void init(Color sunlight, Color moonlight, Color sundown1, Color sundown2, Color night,
 				Color sunlightSky, Color sundown1Sky, Color sundown2Sky, Color moonlightSky, Color nightSky) {
 			double[] x = { 0, 4.5, 5, 5.5, 6.5, 17, 18.5, 19, 20, 24, };
