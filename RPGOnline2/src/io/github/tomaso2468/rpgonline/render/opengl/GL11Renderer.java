@@ -29,6 +29,9 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+/*
+ * In order to be compatible with older versions of the engine. Some of the code is based on Slick2D.
+ */
 package io.github.tomaso2468.rpgonline.render.opengl;
 
 import java.awt.FontFormatException;
@@ -376,13 +379,15 @@ public abstract class GL11Renderer implements Renderer {
 	@Override
 	public TextureReference createEmptyTexture(int width, int height) throws TextureCreateException {
 		try {
-			return new SlickTexture(InternalTextureLoader.get().createTexture(width, height, ImageFilter.NEAREST.slickMapping));
+			return new SlickTexture(
+					InternalTextureLoader.get().createTexture(width, height, ImageFilter.NEAREST.slickMapping));
 		} catch (IOException e) {
 			throw new TextureCreateException("Failed to create empty image", e);
 		}
 	}
 
 	private String vendor;
+
 	@Override
 	public String getVendor() {
 		if (vendor == null) {
@@ -392,6 +397,7 @@ public abstract class GL11Renderer implements Renderer {
 	}
 
 	private String version;
+
 	@Override
 	public String getVersion() {
 		if (version == null) {
@@ -399,8 +405,9 @@ public abstract class GL11Renderer implements Renderer {
 		}
 		return version;
 	}
-	
+
 	private String gpu;
+
 	@Override
 	public String getGPU() {
 		if (gpu == null) {

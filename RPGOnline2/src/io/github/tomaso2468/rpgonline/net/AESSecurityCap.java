@@ -24,6 +24,7 @@ import org.newdawn.slick.util.Log;
  * 
  * @author Jegan Babu, Wojciech Wirzbicki
  */
+@Deprecated
 class AESSecurityCap {
 	/**
 	 * The public key to use.

@@ -36,20 +36,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
 
 import org.newdawn.slick.util.Log;
 
@@ -80,7 +69,7 @@ import io.github.tomaso2468.rpgonline.world2d.net.packet.WindPacket;
  * @author Tomaso2468
  *
  */
-public class BasicPacketConnection extends AESSecurityCap implements Connection {
+public class BasicPacketConnection implements Connection {
 	/**
 	 * The list of packets to send.
 	 */
@@ -94,21 +83,9 @@ public class BasicPacketConnection extends AESSecurityCap implements Connection 
 	 */
 	private boolean stopped = false;
 	/**
-	 * The cipher to encrypt with.
-	 */
-	private Cipher encryptCipher;
-	/**
-	 * The cipher to decrypt with.
-	 */
-	private Cipher decryptCipher;
-	/**
 	 * Determines if packets should be logged. This is set to true for encryption setup.
 	 */
 	private boolean logPackets = false;
-	/**
-	 * Determines if encyption is complete.
-	 */
-	private boolean encyptComplete = false;
 	/**
 	 * Constructs a new BasicPacketConnection.
 	 * @param s The socket to connect to.
@@ -163,14 +140,6 @@ public class BasicPacketConnection extends AESSecurityCap implements Connection 
 					DataInputStream in = new DataInputStream(s.getInputStream());
 
 					while (!stopped) {
-						if (encryptCipher != null && !encyptComplete) {
-							Log.debug("Finalising encyption");
-							out = new DataOutputStream(new CipherOutputStream(buffer, encryptCipher));
-							in = new DataInputStream(new CipherInputStream(s.getInputStream(), decryptCipher));
-							Log.info("Encryption complete.");
-							encyptComplete = true;
-						}
-						
 						while (toSend.size() > 0) {
 							try {
 								if(logPackets) {
@@ -257,50 +226,7 @@ public class BasicPacketConnection extends AESSecurityCap implements Connection 
 	 */
 	@Override
 	public void encrypt() throws IOException {
-		Log.info("Encrypting");
-		
-		logPackets = true;
-		// Send public key.
-		Log.debug("Sending key");
-		send(new KeyPacket(getPublickey()));
-		Log.debug("Sent key");
-		
-		// Wait for other public key.
-		Log.debug("Waiting");
-		while (true) {
-			while (!isAvaliable()) {
-				Thread.yield();
-			}
-			NetPacket next = getNext();
-			if (next instanceof KeyPacket) {
-				Log.debug("Packet recieved");
-				PublicKey k;
-				try {
-					k = KeyFactory.getInstance("EC").generatePublic(new X509EncodedKeySpec(((KeyPacket) next).key));
-					setReceiverPublicKey(k);
-					
-					decryptCipher = Cipher.getInstance("AES");
-					decryptCipher.init(Cipher.DECRYPT_MODE, generateKey());
-					
-					encryptCipher = Cipher.getInstance("AES");
-					encryptCipher.init(Cipher.ENCRYPT_MODE, generateKey());
-					Log.debug("Cipher generated");
-				} catch (InvalidKeySpecException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
-					Log.error("Error encypting connection", e);
-					close();
-				}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				logPackets = true;
-				Log.debug("Exiting");
-				return;
-			} else {
-				Log.warn("Discarding unencypted packet: " + next);
-			}
-		}
+		throw new UnsupportedOperationException("encrypt");
 	}
 
 }

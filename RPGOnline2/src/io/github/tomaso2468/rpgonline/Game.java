@@ -1404,26 +1404,50 @@ public class Game {
 		return renderer.getWidth();
 	}
 
+	/**
+	 * Gets the audio for the game.
+	 * @return An AudioSystem object.
+	 */
 	public AudioSystem getAudio() {
 		return audio;
 	}
 
+	/**
+	 * Sets the audio for the game.
+	 * @param audio An AudioSystem object.
+	 */
 	public void setAudio(AudioSystem audio) {
 		this.audio = audio;
 	}
 
+	/**
+	 * Gets the textures for this game.
+	 * @return A texture map.
+	 */
 	public TextureMap getTextures() {
 		return textures;
 	}
 
+	/**
+	 * Sets the textures for this game.
+	 * @param textures A texture map.
+	 */
 	public void setTextures(TextureMap textures) {
 		this.textures = textures;
 	}
 
+	/**
+	 * Gets the theme of the game.
+	 * @return A theme implementation.
+	 */
 	public Theme getTheme() {
 		return theme;
 	}
 
+	/**
+	 * Sets the theme of the game.
+	 * @param theme A theme implementation.
+	 */
 	public void setTheme(Theme theme) {
 		this.theme = theme;
 	}

@@ -140,9 +140,9 @@ public abstract class GL30Renderer extends GL20Renderer {
 		}
 		if (((SlickTexture) image.getTexture()).fbo == 0) {
 			if (!GLContext.getCapabilities().GL_EXT_framebuffer_object) {
-				if (!fbo_ext_warn) Log.warn("FBOs are not supported on your system, falling back to pbuffers.");
+				if (!fbo_ext_warn) Log.warn("FBOs are not supported on your system.");
 				fbo_ext_warn = true;
-				// Fallback to pbuffer
+				// Fallback to GL20
 				super.setRenderTarget(image);
 				return;
 			}
