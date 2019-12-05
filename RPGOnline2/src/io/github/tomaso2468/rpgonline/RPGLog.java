@@ -39,11 +39,32 @@ import java.util.Date;
 
 import org.newdawn.slick.util.LogSystem;
 
+/**
+ * An implementation of a log system.
+ * @author Tomaso2468
+ *
+ */
 public class RPGLog implements LogSystem {
+	/**
+	 * The print writer to use for writing.
+	 */
 	private final PrintWriter pw;
+	/**
+	 * Whether detailed debug information should be printed (method information).
+	 */
 	private boolean detailed_debug = true;
+	/**
+	 * Whether debug information should be printed (debug).
+	 */
 	private boolean debug = true;
 
+	/**
+	 * Constructs a new RPGLog that writes to a file.
+	 * @param f The file to write to.
+	 * @param debug Whether debug information should be printed (INFO and debug).
+	 * @param detailed_debug Whether detailed debug information should be printed (method information).
+	 * @throws FileNotFoundException If the file specified does not exist.
+	 */
 	public RPGLog(File f, boolean debug, boolean detailed_debug) throws FileNotFoundException {
 		super();
 		this.debug = debug;
@@ -52,7 +73,22 @@ public class RPGLog implements LogSystem {
 		info("RPGLog created with settings (debug=" + debug + ", detailed_debug=" + detailed_debug + ") in file "
 				+ f.getName());
 	}
+	
+	/**
+	 * Constructs a new RPGLog.
+	 * @param debug Whether debug information should be printed (INFO and debug).
+	 * @param detailed_debug Whether detailed debug information should be printed (method information).
+	 */
+	public RPGLog(boolean debug, boolean detailed_debug) {
+		super();
+		this.debug = debug;
+		this.pw = null;
+		this.detailed_debug = detailed_debug;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void error(String message, Throwable e) {
 		print("ERROR", message);
@@ -60,6 +96,9 @@ public class RPGLog implements LogSystem {
 		e.printStackTrace(pw);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void error(Throwable e) {
 		print("ERROR", e.getMessage());
@@ -67,16 +106,25 @@ public class RPGLog implements LogSystem {
 		e.printStackTrace(pw);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void error(String message) {
 		print("ERROR", message);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void warn(String message) {
 		print("WARN", message);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void warn(String message, Throwable e) {
 		print("WARN", message);
@@ -84,11 +132,17 @@ public class RPGLog implements LogSystem {
 		e.printStackTrace(pw);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void info(String message) {
 		print("INFO", message);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void debug(String message) {
 		if (!debug) {
@@ -97,6 +151,11 @@ public class RPGLog implements LogSystem {
 		print("debug", message);
 	}
 
+	/**
+	 * Helper method for printing.
+	 * @param type The type of message.
+	 * @param message The message.
+	 */
 	public void print(String type, String message) {
 		String str;
 		if (!detailed_debug) {
@@ -120,6 +179,8 @@ public class RPGLog implements LogSystem {
 
 		System.out.println(str);
 
-		pw.println(str);
+		if (pw == null) {
+			pw.println(str);
+		}
 	}
 }
