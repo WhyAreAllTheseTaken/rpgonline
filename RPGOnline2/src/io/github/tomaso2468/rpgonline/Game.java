@@ -48,6 +48,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.util.Log;
 
 import io.github.tomaso2468.rpgonline.audio.AudioSystem;
+import io.github.tomaso2468.rpgonline.audio.AudioSystemImpl;
 import io.github.tomaso2468.rpgonline.debug.DebugFrame;
 import io.github.tomaso2468.rpgonline.debug.Debugger;
 import io.github.tomaso2468.rpgonline.gui.theme.DefaultTheme;
@@ -329,7 +330,7 @@ public class Game {
 		}
 		textures.setRenderer(renderer);
 		if (audio == null) {
-			audio = new AudioSystem();
+			audio = new AudioSystemImpl();
 		}
 		if (theme == null) {
 			theme = new DefaultTheme();

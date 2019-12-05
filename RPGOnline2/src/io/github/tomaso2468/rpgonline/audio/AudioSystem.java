@@ -32,23 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package io.github.tomaso2468.rpgonline.audio;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.newdawn.slick.util.Log;
-
-import paulscode.sound.Library;
-import paulscode.sound.SoundSystem;
-import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.SoundSystemException;
-import paulscode.sound.SoundSystemLogger;
-import paulscode.sound.codecs.CodecIBXM;
-import paulscode.sound.codecs.CodecJOrbis;
-import paulscode.sound.codecs.CodecWav;
-import paulscode.sound.libraries.LibraryJavaSound;
-import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 /**
  * <p>
@@ -70,166 +53,11 @@ import paulscode.sound.libraries.LibraryLWJGLOpenAL;
  * @author Tomaso2468
  *
  */
-public class AudioSystem {
-	/**
-	 * The current sound system.
-	 */
-	private SoundSystem system;
-	/**
-	 * The roll-off factor for audio.
-	 */
-	private float rf;
-
-	/**
-	 * A map of sound file locations.
-	 */
-	private final Map<String, URL> sounds = new HashMap<>();
-
-	/**
-	 * The currently playing piece of music.
-	 */
-	private AmbientMusic music = null;
-
-	/**
-	 * A thread used to fade out music.
-	 */
-	private Thread fadeThread;
-
-	/**
-	 * A map of audio groups to volumes
-	 */
-	private final Map<String, Float> volumes = new HashMap<>();
-
-	/**
-	 * A list of currently playing ambient sounds.
-	 */
-	private final List<String> ambient = new ArrayList<>();
-
-	/**
-	 * A map of IDs to music.
-	 */
-	private final Map<String, AmbientMusic> ambientMusic = new HashMap<>();
-
-	/**
-	 * The thread for the AudioSystem.
-	 */
-	private Thread audioThread;
-
-	/**
-	 * Constructs a new AudioSystem.
-	 */
-	public AudioSystem() {
-		init();
-	}
-	
+public interface AudioSystem {
 	/**
 	 * Initialise the AudioSystem.
 	 */
-	protected void init() {
-		SoundSystemConfig.setLogger(new SoundSystemLogger() {
-			@Override
-			public boolean errorCheck(boolean error, String classname, String message, int indent) {
-				if (error)
-					Log.error("Error in paulscode sound engine in class " + classname + ": " + message);
-				return error;
-			}
-
-			@Override
-			public void errorMessage(String classname, String message, int indent) {
-				Log.error("Error in paulscode sound engine in class " + classname + ": " + message);
-			}
-
-			@Override
-			public void importantMessage(String message, int indent) {
-				Log.info(message);
-			}
-
-			@Override
-			public void message(String message, int indent) {
-				Log.debug(message);
-			}
-
-			@Override
-			public void printExceptionMessage(Exception e, int indent) {
-				Log.error("Exception in paulscode class.", e);
-			}
-
-			@Override
-			public void printStackTrace(Exception e, int indent) {
-				Log.error("Exception in paulscode class.", e);
-			}
-		});
-
-		// Get compatible libraries
-		boolean aLCompatible = SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class);
-		boolean jSCompatible = SoundSystem.libraryCompatible(LibraryJavaSound.class);
-
-		Class<?> libraryType;
-		if (aLCompatible) {
-			libraryType = LibraryLWJGLOpenAL.class; // OpenAL
-		} else if (jSCompatible) {
-			libraryType = LibraryJavaSound.class; // Java Sound
-		} else {
-			libraryType = Library.class; // "No Sound, Silent Mode"
-		}
-		try {
-			Log.info("Attempting to use " + libraryType);
-			system = new SoundSystem(libraryType);
-		} catch (SoundSystemException sse) {
-			Log.error("Error loading audio library: " + libraryType);
-		}
-
-		// Load codecs
-		try {
-			SoundSystemConfig.setCodec("wav", CodecWav.class);
-		} catch (SoundSystemException e) {
-			Log.error("Error linking with the CodecWav plug-in.", e);
-		}
-		try {
-			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
-		} catch (SoundSystemException e) {
-			Log.error("Error linking with the CodecJOrbis plug-in.", e);
-		}
-		try {
-			SoundSystemConfig.setCodec("xm", CodecIBXM.class);
-		} catch (SoundSystemException e) {
-			Log.error("Error linking with the CodecIBXM plug-in.", e);
-		}
-
-		// Setup system
-		rf = SoundSystemConfig.getDefaultRolloff();
-		Log.info("Roll-off distance set to: " + rf);
-
-		// Default volumes
-		volumes.put("music", 1f);
-		volumes.put("sound", 1f);
-		volumes.put("ambient", 1f);
-
-		audioThread = new Thread("Sound Daemon") {
-			@Override
-			public void run() {
-				while (true) {
-					system.checkFadeVolumes();
-
-					for (int i = 0; i < ambient.size(); i++) {
-						String s = ambient.get(i);
-
-						if (!system.playing(s)) {
-							ambient.remove(s);
-						}
-					}
-
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						Log.error(e);
-					}
-				}
-			}
-		};
-		audioThread.setDaemon(true);
-		audioThread.start();
-	}
+	public void init();
 
 	/**
 	 * Adjusts the pitch by a random amount with a range either side of base.
@@ -238,7 +66,7 @@ public class AudioSystem {
 	 * @param range The range (on either side) of the pitch that will be possible.
 	 * @return A float value.
 	 */
-	public float pitchAdjust(float base, float range) {
+	public default float pitchAdjust(float base, float range) {
 		return (float) ((Math.random() * 2 - 1) * range + base);
 	}
 
@@ -248,143 +76,49 @@ public class AudioSystem {
 	 * @param range The range (on either side) of the pitch that will be possible.
 	 * @return A float value.
 	 */
-	public float pitchAdjust(float range) {
+	public default float pitchAdjust(float range) {
 		return pitchAdjust(1, range);
 	}
 
 	/**
 	 * Deletes the sound system.
 	 */
-	@SuppressWarnings("deprecation")
-	public void dispose() {
-		if (fadeThread != null && fadeThread.isAlive()) {
-			fadeThread.stop();
-		}
-		audioThread.stop();
-		system.cleanup();
-	}
+	public void dispose();
 
 	/**
 	 * Gets the current class of the sound library.
 	 * 
-	 * @return
+	 * @return A class.
 	 */
-	public Class<?> getSoundLibraryClass() {
-		return SoundSystem.currentLibrary();
-	}
-
-	/**
-	 * Sets the currently used sound library.
-	 * 
-	 * @param c The library to use
-	 * @throws SoundSystemException If an error occurred changing the library.
-	 */
-	public void setSoundLibrary(Class<?> c) throws SoundSystemException {
-		system.switchLibrary(c);
-	}
-
-	/**
-	 * Plays a piece of background music.
-	 * 
-	 * @param url    The music location.
-	 * @param loop   Determines if the music should be looped.
-	 * @param volume The volume to play the music at.
-	 * @return The sound system ID of the music.
-	 */
-	private String playBackgroundMusic(URL url, boolean loop, float volume) {
-		String name = Long.toHexString(System.nanoTime()).toUpperCase() + ":BM:"
-				+ Long.toHexString(System.currentTimeMillis()).toUpperCase() + ":" + url.toString();
-
-		system.backgroundMusic(name, url, url.getPath(), loop);
-		system.setVolume(name, volume);
-
-		return name;
-	}
+	public Class<?> getSoundLibraryClass();
 
 	/**
 	 * Gets the currently playing piece of music.
 	 * 
 	 * @return A ambient music object or null if no music is playing.
 	 */
-	public AmbientMusic getMusic() {
-		return music;
-	}
+	public AmbientMusic getMusic();
 
 	/**
 	 * Sets the currently playing piece of music.
 	 * 
 	 * @param m A music object or null to stop all music.
 	 */
-	public void setMusic(AmbientMusic m) {
-		if (m == music) {
-			return;
-		}
-
-		fadeThread = new Thread() {
-			@Override
-			public void run() {
-				if (music != null) {
-					for (int i = 0; i < 1000 / 50; i++) {
-						for (String s : music.refs) {
-							system.setVolume(s, system.getVolume(s) * 0.8f);
-						}
-						try {
-							Thread.sleep(50);
-						} catch (InterruptedException e) {
-							Log.error(e);
-						}
-					}
-					for (String s : music.refs) {
-						system.stop(s);
-					}
-				}
-				music = m;
-
-				fadeThread = null;
-
-				if (music != null) {
-					String[] sounds = music.getSounds();
-
-					for (int i = 0; i < sounds.length; i++) {
-						String s = sounds[i];
-						String g = music.getGroups()[i];
-						float v = music.getVolumes()[i];
-
-						music.refs[i] = playBackgroundMusic(AudioSystem.this.sounds.get(s), true, volumes.get(g) * v);
-					}
-				}
-			}
-		};
-		fadeThread.start();
-	}
+	public void setMusic(AmbientMusic m);
 
 	/**
 	 * sets the currently playing music based off of a sound ID.
 	 * 
 	 * @param s A sound ID
 	 */
-	public void setMusic(String s) {
-		if (music != null && music.getSounds().length == 1 && music.getSounds()[0].equals(s)) {
-			return;
-		}
-
-		setMusic(new AmbientMusic(s));
-	}
+	public void setMusic(String s);
 
 	/**
 	 * Sets the currently playing music based on a music ID.
 	 * 
 	 * @param s A music ID.
 	 */
-	public void setMusicID(String s) {
-		AmbientMusic m = getAmbientMusic(s);
-
-		if (m == null && !s.equals("null")) {
-			Log.error("Could not find ambient music with ID " + s);
-		}
-
-		setMusic(m);
-	}
+	public void setMusicID(String s);
 
 	/**
 	 * Sets the volume of a specified sound group.
@@ -392,9 +126,7 @@ public class AudioSystem {
 	 * @param g A sound group ID.
 	 * @param v The desired volume.
 	 */
-	public void setGroupVolume(String g, float v) {
-		volumes.put(g, v);
-	}
+	public void setGroupVolume(String g, float v);
 
 	/**
 	 * Gets the current volume of a sound group.
@@ -402,101 +134,63 @@ public class AudioSystem {
 	 * @param g A sound group ID.
 	 * @return The current volume of a sound group.
 	 */
-	public float getGroupVolume(String g) {
-		return volumes.get(g);
-	}
+	public float getGroupVolume(String g);
 
 	/**
 	 * Sets the current volume of all audio (this is multiplied with all channels).
 	 * 
 	 * @param v The desired volume.
 	 */
-	public void setMasterVolume(float v) {
-		system.setMasterVolume(v);
-	}
+	public void setMasterVolume(float v);
 
 	/**
 	 * Gets the current volume of all audio.
 	 * 
 	 * @return The current master volume.
 	 */
-	public float getMasterVolume() {
-		return system.getMasterVolume();
-	}
+	public float getMasterVolume();
 
 	/**
 	 * Sets the current volume of music.
 	 * 
 	 * @param v The desired volume.
 	 */
-	public void setMusicVolume(float v) {
-		float old = getMusicVolume();
-
-		setGroupVolume("music", v);
-
-		float factor = v / old;
-
-		if (music != null) {
-			for (String s : music.refs) {
-				system.setVolume(s, system.getVolume(s) * factor);
-			}
-		}
-	}
+	public void setMusicVolume(float v);
 
 	/**
 	 * Gets the current volume of music.
 	 * 
 	 * @return The current volume of music.
 	 */
-	public float getMusicVolume() {
-		return getGroupVolume("music");
-	}
+	public float getMusicVolume();
 
 	/**
 	 * Sets the volume of normal (non-ambient) sounds.
 	 * 
 	 * @param v The desired volume.
 	 */
-	public void setSoundVolume(float v) {
-		setGroupVolume("sound", v);
-	}
+	public void setSoundVolume(float v);
 
 	/**
 	 * Gets the current volume of normal (non-ambient) sounds.
 	 * 
 	 * @return The current volume.
 	 */
-	public float getSoundVolume() {
-		return getGroupVolume("sound");
-	}
+	public float getSoundVolume();
 
 	/**
 	 * Sets the current volume of ambient sounds.
 	 * 
 	 * @param v The desired volume.
 	 */
-	public void setAmbientVolume(float v) {
-		float old = getAmbientVolume();
-
-		setGroupVolume("ambient", v);
-
-		float factor = v / old;
-
-		for (String s : ambient) {
-			if (system.playing(s)) {
-				system.setVolume(s, system.getVolume(s) * factor);
-			}
-		}
-	}
+	public void setAmbientVolume(float v);
 
 	/**
 	 * Gets the current volume of ambient sounds.
 	 * 
 	 * @return The current volume.
 	 */
-	public float getAmbientVolume() {
-		return getGroupVolume("ambient");
-	}
+	public float getAmbientVolume();
 
 	/**
 	 * Plays a sound at a specified location with a pitch, volume and velocity.
@@ -514,15 +208,7 @@ public class AudioSystem {
 	 * @return The internal sound ID.
 	 */
 	public String playSound(String name, float v, float p, float x, float y, float z, boolean loop, float dx, float dy,
-			float dz) {
-		String s = system.quickPlay(false, sounds.get(name), sounds.get(name).getPath(), loop, x, y, z,
-				SoundSystemConfig.ATTENUATION_ROLLOFF, rf);
-		system.setVolume(s, v * getSoundVolume());
-		system.setPitch(s, p);
-		system.setVelocity(s, dx, dy, dz);
-
-		return s;
-	}
+			float dz);
 
 	/**
 	 * Plays a sound at a specified location with a pitch, volume and velocity
@@ -539,9 +225,7 @@ public class AudioSystem {
 	 * @param dz   The depth velocity of the sound.
 	 * @return The internal sound ID.
 	 */
-	public String playSound(String name, float v, float p, float x, float y, float z, float dx, float dy, float dz) {
-		return playSound(name, v, p, x, y, z, false, dx, dy, dz);
-	}
+	public String playSound(String name, float v, float p, float x, float y, float z, float dx, float dy, float dz);
 
 	/**
 	 * Plays a sound at a specified location with a pitch and volume without
@@ -555,9 +239,7 @@ public class AudioSystem {
 	 * @param z    The position of the sound (depth).
 	 * @return The internal sound ID.
 	 */
-	public String playSound(String name, float v, float p, float x, float y, float z) {
-		return playSound(name, v, p, x, y, z, false, 0, 0, 0);
-	}
+	public String playSound(String name, float v, float p, float x, float y, float z);
 
 	/**
 	 * Plays a sound at a specified location at the specified volume without
@@ -570,9 +252,7 @@ public class AudioSystem {
 	 * @param z    The position of the sound (depth).
 	 * @return The internal sound ID.
 	 */
-	public String playSound(String name, float v, float x, float y, float z) {
-		return playSound(name, v, 1, x, y, z, false, 0, 0, 0);
-	}
+	public String playSound(String name, float v, float x, float y, float z);
 
 	/**
 	 * Plays a sound at a specified location without velocity or looping and with a
@@ -584,9 +264,7 @@ public class AudioSystem {
 	 * @param z    The position of the sound (depth).
 	 * @return The internal sound ID.
 	 */
-	public String playSound(String name, float x, float y, float z) {
-		return playSound(name, 1, 1, x, y, z, false, 0, 0, 0);
-	}
+	public String playSound(String name, float x, float y, float z);
 
 	/**
 	 * Plays an ambient sound with a specified volume, pitch and position.
@@ -600,15 +278,7 @@ public class AudioSystem {
 	 * @param loop If the sound should be looped.
 	 * @return The internal sound ID.
 	 */
-	public String playAmbient(String name, float v, float p, float x, float y, float z, boolean loop) {
-		String s = system.quickPlay(loop, sounds.get(name), sounds.get(name).getPath(), loop, x, y, z,
-				SoundSystemConfig.ATTENUATION_ROLLOFF, rf);
-		system.setVolume(s, v);
-		system.setPitch(s, p);
-
-		ambient.add(s);
-		return s;
-	}
+	public String playAmbient(String name, float v, float p, float x, float y, float z, boolean loop);
 
 	/**
 	 * Plays an ambient sound with a specified volume, pitch and position without
@@ -622,9 +292,7 @@ public class AudioSystem {
 	 * @param z    The position of the sound (depth).
 	 * @return The internal sound ID.
 	 */
-	public String playAmbient(String name, float v, float p, float x, float y, float z) {
-		return playAmbient(name, v, p, x, y, z, false);
-	}
+	public String playAmbient(String name, float v, float p, float x, float y, float z);
 
 	/**
 	 * Sets the position of the player in 3D coordinates.
@@ -633,9 +301,7 @@ public class AudioSystem {
 	 * @param y The vertical position of the player.
 	 * @param z The depth position of the player.
 	 */
-	public void setPlayerPos(float x, float y, float z) {
-		system.setListenerPosition(x, z, y);
-	}
+	public void setPlayerPos(float x, float y, float z);
 
 	/**
 	 * Sets the velocity of the player in 3D coordinates.
@@ -644,9 +310,7 @@ public class AudioSystem {
 	 * @param y The vertical velocity of the player.
 	 * @param z The depth velocity of the player.
 	 */
-	public void setPlayerVelocity(float x, float y, float z) {
-		system.setListenerVelocity(x, z, y);
-	}
+	public void setPlayerVelocity(float x, float y, float z);
 
 	/**
 	 * Gets the factor used to determine how the volume of a sound rolls-off with
@@ -654,9 +318,7 @@ public class AudioSystem {
 	 * 
 	 * @return A float value.
 	 */
-	public float getDistanceFactor() {
-		return rf;
-	}
+	public float getDistanceFactor();
 
 	/**
 	 * Sets the factor used to determine how the volume of a sound rolls-off with
@@ -664,10 +326,7 @@ public class AudioSystem {
 	 * 
 	 * @param rf The roll-off factor
 	 */
-	public void setDistanceFactor(float rf) {
-		this.rf = rf;
-		SoundSystemConfig.setDefaultRolloff(rf);
-	}
+	public void setDistanceFactor(float rf);
 
 	/**
 	 * Adds a sound.
@@ -675,18 +334,7 @@ public class AudioSystem {
 	 * @param id  The sound ID.
 	 * @param loc The location of the sound.
 	 */
-	public void addSound(String id, URL loc) {
-		sounds.put(id, loc);
-	}
-
-	/**
-	 * Gets the sound system.
-	 * 
-	 * @return A non-null sound system object.
-	 */
-	public SoundSystem getSystem() {
-		return system;
-	}
+	public void addSound(String id, URL loc);
 
 	/**
 	 * Gets a piece of ambient music with the specified ID.
@@ -694,9 +342,7 @@ public class AudioSystem {
 	 * @param id The music ID.
 	 * @return An ambient music object or null.
 	 */
-	public AmbientMusic getAmbientMusic(String id) {
-		return ambientMusic.get(id);
-	}
+	public AmbientMusic getAmbientMusic(String id);
 
 	/**
 	 * Maps a piece of ambient music to an ID.
@@ -704,20 +350,10 @@ public class AudioSystem {
 	 * @param id The music ID.
 	 * @param m  An ambient music object
 	 */
-	public void setAmbientMusic(String id, AmbientMusic m) {
-		ambientMusic.put(id, m);
-	}
+	public void setAmbientMusic(String id, AmbientMusic m);
 
 	/**
 	 * Stops all ambient sounds.
 	 */
-	public void stopAmbient() {
-		for (int i = 0; i < ambient.size(); i++) {
-			String s = ambient.get(i);
-
-			if (system.playing(s)) {
-				system.stop(s);
-			}
-		}
-	}
+	public void stopAmbient();
 }
