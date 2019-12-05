@@ -43,7 +43,7 @@ public interface Font {
 	 */
 	public float getHeight(String text);
 	/**
-	 * Gets the height of a line of text.
+	 * Gets the height (in pixels) of a standard line of text.
 	 * @return A positive float value.
 	 */
 	public float getHeight();
