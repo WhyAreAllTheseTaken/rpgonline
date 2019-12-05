@@ -36,7 +36,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import org.newdawn.slick.util.Log;
 
 /**
- * An exception handler that move java exceptions into the logging system.
+ * An exception handler that prints java exception in the logging system.
  * @author Tomaso2468
  */
 public class GameExceptionHandler implements UncaughtExceptionHandler {
