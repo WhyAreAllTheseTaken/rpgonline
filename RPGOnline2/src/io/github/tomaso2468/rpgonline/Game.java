@@ -325,7 +325,7 @@ public class Game {
 		renderer.setMouseGrab(mouseGrabbed);
 
 		if (textures == null) {
-			textures = new TextureMap();
+			textures = new TextureMapImpl();
 		}
 		textures.setRenderer(renderer);
 		if (audio == null) {
