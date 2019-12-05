@@ -163,8 +163,6 @@ public class Image implements Cloneable {
 	 * @param filterMode The filter mode.
 	 * 
 	 * @see #getFilter()
-	 * @see #FILTER_LINEAR
-	 * @see #FILTER_NEAREST
 	 */
 	public void setFilter(ImageFilter filterMode) {
 		renderer.setFilter(texture, filterMode);
@@ -358,7 +356,9 @@ public class Image implements Cloneable {
 	}
 
 	/**
-	 * Gets a copy of the image at the specified width and height. The backing texture is shared and not resized.
+	 * Gets a copy of the image at the specified width and height. The backing
+	 * texture is shared and not resized.
+	 * 
 	 * @param w The width of the new image.
 	 * @param h The height of the new image.
 	 * @return A new scaled image.
@@ -368,7 +368,9 @@ public class Image implements Cloneable {
 	}
 
 	/**
-	 * Gets a copy of the image scaled by the amount specified. The backing texture is shared and not resized.
+	 * Gets a copy of the image scaled by the amount specified. The backing texture
+	 * is shared and not resized.
+	 * 
 	 * @param scale The amount to scale by (1 = original image).
 	 * @return A new scaled image.
 	 */
@@ -378,6 +380,7 @@ public class Image implements Cloneable {
 
 	/**
 	 * Gets a sub image of this image.
+	 * 
 	 * @param x The x position to start at.
 	 * @param y The y position to start at.
 	 * @param w The width of the sub image.
@@ -422,6 +425,7 @@ public class Image implements Cloneable {
 
 	/**
 	 * Gets the filter effect of this image.
+	 * 
 	 * @return A value filter.
 	 */
 	public ImageFilter getFilter() {
