@@ -298,7 +298,7 @@ public abstract class BulletState implements GameState, BaseScaleState {
 							current = game.getTextures().getSheet(img);
 							renderer.startUse(current);
 						}
-						new Color(1, 1, 1, particle.getAlpha()).bind();
+						renderer.bindColor(new Color(1, 1, 1, particle.getAlpha()));
 						renderer.renderEmbedded(img, particle.getX() * RPGConfig.getTileSize() - sx, particle.getY() * RPGConfig.getTileSize() - sy, img.getWidth(), img.getHeight());
 					}
 				}

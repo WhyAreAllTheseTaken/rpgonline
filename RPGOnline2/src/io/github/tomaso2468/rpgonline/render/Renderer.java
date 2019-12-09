@@ -244,4 +244,6 @@ public interface Renderer {
 	public LUT loadLUT(URL loc) throws IOException, RenderException;
 	public void setLUT(LUT lut);
 	public String getGPU();
+	
+	public void bindColor(Color c);
 }

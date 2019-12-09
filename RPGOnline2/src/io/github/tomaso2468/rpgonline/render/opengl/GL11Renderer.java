@@ -564,4 +564,9 @@ public abstract class GL11Renderer implements Renderer {
 	public void drawFont(Font font, float x, float y, String str) {
 		((SlickFont) font).font.drawString(x, y, str);
 	}
+	
+	@Override
+	public void bindColor(Color c) {
+		c.bind();
+	}
 }

@@ -87,7 +87,7 @@ public abstract class ImageMeshLayer implements SkyLayer {
 						current = game.getTextures().getSheet(img);
 						renderer.startUse(img);
 					}
-					light.bind();
+					renderer.bindColor(light);
 					renderer.renderEmbedded(img, tx * imageWidth, ty * imageHeight, imageWidth, imageHeight);
 				}
 			}
