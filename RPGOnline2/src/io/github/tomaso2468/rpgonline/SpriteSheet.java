@@ -33,10 +33,34 @@ package io.github.tomaso2468.rpgonline;
 
 import io.github.tomaso2468.rpgonline.render.Renderer;
 
+/**
+ * A class holding an image to be used as a sprite sheet.
+ * 
+ * @author Tomaso2468
+ *
+ */
 public class SpriteSheet extends Image {
+	/**
+	 * The width of each sprite.
+	 */
 	private int tw;
+	/**
+	 * The height of each sprite.
+	 */
 	private int th;
+	/**
+	 * The sprites in this sprite sheet.
+	 */
 	private Image[][] images;
+
+	/**
+	 * Constructs a new sprite sheet.
+	 * 
+	 * @param renderer The renderer to use for image operations.
+	 * @param img      The image to use for this sprite sheet.
+	 * @param tw       The width of each sprite.
+	 * @param th       The height of each sprite.
+	 */
 	public SpriteSheet(Renderer renderer, Image img, int tw, int th) {
 		super(renderer, img);
 		this.tw = tw;
@@ -49,18 +73,42 @@ public class SpriteSheet extends Image {
 		}
 	}
 
+	/**
+	 * Gets the number of sprites horizontally in this sprite sheet.
+	 * 
+	 * @return An int value.
+	 */
 	public int getHorizontalCount() {
 		return (int) Math.ceil(getWidth() / tw);
 	}
 
+	/**
+	 * Gets the number of sprites vertically in this sprite sheet.
+	 * 
+	 * @return An int value.
+	 */
 	public int getVerticalCount() {
 		return (int) Math.ceil(getHeight() / th);
 	}
 
+	/**
+	 * Gets the sprite at the specified position.
+	 * 
+	 * @param x The X position of the sprite.
+	 * @param y The Y position of the sprite.
+	 * @return An image.
+	 */
 	public Image getSprite(int x, int y) {
 		return images[y][x];
 	}
 
+	/**
+	 * Gets the sprite at the specified position as a new image.
+	 * 
+	 * @param x The X position of the sprite.
+	 * @param y The Y position of the sprite.
+	 * @return An image.
+	 */
 	public Image getSubImage(int x, int y) {
 		return getSubImage(x * tw, y * th, tw, th);
 	}
