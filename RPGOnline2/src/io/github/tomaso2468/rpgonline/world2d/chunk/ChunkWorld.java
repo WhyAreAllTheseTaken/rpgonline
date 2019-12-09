@@ -170,7 +170,7 @@ public class ChunkWorld implements World {
 	public long getMaxZ() {
 		return maz;
 	}
-
+	
 	/**
 	 * Gets a chunk at the specified position.
 	 * @param x The X position of the chunk in world coordinates.
@@ -245,7 +245,7 @@ public class ChunkWorld implements World {
 	 * A fast clear of the cache optimised for clients.
 	 */
 	public void checkCacheClientQuick() {
-		clearCacheQuick(1000 * 60, 8);
+		clearCacheQuick(1000 * 2, 8);
 	}
 
 	/**
@@ -310,10 +310,10 @@ public class ChunkWorld implements World {
 	 */
 	public void doUpdateClient() {
 		update_counter += 1;
-		if (update_counter % 60 == 0) {
+		if (update_counter % 10 == 0) {
 			checkCacheClientQuick();
 		}
-		if (update_counter % 240 == 0) {
+		if (update_counter % 60 == 0) {
 			checkCacheClient();
 		}
 		if (update_counter < 0) {
@@ -326,10 +326,10 @@ public class ChunkWorld implements World {
 	 */
 	public void doUpdateServer() {
 		update_counter += 1;
-		if (update_counter % 120 == 0) {
+		if (update_counter % 60 == 0) {
 			checkCacheServerQuick();
 		}
-		if (update_counter % 480 == 0) {
+		if (update_counter % 240 == 0) {
 			checkCacheServer();
 		}
 		if (update_counter < 0) {
