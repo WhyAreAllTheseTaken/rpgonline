@@ -413,6 +413,9 @@ public class TextureMapImpl implements TextureMap {
 		return sheet;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}
