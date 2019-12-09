@@ -31,11 +31,38 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package io.github.tomaso2468.rpgonline;
 
+/**
+ * A reference to a texture.
+ * @author Tomaso2468
+ *
+ */
 public interface TextureReference {
+	/**
+	 * Gets the width of the texture in pixels.
+	 * @return An int value.
+	 */
 	public int getWidth();
+	/**
+	 * Gets the height of the texture in pixels.
+	 * @return An int value.
+	 */
 	public int getHeight();
+	/**
+	 * Gets the width of the texture as used by the renderer for texture coordinates.
+	 * @return A float value.
+	 */
 	public float getLibraryWidth();
+	/**
+	 * Gets the height of the texture as used by the renderer for texture coordinates.
+	 * @return A float value.
+	 */
 	public float getLibraryHeight();
+	/**
+	 * Bind the texture.
+	 */
 	public void bind();
+	/**
+	 * Destroy the texture reference.
+	 */
 	public void destroy();
 }
