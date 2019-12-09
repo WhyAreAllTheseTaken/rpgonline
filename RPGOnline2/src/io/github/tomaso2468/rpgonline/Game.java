@@ -332,6 +332,7 @@ public class Game {
 		if (audio == null) {
 			audio = new AudioSystemImpl();
 		}
+		audio.init();
 		if (theme == null) {
 			theme = new DefaultTheme();
 		}
