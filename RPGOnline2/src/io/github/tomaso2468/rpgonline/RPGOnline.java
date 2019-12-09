@@ -46,8 +46,9 @@ public final class RPGOnline {
 	 * Prevent instantiation
 	 */
 	private RPGOnline() {
-		
+
 	}
+
 	/**
 	 * The current version of the RPGOnline library.
 	 */
@@ -75,8 +76,8 @@ public final class RPGOnline {
 	 * The current version of Slick2D.
 	 */
 	public static final Version SLICK_VERSION;
-	
-	//Load anything that requires a method call.
+
+	// Load anything that requires a method call.
 	static {
 		int build = 0;
 		try {

@@ -30,7 +30,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 /**
- * @author Tomaso2468
- * The core of the RPGOnline engine and simple classes.
+ * @author Tomaso2468 The core of the RPGOnline engine and simple classes.
  */
 package io.github.tomaso2468.rpgonline;

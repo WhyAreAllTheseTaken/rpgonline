@@ -40,8 +40,8 @@ public interface UpdateHook {
 	/**
 	 * Update the game.
 	 * 
-	 * @param game      The game.
-	 * @param delta     The time in seconds since the last game update.
+	 * @param game  The game.
+	 * @param delta The time in seconds since the last game update.
 	 */
 	public void update(Game game, float delta);
 }

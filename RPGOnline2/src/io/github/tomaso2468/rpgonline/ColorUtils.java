@@ -60,8 +60,9 @@ public final class ColorUtils {
 	 * Prevent instantiation.
 	 */
 	private ColorUtils() {
-		
+
 	}
+
 	/**
 	 * Converts a temperature in kelvin to the colour output (RGB) of a black body
 	 * at the specified temperature.
@@ -76,7 +77,7 @@ public final class ColorUtils {
 		if (kelvin < 0) {
 			throw new IllegalArgumentException("A temperature cannot be less than 0K");
 		}
-		
+
 		Debugger.start("kelvin-compute");
 		float temp = kelvin / 100;
 
@@ -607,6 +608,7 @@ public final class ColorUtils {
 
 		/**
 		 * Initi
+		 * 
 		 * @param sunlight
 		 * @param moonlight
 		 * @param sundown1

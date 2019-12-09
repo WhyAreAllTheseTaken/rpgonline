@@ -41,6 +41,7 @@ import org.newdawn.slick.util.LogSystem;
 
 /**
  * An implementation of a log system.
+ * 
  * @author Tomaso2468
  *
  */
@@ -57,12 +58,14 @@ public class RPGLog implements LogSystem {
 	 * Whether debug information should be printed (debug).
 	 */
 	private boolean debug = true;
-
 	/**
 	 * Constructs a new RPGLog that writes to a file.
-	 * @param f The file to write to.
-	 * @param debug Whether debug information should be printed (INFO and debug).
-	 * @param detailed_debug Whether detailed debug information should be printed (method information).
+	 * 
+	 * @param f              The file to write to.
+	 * @param debug          Whether debug information should be printed (INFO and
+	 *                       debug).
+	 * @param detailed_debug Whether detailed debug information should be printed
+	 *                       (method information).
 	 * @throws FileNotFoundException If the file specified does not exist.
 	 */
 	public RPGLog(File f, boolean debug, boolean detailed_debug) throws FileNotFoundException {
@@ -73,11 +76,14 @@ public class RPGLog implements LogSystem {
 		info("RPGLog created with settings (debug=" + debug + ", detailed_debug=" + detailed_debug + ") in file "
 				+ f.getName());
 	}
-	
+
 	/**
 	 * Constructs a new RPGLog.
-	 * @param debug Whether debug information should be printed (INFO and debug).
-	 * @param detailed_debug Whether detailed debug information should be printed (method information).
+	 * 
+	 * @param debug          Whether debug information should be printed (INFO and
+	 *                       debug).
+	 * @param detailed_debug Whether detailed debug information should be printed
+	 *                       (method information).
 	 */
 	public RPGLog(boolean debug, boolean detailed_debug) {
 		super();
@@ -153,7 +159,8 @@ public class RPGLog implements LogSystem {
 
 	/**
 	 * Helper method for printing.
-	 * @param type The type of message.
+	 * 
+	 * @param type    The type of message.
 	 * @param message The message.
 	 */
 	public void print(String type, String message) {
@@ -164,17 +171,15 @@ public class RPGLog implements LogSystem {
 		} else {
 			String caller = Thread.currentThread().getStackTrace()[4].getClassName();
 			String method = Thread.currentThread().getStackTrace()[4].getMethodName();
-			
-			//Paulscode logger.
+
+			// Paulscode logger.
 			if (caller.equals("rpgonline.audio.AudioManager$1")) {
 				caller = Thread.currentThread().getStackTrace()[5].getClassName();
 				method = Thread.currentThread().getStackTrace()[5].getMethodName();
 			}
-			
+
 			str = String.format("%-30s %-7s %-15s %-60s %-25s %s", "[" + new Date() + "]", "[" + type + "]",
-					"[" + Thread.currentThread().getName() + "]",
-					"[" + caller + "]",
-					"[" + method + "]", message);
+					"[" + Thread.currentThread().getName() + "]", "[" + caller + "]", "[" + method + "]", message);
 		}
 
 		System.out.println(str);

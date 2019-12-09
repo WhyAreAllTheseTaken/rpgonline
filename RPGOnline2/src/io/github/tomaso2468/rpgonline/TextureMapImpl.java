@@ -22,6 +22,7 @@ import io.github.tomaso2468.rpgonline.render.Renderer;
 
 /**
  * An implementation of a texture map.
+ * 
  * @author Tomaso2468
  *
  */
@@ -222,7 +223,7 @@ public class TextureMapImpl implements TextureMap {
 	public Image getTexture(String s) {
 		return textures.get(s.intern());
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

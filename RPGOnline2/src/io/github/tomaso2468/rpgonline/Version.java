@@ -81,10 +81,12 @@ import org.newdawn.slick.util.Log;
  */
 public class Version implements Comparable<Version> {
 	/**
-	 * Represents a version number in the future. This should be greater than all other values.
+	 * Represents a version number in the future. This should be greater than all
+	 * other values.
 	 */
-	public static final Version FUTURE = new Version(Integer.MAX_VALUE + "." + Integer.MAX_VALUE + "." + Integer.MAX_VALUE + "-p" + Integer.MAX_VALUE + "+" + Long.MAX_VALUE);
-	
+	public static final Version FUTURE = new Version(Integer.MAX_VALUE + "." + Integer.MAX_VALUE + "."
+			+ Integer.MAX_VALUE + "-p" + Integer.MAX_VALUE + "+" + Long.MAX_VALUE);
+
 	/**
 	 * An identifier for patch versions.
 	 */

@@ -248,6 +248,7 @@ public interface TextureMap {
 
 	/**
 	 * Sets the renderer for this TextureMap.
+	 * 
 	 * @param renderer A renderer object.
 	 */
 	public void setRenderer(Renderer renderer);

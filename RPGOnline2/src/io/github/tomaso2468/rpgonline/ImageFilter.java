@@ -35,6 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * An enum of image filtering modes.
+ * 
  * @author Tomaso2468
  *
  */
@@ -46,8 +47,7 @@ public enum ImageFilter {
 	/**
 	 * A filter that uses linear interpolation.
 	 */
-	LINEAR(GL11.GL_LINEAR, org.newdawn.slick.Image.FILTER_LINEAR),
-	;
+	LINEAR(GL11.GL_LINEAR, org.newdawn.slick.Image.FILTER_LINEAR),;
 	/**
 	 * The opengl constant for this filtering method.
 	 */
@@ -56,14 +56,16 @@ public enum ImageFilter {
 	 * The slick2d constant for this filtering method.
 	 */
 	public final int slickMapping;
+
 	/**
 	 * Construct enum value.
-	 * @param glMapping opengl
+	 * 
+	 * @param glMapping    opengl
 	 * @param slickMapping slick2d
 	 */
 	private ImageFilter(int glMapping, int slickMapping) {
 		this.glMapping = glMapping;
 		this.slickMapping = slickMapping;
 	}
-	
+
 }

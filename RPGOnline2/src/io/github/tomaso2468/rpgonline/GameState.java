@@ -79,7 +79,8 @@ public interface GameState {
 
 	/**
 	 * Called every game update to update the state.
-	 * @param game The game.
+	 * 
+	 * @param game  The game.
 	 * @param delta The time since the last update in seconds.
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */
@@ -89,7 +90,8 @@ public interface GameState {
 
 	/**
 	 * Called to render the state.
-	 * @param game The game.
+	 * 
+	 * @param game     The game.
 	 * @param renderer The renderer.
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */
@@ -97,15 +99,17 @@ public interface GameState {
 
 	/**
 	 * Gets the unique ID number of this state.
+	 * 
 	 * @return A long integer value.
 	 */
 	public long getID();
 
 	/**
 	 * Draw the left half of this state's debug information.
+	 * 
 	 * @param game The game.
-	 * @param g The GUI graphics context.
-	 * @param y The y position of the text.
+	 * @param g    The GUI graphics context.
+	 * @param y    The y position of the text.
 	 * @return The next available y position for rendering text.
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */
@@ -115,9 +119,10 @@ public interface GameState {
 
 	/**
 	 * Draw the right half of this state's debug information.
+	 * 
 	 * @param game The game.
-	 * @param g The GUI graphics context.
-	 * @param y The y position of the text.
+	 * @param g    The GUI graphics context.
+	 * @param y    The y position of the text.
 	 * @return The next available y position for rendering text.
 	 * @throws RenderException If an error occurs involving the rendering engine.
 	 */

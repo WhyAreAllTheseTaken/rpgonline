@@ -61,9 +61,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #mapped
 	 */
 	private static int autoSpriteMapSize = 512;
@@ -106,9 +107,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #autoSpriteMapSize
 	 */
 	private static boolean mapped = false;
@@ -144,14 +146,14 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.TextureMap
 	 */
 	private static ImageFilter filterMode = ImageFilter.NEAREST;
-	
+
 	/**
 	 * The number of threads to use for pathfinding.
 	 * 
 	 * @see io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager
 	 */
 	private static int pathfindingThreads = Math.min(Math.max(2, Runtime.getRuntime().availableProcessors() - 3), 6);
-	
+
 	/**
 	 * The time to wait before entering sleep in a pathfinding thread.
 	 * 
@@ -164,7 +166,7 @@ public final class RPGConfig {
 	 * @see io.github.tomaso2468.rpgonline.world2d.pathfinding.PathFindingManager
 	 */
 	private static long pathfindingSleepTime = 1000 / 30;
-	
+
 	/**
 	 * Determines if HDR is enabled.
 	 */
@@ -212,9 +214,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #isMapped()
 	 * @see #setMapped(boolean)
 	 * @see #setAutoSpriteMapSize(int)
@@ -240,9 +243,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #isMapped()
 	 * @see #setMapped(boolean)
 	 * @see #getAutoSpriteMapSize(int)
@@ -363,9 +367,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #setMapped(boolean)
 	 * @see #getAutoSpriteMapSize()
 	 * @see #setAutoSpriteMapSize(int)
@@ -388,9 +393,10 @@ public final class RPGConfig {
 	 *      java.awt.image.BufferedImage, int, int)
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#generateAllMaps()
 	 * @see io.github.tomaso2468.rpgonline.TextureMap#genTextureMap(int, int)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String, java.net.URL)
-	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String, java.net.URL,
-	 *      int, int)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadMappedTexture(String,
+	 *      java.net.URL)
+	 * @see io.github.tomaso2468.rpgonline.TextureMap#loadSpriteMapMapped(String,
+	 *      java.net.URL, int, int)
 	 * @see #isMapped()
 	 * @see #getAutoSpriteMapSize()
 	 * @see #setAutoSpriteMapSize(int)
@@ -557,10 +563,12 @@ public final class RPGConfig {
 	public static void setFilterMode(ImageFilter filterMode) {
 		RPGConfig.filterMode = filterMode;
 	}
-	
+
 	/**
 	 * Gets the number of pathfinding threads to use.
-	 * @return An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
+	 * 
+	 * @return An int value in the range 0..Integer.MAX_VALUE. A value of 0 will
+	 *         disable pathfinding.
 	 */
 	public static int getPathfindingThreads() {
 		return pathfindingThreads;
@@ -568,7 +576,9 @@ public final class RPGConfig {
 
 	/**
 	 * Gets the number of pathfinding threads to use.
-	 * @param pathfindingThreads An int value in the range 0..Integer.MAX_VALUE. A value of 0 will disable pathfinding.
+	 * 
+	 * @param pathfindingThreads An int value in the range 0..Integer.MAX_VALUE. A
+	 *                           value of 0 will disable pathfinding.
 	 */
 	public static void setPathfindingThreads(int pathfindingThreads) {
 		if (pathfindingThreads < 0) {
@@ -579,6 +589,7 @@ public final class RPGConfig {
 
 	/**
 	 * Gets the time to wait before entering sleep in a pathfinding thread.
+	 * 
 	 * @return A long value.
 	 */
 	public static long getPathfindingSleepDelay() {
@@ -587,6 +598,7 @@ public final class RPGConfig {
 
 	/**
 	 * Sets the time to wait before entering sleep in a pathfinding thread.
+	 * 
 	 * @param pathfindingSleepDelay A long value.
 	 */
 	public static void setPathfindingSleepDelay(long pathfindingSleepDelay) {
@@ -595,6 +607,7 @@ public final class RPGConfig {
 
 	/**
 	 * Gets the time to sleep for in a pathfinding thread.
+	 * 
 	 * @return A long value.
 	 */
 	public static long getPathfindingSleepTime() {
@@ -603,14 +616,16 @@ public final class RPGConfig {
 
 	/**
 	 * Sets the time to sleep for in a pathfinding thread.
+	 * 
 	 * @param pathfindingSleepTime A long value.
 	 */
 	public static void setPathfindingSleepTime(long pathfindingSleepTime) {
 		RPGConfig.pathfindingSleepTime = pathfindingSleepTime;
 	}
-	
+
 	/**
 	 * Determines if the HDR effect is enabled.
+	 * 
 	 * @return {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
 	public static boolean isHDR() {
@@ -619,6 +634,7 @@ public final class RPGConfig {
 
 	/**
 	 * Sets if the MDR effect is enabled.
+	 * 
 	 * @param hdr {@code true} if HDR is enabled, {@code false} otherwise.
 	 */
 	public static void setHDR(boolean hdr) {

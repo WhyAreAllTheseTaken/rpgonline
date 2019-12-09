@@ -33,22 +33,28 @@ package io.github.tomaso2468.rpgonline;
 
 /**
  * A representation of a font.
+ * 
  * @author Tomaso2468
  */
 public interface Font {
 	/**
 	 * Gets the height (in pixels) of a piece of text.
+	 * 
 	 * @param text The text to measure.
 	 * @return A positive float value.
 	 */
 	public float getHeight(String text);
+
 	/**
 	 * Gets the height (in pixels) of a standard line of text.
+	 * 
 	 * @return A positive float value.
 	 */
 	public float getHeight();
+
 	/**
 	 * Gets the width (in pixels) of a piece of text.
+	 * 
 	 * @param text The text to measure.
 	 * @return A positive float value.
 	 */

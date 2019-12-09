@@ -169,17 +169,17 @@ public class Game {
 	 * The input instance for the game.
 	 */
 	private Input input;
-	
+
 	/**
 	 * The AudioSystem for this game.
 	 */
 	private AudioSystem audio;
-	
+
 	/**
 	 * The map of textures for 2D sprites.
 	 */
 	private TextureMap textures;
-	
+
 	/**
 	 * The theme for the game's GUI.
 	 */
@@ -537,8 +537,8 @@ public class Game {
 			DebugFrame render = lastFrame;
 			if (render != null) {
 				y = drawDebugTitle(g, "Render Thread", y, false);
-				List<Entry<String,Long>> times = new ArrayList<>(render.getTimes());
-				Collections.sort(times, new Comparator<Entry<String,Long>>() {
+				List<Entry<String, Long>> times = new ArrayList<>(render.getTimes());
+				Collections.sort(times, new Comparator<Entry<String, Long>>() {
 					@Override
 					public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
 						return o1.getKey().compareToIgnoreCase(o2.getKey());
@@ -551,8 +551,8 @@ public class Game {
 
 			if (lastUpdate != null) {
 				y = drawDebugTitle(g, "Main Thread Updates", y, false);
-				List<Entry<String,Long>> times = new ArrayList<>(lastUpdate.getTimes());
-				Collections.sort(times, new Comparator<Entry<String,Long>>() {
+				List<Entry<String, Long>> times = new ArrayList<>(lastUpdate.getTimes());
+				Collections.sort(times, new Comparator<Entry<String, Long>>() {
 					@Override
 					public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
 						return o1.getKey().compareToIgnoreCase(o2.getKey());
@@ -567,8 +567,8 @@ public class Game {
 				DebugFrame client = ServerManager.getClient().getDebugFrame();
 				if (client != null) {
 					y = drawDebugTitle(g, "Client Thread", y, false);
-					List<Entry<String,Long>> times = new ArrayList<>(client.getTimes());
-					Collections.sort(times, new Comparator<Entry<String,Long>>() {
+					List<Entry<String, Long>> times = new ArrayList<>(client.getTimes());
+					Collections.sort(times, new Comparator<Entry<String, Long>>() {
 						@Override
 						public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
 							return o1.getKey().compareToIgnoreCase(o2.getKey());
@@ -584,8 +584,8 @@ public class Game {
 				DebugFrame server = ServerManager.getServer().getDebugFrame();
 				if (server != null) {
 					y = drawDebugTitle(g, "Server Thread", y, false);
-					List<Entry<String,Long>> times = new ArrayList<>(server.getTimes());
-					Collections.sort(times, new Comparator<Entry<String,Long>>() {
+					List<Entry<String, Long>> times = new ArrayList<>(server.getTimes());
+					Collections.sort(times, new Comparator<Entry<String, Long>>() {
 						@Override
 						public int compare(Entry<String, Long> o1, Entry<String, Long> o2) {
 							return o1.getKey().compareToIgnoreCase(o2.getKey());
@@ -1363,7 +1363,8 @@ public class Game {
 	}
 
 	/**
-	 * Exits the game. This method disposes of the renderer, audio system an then the application.
+	 * Exits the game. This method disposes of the renderer, audio system an then
+	 * the application.
 	 * 
 	 * @param code The system exit code.
 	 */
@@ -1380,6 +1381,7 @@ public class Game {
 
 	/**
 	 * Gets the games input. A new instance is not created for each frame.
+	 * 
 	 * @return An input instance.
 	 */
 	public Input getInput() {
@@ -1388,6 +1390,7 @@ public class Game {
 
 	/**
 	 * Gets the height of the game window.
+	 * 
 	 * @return A positive integer.
 	 * 
 	 * @see #getWidth()
@@ -1398,6 +1401,7 @@ public class Game {
 
 	/**
 	 * Gets the width of the game window.
+	 * 
 	 * @return A positive integer.
 	 * 
 	 * @see #getHeight()
@@ -1408,6 +1412,7 @@ public class Game {
 
 	/**
 	 * Gets the audio for the game.
+	 * 
 	 * @return An AudioSystem object.
 	 */
 	public AudioSystem getAudio() {
@@ -1416,6 +1421,7 @@ public class Game {
 
 	/**
 	 * Sets the audio for the game.
+	 * 
 	 * @param audio An AudioSystem object.
 	 */
 	public void setAudio(AudioSystem audio) {
@@ -1424,6 +1430,7 @@ public class Game {
 
 	/**
 	 * Gets the textures for this game.
+	 * 
 	 * @return A texture map.
 	 */
 	public TextureMap getTextures() {
@@ -1432,6 +1439,7 @@ public class Game {
 
 	/**
 	 * Sets the textures for this game.
+	 * 
 	 * @param textures A texture map.
 	 */
 	public void setTextures(TextureMap textures) {
@@ -1440,6 +1448,7 @@ public class Game {
 
 	/**
 	 * Gets the theme of the game.
+	 * 
 	 * @return A theme implementation.
 	 */
 	public Theme getTheme() {
@@ -1448,6 +1457,7 @@ public class Game {
 
 	/**
 	 * Sets the theme of the game.
+	 * 
 	 * @param theme A theme implementation.
 	 */
 	public void setTheme(Theme theme) {
